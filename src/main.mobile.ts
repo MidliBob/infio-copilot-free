@@ -5,11 +5,10 @@ import { App, Notice, Platform, Plugin, PluginSettingTab, Setting, requestUrl } 
 
 import { ApiKeyModal } from './components/modals/ApiKeyModal';
 import { ProUpgradeModal } from './components/modals/ProUpgradeModal';
-// import { checkGeneral, fetchUserPlan, upgradeToProVersion } from './hooks/use-infio';
+import { checkGeneral, fetchUserPlan, upgradeToProVersion } from './hooks/use-infio';
+import { INFIO_BASE_URL } from './constants';
 import { InfioSettings, parseInfioSettings } from './types/settings-mobile';
-import { getDeviceId, getOperatingSystem } from './utils/device-id';
 
-const INFIO_BASE_URL = 'https://api.infio.app'
 
 // API响应类型定义
 export type CheckGeneralResponse = {
@@ -18,16 +17,10 @@ export type CheckGeneralResponse = {
 	dl_zip?: string;
 };
 
-export type CheckGeneralParams = {
-	device_id: string;
-	device_name: string;
-};
 
 /**
  * 检查设备一般状态
  * @param apiKey API密钥
- * @param deviceId 设备ID
- * @param deviceName 设备名称
  * @returns Promise<CheckGeneralResponse>
  */
 export const checkGeneral = async (
@@ -37,11 +30,6 @@ export const checkGeneral = async (
 		if (!apiKey) {
 			throw new Error('API密钥不能为空');
 		}
-		const deviceId = await getDeviceId();
-		const deviceName = getOperatingSystem();
-		if (!deviceId || !deviceName) {
-			throw new Error('设备ID和设备名称不能为空');
-		}
 
 		const response = await requestUrl({
 			url: `${INFIO_BASE_URL}/subscription/check_general`,
@@ -50,10 +38,7 @@ export const checkGeneral = async (
 				'Content-Type': 'application/json',
 				'Authorization': `Bearer ${apiKey}`,
 			},
-			body: JSON.stringify({
-				device_id: deviceId,
-				device_name: deviceName,
-			}),
+			body: JSON.stringify({}),
 		});
 
 		if (response.json.success) {

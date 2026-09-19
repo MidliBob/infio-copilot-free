@@ -3,7 +3,6 @@ import JSZip from "jszip";
 import { Notice, Plugin, requestUrl } from "obsidian";
 
 import { INFIO_BASE_URL } from "../constants";
-import { getDeviceId, getOperatingSystem } from "../utils/device-id";
 
 // API响应类型定义
 export type UserPlanResponse = {
@@ -37,16 +36,10 @@ export type CheckGeneralResponse = {
 	dl_zip?: string;
 };
 
-export type CheckGeneralParams = {
-	device_id: string;
-	device_name: string;
-};
 
 /**
  * 检查设备一般状态
  * @param apiKey API密钥
- * @param deviceId 设备ID
- * @param deviceName 设备名称
  * @returns Promise<CheckGeneralResponse>
  */
 export const checkGeneral = async (
@@ -56,11 +49,6 @@ export const checkGeneral = async (
 		if (!apiKey) {
 			throw new Error('API密钥不能为空');
 		}
-        const deviceId = await getDeviceId();
-        const deviceName = getOperatingSystem();
-		if (!deviceId || !deviceName) {
-			throw new Error('设备ID和设备名称不能为空');
-		}
 
 		const response = await requestUrl({
 			url: `${INFIO_BASE_URL}/subscription/check_general`,
@@ -69,10 +57,7 @@ export const checkGeneral = async (
 				'Content-Type': 'application/json',
 				'Authorization': `Bearer ${apiKey}`,
 			},
-			body: JSON.stringify({
-				device_id: deviceId,
-				device_name: deviceName,
-			}),
+			body: JSON.stringify({}),
 		});
 
 		if (response.json.success) {
