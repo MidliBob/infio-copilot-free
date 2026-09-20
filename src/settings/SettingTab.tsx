@@ -346,17 +346,17 @@ export class InfioSettingTab extends PluginSettingTab {
 		const ragContainer = containerEl.createDiv("rag-settings-container");
 
 		// 创建标题元素，添加折叠控件
-		const headerEl = ragContainer.createEl("div", { cls: "infio-collapsible-heading" });
+		const headerEl = ragContainer.createEl("div", { cls: "icf-collapsible-heading" });
 
 		// 添加展开/折叠指示器
-		const toggleIcon = headerEl.createEl("span", { cls: "infio-toggle-icon" });
+		const toggleIcon = headerEl.createEl("span", { cls: "icf-toggle-icon" });
 		toggleIcon.textContent = "▶"; // 默认为折叠状态，使用右箭头
 
 		// 添加标题文本
 		const titleEl = headerEl.createEl("h3", { text: t('settings.RAG.title') });
 
 		// 创建内容容器
-		const contentContainer = ragContainer.createEl("div", { cls: "infio-collapsible-content" });
+		const contentContainer = ragContainer.createEl("div", { cls: "icf-collapsible-content" });
 
 		// 默认设置为隐藏状态
 		contentContainer.style.display = "none";
@@ -426,7 +426,7 @@ export class InfioSettingTab extends PluginSettingTab {
 				}),
 			)
 		new Setting(contentContainer)
-			.setClass('infio-chat-settings-textarea')
+			.setClass('icf-chat-settings-textarea')
 			.addTextArea((text) =>
 				text
 					.setValue(this.plugin.settings.ragOptions.includePatterns.join('\n'))
@@ -462,7 +462,7 @@ export class InfioSettingTab extends PluginSettingTab {
 				}),
 			)
 		new Setting(contentContainer)
-			.setClass('infio-chat-settings-textarea')
+			.setClass('icf-chat-settings-textarea')
 			.addTextArea((text) =>
 				text
 					.setValue(this.plugin.settings.ragOptions.excludePatterns.join('\n'))
@@ -602,17 +602,17 @@ export class InfioSettingTab extends PluginSettingTab {
 		const autoCompleteContainer = containerEl.createDiv("auto-complete-settings-container");
 
 		// 创建标题元素，添加折叠控件
-		const headerEl = autoCompleteContainer.createEl("div", { cls: "infio-collapsible-heading" });
+		const headerEl = autoCompleteContainer.createEl("div", { cls: "icf-collapsible-heading" });
 
 		// 添加展开/折叠指示器
-		const toggleIcon = headerEl.createEl("span", { cls: "infio-toggle-icon" });
+		const toggleIcon = headerEl.createEl("span", { cls: "icf-toggle-icon" });
 		toggleIcon.textContent = "▶"; // 默认为折叠状态，使用右箭头
 
 		// 添加标题文本
 		const titleEl = headerEl.createEl("h3", { text: t('settings.AutoComplete.title') });
 
 		// 创建内容容器
-		const contentContainer = autoCompleteContainer.createEl("div", { cls: "infio-collapsible-content" });
+		const contentContainer = autoCompleteContainer.createEl("div", { cls: "icf-collapsible-content" });
 
 		// 保存容器引用
 		this.autoCompleteContainer = contentContainer;

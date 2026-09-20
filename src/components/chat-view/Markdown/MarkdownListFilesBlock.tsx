@@ -37,12 +37,12 @@ export default function MarkdownListFilesBlock({
 
 	return (
 		<div
-			className={`infio-chat-code-block ${path ? 'has-filename' : ''}`}
+			className={`icf-chat-code-block ${path ? 'has-filename' : ''}`}
 			onClick={handleClick}
 		>
-			<div className={'infio-chat-code-block-header'}>
-				<div className={'infio-chat-code-block-header-filename'}>
-					<FolderOpen size={14} className="infio-chat-code-block-header-icon" />
+			<div className={'icf-chat-code-block-header'}>
+				<div className={'icf-chat-code-block-header-filename'}>
+					<FolderOpen size={14} className="icf-chat-code-block-header-icon" />
 					{t('chat.reactMarkdown.listFiles').replace('{path}', path)}
 				</div>
 			</div>

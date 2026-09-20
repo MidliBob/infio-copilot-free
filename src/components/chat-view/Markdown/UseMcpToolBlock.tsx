@@ -33,49 +33,49 @@ export default function UseMcpToolBlock({
 
 	return (
 		<div
-			className={`infio-chat-code-block has-filename`
+			className={`icf-chat-code-block has-filename`
 			}
 		>
-			<div className={'infio-chat-code-block-header'}>
-				<div className={'infio-chat-code-block-header-filename'}>
-					<Server size={14} className="infio-chat-code-block-header-icon" />
+			<div className={'icf-chat-code-block-header'}>
+				<div className={'icf-chat-code-block-header-filename'}>
+					<Server size={14} className="icf-chat-code-block-header-icon" />
 					{t('mcpHub.useMcpToolFrom')}
-					<span className="infio-mcp-tool-server-name">{serverName}</span>
+					<span className="icf-mcp-tool-server-name">{serverName}</span>
 				</div>
 			</div>
 			<div
-				className="infio-reasoning-content-wrapper"
+				className="icf-reasoning-content-wrapper"
 			>
-				<div className="infio-mcp-tool-row">
-					<div className="infio-mcp-tool-row-header">
-						<div className="infio-mcp-tool-name-section">
-							<span className="infio-mcp-tool-name">{toolName}</span>
+				<div className="icf-mcp-tool-row">
+					<div className="icf-mcp-tool-row-header">
+						<div className="icf-mcp-tool-name-section">
+							<span className="icf-mcp-tool-name">{toolName}</span>
 						</div>
 					</div>
-					{t('mcpHub.parameters')}: <div className="infio-mcp-tool-parameters">
-						<pre className="infio-json-pre"><code>{JSON.stringify(parameters, null, 2)}</code></pre>
+					{t('mcpHub.parameters')}: <div className="icf-mcp-tool-parameters">
+						<pre className="icf-json-pre"><code>{JSON.stringify(parameters, null, 2)}</code></pre>
 					</div>
 				</div>
 			</div>
 			<style>{`
-				.infio-mcp-tool-row {
+				.icf-mcp-tool-row {
 					padding: 12px;
 					border-bottom: 1px solid var(--background-modifier-border);
 					background-color: var(--background-primary);
 					border-radius: var(--radius-s);
 				}
-				.infio-mcp-tool-row-header {
+				.icf-mcp-tool-row-header {
 					display: flex;
 					align-items: center;
 					gap: 8px;
 					margin-bottom: 8px;
 				}
-				.infio-mcp-tool-name {
+				.icf-mcp-tool-name {
 					font-weight: 600;
 					color: var(--text-normal);
 					font-size: 14px;
 				}
-				.infio-mcp-tool-server-name {
+				.icf-mcp-tool-server-name {
 					color: var(--text-accent);
 					border-radius: 4px;
 					margin-left: 4px;
@@ -84,13 +84,13 @@ export default function UseMcpToolBlock({
 					font-size: 13px;
 					display: inline-block;
 				}
-				.infio-mcp-tool-parameters {
+				.icf-mcp-tool-parameters {
 					font-size: 14px;
 					color: var(--text-muted);
 					line-height: 1.4;
 					margin: 8px 0 0 0;
 				}
-				.infio-json-pre {
+				.icf-json-pre {
 					background: #282c34;
 					color: #d4d4d4;
 					border-radius: 4px;

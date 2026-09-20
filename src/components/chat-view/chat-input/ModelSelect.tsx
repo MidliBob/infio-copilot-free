@@ -137,7 +137,7 @@ const HighlightedText: React.FC<{ segments: TextSegment[] }> = ({ segments }) =>
 		<>
 			{segments.map((segment, index) => (
 				segment.isHighlighted ? (
-					<span key={index} className="infio-llm-setting-model-item-highlight">{segment.text}</span>
+					<span key={index} className="icf-llm-setting-model-item-highlight">{segment.text}</span>
 				) : (
 					<span key={index}>{segment.text}</span>
 				)
@@ -350,23 +350,23 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 	return (
 		<>
 			<DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
-				<DropdownMenu.Trigger className="infio-chat-input-model-select">
-					{/* <div className="infio-chat-input-model-select__mode-icon">
+				<DropdownMenu.Trigger className="icf-chat-input-model-select">
+					{/* <div className="icf-chat-input-model-select__mode-icon">
 						<Brain size={16} />
 					</div> */}
 					<div
-						className="infio-chat-input-model-select__model-name"
+						className="icf-chat-input-model-select__model-name"
 						title={chatModelId}
 					>
 						{getOptimizedModelName(chatModelId)}
 					</div>
-					<div className="infio-chat-input-model-select__icon">
+					<div className="icf-chat-input-model-select__icon">
 						{isOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
 					</div>
 				</DropdownMenu.Trigger>
 
 				<DropdownMenu.Portal>
-					<DropdownMenu.Content className="infio-popover infio-llm-setting-combobox-dropdown">
+					<DropdownMenu.Content className="icf-popover icf-llm-setting-combobox-dropdown">
 						{/* collected models */}
 						{(() => {
 							const getCollectedModels = () => {
@@ -385,11 +385,11 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 							const collectedModels = getCollectedModels()
 
 							return collectedModels.length > 0 ? (
-								<div className="infio-model-section">
-									<div className="infio-model-section-title">
-										<Star size={12} className="infio-star-active" /> {t('chat.input.collectedModels')}
+								<div className="icf-model-section">
+									<div className="icf-model-section-title">
+										<Star size={12} className="icf-star-active" /> {t('chat.input.collectedModels')}
 									</div>
-									<ul className="infio-collected-models-list">
+									<ul className="icf-collected-models-list">
 										{collectedModels.map((collectedModel, index) => (
 											<DropdownMenu.Item
 												key={`${collectedModel.provider}-${collectedModel.modelId}`}
@@ -429,23 +429,23 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 													setSearchTerm("")
 													setIsOpen(false)
 												}}
-												className={`infio-llm-setting-combobox-option ${index === selectedIndex ? 'is-selected' : ''}`}
+												className={`icf-llm-setting-combobox-option ${index === selectedIndex ? 'is-selected' : ''}`}
 												onMouseEnter={() => setSelectedIndex(index)}
 												asChild
 											>
 												<li
-													className="infio-llm-setting-model-item infio-collected-model-item"
+													className="icf-llm-setting-model-item icf-collected-model-item"
 													title={`${collectedModel.provider}/${collectedModel.modelId}`}
 												>
-													<div className="infio-model-item-text-wrapper">
-														<span className="infio-provider-badge">{collectedModel.provider}</span>
+													<div className="icf-model-item-text-wrapper">
+														<span className="icf-provider-badge">{collectedModel.provider}</span>
 														<span title={collectedModel.modelId}>{collectedModel.modelId}</span>
 													</div>
 													<div
-														className="infio-model-item-star"
+														className="icf-model-item-star"
 														title="remove from collected models"
 													>
-														<Star size={16} className="infio-star-active" onClick={(e) => {
+														<Star size={16} className="icf-star-active" onClick={(e) => {
 															e.stopPropagation();
 															e.preventDefault();
 															// delete 
@@ -486,15 +486,15 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 											</DropdownMenu.Item>
 										))}
 									</ul>
-									<div className="infio-model-separator"></div>
+									<div className="icf-model-separator"></div>
 								</div>
 							) : null
 						})()}
 
-						<div className="infio-llm-setting-search-container">
-							<div className="infio-llm-setting-provider-container">
+						<div className="icf-llm-setting-search-container">
+							<div className="icf-llm-setting-provider-container">
 								<select
-									className="infio-llm-setting-provider-switch"
+									className="icf-llm-setting-provider-switch"
 									value={modelProvider}
 									onChange={(e) => {
 										const newProvider = e.target.value as ApiProvider
@@ -507,7 +507,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 										<option
 											key={provider}
 											value={provider}
-											className={`infio-llm-setting-provider-option ${provider === modelProvider ? 'is-active' : ''}`}
+											className={`icf-llm-setting-provider-option ${provider === modelProvider ? 'is-active' : ''}`}
 										>
 											{provider}
 										</option>
@@ -515,10 +515,10 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 								</select>
 							</div>
 							{modelIds.length > 0 ? (
-								<div className="infio-search-input-container">
+								<div className="icf-search-input-container">
 									<input
 										type="text"
-										className="infio-llm-setting-item-search"
+										className="icf-llm-setting-item-search"
 										placeholder="search model..."
 										ref={inputRef}
 										value={searchTerm}
@@ -595,7 +595,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 							) : (
 								<input
 									type="text"
-									className="infio-llm-setting-item-search"
+									className="icf-llm-setting-item-search"
 									placeholder="input custom model name"
 									ref={inputRef}
 									value={searchTerm}
@@ -648,9 +648,9 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 							)}
 						</div>
 						{isLoading ? (
-							<div className="infio-loading">{t('chat.input.loading')}</div>
+							<div className="icf-loading">{t('chat.input.loading')}</div>
 						) : (
-							<div className="infio-model-section">
+							<div className="icf-model-section">
 								<ul>
 									{filteredOptions.map((option, index) => {
 										// 计算正确的选中索引，考虑搜索模式和非搜索模式
@@ -697,7 +697,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 													setSearchTerm("")
 													setIsOpen(false)
 												}}
-												className={`infio-llm-setting-combobox-option ${isSelected ? 'is-selected' : ''}`}
+												className={`icf-llm-setting-combobox-option ${isSelected ? 'is-selected' : ''}`}
 												onMouseEnter={() => {
 													// 计算正确的鼠标悬停索引
 													const getCollectedModels = () => {
@@ -720,10 +720,10 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 												asChild
 											>
 												<li
-													className={`infio-llm-setting-model-item ${option.isCollected ? 'infio-collected-model-item' : ''}`}
+													className={`icf-llm-setting-model-item ${option.isCollected ? 'icf-collected-model-item' : ''}`}
 													title={option.id}
 												>
-													<div className="infio-model-item-text-wrapper">
+													<div className="icf-model-item-text-wrapper">
 														{searchTerm ? (
 															<HighlightedText segments={option.html} />
 														) : (
@@ -731,13 +731,13 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 														)}
 													</div>
 													<div
-														className="infio-model-item-star"
+														className="icf-model-item-star"
 														onClick={(e) => toggleCollected(option.id, e)}
 														title={option.isCollected ? "star" : "unstar"}
 													>
 														{option.isCollected ?
-															<Star size={16} className="infio-star-active" /> :
-															<Star size={16} className="infio-star-inactive" />
+															<Star size={16} className="icf-star-active" /> :
+															<Star size={16} className="icf-star-inactive" />
 														}
 													</div>
 												</li>
@@ -753,23 +753,23 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 			<style>
 				{`
 					/* Model item styles */
-					.infio-llm-setting-model-item {
+					.icf-llm-setting-model-item {
 						display: block;
 						padding: 0;
 						transition: background-color 0.2s ease;
 					}
 					
-					.infio-llm-setting-combobox-option:hover {
+					.icf-llm-setting-combobox-option:hover {
 						background-color: var(--background-modifier-hover);
 					}
 					
-					.infio-llm-setting-combobox-option.is-selected {
+					.icf-llm-setting-combobox-option.is-selected {
 						background-color: var(--background-modifier-active);
 						border-left: 3px solid var(--interactive-accent);
 					}
 					
 					/* Text overflow handling */
-					.infio-model-item-text-wrapper {
+					.icf-model-item-text-wrapper {
 						white-space: nowrap;
 						overflow: hidden;
 						text-overflow: ellipsis;
@@ -779,14 +779,14 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 					}
 					
 					/* Model name display optimization */
-					.infio-chat-input-model-select__model-name {
+					.icf-chat-input-model-select__model-name {
 						white-space: nowrap;
 						overflow: hidden;
 						text-overflow: ellipsis;
 						max-width: 200px;
 						cursor: pointer;
 					}
-					.infio-llm-setting-model-item {
+					.icf-llm-setting-model-item {
 						display: flex;
 						flex-direction: row;
 						align-items: center;
@@ -798,11 +798,11 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 					}
 					}
 					
-					.infio-collected-model-item {
+					.icf-collected-model-item {
 						background-color: rgba(147, 112, 219, 0.05);
 					}
 					
-					.infio-model-item-star {
+					.icf-model-item-star {
 						cursor: pointer;
 						display: flex;
 						align-items: center;
@@ -811,26 +811,26 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 						transition: opacity 0.2s ease;
 					}
 					
-					.infio-model-item-star:hover {
+					.icf-model-item-star:hover {
 						opacity: 1;
 					}
 					
-					.infio-star-active {
+					.icf-star-active {
 						color: #FFD700;
 						fill: #FFD700;
 						filter: drop-shadow(0 0 1px rgba(255, 215, 0, 0.4));
 					}
 					
-					.infio-star-inactive {
+					.icf-star-inactive {
 						color: var(--text-muted);
 					}
 					
-					.infio-model-item-text-wrapper span {
+					.icf-model-item-text-wrapper span {
 						display: inline;
 					}
 
 					/* Highlighted text style - use purple instead of theme color */
-					.infio-llm-setting-model-item-highlight {
+					.icf-llm-setting-model-item-highlight {
 						display: inline;
 						color: #9370DB;
 						font-weight: 700;
@@ -841,7 +841,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 					}
 					
 					/* Search container */
-					.infio-llm-setting-search-container {
+					.icf-llm-setting-search-container {
 						display: flex;
 						flex-direction: row;
 						justify-content: space-between;
@@ -853,7 +853,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 					}
 					
 					/* Provider selector container */
-					.infio-llm-setting-provider-container {
+					.icf-llm-setting-provider-container {
 						position: relative;
 						display: flex;
 						align-items: center;
@@ -862,7 +862,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 					}
 					
 					/* Provider selector */
-					.infio-llm-setting-provider-switch {
+					.icf-llm-setting-provider-switch {
 						width: 100% !important;
 						margin: 0;
 						padding: 6px 8px;
@@ -883,18 +883,18 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 						padding-right: 28px;
 					}
 					
-					.infio-llm-setting-provider-switch:hover {
+					.icf-llm-setting-provider-switch:hover {
 						border-color: var(--interactive-accent);
 					}
 					
-					.infio-llm-setting-provider-switch:focus {
+					.icf-llm-setting-provider-switch:focus {
 						border-color: var(--interactive-accent);
 						box-shadow: 0 0 0 2px rgba(var(--interactive-accent-rgb), 0.25);
 						outline: none;
 					}
 					
 					/* Search container */
-					.infio-search-input-container {
+					.icf-search-input-container {
 						position: relative;
 						display: flex;
 						align-items: center;
@@ -903,7 +903,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 					}
 
 					/* Search input */
-					.infio-llm-setting-item-search {
+					.icf-llm-setting-item-search {
 						width: 100% !important;
 						border: 1px solid var(--background-modifier-border);
 						margin: 0;
@@ -916,19 +916,19 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 						box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 					}
 					
-					.infio-llm-setting-item-search:hover {
+					.icf-llm-setting-item-search:hover {
 						border-color: var(--interactive-accent);
 						background-color: var(--background-primary-alt);
 					}
 					
-					.infio-llm-setting-item-search:focus {
+					.icf-llm-setting-item-search:focus {
 						border-color: var(--interactive-accent);
 						box-shadow: 0 0 0 2px rgba(var(--interactive-accent-rgb), 0.25);
 						outline: none;
 					}
 					
 					/* Dropdown menu container */
-					.infio-llm-setting-combobox-dropdown {
+					.icf-llm-setting-combobox-dropdown {
 						max-height: 400px;
 						box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.08);
 						border-radius: 8px;
@@ -936,13 +936,13 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 					}
 					
 					/* 模型区域样式 */
-					.infio-model-section {
+					.icf-model-section {
 						padding: 0;
 						max-height: 300px;
 						overflow-y: auto;
 					}
 					
-					.infio-model-section-title {
+					.icf-model-section-title {
 						font-size: 12px;
 						color: var(--text-muted);
 						padding: 4px 8px;
@@ -953,21 +953,21 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 						margin-top: 2px;
 					}
 					
-					.infio-model-separator {
+					.icf-model-separator {
 						height: 1px;
 						background-color: var(--background-modifier-border);
 						margin: 4px 0;
 					}
 					
 					/* 加载状态 */
-					.infio-loading {
+					.icf-loading {
 						padding: 8px;
 						text-align: center;
 						color: var(--text-muted);
 					}
 					
 					/* 收藏列表 */
-					.infio-collected-models-list {
+					.icf-collected-models-list {
 						margin: 0;
 						padding: 0;
 						border-radius: 4px;
@@ -975,7 +975,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 					}
 					
 					/* Provider 标签 */
-					.infio-provider-badge {
+					.icf-provider-badge {
 						font-size: 10px;
 						padding: 2px 6px;
 						border-radius: 4px;

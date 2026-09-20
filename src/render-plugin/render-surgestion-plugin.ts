@@ -86,7 +86,7 @@ class InlineSuggestionWidget extends WidgetType {
   toDOM() {
     const span = document.createElement("span");
     span.textContent = this.display_suggestion;
-    span.classList.add("infio-utils-display-suggestion-opacity");
+    span.classList.add("icf-utils-display-suggestion-opacity");
     span.onclick = () => {
       cancelSuggestion(this.view);
     }

@@ -35,7 +35,7 @@ export default function PrivacySettings({ settings, updateSettings, errors }: Pr
                 errorMessage={errors.get("ignoredFilePatterns")}
             >
                 <textarea
-                    className="infio-autocomplete-setting-item-textarea"
+                    className="icf-autocomplete-setting-item-textarea"
                     rows={10}
                     placeholder={t("settings.AutoComplete.privacy.ignoredFilesPlaceholder")}
                     value={settings.ignoredFilePatterns}
@@ -58,7 +58,7 @@ export default function PrivacySettings({ settings, updateSettings, errors }: Pr
                 errorMessage={errors.get("ignoredTags")}
             >
                 <textarea
-                    className="infio-autocomplete-setting-item-textarea"
+                    className="icf-autocomplete-setting-item-textarea"
                     rows={10}
                     placeholder={t("settings.AutoComplete.privacy.ignoredTagsPlaceholder")}
                     value={settings.ignoredTags}

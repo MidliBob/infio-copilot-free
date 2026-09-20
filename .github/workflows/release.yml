@@ -4,9 +4,14 @@ on:
   push:
     tags:
       - '*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag to build for (e.g. 0.8.7)'
+        required: true
 
 env:
-  PLUGIN_NAME: obsidian-infio-copilot
+  PLUGIN_NAME: obsidian-infio-copilot-free
 
 permissions:
   contents: write
@@ -16,16 +21,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
         with:
-          node-version: 20.x
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
-          version: latest
+          version: 9
 
       - name: Build
         id: build
@@ -40,10 +48,12 @@ jobs:
         run: |
           pnpm test
 
-      - name: Get Tag Name
+      - name: Resolve tag
         id: get_tag
         run: |
-          echo "tag_name=$(git tag --sort version:refname | tail -n 1)" >> $GITHUB_OUTPUT
+          TAG="${{ github.event.inputs.tag }}"
+          if [ -z "$TAG" ]; then TAG="${GITHUB_REF#refs/tags/}"; fi
+          echo "tag_name=$TAG" >> $GITHUB_OUTPUT
 
       - name: Bundle
         id: bundle
@@ -60,7 +70,7 @@ jobs:
           chmod +x .github/scripts/get-changelog.js
           CHANGELOG=$(node .github/scripts/get-changelog.js ${{ steps.get_tag.outputs.tag_name }})
           if [ -z "$CHANGELOG" ]; then
-            echo "Error: No release notes found for this version in CHANGELOG.md"
+            echo "Error: No release notes found for version ${{ steps.get_tag.outputs.tag_name }} in CHANGELOG.yaml"
             exit 1
           fi
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
@@ -68,10 +78,9 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
         with:
-          token: ${{ github.token }}
+          tag_name: ${{ steps.get_tag.outputs.tag_name }}
           files: |
             ${{ env.PLUGIN_NAME }}-${{ steps.get_tag.outputs.tag_name }}.zip
             main.js

@@ -15,7 +15,7 @@ interface RawMarkdownBlockProps {
 
 export default function RawMarkdownBlock({
 	content,
-	className = "infio-markdown",
+	className = "icf-markdown",
 }: RawMarkdownBlockProps) {
 	const {isDarkMode} = useDarkModeContext()
 

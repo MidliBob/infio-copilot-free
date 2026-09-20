@@ -37,20 +37,20 @@ function WebsiteReadItem({
 	}
 
 	return (
-		<div onClick={handleClick} className="infio-website-read-item">
-			<div className="infio-website-read-item__icon">
+		<div onClick={handleClick} className="icf-website-read-item">
+			<div className="icf-website-read-item__icon">
 				<FileText size={16} />
 			</div>
-			<div className="infio-website-read-item__info">
-				<div className="infio-website-read-item__domain">
+			<div className="icf-website-read-item__info">
+				<div className="icf-website-read-item__domain">
 					{getFileBaseName(websiteResult.url)}
 				</div>
-				<div className="infio-website-read-item__url">
+				<div className="icf-website-read-item__url">
 					{truncatePath(websiteResult.url)}
 				</div>
 			</div>
-			<div className="infio-website-read-item__actions">
-				<div className="infio-website-read-item__size">
+			<div className="icf-website-read-item__actions">
+				<div className="icf-website-read-item__size">
 					{getContentSize(websiteResult.content)}
 				</div>
 			</div>
@@ -66,12 +66,12 @@ export default function WebsiteReadResults({
 	const [isOpen, setIsOpen] = useState(false)
 
 	return (
-		<div className="infio-website-read-results">
+		<div className="icf-website-read-results">
 			<div
 				onClick={() => {
 					setIsOpen(!isOpen)
 				}}
-				className="infio-website-read-results__trigger"
+				className="icf-website-read-results__trigger"
 			>
 				{isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
 				<div>

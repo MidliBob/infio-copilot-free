@@ -109,16 +109,16 @@ const SearchInputWithActions = forwardRef<SearchInputRef, SearchInputProps>(
 
 		return (
 			<div 
-				className={`infio-chat-user-input-container ${disabled ? 'disabled' : ''}`} 
+				className={`icf-chat-user-input-container ${disabled ? 'disabled' : ''}`} 
 				ref={containerRef}
 			>
 				{placeholder && isEmpty && (
-					<div className="infio-input-placeholder">
+					<div className="icf-input-placeholder">
 						{placeholder}
 					</div>
 				)}
 				<LexicalContentEditable
-					rootTheme="infio-search-lexical-content-editable-root"
+					rootTheme="icf-search-lexical-content-editable-root"
 					initialEditorState={(editor) => {
 						if (initialSerializedEditorState) {
 							editor.setEditorState(
@@ -144,8 +144,8 @@ const SearchInputWithActions = forwardRef<SearchInputRef, SearchInputProps>(
 					}}
 				/>
 
-				<div className="infio-chat-user-input-controls">
-					<div className="infio-chat-user-input-controls__model-select-container">
+				<div className="icf-chat-user-input-controls">
+					<div className="icf-chat-user-input-controls__model-select-container">
 						{onSearchModeChange && (
 							<SearchModeSelect 
 								searchMode={searchMode}
@@ -154,18 +154,18 @@ const SearchInputWithActions = forwardRef<SearchInputRef, SearchInputProps>(
 						)}
 
 					</div>
-					<div className="infio-chat-user-input-controls__buttons">
+					<div className="icf-chat-user-input-controls__buttons">
 						<SearchButton onClick={() => handleSubmit()} />
 					</div>
 				</div>
 				<style>
 					{`
-					.infio-chat-user-input-container.disabled {
+					.icf-chat-user-input-container.disabled {
 						opacity: 0.6;
 						pointer-events: none;
 					}
 
-					.infio-input-placeholder {
+					.icf-input-placeholder {
 						position: absolute;
 						color: var(--text-muted);
 						pointer-events: none;
@@ -174,7 +174,7 @@ const SearchInputWithActions = forwardRef<SearchInputRef, SearchInputProps>(
 						font-size: var(--font-ui-small);
 					}
 
-					.infio-search-button {
+					.icf-search-button {
 						position: absolute;
 						bottom: var(--size-2-2);
 						right: var(--size-2-2);

@@ -2,7 +2,7 @@ export default {
 	chat: {
 		stop: "Stop",
 		welcome: {
-			title: "Welcome to Infio Copilot",
+			title: "Welcome to Infio Copilot Free",
 			subtitle: "Explore different modes to enhance your productivity"
 		},
 		navigation: {
@@ -214,7 +214,7 @@ export default {
 	},
 	main: {
 		openNewChat: "Open new chat",
-		openInfioCopilot: 'Open infio copilot',
+		openInfioCopilot: 'Open Infio Copilot Free',
 		addSelectionToChat: 'Add selection to chat',
 		rebuildVaultIndex: 'Rebuild entire vault index',
 		updateVaultIndex: 'Update index for modified files',
@@ -235,7 +235,7 @@ export default {
 		updateFailed: 'Vault index update failed',
 		selectTextFirst: 'Please select some text first',
 		migrationFailed: 'Failed to migrate to JSON storage. Please check the console for details.',
-		reloadingInfio: 'Reloading "infio" due to migration',
+		reloadingInfio: 'Reloading "Infio Copilot Free" due to migration',
 	},
 	applyView: {
 		applyingFile: 'Applying: {{file}}',

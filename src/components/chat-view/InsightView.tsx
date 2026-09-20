@@ -541,41 +541,41 @@ const InsightView = () => {
 				</div>
 
 				{/* 结果统计 & 洞察操作 */}
-				<div className="infio-insight-stats">
+				<div className="icf-insight-stats">
 					{hasLoaded && !isLoading && (
-						<div className="infio-insight-stats-overview">
-							<div className="infio-insight-stats-main">
-								<span className="infio-insight-stats-number">{insightResults.length}</span>
-								<span className="infio-insight-stats-label">{t('insights.stats.insightCount')}</span>
+						<div className="icf-insight-stats-overview">
+							<div className="icf-insight-stats-main">
+								<span className="icf-insight-stats-number">{insightResults.length}</span>
+								<span className="icf-insight-stats-label">{t('insights.stats.insightCount')}</span>
 							</div>
-							<div className="infio-insight-stats-breakdown">
+							<div className="icf-insight-stats-breakdown">
 								{insightGroupedResults.length > 0 && (
-									<div className="infio-insight-stats-items">
+									<div className="icf-insight-stats-items">
 										{insightGroupedResults.filter(g => g.groupType === 'workspace').length > 0 && (
-											<div className="infio-insight-stats-item">
-												<span className="infio-insight-stats-item-icon">🌐</span>
-												<span className="infio-insight-stats-item-value">
+											<div className="icf-insight-stats-item">
+												<span className="icf-insight-stats-item-icon">🌐</span>
+												<span className="icf-insight-stats-item-value">
 													{insightGroupedResults.filter(g => g.groupType === 'workspace').length}
 												</span>
-												<span className="infio-insight-stats-item-label">{t('insights.stats.workspaceCount')}</span>
+												<span className="icf-insight-stats-item-label">{t('insights.stats.workspaceCount')}</span>
 											</div>
 										)}
 										{insightGroupedResults.filter(g => g.groupType === 'folder').length > 0 && (
-											<div className="infio-insight-stats-item">
-												<span className="infio-insight-stats-item-icon">📂</span>
-												<span className="infio-insight-stats-item-value">
+											<div className="icf-insight-stats-item">
+												<span className="icf-insight-stats-item-icon">📂</span>
+												<span className="icf-insight-stats-item-value">
 													{insightGroupedResults.filter(g => g.groupType === 'folder').length}
 												</span>
-												<span className="infio-insight-stats-item-label">{t('insights.stats.folderCount')}</span>
+												<span className="icf-insight-stats-item-label">{t('insights.stats.folderCount')}</span>
 											</div>
 										)}
 										{insightGroupedResults.filter(g => g.groupType === 'file').length > 0 && (
-											<div className="infio-insight-stats-item">
-												<span className="infio-insight-stats-item-icon">📄</span>
-												<span className="infio-insight-stats-item-value">
+											<div className="icf-insight-stats-item">
+												<span className="icf-insight-stats-item-icon">📄</span>
+												<span className="icf-insight-stats-item-value">
 													{insightGroupedResults.filter(g => g.groupType === 'file').length}
 												</span>
-												<span className="infio-insight-stats-item-label">{t('insights.stats.fileCount')}</span>
+												<span className="icf-insight-stats-item-label">{t('insights.stats.fileCount')}</span>
 											</div>
 										)}
 									</div>
@@ -583,16 +583,16 @@ const InsightView = () => {
 							</div>
 						</div>
 					)}
-					<div className="infio-insight-model-info">
-						<div className="infio-insight-model-row">
-							<span className="infio-insight-model-label">{t('insights.stats.insightModelLabel')}</span>
+					<div className="icf-insight-model-info">
+						<div className="icf-insight-model-row">
+							<span className="icf-insight-model-label">{t('insights.stats.insightModelLabel')}</span>
 							<ModelSelect modelType="insight" />
 						</div>
-						<div className="infio-insight-actions">
+						<div className="icf-insight-actions">
 							<button
 								onClick={handleInitWorkspaceInsights}
 								disabled={isInitializing || isLoading || isDeleting}
-								className="infio-insight-primary-btn"
+								className="icf-insight-primary-btn"
 								title={hasLoaded && insightResults.length > 0 ? t('insights.tooltips.update') : t('insights.tooltips.initialize')}
 							>
 								{isInitializing ? t('insights.initializing') : (hasLoaded && insightResults.length > 0 ? t('insights.updateInsights') : t('insights.initializeInsights'))}
@@ -923,7 +923,7 @@ const InsightView = () => {
 					cursor: not-allowed;
 				}
 
-				.infio-insight-stats {
+				.icf-insight-stats {
 					background-color: var(--background-secondary);
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-s);
@@ -933,43 +933,43 @@ const InsightView = () => {
 					gap: var(--size-4-4);
 				}
 
-				.infio-insight-stats-overview {
+				.icf-insight-stats-overview {
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
 				}
 
-				.infio-insight-stats-main {
+				.icf-insight-stats-main {
 					display: flex;
 					align-items: baseline;
 					gap: var(--size-2-2);
 				}
 
-				.infio-insight-stats-number {
+				.icf-insight-stats-number {
 					font-size: var(--font-ui-large);
 					font-weight: 700;
 					color: var(--text-accent);
 					font-family: var(--font-monospace);
 				}
 
-				.infio-insight-stats-label {
+				.icf-insight-stats-label {
 					font-size: var(--font-ui-medium);
 					color: var(--text-normal);
 					font-weight: var(--font-medium);
 				}
 
-				.infio-insight-stats-breakdown {
+				.icf-insight-stats-breakdown {
 					flex: 1;
 					display: flex;
 					justify-content: flex-end;
 				}
 
-				.infio-insight-stats-items {
+				.icf-insight-stats-items {
 					display: flex;
 					gap: var(--size-2-3);
 				}
 
-				.infio-insight-stats-item {
+				.icf-insight-stats-item {
 					display: flex;
 					align-items: center;
 					gap: var(--size-2-1);
@@ -978,31 +978,31 @@ const InsightView = () => {
 					border-radius: var(--radius-s);
 				}
 
-				.infio-insight-stats-item-icon {
+				.icf-insight-stats-item-icon {
 					font-size: var(--font-ui-smaller);
 					line-height: 1;
 				}
 
-				.infio-insight-stats-item-value {
+				.icf-insight-stats-item-value {
 					font-size: var(--font-ui-small);
 					font-weight: 600;
 					color: var(--text-normal);
 					font-family: var(--font-monospace);
 				}
 
-				.infio-insight-stats-item-label {
+				.icf-insight-stats-item-label {
 					font-size: var(--font-ui-smaller);
 					color: var(--text-muted);
 				}
 
-				.infio-insight-model-info {
+				.icf-insight-model-info {
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
 					gap: var(--size-4-3);
 				}
 
-				.infio-insight-model-row {
+				.icf-insight-model-row {
 					display: flex;
 					align-items: center;
 					gap: var(--size-2-2);
@@ -1011,25 +1011,25 @@ const InsightView = () => {
 					padding: var(--size-2-2);
 				}
 
-				.infio-insight-model-label {
+				.icf-insight-model-label {
 					font-size: var(--font-ui-small);
 					color: var(--text-muted);
 					font-weight: var(--font-medium);
 				}
 
-				.infio-insight-model-value {
+				.icf-insight-model-value {
 					font-size: var(--font-ui-small);
 					color: var(--text-accent);
 					font-weight: 600;
 					font-family: var(--font-monospace);
 				}
 
-				.infio-insight-actions {
+				.icf-insight-actions {
 					display: flex;
 					gap: var(--size-2-2);
 				}
 
-				.infio-insight-primary-btn {
+				.icf-insight-primary-btn {
 					padding: var(--size-2-2) var(--size-4-3);
 					background-color: var(--interactive-accent-hover);
 					border: none;
@@ -1041,11 +1041,11 @@ const InsightView = () => {
 					font-weight: var(--font-medium);
 				}
 
-				.infio-insight-primary-btn:hover:not(:disabled) {
+				.icf-insight-primary-btn:hover:not(:disabled) {
 					background-color: var(--interactive-accent-hover);
 				}
 
-				.infio-insight-primary-btn:disabled {
+				.icf-insight-primary-btn:disabled {
 					opacity: 0.6;
 					cursor: not-allowed;
 				}

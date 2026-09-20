@@ -119,7 +119,7 @@ export default function ApplyViewRoot({ state, close }: {
 	}, [handleAccept, handleReject]) // Dependencies for the effect
 
 	return (
-		<div id="infio-apply-view">
+		<div id="icf-apply-view">
 			<div className="view-header">
 				<div className="view-header-left">
 					<div className="view-header-nav-buttons"></div>
@@ -130,7 +130,7 @@ export default function ApplyViewRoot({ state, close }: {
 					</div>
 					<div className="view-actions">
 						<button
-							className="clickable-icon view-action infio-approve-button"
+							className="clickable-icon view-action icf-approve-button"
 							aria-label={t('applyView.acceptChanges')}
 							onClick={handleAccept}
 						>
@@ -138,7 +138,7 @@ export default function ApplyViewRoot({ state, close }: {
 							{t('applyView.acceptAll').replace('{{shortcut}}', getShortcutText('accept'))}
 						</button>
 						<button
-							className="clickable-icon view-action infio-reject-button"
+							className="clickable-icon view-action icf-reject-button"
 							aria-label={t('applyView.rejectChanges')}
 							onClick={handleReject}
 						>
@@ -154,7 +154,7 @@ export default function ApplyViewRoot({ state, close }: {
 					<div className="cm-editor">
 						<div className="cm-scroller">
 							<div className="cm-sizer">
-								<div className="infio-inline-title">
+								<div className="icf-inline-title">
 									{state?.file
 										? state.file.replace(/\.[^/.]+$/, '')
 										: ''}
@@ -172,27 +172,27 @@ export default function ApplyViewRoot({ state, close }: {
 									return (
 										<div
 											key={index}
-											className={`infio-diff-line ${part.added ? 'added' : part.removed ? 'removed' : ''} ${status !== 'active' ? status : ''}`}
+											className={`icf-diff-line ${part.added ? 'added' : part.removed ? 'removed' : ''} ${status !== 'active' ? status : ''}`}
 										>
-											<div className="infio-diff-content-wrapper">
+											<div className="icf-diff-content-wrapper">
 												<ContentEditable
 													html={editedContents[index]}
 													onChange={(evt) => handleContentChange(index, evt)}
-													className="infio-editable-content"
+													className="icf-editable-content"
 												/>
 												{(part.added || part.removed) && status === 'active' && (
-													<div className="infio-diff-line-actions">
+													<div className="icf-diff-line-actions">
 														<button
 															aria-label={t('applyView.acceptLine')}
 															onClick={() => acceptDiffLine(index)}
-															className="infio-accept"
+															className="icf-accept"
 														>
 															{acceptIcon && '✓'}
 														</button>
 														<button
 															aria-label={t('applyView.excludeLine')}
 															onClick={() => excludeDiffLine(index)}
-															className="infio-exclude"
+															className="icf-exclude"
 														>
 															{excludeIcon && '✗'}
 														</button>
@@ -208,12 +208,12 @@ export default function ApplyViewRoot({ state, close }: {
 				</div>
 			</div>
 			<style>{`
-        .infio-diff-content-wrapper {
+        .icf-diff-content-wrapper {
           position: relative;
           width: 100%;
         }
         
-        .infio-editable-content {
+        .icf-editable-content {
           width: 100%;
           min-height: 1.2em;
           padding: 4px;
@@ -222,13 +222,13 @@ export default function ApplyViewRoot({ state, close }: {
           box-sizing: border-box;
         }
 
-        .infio-editable-content:focus {
+        .icf-editable-content:focus {
           outline: none;
           border-color: var(--interactive-accent);
           background-color: var(--background-primary);
         }
         
-        .infio-diff-line-actions {
+        .icf-diff-line-actions {
           position: absolute;
           right: 4px;
           top: 4px;
@@ -236,7 +236,7 @@ export default function ApplyViewRoot({ state, close }: {
           gap: 4px;
         }
         
-        .infio-diff-line-actions button {
+        .icf-diff-line-actions button {
           padding: 2px 6px;
           border-radius: 4px;
           background: var(--background-secondary);
@@ -246,30 +246,30 @@ export default function ApplyViewRoot({ state, close }: {
           transition: opacity 0.2s;
         }
         
-        .infio-diff-line-actions button:hover {
+        .icf-diff-line-actions button:hover {
           opacity: 1;
         }
         
-        .infio-accept {
+        .icf-accept {
           color: #26a69a;
         }
         
-        .infio-exclude {
+        .icf-exclude {
           color: #ef5350;
         }
 
-        .infio-diff-line.added .infio-editable-content {
+        .icf-diff-line.added .icf-editable-content {
           background-color: rgba(0, 255, 0, 0.1);
           border-left: 3px solid #26a69a;
         }
 
-        .infio-diff-line.removed .infio-editable-content {
+        .icf-diff-line.removed .icf-editable-content {
           background-color: rgba(255, 0, 0, 0.1);
           border-left: 3px solid #ef5350;
           text-decoration: line-through;
         }
 
-        .infio-diff-line.accepted .infio-editable-content {
+        .icf-diff-line.accepted .icf-editable-content {
           opacity: 0.7;
         }
       `}</style>

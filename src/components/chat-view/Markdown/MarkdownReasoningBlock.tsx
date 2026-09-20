@@ -24,15 +24,15 @@ export default function MarkdownReasoningBlock({
 	return (
 		reasoningContent && (
 			<div
-				className={`infio-chat-code-block has-filename infio-reasoning-block`}
+				className={`icf-chat-code-block has-filename icf-reasoning-block`}
 			>
-				<div className={'infio-chat-code-block-header'}>
-					<div className={'infio-chat-code-block-header-filename'}>
-						<Brain size={10} className="infio-chat-code-block-header-icon" />
+				<div className={'icf-chat-code-block-header'}>
+					<div className={'icf-chat-code-block-header-filename'}>
+						<Brain size={10} className="icf-chat-code-block-header-icon" />
 						{t('chat.reactMarkdown.reasoning')}
 					</div>
 					<button
-						className="clickable-icon infio-chat-list-dropdown"
+						className="clickable-icon icf-chat-list-dropdown"
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						{isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
@@ -40,7 +40,7 @@ export default function MarkdownReasoningBlock({
 				</div>
 				<div
 					ref={containerRef}
-					className="infio-reasoning-content-wrapper"
+					className="icf-reasoning-content-wrapper"
 				>
 					<MemoizedSyntaxHighlighterWrapper
 						isDarkMode={isDarkMode}

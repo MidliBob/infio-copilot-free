@@ -538,7 +538,7 @@ export function useMenuAnchorRef(
         containerDiv.setAttribute('aria-label', 'Typeahead menu')
         containerDiv.setAttribute('id', 'typeahead-menu')
         containerDiv.setAttribute('role', 'listbox')
-				containerDiv.classList.add('infio-utils-lexical-menu-container')
+				containerDiv.classList.add('icf-utils-lexical-menu-container')
       parent.append(containerDiv)
       }
       anchorElementRef.current = containerDiv

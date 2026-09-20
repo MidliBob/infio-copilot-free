@@ -136,14 +136,14 @@ const McpHubView = () => {
 
 	const ToolRow = ({ tool }: { tool: McpTool }) => {
 		return (
-			<div className="infio-mcp-tool-row">
-				<div className="infio-mcp-tool-row-header">
-					<div className="infio-mcp-tool-name-section">
-						<span className="infio-mcp-tool-name">{tool.name}</span>
+			<div className="icf-mcp-tool-row">
+				<div className="icf-mcp-tool-row-header">
+					<div className="icf-mcp-tool-name-section">
+						<span className="icf-mcp-tool-name">{tool.name}</span>
 					</div>
 				</div>
 				{tool.description && (
-					<p className="infio-mcp-item-description">{tool.description}</p>
+					<p className="icf-mcp-item-description">{tool.description}</p>
 				)}
 				{(tool.inputSchema && (() => {
 					const schema = tool.inputSchema;
@@ -152,20 +152,20 @@ const McpHubView = () => {
 
 					if (properties && typeof properties === 'object' && Object.keys(properties).length > 0) {
 						return (
-							<div className="infio-mcp-tool-parameters">
-								<h5 className="infio-mcp-parameters-title">{t('mcpHub.parameters')}</h5>
+							<div className="icf-mcp-tool-parameters">
+								<h5 className="icf-mcp-parameters-title">{t('mcpHub.parameters')}</h5>
 								{Object.entries(properties).map(
 									([paramName, paramSchemaUntyped]) => {
 										const paramSchema = paramSchemaUntyped && typeof paramSchemaUntyped === 'object' ? paramSchemaUntyped : {};
 										const paramDescription = 'description' in paramSchema && typeof paramSchema.description === 'string' ? paramSchema.description : undefined;
 										const isRequired = required && Array.isArray(required) && required.includes(paramName);
 										return (
-											<div key={paramName} className="infio-mcp-parameter-item">
-												<code className="infio-mcp-parameter-name">
+											<div key={paramName} className="icf-mcp-parameter-item">
+												<code className="icf-mcp-parameter-name">
 													{paramName}
-													{isRequired && <span className="infio-mcp-parameter-required">*</span>}
+													{isRequired && <span className="icf-mcp-parameter-required">*</span>}
 												</code>
-												<span className="infio-mcp-parameter-description">
+												<span className="icf-mcp-parameter-description">
 													{paramDescription || t('mcpHub.toolNoDescription')}
 												</span>
 											</div>
@@ -182,33 +182,33 @@ const McpHubView = () => {
 	};
 
 	const ResourceRow = ({ resource }: { resource: McpResource | McpResourceTemplate }) => (
-		<div className="infio-mcp-resource-row">
-			<div className="infio-mcp-resource-header">
-				<FileText size={16} className="infio-mcp-resource-icon" />
+		<div className="icf-mcp-resource-row">
+			<div className="icf-mcp-resource-header">
+				<FileText size={16} className="icf-mcp-resource-icon" />
 				<strong>{'uri' in resource ? resource.uri : resource.uriTemplate}</strong>
 			</div>
-			{resource.description && <p className="infio-mcp-item-description">{resource.description}</p>}
+			{resource.description && <p className="icf-mcp-item-description">{resource.description}</p>}
 		</div>
 	);
 
 	const ErrorRow = ({ error }: { error: McpErrorEntry }) => (
-		<div className="infio-mcp-error-row">
-			<div className="infio-mcp-error-header">
-				<AlertTriangle size={16} className="infio-mcp-error-icon" />
+		<div className="icf-mcp-error-row">
+			<div className="icf-mcp-error-header">
+				<AlertTriangle size={16} className="icf-mcp-error-icon" />
 				<p style={{ color: error.level === 'error' ? 'var(--text-error)' : error.level === 'warn' ? 'var(--text-warning)' : 'var(--text-normal)' }}>
 					{error.message}
 				</p>
 			</div>
-			<p className="infio-mcp-item-timestamp">{new Date(error.timestamp).toLocaleString()}</p>
+			<p className="icf-mcp-item-timestamp">{new Date(error.timestamp).toLocaleString()}</p>
 		</div>
 	);
 
 	return (
-		<div className="infio-mcp-hub-container">
+		<div className="icf-mcp-hub-container">
 			{/* Header Section */}
-			<div className="infio-mcp-hub-header">
-				<h3 className="infio-mcp-hub-title">{t('mcpHub.title')}</h3>
-				<div className="infio-mcp-hub-actions">
+			<div className="icf-mcp-hub-header">
+				<h3 className="icf-mcp-hub-title">{t('mcpHub.title')}</h3>
+				<div className="icf-mcp-hub-actions">
 					<button
 						onClick={fetchServers}
 						className="obsidian-insight-refresh-btn"
@@ -219,18 +219,18 @@ const McpHubView = () => {
 			</div>
 
 			{/* MCP Settings */}
-			<div className="infio-mcp-settings-section">
-				<div className="infio-mcp-setting-item">
-					<label className="infio-mcp-setting-label">
+			<div className="icf-mcp-settings-section">
+				<div className="icf-mcp-setting-item">
+					<label className="icf-mcp-setting-label">
 						<input
 							type="checkbox"
 							checked={settings.mcpEnabled}
 							onChange={switchMcp}
-							className="infio-mcp-setting-checkbox"
+							className="icf-mcp-setting-checkbox"
 						/>
-						<span className="infio-mcp-setting-text">{t('mcpHub.enableMcp')}</span>
+						<span className="icf-mcp-setting-text">{t('mcpHub.enableMcp')}</span>
 					</label>
-					<p className="infio-mcp-setting-description">
+					<p className="icf-mcp-setting-description">
 						{t('mcpHub.enableMcpDescription')}
 						<a href="https://modelcontextprotocol.io/introduction" target="_blank" rel="noopener noreferrer">
 							{t('mcpHub.learnMore')}
@@ -241,7 +241,7 @@ const McpHubView = () => {
 				{/* Configuration File Access */}
 				<button
 					onClick={handleOpenConfigFile}
-					className="infio-mcp-config-button"
+					className="icf-mcp-config-button"
 				>
 					<ExternalLink size={16} />
 					<span>{t('mcpHub.openConfigFile')}</span>
@@ -250,38 +250,38 @@ const McpHubView = () => {
 
 			{/* Create New Server Section */}
 			{settings.mcpEnabled && (
-				<div className="infio-mcp-create-section">
-					<div className="infio-mcp-create-item">
-						<div className="infio-mcp-create-item-header" onClick={toggleCreateSectionExpansion}>
-							<div className="infio-mcp-create-item-info">
-								<div className="infio-mcp-hub-expander">
+				<div className="icf-mcp-create-section">
+					<div className="icf-mcp-create-item">
+						<div className="icf-mcp-create-item-header" onClick={toggleCreateSectionExpansion}>
+							<div className="icf-mcp-create-item-info">
+								<div className="icf-mcp-hub-expander">
 									{isCreateSectionExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
 								</div>
-								<h3 className="infio-mcp-create-title">{t('mcpHub.addNewServer')}</h3>
+								<h3 className="icf-mcp-create-title">{t('mcpHub.addNewServer')}</h3>
 							</div>
 						</div>
 
 						{isCreateSectionExpanded && (
-							<div className="infio-mcp-create-expanded">
-								<div className="infio-mcp-create-label">{t('mcpHub.serverName')}</div>
+							<div className="icf-mcp-create-expanded">
+								<div className="icf-mcp-create-label">{t('mcpHub.serverName')}</div>
 								<input
 									type="text"
 									value={newServerName}
 									onChange={(e) => setNewServerName(e.target.value)}
 									placeholder={t('mcpHub.serverNamePlaceholder')}
-									className="infio-mcp-create-input"
+									className="icf-mcp-create-input"
 								/>
-								<div className="infio-mcp-create-label">{t('mcpHub.config')}</div>
+								<div className="icf-mcp-create-label">{t('mcpHub.config')}</div>
 								<textarea
 									value={newServerConfig}
 									onChange={(e) => setNewServerConfig(e.target.value)}
 									placeholder={t('mcpHub.configPlaceholder')}
-									className="infio-mcp-create-textarea"
+									className="icf-mcp-create-textarea"
 									rows={4}
 								/>
 								<button
 									onClick={handleCreate}
-									className="infio-mcp-create-btn"
+									className="icf-mcp-create-btn"
 									disabled={!newServerName.trim() || !newServerConfig.trim()}
 								>
 									<span>{t('mcpHub.createServer')}</span>
@@ -294,9 +294,9 @@ const McpHubView = () => {
 
 			{/* Servers List */}
 			{settings.mcpEnabled && (
-				<div className="infio-mcp-hub-list">
+				<div className="icf-mcp-hub-list">
 					{mcpServers.length === 0 ? (
-						<div className="infio-mcp-hub-empty">
+						<div className="icf-mcp-hub-empty">
 							<p>{t('mcpHub.noServersFound')}</p>
 						</div>
 					) : (
@@ -311,19 +311,19 @@ const McpHubView = () => {
 							const currentDetailTab = activeServerDetailTab[serverKey] || 'tools';
 
 							return (
-								<div key={serverKey} className={`infio-mcp-hub-item ${server.disabled ? 'disabled' : ''}`}>
-									<div className={`infio-mcp-hub-item-header ${server.disabled ? 'disabled' : ''}`}>
-										<div className="infio-mcp-hub-item-info" onClick={() => toggleServerExpansion(serverKey)}>
-											<div className="infio-mcp-hub-expander">
+								<div key={serverKey} className={`icf-mcp-hub-item ${server.disabled ? 'disabled' : ''}`}>
+									<div className={`icf-mcp-hub-item-header ${server.disabled ? 'disabled' : ''}`}>
+										<div className="icf-mcp-hub-item-info" onClick={() => toggleServerExpansion(serverKey)}>
+											<div className="icf-mcp-hub-expander">
 												{isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
 											</div>
-											<span className={`infio-mcp-hub-status-indicator ${server.status === 'connected' ? 'connected' : server.status === 'connecting' ? 'connecting' : 'disconnected'} ${server.disabled ? 'disabled' : ''}`}></span>
-											<h3 className="infio-mcp-hub-name">{server.name ? server.name.replace('infio-builtin-server', 'builtin') : 'Unknown Server'}</h3>
+											<span className={`icf-mcp-hub-status-indicator ${server.status === 'connected' ? 'connected' : server.status === 'connecting' ? 'connecting' : 'disconnected'} ${server.disabled ? 'disabled' : ''}`}></span>
+											<h3 className="icf-mcp-hub-name">{server.name ? server.name.replace('icf-builtin-server', 'builtin') : 'Unknown Server'}</h3>
 										</div>
 
-										<div className="infio-mcp-hub-actions" onClick={(e) => e.stopPropagation()}>
+										<div className="icf-mcp-hub-actions" onClick={(e) => e.stopPropagation()}>
 											<button
-												className={`infio-section-btn ${server.disabled ? 'disabled' : 'enabled'}`}
+												className={`icf-section-btn ${server.disabled ? 'disabled' : 'enabled'}`}
 												onClick={() => handleToggle(server.name, server.disabled)}
 												title={server.disabled ? t('mcpHub.enable') : t('mcpHub.disable')}
 											>
@@ -331,7 +331,7 @@ const McpHubView = () => {
 											</button>
 
 											<button
-												className="infio-section-btn"
+												className="icf-section-btn"
 												onClick={() => handleRestart(server.name)}
 												title={t('mcpHub.restart')}
 											>
@@ -339,7 +339,7 @@ const McpHubView = () => {
 											</button>
 
 											<button
-												className="infio-section-btn"
+												className="icf-section-btn"
 												onClick={() => handleDelete(server.name)}
 												title={t('mcpHub.delete')}
 											>
@@ -348,8 +348,8 @@ const McpHubView = () => {
 										</div>
 									</div>
 
-									<div className="infio-mcp-hub-status-info">
-										<span className="infio-mcp-status-text">
+									<div className="icf-mcp-hub-status-info">
+										<span className="icf-mcp-status-text">
 											{t('mcpHub.status')}: <span className={`status-value ${server.status}`}>
 												{server.status === 'connected' ? t('mcpHub.statusConnected') :
 													server.status === 'connecting' ? t('mcpHub.statusConnecting') :
@@ -359,8 +359,8 @@ const McpHubView = () => {
 									</div>
 
 									{isExpanded && server.status === 'connected' && (
-										<div className="infio-mcp-server-details-expanded">
-											<div className="infio-mcp-tabs">
+										<div className="icf-mcp-server-details-expanded">
+											<div className="icf-mcp-tabs">
 												{(['tools', 'resources', 'errors'] as const).map(tabName => {
 													const count = tabName === 'tools'
 														? server.tools?.length || 0
@@ -371,7 +371,7 @@ const McpHubView = () => {
 													return (
 														<button
 															key={tabName}
-															className={`infio-mcp-tab-button ${currentDetailTab === tabName ? 'active' : ''}`}
+															className={`icf-mcp-tab-button ${currentDetailTab === tabName ? 'active' : ''}`}
 															onClick={(e) => { e.stopPropagation(); handleDetailTabChange(serverKey, tabName); }}
 														>
 															{tabName === 'tools' && <Wrench size={14} />}
@@ -382,32 +382,32 @@ const McpHubView = () => {
 													);
 												})}
 											</div>
-											<div className="infio-mcp-tab-content">
+											<div className="icf-mcp-tab-content">
 												{currentDetailTab === 'tools' && (
-													<div className="infio-mcp-tools-list">
-														{(server.tools && server.tools.length > 0) ? server.tools.filter(tool => tool && tool.name).map(tool => <ToolRow key={tool.name} tool={tool} />) : <p className="infio-mcp-empty-message">{t('mcpHub.noTools')}</p>}
+													<div className="icf-mcp-tools-list">
+														{(server.tools && server.tools.length > 0) ? server.tools.filter(tool => tool && tool.name).map(tool => <ToolRow key={tool.name} tool={tool} />) : <p className="icf-mcp-empty-message">{t('mcpHub.noTools')}</p>}
 													</div>
 												)}
 												{currentDetailTab === 'resources' && (
-													<div className="infio-mcp-resources-list">
+													<div className="icf-mcp-resources-list">
 														{((server.resources && server.resources.length > 0) || (server.resourceTemplates && server.resourceTemplates.length > 0))
 															? [...(server.resources || []), ...(server.resourceTemplates || [])].map(res => <ResourceRow key={'uri' in res ? res.uri : res.uriTemplate} resource={res} />)
-															: <p className="infio-mcp-empty-message">{t('mcpHub.noResources')}</p>}
+															: <p className="icf-mcp-empty-message">{t('mcpHub.noResources')}</p>}
 													</div>
 												)}
 												{currentDetailTab === 'errors' && (
-													<div className="infio-mcp-errors-list">
+													<div className="icf-mcp-errors-list">
 														{(server.errorHistory && server.errorHistory.length > 0)
 															? [...server.errorHistory].sort((a, b) => b.timestamp - a.timestamp).map((err, idx) => <ErrorRow key={`${err.timestamp}-${idx}`} error={err} />)
-															: <p className="infio-mcp-empty-message">{t('mcpHub.noErrors')}</p>}
+															: <p className="icf-mcp-empty-message">{t('mcpHub.noErrors')}</p>}
 													</div>
 												)}
 											</div>
 										</div>
 									)}
 									{isExpanded && server.status !== 'connected' && (
-										<div className="infio-mcp-server-details-expanded">
-											<p className="infio-mcp-server-error-message">
+										<div className="icf-mcp-server-details-expanded">
+											<p className="icf-mcp-server-error-message">
 												{t('mcpHub.serverNotConnectedError')}
 												{server.error && <pre>{server.error}</pre>}
 											</p>
@@ -421,7 +421,7 @@ const McpHubView = () => {
 			)}
 
 			<style>{`
-				.infio-mcp-hub-container {
+				.icf-mcp-hub-container {
 					display: flex;
 					flex-direction: column;
 					padding: 16px;
@@ -431,52 +431,52 @@ const McpHubView = () => {
 				}
 
 				/* Header Styles */
-				.infio-mcp-hub-header {
+				.icf-mcp-hub-header {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
 				}
 
-				.infio-mcp-hub-title {
+				.icf-mcp-hub-title {
 					margin: 0;
 					font-size: 24px;
 				}
 
 				/* Settings Section */
-				.infio-mcp-settings-section {
+				.icf-mcp-settings-section {
 					background-color: var(--background-secondary);
 					border-radius: var(--radius-s);
 				}
 
-				.infio-mcp-setting-item {
+				.icf-mcp-setting-item {
 					margin-bottom: 12px;
 				}
 
-				.infio-mcp-setting-label {
+				.icf-mcp-setting-label {
 					display: flex;
 					align-items: flex-start;
 					gap: 8px;
 					cursor: pointer;
 				}
 
-				.infio-mcp-setting-checkbox {
+				.icf-mcp-setting-checkbox {
 					margin-top: 2px;
 					cursor: pointer;
 				}
 
-				.infio-mcp-setting-text {
+				.icf-mcp-setting-text {
 					font-weight: 500;
 					color: var(--text-normal);
 				}
 
-				.infio-mcp-setting-description {
+				.icf-mcp-setting-description {
 					margin: 8px 0 0 24px;
 					font-size: 14px;
 					color: var(--text-muted);
 					line-height: 1.4;
 				}
 
-				.infio-mcp-hub-actions {
+				.icf-mcp-hub-actions {
 					display: flex;
 					gap: var(--size-2-2);
 				}
@@ -503,7 +503,7 @@ const McpHubView = () => {
 					background-color: var(--interactive-hover);
 				}
 
-				.infio-mcp-config-button {
+				.icf-mcp-config-button {
 					display: flex;
 					align-items: center;
 					gap: 8px;
@@ -518,21 +518,21 @@ const McpHubView = () => {
 					transition: all 0.2s ease;
 				}
 
-				.infio-mcp-config-button:hover {
+				.icf-mcp-config-button:hover {
 					background-color: var(--interactive-hover);
 					border-color: var(--interactive-accent);
 				}
 
-				.infio-mcp-config-button:active {
+				.icf-mcp-config-button:active {
 					transform: translateY(1px);
 				}
 
 				/* Search Section */
-				.infio-mcp-search-section {
+				.icf-mcp-search-section {
 					margin-bottom: 16px;
 				}
 
-				.infio-mcp-search-input {
+				.icf-mcp-search-input {
 					background-color: var(--background-primary) !important;
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-s);
@@ -543,20 +543,20 @@ const McpHubView = () => {
 					box-sizing: border-box;
 				}
 
-				.infio-mcp-search-input:focus {
+				.icf-mcp-search-input:focus {
 					outline: none;
 					border-color: var(--interactive-accent);
 				}
 
 				/* Server Item Styles */
-				.infio-mcp-hub-item {
+				.icf-mcp-hub-item {
 					background-color: var(--background-primary);
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-s);
 					margin-bottom: 16px;
 				}
 
-				.infio-mcp-hub-item-header {
+				.icf-mcp-hub-item-header {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
@@ -565,39 +565,39 @@ const McpHubView = () => {
 					transition: all 0.2s ease;
 				}
 
-				.infio-mcp-hub-item-header:hover {
+				.icf-mcp-hub-item-header:hover {
 					background-color: var(--background-modifier-hover);
 				}
 
-				.infio-mcp-hub-item-header.disabled {
+				.icf-mcp-hub-item-header.disabled {
 					opacity: 0.6;
 					background-color: var(--background-modifier-border-hover);
 				}
 
-				.infio-mcp-hub-item-header.disabled:hover {
+				.icf-mcp-hub-item-header.disabled:hover {
 					background-color: var(--background-modifier-border-hover);
 					opacity: 0.7;
 				}
 
-				.infio-mcp-hub-item-header.disabled .infio-mcp-hub-name,
-				.infio-mcp-hub-item-header.disabled .infio-mcp-hub-expander {
+				.icf-mcp-hub-item-header.disabled .icf-mcp-hub-name,
+				.icf-mcp-hub-item-header.disabled .icf-mcp-hub-expander {
 					color: var(--text-faint);
 				}
 
-				.infio-mcp-hub-item-header.disabled .infio-mcp-hub-source-badge {
+				.icf-mcp-hub-item-header.disabled .icf-mcp-hub-source-badge {
 					background-color: var(--text-faint);
 					color: var(--background-primary);
 					opacity: 0.7;
 				}
 
-				.infio-mcp-hub-item-info {
+				.icf-mcp-hub-item-info {
 					display: flex;
 					align-items: center;
 					gap: 12px;
 					flex: 1;
 				}
 
-				.infio-mcp-hub-expander {
+				.icf-mcp-hub-expander {
 					color: var(--text-muted);
 					font-size: 0.9em;
 					width: 16px;
@@ -608,7 +608,7 @@ const McpHubView = () => {
 					flex-shrink: 0;
 				}
 
-				.infio-mcp-hub-status-indicator {
+				.icf-mcp-hub-status-indicator {
 					width: 8px;
 					height: 8px;
 					border-radius: 50%;
@@ -616,16 +616,16 @@ const McpHubView = () => {
 					transition: all 0.2s ease;
 				}
 
-				.infio-mcp-hub-status-indicator.connected {
+				.icf-mcp-hub-status-indicator.connected {
 					background-color: #10b981;
 				}
 
-				.infio-mcp-hub-status-indicator.connecting {
+				.icf-mcp-hub-status-indicator.connecting {
 					background-color: #f59e0b;
 					animation: pulse 1.5s infinite;
 				}
 
-				.infio-mcp-hub-status-indicator.disconnected {
+				.icf-mcp-hub-status-indicator.disconnected {
 					background-color: #ef4444;
 				}
 
@@ -641,32 +641,32 @@ const McpHubView = () => {
 					}
 				}
 
-				.infio-mcp-hub-status-indicator.disabled.connected {
+				.icf-mcp-hub-status-indicator.disabled.connected {
 					background-color: #10b981;
 					opacity: 0.4;
 					filter: saturate(0.6);
 				}
 
-				.infio-mcp-hub-status-indicator.disabled.connecting {
+				.icf-mcp-hub-status-indicator.disabled.connecting {
 					background-color: #f59e0b;
 					opacity: 0.4;
 					filter: saturate(0.6);
 				}
 
-				.infio-mcp-hub-status-indicator.disabled.disconnected {
+				.icf-mcp-hub-status-indicator.disabled.disconnected {
 					background-color: #ef4444;
 					opacity: 0.4;
 					filter: saturate(0.6);
 				}
 
-				.infio-mcp-hub-name {
+				.icf-mcp-hub-name {
 					font-size: 16px;
 					font-weight: 600;
 					color: var(--text-normal);
 					margin: 0;
 				}
 
-				.infio-mcp-hub-source-badge {
+				.icf-mcp-hub-source-badge {
 					background-color: var(--interactive-accent);
 					color: var(--text-on-accent);
 					padding: 2px 8px;
@@ -676,13 +676,13 @@ const McpHubView = () => {
 					text-transform: uppercase;
 				}
 
-				.infio-mcp-hub-actions {
+				.icf-mcp-hub-actions {
 					display: flex;
 					gap: 8px;
 					align-items: center;
 				}
 
-				.infio-section-btn {
+				.icf-section-btn {
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -700,25 +700,25 @@ const McpHubView = () => {
 					}
 				}
 
-				.infio-section-btn:hover {
+				.icf-section-btn:hover {
 					color: var(--text-normal);
 				}
 
-				.infio-section-btn.enabled {
+				.icf-section-btn.enabled {
 					color: var(--interactive-accent);
 				}
 
-				.infio-section-btn.disabled {
+				.icf-section-btn.disabled {
 					color: var(--text-muted);
 				}
 
-				.infio-mcp-hub-status-info {
+				.icf-mcp-hub-status-info {
 					padding: 8px;
 					font-size: 14px;
 					color: var(--text-muted);
 				}
 
-				.infio-mcp-hub-item.disabled .infio-mcp-hub-status-info {
+				.icf-mcp-hub-item.disabled .icf-mcp-hub-status-info {
 					color: var(--text-faint);
 				}
 
@@ -737,26 +737,26 @@ const McpHubView = () => {
 					font-weight: 500;
 				}
 
-				.infio-mcp-hub-item.disabled .status-value.connected {
+				.icf-mcp-hub-item.disabled .status-value.connected {
 					color: #10b981;
 					opacity: 0.5;
 					filter: saturate(0.6);
 				}
 
-				.infio-mcp-hub-item.disabled .status-value.connecting {
+				.icf-mcp-hub-item.disabled .status-value.connecting {
 					color: #f59e0b;
 					opacity: 0.5;
 					filter: saturate(0.6);
 				}
 
-				.infio-mcp-hub-item.disabled .status-value.disconnected {
+				.icf-mcp-hub-item.disabled .status-value.disconnected {
 					color: #ef4444;
 					opacity: 0.5;
 					filter: saturate(0.6);
 				}
 
 				/* Expanded Content Styles */
-				.infio-mcp-server-details-expanded {
+				.icf-mcp-server-details-expanded {
 					border-top: 1px solid var(--background-modifier-border);
 					background-color: var(--background-secondary);
 					padding-top: 8px;
@@ -777,13 +777,13 @@ const McpHubView = () => {
 					}
 				}
 
-				.infio-mcp-tabs {
+				.icf-mcp-tabs {
 					display: flex;
 					border-bottom: 1px solid var(--background-modifier-border);
 					gap: 0;
 				}
 
-				.infio-mcp-tab-button {
+				.icf-mcp-tab-button {
 					background: transparent;
 					border: none;
 					padding: 12px 20px;
@@ -799,25 +799,25 @@ const McpHubView = () => {
 					gap: 8px;
 				}
 
-				.infio-mcp-tab-button:hover {
+				.icf-mcp-tab-button:hover {
 					color: var(--text-normal);
 					background-color: var(--background-modifier-hover);
 				}
 
-				.infio-mcp-tab-button.active {
+				.icf-mcp-tab-button.active {
 					color: var(--interactive-accent);
 					border-bottom-color: var(--interactive-accent);
 					background-color: transparent;
 				}
 
-				.infio-mcp-tab-content {
+				.icf-mcp-tab-content {
 					background-color: var(--background-primary);
 					border-radius: var(--radius-s);
 					padding: 8px;
 					border: 1px solid var(--background-modifier-border);
 				}
 
-				.infio-mcp-empty-message {
+				.icf-mcp-empty-message {
 					text-align: center;
 					color: var(--text-muted);
 					font-style: italic;
@@ -825,7 +825,7 @@ const McpHubView = () => {
 				}
 
 				/* Tool/Resource/Error Row Styles */
-				.infio-mcp-tool-row, .infio-mcp-resource-row, .infio-mcp-error-row {
+				.icf-mcp-tool-row, .icf-mcp-resource-row, .icf-mcp-error-row {
 					padding: 12px;
 					border-bottom: 1px solid var(--background-modifier-border);
 					background-color: var(--background-primary);
@@ -833,27 +833,27 @@ const McpHubView = () => {
 					margin-bottom: 8px;
 				}
 
-				.infio-mcp-tool-row:last-child,
-				.infio-mcp-resource-row:last-child,
-				.infio-mcp-error-row:last-child {
+				.icf-mcp-tool-row:last-child,
+				.icf-mcp-resource-row:last-child,
+				.icf-mcp-error-row:last-child {
 					border-bottom: none;
 					margin-bottom: 0;
 				}
 
-				.infio-mcp-tool-row-header, .infio-mcp-resource-header, .infio-mcp-error-header {
+				.icf-mcp-tool-row-header, .icf-mcp-resource-header, .icf-mcp-error-header {
 					display: flex;
 					align-items: center;
 					gap: 8px;
 					margin-bottom: 8px;
 				}
 
-				.infio-mcp-tool-name {
+				.icf-mcp-tool-name {
 					font-weight: 600;
 					color: var(--text-normal);
 					font-size: 14px;
 				}
 
-				.infio-mcp-item-description {
+				.icf-mcp-item-description {
 					font-size: 14px;
 					color: var(--text-muted);
 					line-height: 1.4;
@@ -861,7 +861,7 @@ const McpHubView = () => {
 				}
 
 				/* Tool Parameters */
-				.infio-mcp-tool-parameters {
+				.icf-mcp-tool-parameters {
 					margin-top: 8px;
 					padding: 8px;
 					background-color: var(--background-secondary);
@@ -869,7 +869,7 @@ const McpHubView = () => {
 					border: 1px solid var(--background-modifier-border);
 				}
 
-				.infio-mcp-parameters-title {
+				.icf-mcp-parameters-title {
 					font-size: 12px;
 					font-weight: 600;
 					text-transform: uppercase;
@@ -877,12 +877,12 @@ const McpHubView = () => {
 					margin: 0 0 8px 0;
 				}
 
-				.infio-mcp-parameter-item {
+				.icf-mcp-parameter-item {
 					margin-bottom: 8px;
 					padding: 6px 0;
 				}
 
-				.infio-mcp-parameter-name {
+				.icf-mcp-parameter-name {
 					display: inline-block;
 					background-color: var(--background-modifier-border);
 					color: var(--text-accent);
@@ -894,12 +894,12 @@ const McpHubView = () => {
 					margin-bottom: 4px;
 				}
 
-				.infio-mcp-parameter-required {
+				.icf-mcp-parameter-required {
 					color: var(--text-error);
 					margin-left: 2px;
 				}
 
-				.infio-mcp-parameter-description {
+				.icf-mcp-parameter-description {
 					display: block;
 					color: var(--text-normal);
 					font-size: 14px;
@@ -908,14 +908,14 @@ const McpHubView = () => {
 				}
 
 				/* Error Messages */
-				.infio-mcp-server-error-message {
+				.icf-mcp-server-error-message {
 					background-color: var(--background-modifier-error);
 					border-left: 3px solid var(--text-error);
 					padding: 12px;
 					border-radius: var(--radius-s);
 				}
 
-				.infio-mcp-server-error-message pre {
+				.icf-mcp-server-error-message pre {
 					white-space: pre-wrap;
 					word-break: break-all;
 					margin-top: 8px;
@@ -925,32 +925,32 @@ const McpHubView = () => {
 					font-size: 12px;
 				}
 
-				.infio-mcp-item-timestamp {
+				.icf-mcp-item-timestamp {
 					font-size: 12px;
 					color: var(--text-faint);
 					margin-top: 4px;
 				}
 
 				/* Empty State */
-				.infio-mcp-hub-empty {
+				.icf-mcp-hub-empty {
 					text-align: center;
 					padding: 40px 20px;
 					color: var(--text-muted);
 				}
 
 				/* Create New Server Section */
-				.infio-mcp-create-section {
+				.icf-mcp-create-section {
 					background-color: var(--background-primary);
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-s);
 					margin-bottom: 16px;
 				}
 
-				.infio-mcp-create-item {
+				.icf-mcp-create-item {
 					/* Remove background and padding since we're restructuring */
 				}
 
-				.infio-mcp-create-item-header {
+				.icf-mcp-create-item-header {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
@@ -959,25 +959,25 @@ const McpHubView = () => {
 					transition: all 0.2s ease;
 				}
 
-				.infio-mcp-create-item-header:hover {
+				.icf-mcp-create-item-header:hover {
 					background-color: var(--background-modifier-hover);
 				}
 
-				.infio-mcp-create-item-info {
+				.icf-mcp-create-item-info {
 					display: flex;
 					align-items: center;
 					gap: 12px;
 					flex: 1;
 				}
 
-				.infio-mcp-create-title {
+				.icf-mcp-create-title {
 					margin: 0;
 					font-size: 16px;
 					font-weight: 600;
 					color: var(--text-normal);
 				}
 
-				.infio-mcp-create-expanded {
+				.icf-mcp-create-expanded {
 					border-top: 1px solid var(--background-modifier-border);
 					background-color: var(--background-secondary);
 					padding: 16px;
@@ -989,20 +989,20 @@ const McpHubView = () => {
 					border-bottom-right-radius: var(--radius-s);
 				}
 
-				.infio-mcp-create-new {
+				.icf-mcp-create-new {
 					display: flex;
 					flex-direction: column;
 					gap: 12px;
 				}
 
-				.infio-mcp-create-label {
+				.icf-mcp-create-label {
 					font-size: 14px;
 					font-weight: 500;
 					color: var(--text-normal);
 					margin-bottom: 4px;
 				}
 
-				.infio-mcp-create-input {
+				.icf-mcp-create-input {
 					background-color: var(--background-primary);
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-s);
@@ -1014,12 +1014,12 @@ const McpHubView = () => {
 					transition: border-color 0.2s ease;
 				}
 
-				.infio-mcp-create-input:focus {
+				.icf-mcp-create-input:focus {
 					outline: none;
 					border-color: var(--interactive-accent);
 				}
 
-				.infio-mcp-create-textarea {
+				.icf-mcp-create-textarea {
 					background-color: var(--background-primary);
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-s);
@@ -1034,12 +1034,12 @@ const McpHubView = () => {
 					transition: border-color 0.2s ease;
 				}
 
-				.infio-mcp-create-textarea:focus {
+				.icf-mcp-create-textarea:focus {
 					outline: none;
 					border-color: var(--interactive-accent);
 				}
 
-				.infio-mcp-create-btn {
+				.icf-mcp-create-btn {
 					background-color: var(--interactive-accent);
 					color: var(--text-on-accent);
 					border: none;
@@ -1052,19 +1052,19 @@ const McpHubView = () => {
 					align-self: flex-start;
 				}
 
-				.infio-mcp-create-btn:hover:not(:disabled) {
+				.icf-mcp-create-btn:hover:not(:disabled) {
 					background-color: var(--interactive-accent-hover);
 					transform: translateY(-1px);
 				}
 
-				.infio-mcp-create-btn:disabled {
+				.icf-mcp-create-btn:disabled {
 					opacity: 0.5;
 					cursor: not-allowed;
 					transform: none;
 				}
 
 				/* Servers List */
-				.infio-mcp-hub-list {
+				.icf-mcp-hub-list {
 					display: flex;
 					flex-direction: column;
 					gap: 0;

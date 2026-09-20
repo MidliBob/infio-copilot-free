@@ -51,19 +51,19 @@ export function ModeSelect() {
 	return (
 		<>
 			<DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
-				<DropdownMenu.Trigger className="infio-chat-input-mode-select">
-					<span className="infio-mode-icon">{getModeIcon(mode)}</span>
-					<div className="infio-chat-input-mode-select__model-name">
+				<DropdownMenu.Trigger className="icf-chat-input-mode-select">
+					<span className="icf-mode-icon">{getModeIcon(mode)}</span>
+					<div className="icf-chat-input-mode-select__model-name">
 						{allModes.find((m) => m.slug === mode)?.name}
 					</div>
-					<div className="infio-chat-input-mode-select__icon">
+					<div className="icf-chat-input-mode-select__icon">
 						{isOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
 					</div>
 				</DropdownMenu.Trigger>
 
 				<DropdownMenu.Portal>
 					<DropdownMenu.Content
-						className="infio-popover infio-mode-select-content">
+						className="icf-popover icf-mode-select-content">
 						<ul>
 							{allModes.map((mode) => {
 								const shortcut = getShortcutText(mode.slug)
@@ -81,15 +81,15 @@ export function ModeSelect() {
 										}}
 										asChild
 									>
-										<li className="infio-mode-item">
-											<div className="infio-mode-left">
+										<li className="icf-mode-item">
+											<div className="icf-mode-left">
 												{icon && (
-													<span className="infio-mode-icon">{icon}</span>
+													<span className="icf-mode-icon">{icon}</span>
 												)}
-												<span className="infio-mode-name">{mode.name}</span>
+												<span className="icf-mode-name">{mode.name}</span>
 											</div>
 											{shortcut && (
-												<span className="infio-mode-shortcut">{shortcut}</span>
+												<span className="icf-mode-shortcut">{shortcut}</span>
 											)}
 										</li>
 									</DropdownMenu.Item>
@@ -100,7 +100,7 @@ export function ModeSelect() {
 				</DropdownMenu.Portal>
 			</DropdownMenu.Root>
 			<style >{`
-				button.infio-chat-input-mode-select {
+				button.icf-chat-input-mode-select {
 					background-color: var(--background-modifier-hover);
 					box-shadow: none;
 					border: 1;
@@ -123,7 +123,7 @@ export function ModeSelect() {
 						background-color: var(--background-modifier-hover);
 					}
 
-					.infio-chat-input-mode-select__mode-icon {
+					.icf-chat-input-mode-select__mode-icon {
 						flex-shrink: 0;
 						display: flex;
 						margin-top: var(--size-4-1);
@@ -132,7 +132,7 @@ export function ModeSelect() {
 						color: var(--text-accent);
 					}
 
-					.infio-chat-input-mode-select__model-name {
+					.icf-chat-input-mode-select__model-name {
 						flex-shrink: 1;
 						overflow: hidden;
 						text-overflow: ellipsis;
@@ -140,7 +140,7 @@ export function ModeSelect() {
 						flex-grow: 1;
 					}
 
-					.infio-chat-input-mode-select__icon {
+					.icf-chat-input-mode-select__icon {
 						flex-shrink: 0;
 						display: flex;
 						align-items: center;
@@ -149,13 +149,13 @@ export function ModeSelect() {
 					}
 			 }
 
-			 .infio-mode-select-content {
+			 .icf-mode-select-content {
 				min-width: auto !important;
 				width: fit-content !important;
 				max-width: 200px;
 			 }
 
-			 .infio-mode-item {
+			 .icf-mode-item {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
@@ -164,13 +164,13 @@ export function ModeSelect() {
 				white-space: nowrap;
 			 }
 
-			 .infio-mode-left {
+			 .icf-mode-left {
 				display: flex;
 				align-items: center;
 				gap: var(--size-2-2);
 			 }
 
-			 .infio-mode-icon {
+			 .icf-mode-icon {
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -178,11 +178,11 @@ export function ModeSelect() {
 				flex-shrink: 0;
 			 }
 
-			 .infio-mode-name {
+			 .icf-mode-name {
 				flex-shrink: 0;
 			 }
 
-			 .infio-mode-shortcut {
+			 .icf-mode-shortcut {
 				font-size: var(--font-smallest);
 				color: var(--text-muted);
 				background-color: var(--background-modifier-border);

@@ -2,49 +2,49 @@
  * Autocomplete
  */
 
-.infio-autocomplete-setting-list-item {
+.icf-autocomplete-setting-list-item {
   display: flex;
   align-items: center;
   padding: 0.75em 0;
 }
 
-.infio-autocomplete-setting-item-textarea {
+.icf-autocomplete-setting-item-textarea {
   width: 100%;
   resize: vertical;
   padding: 0.5em;
   margin-top: 0.5em;
 }
 
-.infio-autocomplete-loader-placeholder {
+.icf-autocomplete-loader-placeholder {
   width: 25px;
   height: 25px;
 }
 
-.infio-autocomplete-loader {
+.icf-autocomplete-loader {
   width: 25px;
   height: 25px;
   border-radius: 50%;
   position: relative;
-  animation: infio-autocomplete-rotate 1s linear infinite;
+  animation: icf-autocomplete-rotate 1s linear infinite;
 }
 
-.infio-autocomplete-loader::before {
+.icf-autocomplete-loader::before {
   content: '';
   box-sizing: border-box;
   position: absolute;
   inset: 0px;
   border-radius: 50%;
   border: 2px solid #1976d2;
-  animation: infio-autocomplete-prix-clip-fix 2s linear infinite;
+  animation: icf-autocomplete-prix-clip-fix 2s linear infinite;
 }
 
-@keyframes infio-autocomplete-rotate {
+@keyframes icf-autocomplete-rotate {
   100% {
     transform: rotate(360deg);
   }
 }
 
-@keyframes infio-autocomplete-prix-clip-fix {
+@keyframes icf-autocomplete-prix-clip-fix {
   0% {
     clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
   }
@@ -66,17 +66,17 @@
  * Chat
  *
  * 修复了样式冲突问题：
- * - 限制了 #infio-apply-view 中编辑器样式的作用域，防止影响到聊天消息
+ * - 限制了 #icf-apply-view 中编辑器样式的作用域，防止影响到聊天消息
  * - 移除了内联样式，改用 CSS 类
  */
-.infio-chat-header {
+.icf-chat-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: calc(var(--size-4-1) * -1);
 }
 
-.infio-chat-header-title {
+.icf-chat-header-title {
   font-size: var(--font-ui-medium);
   font-weight: var(--font-medium);
   margin: 0;
@@ -86,7 +86,7 @@
   flex-wrap: nowrap;
 }
 
-.infio-chat-current-workspace {
+.icf-chat-current-workspace {
   display: inline-flex;
   align-items: center;
   margin-left: var(--size-4-2);
@@ -104,18 +104,18 @@
   transition: all 0.2s ease;
 }
 
-.infio-chat-header-buttons {
+.icf-chat-header-buttons {
   display: flex;
   gap: var(--size-4-2);
 }
 
-.infio-chat-container {
+.icf-chat-container {
   display: flex;
   position: relative;
   flex-direction: column;
   height: 100%;
 
-  .infio-stop-gen-btn {
+  .icf-stop-gen-btn {
     z-index: 1000;
     position: absolute;
     bottom: 160px;
@@ -131,7 +131,7 @@
  * Chat Messages and Content
  * - Message containers
  * - Message styling*/
-.infio-chat-messages {
+.icf-chat-messages {
   flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -144,7 +144,7 @@
   /* 确保内容不会超出容器 */
   min-width: 0;
 
-  .infio-chat-messages-user {
+  .icf-chat-messages-user {
 		margin-top: 1px;
 		margin-bottom: 1px;
     display: flex;
@@ -155,7 +155,7 @@
     max-width: 100%;
   }
 
-  .infio-chat-messages-assistant {
+  .icf-chat-messages-assistant {
 		display: flex;
     flex-direction: column;
     padding: var(--size-2-2);
@@ -168,12 +168,12 @@
  * Starred Commands Display
  * - Quick access to starred commands above the input
  */
-.infio-starred-commands {
+.icf-starred-commands {
   border: none !important;
 	margin-bottom: var(--size-4-2);
 }
 
-.infio-starred-commands-title {
+.icf-starred-commands-title {
   display: flex;
   align-items: center;
   gap: var(--size-2-2);
@@ -183,13 +183,13 @@
   margin-bottom: var(--size-4-2);
 }
 
-.infio-starred-commands-list {
+.icf-starred-commands-list {
   display: flex;
   flex-wrap: wrap;
   gap: var(--size-2-2);
 }
 
-.infio-starred-command-item {
+.icf-starred-command-item {
   display: flex;
   align-items: center;
 	justify-content: center;
@@ -209,14 +209,14 @@
   white-space: nowrap;
 }
 
-.infio-starred-command-item:hover {
+.icf-starred-command-item:hover {
   background-color: rgba(115, 90, 14, 0.4) !important;
   color: #f1c43f;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.infio-starred-command-item span {
+.icf-starred-command-item span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -228,7 +228,7 @@
  * - Lists, blockquotes, and code blocks
  */
 
-.infio-markdown {
+.icf-markdown {
   line-height: var(--line-height-normal);
   font-size: var(--font-ui-medium);
 
@@ -288,7 +288,7 @@
       var(--blockquote-border-color);
   }
 
-  .infio-markdown-inline-code {
+  .icf-markdown-inline-code {
     font-size: var(--code-size) !important;
     border-radius: var(--code-radius) !important;
     padding: 0.1em 0.25em !important;
@@ -344,7 +344,7 @@
  * - Dark mode support
  */
 
-.infio-markdown-table-container {
+.icf-markdown-table-container {
   overflow-x: auto;
   overflow-y: visible;
   margin: var(--size-4-2) 0;
@@ -355,7 +355,7 @@
   max-width: 100%;
 }
 
-.infio-markdown-table {
+.icf-markdown-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -364,14 +364,14 @@
   min-width: 100%;
 }
 
-.infio-markdown-table-head {
+.icf-markdown-table-head {
   background: var(--background-secondary);
   position: sticky;
   top: 0;
   z-index: 1;
 }
 
-.infio-markdown-table-header {
+.icf-markdown-table-header {
   padding: var(--size-2-2) var(--size-4-2);
   text-align: left;
   font-weight: 600;
@@ -381,35 +381,35 @@
   min-width: 100px;
 }
 
-.infio-markdown-table-header:first-child {
+.icf-markdown-table-header:first-child {
   border-top-left-radius: var(--radius-s);
 }
 
-.infio-markdown-table-header:last-child {
+.icf-markdown-table-header:last-child {
   border-top-right-radius: var(--radius-s);
 }
 
-.infio-markdown-table-body {
+.icf-markdown-table-body {
   background: var(--background-primary);
 }
 
-.infio-markdown-table-row {
+.icf-markdown-table-row {
   transition: background-color 0.1s ease;
 }
 
-.infio-markdown-table-row:hover {
+.icf-markdown-table-row:hover {
   background: var(--background-modifier-hover);
 }
 
-.infio-markdown-table-row:nth-child(even) {
+.icf-markdown-table-row:nth-child(even) {
   background: var(--background-secondary-alt);
 }
 
-.infio-markdown-table-row:nth-child(even):hover {
+.icf-markdown-table-row:nth-child(even):hover {
   background: var(--background-modifier-hover);
 }
 
-.infio-markdown-table-cell {
+.icf-markdown-table-cell {
   padding: var(--size-2-2) var(--size-4-2);
   border-bottom: 1px solid var(--background-modifier-border-hover);
   color: var(--text-normal);
@@ -418,56 +418,56 @@
   max-width: 300px;
 }
 
-.infio-markdown-table-cell:empty::before {
+.icf-markdown-table-cell:empty::before {
   content: '-';
   color: var(--text-muted);
   font-style: italic;
 }
 
 /* Last row styling */
-.infio-markdown-table-row:last-child .infio-markdown-table-cell {
+.icf-markdown-table-row:last-child .icf-markdown-table-cell {
   border-bottom: none;
 }
 
-.infio-markdown-table-row:last-child .infio-markdown-table-cell:first-child {
+.icf-markdown-table-row:last-child .icf-markdown-table-cell:first-child {
   border-bottom-left-radius: var(--radius-s);
 }
 
-.infio-markdown-table-row:last-child .infio-markdown-table-cell:last-child {
+.icf-markdown-table-row:last-child .icf-markdown-table-cell:last-child {
   border-bottom-right-radius: var(--radius-s);
 }
 
 /* Responsive enhancements */
 @media (max-width: 768px) {
-  .infio-markdown-table-container {
+  .icf-markdown-table-container {
     margin: var(--size-4-2) calc(var(--size-4-2) * -1);
     border-radius: 0;
     border-left: none;
     border-right: none;
   }
 
-  .infio-markdown-table {
+  .icf-markdown-table {
     font-size: var(--font-ui-smaller);
   }
 
-  .infio-markdown-table-header,
-  .infio-markdown-table-cell {
+  .icf-markdown-table-header,
+  .icf-markdown-table-cell {
     padding: var(--size-2-1) var(--size-4-1);
     min-width: 80px;
   }
 }
 
 /* Dark mode specific enhancements */
-.theme-dark .infio-markdown-table-container {
+.theme-dark .icf-markdown-table-container {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.theme-dark .infio-markdown-table-row:nth-child(even) {
+.theme-dark .icf-markdown-table-row:nth-child(even) {
   background: var(--background-primary-alt);
 }
 
 /* Link styling within markdown tables */
-.infio-markdown-link {
+.icf-markdown-link {
   color: var(--text-accent);
   text-decoration: none;
   transition: color 0.1s ease;
@@ -475,17 +475,17 @@
   cursor: pointer;
 }
 
-.infio-markdown-link:hover {
+.icf-markdown-link:hover {
   color: var(--text-accent-hover);
   text-decoration: underline;
 }
 
 /* Internal file link styling */
-.infio-markdown-link--internal {
+.icf-markdown-link--internal {
   color: var(--text-accent);
 }
 
-.infio-markdown-link--internal:hover {
+.icf-markdown-link--internal:hover {
   color: var(--text-accent-hover);
   background-color: var(--background-modifier-hover);
   border-radius: 3px;
@@ -494,12 +494,12 @@
 }
 
 /* External link styling */
-.infio-markdown-link--external {
+.icf-markdown-link--external {
   color: var(--text-accent);
 }
 
 /* Inline code styling within tables */
-.infio-markdown-table-cell .infio-markdown-inline-code {
+.icf-markdown-table-cell .icf-markdown-inline-code {
   background: var(--background-modifier-border) !important;
   padding: 0.125rem 0.25rem !important;
   border-radius: var(--radius-xs) !important;
@@ -513,59 +513,59 @@
   margin: 0 !important;
 }
 
-.theme-dark .infio-markdown-table-cell .infio-markdown-inline-code {
+.theme-dark .icf-markdown-table-cell .icf-markdown-inline-code {
   background: var(--background-modifier-border-hover) !important;
 }
 
 /* Table content text wrapping */
-.infio-markdown-table-cell p {
+.icf-markdown-table-cell p {
   margin: 0;
   line-height: 1.4;
 }
 
-.infio-markdown-table-cell p + p {
+.icf-markdown-table-cell p + p {
   margin-top: var(--size-2-1);
 }
 
 /* Table content lists */
-.infio-markdown-table-cell ul,
-.infio-markdown-table-cell ol {
+.icf-markdown-table-cell ul,
+.icf-markdown-table-cell ol {
   margin: 0;
   padding-left: var(--size-4-2);
 }
 
-.infio-markdown-table-cell li {
+.icf-markdown-table-cell li {
   margin-bottom: 0.125rem;
 }
 
 /* Improve table scrolling indicator */
-.infio-markdown-table-container::-webkit-scrollbar {
+.icf-markdown-table-container::-webkit-scrollbar {
   height: 8px;
 }
 
-.infio-markdown-table-container::-webkit-scrollbar-track {
+.icf-markdown-table-container::-webkit-scrollbar-track {
   background: var(--background-modifier-border);
   border-radius: var(--radius-s);
 }
 
-.infio-markdown-table-container::-webkit-scrollbar-thumb {
+.icf-markdown-table-container::-webkit-scrollbar-thumb {
   background: var(--background-modifier-border-hover);
   border-radius: var(--radius-s);
 }
 
-.infio-markdown-table-container::-webkit-scrollbar-thumb:hover {
+.icf-markdown-table-container::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
 
 
 /* 为后续问题添加特殊样式 */
-.infio-markdown.infio-followup-question {
+.icf-markdown.icf-followup-question {
 	margin-top: 8px;
 	color: var(--text-accent-hover); /* 替换原来的 #e9730f 橙色 */
   font-weight: 500; /* 稍微加粗 */
 }
 
-.infio-markdown.infio-attempt-completion {
+.icf-markdown.icf-attempt-completion {
 	margin-top: 8px;
   color: var(--color-green); /* 替换原来的 #008000 绿色 */
   font-weight: 500; /* 稍微加粗 */
@@ -577,7 +577,7 @@
  * - Input areas and textareas
  */
 
-button:not(.clickable-icon).infio-chat-list-dropdown {
+button:not(.clickable-icon).icf-chat-list-dropdown {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -609,7 +609,7 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   padding: var(--size-2-1);
 }
 
-.infio-chat-user-input-container {
+.icf-chat-user-input-container {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -632,7 +632,7 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   }
 }
 
-.infio-chat-user-input-files {
+.icf-chat-user-input-files {
   display: flex;
   flex-direction: row;
   gap: var(--size-4-1);
@@ -640,7 +640,7 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   padding-bottom: var(--size-4-1);
 }
 
-.infio-chat-user-input-controls {
+.icf-chat-user-input-controls {
   display: flex;
   flex-direction: row;
   gap: var(--size-4-1);
@@ -648,14 +648,14 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   align-items: center;
   height: var(--size-4-4);
 
-  .infio-chat-user-input-controls__model-select-container {
+  .icf-chat-user-input-controls__model-select-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: var(--size-2-2);
   }
 
-  .infio-chat-user-input-controls__buttons {
+  .icf-chat-user-input-controls__buttons {
     flex-shrink: 0;
     display: flex;
     gap: var(--size-4-3);
@@ -663,7 +663,7 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   }
 }
 
-.infio-chat-user-input-controls .infio-chat-user-input-submit-button {
+.icf-chat-user-input-controls .icf-chat-user-input-submit-button {
   display: flex;
   align-items: center;
   gap: var(--size-4-1);
@@ -682,13 +682,13 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
     color: var(--text-normal);
   }
 
-  .infio-chat-user-input-submit-button-icons {
+  .icf-chat-user-input-submit-button-icons {
     display: flex;
     align-items: center;
   }
 }
 
-.infio-chat-user-input-controls .infio-chat-user-input-vault-button {
+.icf-chat-user-input-controls .icf-chat-user-input-vault-button {
   display: flex;
   align-items: center;
   gap: var(--size-4-1);
@@ -707,13 +707,13 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
     color: var(--text-normal);
   }
 
-  .infio-chat-user-input-vault-button-icons {
+  .icf-chat-user-input-vault-button-icons {
     display: flex;
     align-items: center;
   }
 }
 
-.infio-chat-user-input-file-badge {
+.icf-chat-user-input-file-badge {
   display: flex;
   align-items: center;
   background-color: var(--background-secondary);
@@ -726,23 +726,23 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  &.infio-chat-user-input-file-badge-focused {
+  &.icf-chat-user-input-file-badge-focused {
     border: 1px solid var(--interactive-accent);
   }
 }
 
-.infio-chat-user-input-file-badge:hover {
+.icf-chat-user-input-file-badge:hover {
   background-color: var(--background-modifier-hover);
   cursor: pointer;
 }
 
-.infio-chat-user-input-file-badge-delete {
+.icf-chat-user-input-file-badge-delete {
   cursor: pointer;
   display: flex;
   color: var(--text-muted);
 }
 
-.infio-chat-user-input-file-badge-name {
+.icf-chat-user-input-file-badge-name {
   display: flex;
   flex-direction: row;
   gap: var(--size-2-1);
@@ -751,26 +751,26 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   align-items: center;
 }
 
-.infio-chat-user-input-file-badge-name-icon {
+.icf-chat-user-input-file-badge-name-icon {
   color: var(--text-muted);
 }
 
-.infio-chat-user-input-file-badge-name span {
+.icf-chat-user-input-file-badge-name span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.infio-chat-user-input-file-badge-name-block-suffix {
+.icf-chat-user-input-file-badge-name-block-suffix {
   color: var(--text-faint);
   flex-grow: 0;
 }
 
-.infio-chat-user-input-file-badge-current {
+.icf-chat-user-input-file-badge-current {
   color: var(--color-base-50);
 }
 
-.infio-chat-user-input-file-content-preview {
+.icf-chat-user-input-file-content-preview {
   background-color: var(--background-primary);
   border-radius: var(--radius-s);
   border: 1px solid var(--background-modifier-border);
@@ -785,11 +785,11 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
 }
 
 /* Chat editing cancel button */
-.infio-chat-edit-container {
+.icf-chat-edit-container {
   position: relative;
 }
 
-.infio-chat-edit-cancel-button {
+.icf-chat-edit-cancel-button {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -841,7 +841,7 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
  * - Dialog styles
  */
 
-.infio-popover {
+.icf-popover {
   z-index: 1000;
   background: var(--background-primary);
   box-shadow: var(--shadow-s);
@@ -853,7 +853,7 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   max-width: 240px;
 }
 
-.infio-popover ul {
+.icf-popover ul {
   padding: 0;
   list-style: none;
   margin: 0;
@@ -861,17 +861,17 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   overflow-y: scroll;
 }
 
-.infio-popover ul::-webkit-scrollbar {
+.icf-popover ul::-webkit-scrollbar {
   display: none;
 }
 
-.infio-popover ul {
+.icf-popover ul {
   -ms-overflow-style: none;
   scrollbar-width: none;
   padding: var(--size-4-1) 0;
 }
 
-.infio-popover ul li {
+.icf-popover ul li {
   margin: 0;
   min-width: 180px;
   font-size: var(--font-ui-smaller);
@@ -880,11 +880,11 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   border-radius: 0;
 }
 
-.infio-popover ul li.selected {
+.icf-popover ul li.selected {
   background: var(--background-modifier-hover);
 }
 
-.infio-popover li {
+.icf-popover li {
   z-index: 1000;
   max-height: 300px;
   overflow-y: auto;
@@ -909,24 +909,24 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   align-items: start;
 }
 
-.infio-chat-list-dropdown-empty {
+.icf-chat-list-dropdown-empty {
   background: transparent;
   cursor: default;
   color: var(--text-faint);
 }
 
-.infio-popover li.active {
+.icf-popover li.active {
   display: flex;
   width: 20px;
   height: 20px;
   background-size: contain;
 }
 
-.infio-popover li:hover {
+.icf-popover li:hover {
   background-color: var(--background-modifier-hover);
 }
 
-.infio-popover-item-icon {
+.icf-popover-item-icon {
   display: flex;
   user-select: none;
   line-height: 16px;
@@ -940,12 +940,12 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   min-width: fit-content;
 }
 
-.infio-popover li:hover {
+.icf-popover li:hover {
   background-color: var(--background-modifier-hover);
   cursor: pointer;
 }
 
-.infio-popover li .infio-chat-list-dropdown-item-icon {
+.icf-popover li .icf-chat-list-dropdown-item-icon {
   visibility: hidden;
   padding: var(--size-2-1);
   display: flex;
@@ -954,38 +954,38 @@ button:not(.clickable-icon).infio-chat-list-dropdown {
   color: var(--text-muted);
 }
 
-.infio-popover li:hover .infio-chat-list-dropdown-item-icon {
+.icf-popover li:hover .icf-chat-list-dropdown-item-icon {
   visibility: visible;
 }
 
-.infio-popover li .infio-chat-list-dropdown-item-icon:hover {
+.icf-popover li .icf-chat-list-dropdown-item-icon:hover {
   background-color: var(--background-modifier-hover);
   border-radius: var(--radius-s);
 }
 
-.infio-chat-list-dropdown-content {
+.icf-chat-list-dropdown-content {
   width: 280px;
   max-width: 280px;
 }
 
-.infio-chat-list-dropdown-content li {
+.icf-chat-list-dropdown-content li {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.infio-chat-list-dropdown-item-title {
+.icf-chat-list-dropdown-item-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-input[type='text'].infio-chat-list-dropdown-item-title-input {
+input[type='text'].icf-chat-list-dropdown-item-title-input {
   width: 100%;
   font-size: var(--font-ui-smaller);
 }
 
-.infio-chat-list-dropdown-item-actions {
+.icf-chat-list-dropdown-item-actions {
   display: flex;
   align-items: center;
   gap: var(--size-4-1);
@@ -996,7 +996,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
    =========================================== */
 
 /* 基础代码块容器 */
-.infio-chat-code-block {
+.icf-chat-code-block {
   position: relative;
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--radius-s);
@@ -1004,12 +1004,12 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   word-wrap: break-word;
 }
 
-.infio-chat-code-block code:not(.infio-markdown-inline-code) {
+.icf-chat-code-block code:not(.icf-markdown-inline-code) {
   padding: 0;
 }
 
 /* RawMarkdownBlock 专用代码块容器 */
-.infio-raw-markdown-code-block {
+.icf-raw-markdown-code-block {
   position: relative;
   margin: 0;
   padding: 0;
@@ -1022,7 +1022,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 }
 
 /* RawMarkdownBlock 内的 pre 元素 */
-.infio-raw-markdown-code-block pre {
+.icf-raw-markdown-code-block pre {
   position: relative;
   margin: 0;
   padding: 0;
@@ -1031,14 +1031,14 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 }
 
 /* RawMarkdownBlock 内的 code 元素 */
-.infio-raw-markdown-code-block code {
+.icf-raw-markdown-code-block code {
   position: relative;
   display: block;
   width: 100%;
 }
 
 /* 代码块头部样式 */
-.infio-chat-code-block-header {
+.icf-chat-code-block-header {
   display: none;
   justify-content: space-between;
   align-items: center;
@@ -1047,14 +1047,14 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   margin: 0;
 }
 
-.infio-chat-code-block:hover .infio-chat-code-block-header {
+.icf-chat-code-block:hover .icf-chat-code-block-header {
   position: absolute;
   top: calc(var(--size-4-3) * -1);
   right: var(--size-4-1);
   display: flex;
 }
 
-.infio-chat-code-block.has-filename .infio-chat-code-block-header {
+.icf-chat-code-block.has-filename .icf-chat-code-block-header {
   display: flex;
   border-bottom: 1px solid var(--background-modifier-border);
   background-color: var(--background-primary);
@@ -1062,14 +1062,14 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   height: calc(var(--size-4-8) - var(--size-4-1));
 }
 
-.infio-chat-code-block.has-filename:hover .infio-chat-code-block-header {
+.icf-chat-code-block.has-filename:hover .icf-chat-code-block-header {
   position: inherit;
   top: 0;
   left: 0;
 }
 
 /* 代码块头部文件名样式 */
-.infio-chat-code-block-header-filename {
+.icf-chat-code-block-header-filename {
   padding-left: var(--size-4-2);
   font-size: var(--font-medium);
   overflow: hidden;
@@ -1080,13 +1080,13 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   gap: var(--size-2-1);
 }
 
-.infio-chat-code-block-header-icon {
+.icf-chat-code-block-header-icon {
   margin-right: 6px;
   flex-shrink: 0;
 }
 
 /* 代码块头部按钮样式 */
-.infio-chat-code-block-header-button {
+.icf-chat-code-block-header-button {
   display: flex;
   gap: var(--size-4-1);
   right: 0;
@@ -1097,7 +1097,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted);
 }
 
-.infio-chat-code-block.has-filename .infio-chat-code-block-header-button {
+.icf-chat-code-block.has-filename .icf-chat-code-block-header-button {
   gap: 0;
   overflow: hidden;
   min-width: fit-content;
@@ -1105,7 +1105,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   padding-right: var(--size-4-1);
 }
 
-.infio-chat-code-block.has-filename .infio-chat-code-block-header-button button {
+.icf-chat-code-block.has-filename .icf-chat-code-block-header-button button {
   box-shadow: none;
   border: 0;
   padding: 0 var(--size-4-2);
@@ -1116,23 +1116,23 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   cursor: pointer;
 }
 
-.infio-chat-code-block.has-filename .infio-chat-code-block-header-button button:hover {
+.icf-chat-code-block.has-filename .icf-chat-code-block-header-button button:hover {
   background-color: var(--background-modifier-hover);
 }
 
-.infio-chat-code-block-header-button button {
+.icf-chat-code-block-header-button button {
   display: flex;
   gap: var(--size-4-1);
   font-size: var(--font-ui-smaller);
 }
 
 /* 代码块内容样式 */
-.infio-chat-code-block-content {
+.icf-chat-code-block-content {
   margin: 0;
 }
 
 /* 特殊按钮样式 */
-.infio-dataview-query-button {
+.icf-dataview-query-button {
   color: #008000;
 }
 
@@ -1140,26 +1140,26 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
    推理内容包装器样式
    =========================================== */
 
-.infio-reasoning-content-wrapper {
+.icf-reasoning-content-wrapper {
   overflow-x: auto;
   overflow-y: visible;
 }
 
 /* 折叠/展开功能相关样式 */
-.infio-reasoning-content-wrapper.collapsed {
+.icf-reasoning-content-wrapper.collapsed {
   max-height: 150px;
   overflow-y: auto;
   transition: max-height 0.3s ease-in-out;
 }
 
-.infio-reasoning-content-wrapper.expanded {
+.icf-reasoning-content-wrapper.expanded {
   max-height: none;
   overflow-y: visible;
   transition: max-height 0.3s ease-in-out;
 }
 
 /* Read File Block - Minimal styling for better integration */
-.infio-read-file-block {
+.icf-read-file-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
@@ -1168,17 +1168,17 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted) !important;
 }
 
-.infio-read-file-block .infio-chat-code-block-header {
+.icf-read-file-block .icf-chat-code-block-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-read-file-block .infio-chat-code-block-header-filename {
+.icf-read-file-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
 }
 
 /* Tool Result Block - Minimal styling for better integration */
-.infio-tool-result-block {
+.icf-tool-result-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
@@ -1187,29 +1187,29 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted) !important;
 }
 
-.infio-tool-result-block .infio-chat-code-block-response-header {
+.icf-tool-result-block .icf-chat-code-block-response-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-tool-result-block .infio-chat-code-block-response-header-filename {
+.icf-tool-result-block .icf-chat-code-block-response-header-filename {
   color: var(--text-muted) !important;
 }
 
-.infio-tool-result-block .infio-mcp-tool-server-name {
+.icf-tool-result-block .icf-mcp-tool-server-name {
   color: var(--text-muted) !important;
 }
 
-.infio-tool-result-block .infio-chat-code-block-response-header-filename {
+.icf-tool-result-block .icf-chat-code-block-response-header-filename {
   transition: all 0.2s ease;
 }
 
-.infio-tool-result-block .infio-chat-code-block-response-header-filename:hover {
+.icf-tool-result-block .icf-chat-code-block-response-header-filename:hover {
   opacity: 0.7;
 }
 
 /* Plan Block - Minimal styling for better integration */
-.infio-plan-block {
+.icf-plan-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
@@ -1218,22 +1218,22 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted) !important;
 }
 
-.infio-plan-block .infio-chat-code-block-header {
+.icf-plan-block .icf-chat-code-block-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-plan-block .infio-chat-code-block-header-filename {
+.icf-plan-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
   transition: all 0.2s ease;
 }
 
-.infio-plan-block .infio-chat-code-block-header-filename:hover {
+.icf-plan-block .icf-chat-code-block-header-filename:hover {
   opacity: 0.7;
 }
 
 /* Reasoning Content Block - Unified styling for both loading and completed states */
-.infio-reasoning-content-block {
+.icf-reasoning-content-block {
   color: var(--text-muted) !important;
   border: 1px solid var(--background-modifier-border) !important;
   background: var(--background-secondary) !important;
@@ -1242,21 +1242,21 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   margin-bottom: 8px !important;
 }
 
-.infio-reasoning-content-block .infio-chat-code-block-header {
+.icf-reasoning-content-block .icf-chat-code-block-header {
   background-color: var(--background-secondary) !important;
   border-bottom: 1px solid var(--background-modifier-border) !important;
 }
 
-.infio-reasoning-content-block .infio-chat-code-block-header-filename {
+.icf-reasoning-content-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
   transition: all 0.2s ease;
 }
 
-.infio-reasoning-content-block .infio-chat-code-block-header-filename:hover {
+.icf-reasoning-content-block .icf-chat-code-block-header-filename:hover {
   opacity: 0.7;
 }
 
-.infio-reasoning-markdown-wrapper {
+.icf-reasoning-markdown-wrapper {
   padding: var(--size-4-2);
   line-height: 1.5;
   max-height: 500px;
@@ -1264,19 +1264,19 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   scroll-behavior: smooth;
 }
 
-.infio-reasoning-markdown {
+.icf-reasoning-markdown {
   font-size: var(--font-ui-medium);
   line-height: 1.5;
   font-style: italic;
   color: var(--text-muted);
 }
 
-.infio-reasoning-markdown h1, 
-.infio-reasoning-markdown h2, 
-.infio-reasoning-markdown h3, 
-.infio-reasoning-markdown h4, 
-.infio-reasoning-markdown h5, 
-.infio-reasoning-markdown h6 {
+.icf-reasoning-markdown h1, 
+.icf-reasoning-markdown h2, 
+.icf-reasoning-markdown h3, 
+.icf-reasoning-markdown h4, 
+.icf-reasoning-markdown h5, 
+.icf-reasoning-markdown h6 {
   font-size: var(--font-ui-large);
   margin-top: var(--size-4-3);
   margin-bottom: var(--size-4-2);
@@ -1284,24 +1284,24 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted);
 }
 
-.infio-reasoning-markdown p {
+.icf-reasoning-markdown p {
   margin-bottom: var(--size-4-2);
   color: var(--text-muted);
 }
 
-.infio-reasoning-markdown ul, 
-.infio-reasoning-markdown ol {
+.icf-reasoning-markdown ul, 
+.icf-reasoning-markdown ol {
   margin-bottom: var(--size-4-2);
   padding-left: var(--size-4-4);
   color: var(--text-muted);
 }
 
-.infio-reasoning-markdown li {
+.icf-reasoning-markdown li {
   margin-bottom: var(--size-2-1);
   color: var(--text-muted);
 }
 
-.infio-reasoning-markdown code:not(.infio-markdown-inline-code) {
+.icf-reasoning-markdown code:not(.icf-markdown-inline-code) {
   background-color: var(--background-modifier-border);
   padding: var(--size-2-1) var(--size-4-1);
   border-radius: var(--radius-s);
@@ -1310,7 +1310,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted);
 }
 
-.infio-reasoning-markdown pre {
+.icf-reasoning-markdown pre {
   background-color: var(--background-modifier-border);
   padding: var(--size-4-2);
   border-radius: var(--radius-s);
@@ -1319,31 +1319,31 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted);
 }
 
-.infio-reasoning-markdown pre code:not(.infio-markdown-inline-code) {
+.icf-reasoning-markdown pre code:not(.icf-markdown-inline-code) {
   background-color: transparent;
   padding: 0;
   font-style: italic;
   color: var(--text-muted);
 }
 
-.infio-reasoning-markdown a {
+.icf-reasoning-markdown a {
   color: var(--text-muted);
   text-decoration: underline;
   font-style: italic;
 }
 
-.infio-reasoning-markdown strong {
+.icf-reasoning-markdown strong {
   color: var(--text-muted);
   font-style: italic;
   font-weight: bold;
 }
 
-.infio-reasoning-markdown em {
+.icf-reasoning-markdown em {
   color: var(--text-muted);
   font-style: italic;
 }
 
-.infio-reasoning-markdown blockquote {
+.icf-reasoning-markdown blockquote {
   color: var(--text-muted);
   font-style: italic;
   border-left: 3px solid var(--background-modifier-border);
@@ -1351,7 +1351,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   margin: var(--size-4-2) 0;
 }
 
-.infio-reasoning-markdown table {
+.icf-reasoning-markdown table {
   color: var(--text-muted);
   font-style: italic;
   border-collapse: collapse;
@@ -1359,8 +1359,8 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   margin-bottom: var(--size-4-2);
 }
 
-.infio-reasoning-markdown th,
-.infio-reasoning-markdown td {
+.icf-reasoning-markdown th,
+.icf-reasoning-markdown td {
   color: var(--text-muted);
   font-style: italic;
   border: 1px solid var(--background-modifier-border);
@@ -1368,7 +1368,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   text-align: left;
 }
 
-.infio-reasoning-markdown hr {
+.icf-reasoning-markdown hr {
   border: none;
   height: 1px;
   background-color: var(--background-modifier-border);
@@ -1376,24 +1376,24 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 }
 
 /* List Files Block - Minimal styling for better integration */
-.infio-list-files-block {
+.icf-list-files-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
   color: var(--text-muted) !important;
 }
 
-.infio-list-files-block .infio-chat-code-block-header {
+.icf-list-files-block .icf-chat-code-block-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-list-files-block .infio-chat-code-block-header-filename {
+.icf-list-files-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
 }
 
 /* Manage Files Block - Minimal styling for better integration */
-.infio-manage-files-block {
+.icf-manage-files-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
@@ -1402,17 +1402,17 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted) !important;
 }
 
-.infio-manage-files-block .infio-chat-code-block-header {
+.icf-manage-files-block .icf-chat-code-block-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-manage-files-block .infio-chat-code-block-header-filename {
+.icf-manage-files-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
 }
 
 /* Match Search Files Block - Minimal styling for better integration */
-.infio-match-search-files-block {
+.icf-match-search-files-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
@@ -1421,17 +1421,17 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted) !important;
 }
 
-.infio-match-search-files-block .infio-chat-code-block-header {
+.icf-match-search-files-block .icf-chat-code-block-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-match-search-files-block .infio-chat-code-block-header-filename {
+.icf-match-search-files-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
 }
 
 /* Regex Search Files Block - Minimal styling for better integration */
-.infio-regex-search-files-block {
+.icf-regex-search-files-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
@@ -1440,17 +1440,17 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted) !important;
 }
 
-.infio-regex-search-files-block .infio-chat-code-block-header {
+.icf-regex-search-files-block .icf-chat-code-block-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-regex-search-files-block .infio-chat-code-block-header-filename {
+.icf-regex-search-files-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
 }
 
 /* Search Web Block - Minimal styling for better integration */
-.infio-search-web-block {
+.icf-search-web-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
@@ -1459,17 +1459,17 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted) !important;
 }
 
-.infio-search-web-block .infio-chat-code-block-header {
+.icf-search-web-block .icf-chat-code-block-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-search-web-block .infio-chat-code-block-header-filename {
+.icf-search-web-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
 }
 
 /* Semantic Search Files Block - Minimal styling for better integration */
-.infio-semantic-search-files-block {
+.icf-semantic-search-files-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
@@ -1478,17 +1478,17 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted) !important;
 }
 
-.infio-semantic-search-files-block .infio-chat-code-block-header {
+.icf-semantic-search-files-block .icf-chat-code-block-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-semantic-search-files-block .infio-chat-code-block-header-filename {
+.icf-semantic-search-files-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
 }
 
 /* Transformation Tool Block - Minimal styling for better integration */
-.infio-transformation-tool-block {
+.icf-transformation-tool-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
@@ -1497,17 +1497,17 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted) !important;
 }
 
-.infio-transformation-tool-block .infio-chat-code-block-header {
+.icf-transformation-tool-block .icf-chat-code-block-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-transformation-tool-block .infio-chat-code-block-header-filename {
+.icf-transformation-tool-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
 }
 
 /* Dataview Query Block - Minimal styling for better integration */
-.infio-dataview-query-block {
+.icf-dataview-query-block {
   border: none !important;
   background: none !important;
   border-radius: 0 !important;
@@ -1516,17 +1516,17 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   color: var(--text-muted) !important;
 }
 
-.infio-dataview-query-block .infio-chat-code-block-header {
+.icf-dataview-query-block .icf-chat-code-block-header {
   background-color: transparent !important;
   border-bottom: none !important;
 }
 
-.infio-dataview-query-block .infio-chat-code-block-header-filename {
+.icf-dataview-query-block .icf-chat-code-block-header-filename {
   color: var(--text-muted) !important;
   transition: all 0.2s ease;
 }
 
-.infio-dataview-query-block .infio-chat-code-block-header-filename:hover {
+.icf-dataview-query-block .icf-chat-code-block-header-filename:hover {
   opacity: 0.7;
 }
 
@@ -1535,7 +1535,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
  * - Styles for the content editable area
  */
 
-.infio-chat-lexical-content-editable-root {
+.icf-chat-lexical-content-editable-root {
   min-height: 62px;
   max-height: 800px;
   overflow-y: auto;
@@ -1543,7 +1543,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 
 }
 
-.infio-chat-lexical-content-editable-root .mention {
+.icf-chat-lexical-content-editable-root .mention {
   background-color: var(--tag-background);
   color: var(--tag-color);
   padding: var(--size-2-1) calc(var(--size-2-1));
@@ -1555,7 +1555,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   word-break: break-all;
 }
 
-.infio-search-lexical-content-editable-root {
+.icf-search-lexical-content-editable-root {
   min-height: 36px;
   max-height: 120px;
   overflow-y: auto;
@@ -1564,7 +1564,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   contain: size style;
 }
 
-.infio-search-lexical-content-editable-root .mention {
+.icf-search-lexical-content-editable-root .mention {
   background-color: var(--tag-background);
   color: var(--tag-color);
   padding: 0 calc(var(--size-2-1));
@@ -1572,7 +1572,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   word-break: break-all;
 }
 
-.infio-chat-lexical-content-editable-root .command {
+.icf-chat-lexical-content-editable-root .command {
   background-color: rgba(115, 90, 14, 0.3); /* 黄色背景 */
   color: #f1c43f; /* 深黄色文字 */
   padding: var(--size-2-1) calc(var(--size-2-1));
@@ -1580,7 +1580,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   word-break: break-all;
 }
 
-.infio-chat-lexical-content-editable-paragraph {
+.icf-chat-lexical-content-editable-paragraph {
   margin: 0;
   line-height: 1.6;
 }
@@ -1590,12 +1590,12 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
  * - Styles for settings and dialogs
  */
 
-.infio-chat-settings-textarea {
+.icf-chat-settings-textarea {
   display: block;
   margin: var(--size-4-2) 0;
   padding: 0;
 
-  .infio-item-control {
+  .icf-item-control {
     width: 100%;
   }
 
@@ -1606,18 +1606,18 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   }
 }
 
-.infio-chat-setting-item-container {
+.icf-chat-setting-item-container {
   margin: var(--size-4-2) 0;
   padding: var(--size-4-2) var(--size-4-4);
 }
 
-.infio-chat-setting-item-container-append {
+.icf-chat-setting-item-container-append {
   margin: var(--size-4-2) 0;
   padding: var(--size-4-2) var(--size-4-4);
   border-top: none;
 }
 
-.infio-chat-settings-model-container {
+.icf-chat-settings-model-container {
   margin: var(--size-4-2) 0;
   padding: var(--size-4-2) var(--size-4-4);
   border-left: 2px solid var(--interactive-accent);
@@ -1633,7 +1633,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   }
 }
 
-.infio-chat-dialog-content {
+.icf-chat-dialog-content {
   position: fixed;
   left: calc(50% - var(--size-4-4));
   top: 50%;
@@ -1651,20 +1651,20 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   margin: var(--size-4-4);
 
-  .infio-dialog-header {
+  .icf-dialog-header {
     margin-bottom: var(--size-4-2);
     display: grid;
     gap: var(--size-2-3);
   }
 
-  .infio-dialog-title {
+  .icf-dialog-title {
     font-size: var(--font-ui-medium);
     font-weight: var(--font-semibold);
     line-height: var(--line-height-tight);
     margin: 0;
   }
 
-  .infio-dialog-input {
+  .icf-dialog-input {
     display: grid;
     gap: var(--size-4-1);
 
@@ -1673,19 +1673,19 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
     }
   }
 
-  .infio-dialog-description {
+  .icf-dialog-description {
     font-size: var(--font-ui-small);
     color: var(--text-muted);
     margin: 0;
   }
 
-  .infio-dialog-footer {
+  .icf-dialog-footer {
     margin-top: var(--size-4-2);
     display: flex;
     justify-content: flex-end;
   }
 
-  .infio-dialog-close {
+  .icf-dialog-close {
     position: absolute;
     right: var(--size-4-4);
     top: var(--size-4-4);
@@ -1699,17 +1699,17 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   }
 }
 
-.infio-command-text {
+.icf-command-text {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.infio-command-popover {
+.icf-command-popover {
   position: fixed;
 }
 
-.infio-chat-message-actions {
+.icf-chat-message-actions {
   display: flex;
   align-items: center;
   justify-content: end;
@@ -1732,12 +1732,12 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
     }
   }
 
-  .infio-chat-message-actions-icon--copied {
+  .icf-chat-message-actions-icon--copied {
     color: var(--text-muted);
   }
 }
 
-.infio-chat-popover-content {
+.icf-chat-popover-content {
   z-index: 1000;
   background-color: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
@@ -1747,7 +1747,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   animation: fadeIn 0.1s ease-in-out;
 }
 
-.infio-similarity-search-results {
+.icf-similarity-search-results {
   display: flex;
   flex-direction: column;
   font-size: var(--font-smaller);
@@ -1755,7 +1755,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   padding-bottom: var(--size-4-1);
   user-select: none;
 
-  .infio-similarity-search-results__trigger {
+  .icf-similarity-search-results__trigger {
     display: flex;
     align-items: center;
     gap: var(--size-4-1);
@@ -1767,7 +1767,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
     }
   }
 
-  .infio-similarity-search-item {
+  .icf-similarity-search-item {
     display: flex;
     align-items: center;
     justify-content: start;
@@ -1780,13 +1780,13 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
       background-color: var(--background-modifier-hover);
     }
 
-    .infio-similarity-search-item__similarity {
+    .icf-similarity-search-item__similarity {
       flex-shrink: 0;
       font-size: var(--font-smallest);
       color: var(--text-muted);
     }
 
-    .infio-similarity-search-item__path {
+    .icf-similarity-search-item__path {
       flex-shrink: 1;
       white-space: nowrap;
       overflow: hidden;
@@ -1794,7 +1794,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
       font-size: var(--font-smallest);
     }
 
-    .infio-similarity-search-item__line-numbers {
+    .icf-similarity-search-item__line-numbers {
       flex-shrink: 0;
       margin-left: auto;
       font-size: var(--font-smallest);
@@ -1803,7 +1803,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 }
 
 /* File Read Results */
-.infio-file-read-results {
+.icf-file-read-results {
   display: flex;
   flex-direction: column;
   font-size: var(--font-smaller);
@@ -1811,7 +1811,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   padding-bottom: var(--size-4-1);
   user-select: none;
 
-  .infio-file-read-results__trigger {
+  .icf-file-read-results__trigger {
     display: flex;
     align-items: center;
     gap: var(--size-4-1);
@@ -1823,7 +1823,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
     }
   }
 
-  .infio-file-read-item {
+  .icf-file-read-item {
     display: flex;
     align-items: center;
     justify-content: start;
@@ -1836,12 +1836,12 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
       background-color: var(--background-modifier-hover);
     }
 
-    .infio-file-read-item__icon {
+    .icf-file-read-item__icon {
       flex-shrink: 0;
       color: var(--text-muted);
     }
 
-    .infio-file-read-item__info {
+    .icf-file-read-item__info {
       flex: 1;
       min-width: 0;
       display: flex;
@@ -1849,7 +1849,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
       gap: var(--size-2-1);
     }
 
-    .infio-file-read-item__name {
+    .icf-file-read-item__name {
       font-size: var(--font-smallest);
       font-weight: var(--font-medium);
       white-space: nowrap;
@@ -1857,7 +1857,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
       text-overflow: ellipsis;
     }
 
-    .infio-file-read-item__path {
+    .icf-file-read-item__path {
       font-size: var(--font-smallest);
       color: var(--text-muted);
       white-space: nowrap;
@@ -1865,7 +1865,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
       text-overflow: ellipsis;
     }
 
-    .infio-file-read-item__size {
+    .icf-file-read-item__size {
       flex-shrink: 0;
       font-size: var(--font-smallest);
       color: var(--text-muted);
@@ -1874,7 +1874,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 }
 
 /* Website Read Results */
-.infio-website-read-results {
+.icf-website-read-results {
   display: flex;
   flex-direction: column;
   font-size: var(--font-smaller);
@@ -1882,7 +1882,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   padding-bottom: var(--size-4-1);
   user-select: none;
 
-  .infio-website-read-results__trigger {
+  .icf-website-read-results__trigger {
     display: flex;
     align-items: center;
     gap: var(--size-4-1);
@@ -1894,7 +1894,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
     }
   }
 
-  .infio-website-read-item {
+  .icf-website-read-item {
     display: flex;
     align-items: center;
     justify-content: start;
@@ -1907,12 +1907,12 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
       background-color: var(--background-modifier-hover);
     }
 
-    .infio-website-read-item__icon {
+    .icf-website-read-item__icon {
       flex-shrink: 0;
       color: var(--text-muted);
     }
 
-    .infio-website-read-item__info {
+    .icf-website-read-item__info {
       flex: 1;
       min-width: 0;
       display: flex;
@@ -1920,13 +1920,13 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
       gap: var(--size-2-1);
     }
 
-    .infio-website-read-item__domain {
+    .icf-website-read-item__domain {
       font-size: var(--font-smallest);
       font-weight: var(--font-medium);
       color: var(--text-accent);
     }
 
-    .infio-website-read-item__url {
+    .icf-website-read-item__url {
       font-size: var(--font-smallest);
       color: var(--text-muted);
       white-space: nowrap;
@@ -1934,14 +1934,14 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
       text-overflow: ellipsis;
     }
 
-    .infio-website-read-item__actions {
+    .icf-website-read-item__actions {
       flex-shrink: 0;
       display: flex;
       align-items: center;
       gap: var(--size-4-1);
     }
 
-    .infio-website-read-item__size {
+    .icf-website-read-item__size {
       font-size: var(--font-smallest);
       color: var(--text-muted);
     }
@@ -1951,30 +1951,30 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 /*
 * LLM Info
 */
-.infio-llm-info-content {
+.icf-llm-info-content {
   width: 320px;
   display: grid;
   gap: var(--size-4-3);
 }
 
-.infio-llm-info-header {
+.icf-llm-info-header {
   display: grid;
   gap: var(--size-2-2);
   font-size: var(--font-ui-small);
   font-weight: var(--font-semibold);
 }
 
-.infio-llm-info-tokens {
+.icf-llm-info-tokens {
   display: grid;
   gap: var(--size-4-2);
 }
 
-.infio-llm-info-tokens-header {
+.icf-llm-info-tokens-header {
   font-size: var(--font-ui-small);
   font-weight: var(--font-medium);
 }
 
-.infio-llm-info-tokens-grid {
+.icf-llm-info-tokens-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: var(--size-4-5);
@@ -1982,23 +1982,23 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   font-size: var(--font-ui-small);
 }
 
-.infio-llm-info-token-row {
+.icf-llm-info-token-row {
   display: flex;
   align-items: center;
   gap: var(--size-2-3);
 }
 
-.infio-llm-info-token-value {
+.icf-llm-info-token-value {
   margin-left: auto;
   color: var(--text-muted);
 }
 
-.infio-llm-info-token-total {
+.icf-llm-info-token-total {
   grid-column: span 2;
   font-weight: var(--font-medium);
 }
 
-.infio-llm-info-footer-row {
+.icf-llm-info-footer-row {
   display: flex;
   align-items: center;
   gap: var(--size-2-3);
@@ -2006,44 +2006,44 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   font-weight: var(--font-medium);
 }
 
-.infio-llm-info-footer-value {
+.icf-llm-info-footer-value {
   margin-left: auto;
 }
 
-.infio-llm-info-model {
+.icf-llm-info-model {
   color: var(--text-muted);
 }
 
-.infio-llm-info-icon--input {
+.icf-llm-info-icon--input {
   height: var(--size-4-3);
   width: var(--size-4-3);
   color: var(--color-green);
 }
 
-.infio-llm-info-icon--output {
+.icf-llm-info-icon--output {
   height: var(--size-4-3);
   width: var(--size-4-3);
   color: var(--color-blue);
 }
 
-.infio-llm-info-icon--total {
+.icf-llm-info-icon--total {
   height: var(--size-4-3);
   width: var(--size-4-3);
   color: var(--text-normal);
 }
 
-.infio-llm-info-icon--footer {
+.icf-llm-info-icon--footer {
   height: var(--size-4-4);
   width: var(--size-4-4);
 }
 
-.infio-llm-model-settings-table {
+.icf-llm-model-settings-table {
   border-collapse: collapse;
   width: 100%;
 }
 
-.infio-llm-model-settings-table th,
-.infio-llm-model-settings-table td {
+.icf-llm-model-settings-table th,
+.icf-llm-model-settings-table td {
   text-align: center;
   vertical-align: middle;
   padding: 0.5em;
@@ -2051,28 +2051,28 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   height: 2.5em;
 }
 
-.infio-llm-model-settings-table th {
+.icf-llm-model-settings-table th {
   font-weight: bold;
 }
 
-.infio-llm-model-settings-table th:nth-child(1) {
+.icf-llm-model-settings-table th:nth-child(1) {
   width: 10%;
 }
 
-.infio-llm-model-settings-table th:nth-child(2) {
+.icf-llm-model-settings-table th:nth-child(2) {
   width: 50%;
 }
 
-.infio-llm-model-settings-table th:nth-child(3),
-.infio-llm-model-settings-table th:nth-child(4),
-.infio-llm-model-settings-table th:nth-child(5),
-.infio-llm-model-settings-table th:nth-child(6) {
+.icf-llm-model-settings-table th:nth-child(3),
+.icf-llm-model-settings-table th:nth-child(4),
+.icf-llm-model-settings-table th:nth-child(5),
+.icf-llm-model-settings-table th:nth-child(6) {
   width: 8%;
 }
 
 /* Add specific styles for toggle cells */
 
-.infio-llm-model-settings-table td .infio-llm-setting-item {
+.icf-llm-model-settings-table td .icf-llm-setting-item {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2080,7 +2080,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 	margin-top: 5px !important; /* 使用 !important 强制生效 */
 }
 
-.infio-llm-model-settings-table .switch {
+.icf-llm-model-settings-table .switch {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2088,19 +2088,19 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   margin: 0;
 }
 
-.infio-llm-add-custom-model {
+.icf-llm-add-custom-model {
   margin-top: 20px;
 }
 
-.infio-llm-setting-provider {
+.icf-llm-setting-provider {
   margin-top: 20px;
 }
 
-.infio-llm-chat-setting-title {
+.icf-llm-chat-setting-title {
   border-top: 1px solid var(--background-modifier-border);
 }
 
-.infio-llm-setting-item-name {
+.icf-llm-setting-item-name {
   font-weight: bold;
   display: block;
   color: var(--inline-title-color);
@@ -2108,12 +2108,12 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   margin-bottom: 3px;
 }
 
-.infio-llm-setting-checkbox-name {
+.icf-llm-setting-checkbox-name {
 	font-weight: bold;
   color: var(--inline-title-color);
 }
 
-.infio-llm-setting-select-trigger {
+.icf-llm-setting-select-trigger {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -2128,7 +2128,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   margin-bottom: var(--size-4-1);
 }
 
-.infio-llm-setting-select-content {
+.icf-llm-setting-select-content {
   overflow: hidden;
   background-color: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
@@ -2136,7 +2136,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   box-shadow: var(--shadow-s);
 }
 
-.infio-llm-setting-select-item {
+.icf-llm-setting-select-item {
   font-size: var(--font-ui-smaller);
   color: var(--text-normal);
   padding: var(--size-2-1) var(--size-4-2);
@@ -2147,30 +2147,30 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   outline: none;
 }
 
-.infio-llm-setting-select-item:hover {
+.icf-llm-setting-select-item:hover {
   background-color: var(--background-modifier-hover);
 }
 
-.infio-llm-setting-select-item[data-highlighted] {
+.icf-llm-setting-select-item[data-highlighted] {
   background-color: var(--background-modifier-hover);
   color: var(--text-normal);
 }
 
-.infio-llm-setting-select-indicator {
+.icf-llm-setting-select-indicator {
   color: var(--text-accent);
   padding-left: var(--size-4-1);
 }
 
-.infio-llm-setting-divider {
+.icf-llm-setting-divider {
   margin-top: 14px;
 }
 
-.infio-llm-setting-slider-round {
+.icf-llm-setting-slider-round {
 	font-weight: bold;
   color: var(--inline-title-color);
 }
 
-.infio-llm-setting-item-control {
+.icf-llm-setting-item-control {
   width: 50%; /* Adjust the width as needed */
   max-width: 100%; /* Ensures it doesn't exceed the parent width */
   background-color: var(--background-primary);
@@ -2180,21 +2180,21 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   padding: var(--size-2-1);
 }
 
-.infio-llm-setting-model-id {
+.icf-llm-setting-model-id {
 	 color: var(--text-accent);
 }
 
 /* Add hover and focus states for better interactivity */
-.infio-llm-setting-item-control:hover {
+.icf-llm-setting-item-control:hover {
   border-color: var(--background-modifier-border-hover);
 }
 
-.infio-llm-setting-item-control:focus {
+.icf-llm-setting-item-control:focus {
   border-color: var(--background-modifier-border-focus);
   outline: none;
 }
 
-.infio-llm-setting-combobox-dropdown {
+.icf-llm-setting-combobox-dropdown {
 	margin-top: 4px;
 	max-height: 200px;
 	overflow-y: auto;
@@ -2211,13 +2211,13 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 
 
 /* 添加容器样式使 select 和 input 在同一行 */
-.infio-llm-setting-search-container {
+.icf-llm-setting-search-container {
 	display: flex;
 	gap: 2px;
 	align-items: center;
 }
 
-.infio-llm-setting-provider-switch {
+.icf-llm-setting-provider-switch {
 	width: 26%;
 	border-radius: 0;
 	margin: 0;
@@ -2230,13 +2230,13 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 	color: var(--text-accent);
 }
 
-.infio-llm-setting-provider-switch:focus {
+.icf-llm-setting-provider-switch:focus {
 	/* border: none; */
 	outline: none;
 	box-shadow: none;
 }
 
-.infio-llm-setting-item-search {
+.icf-llm-setting-item-search {
 	width: 74%;
 	border: none;
 	margin: 0;
@@ -2249,35 +2249,35 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 	-ms-border-radius: 0 !important;
 }
 
-.infio-llm-setting-item-search:focus {
+.icf-llm-setting-item-search:focus {
 	border: none;
 	outline: none;
 	box-shadow: none;
 }
 
-.infio-llm-setting-combobox-option {
+.icf-llm-setting-combobox-option {
 	padding: 8px 12px;
 	cursor: pointer;
 	background-color: transparent;
 }
 
-.infio-llm-setting-combobox-option:hover {
+.icf-llm-setting-combobox-option:hover {
     background-color: var(--background-modifier-hover);
 }
 
 /*
  * Highlight styles
  */
-.infio-llm-setting-model-item-highlight {
+.icf-llm-setting-model-item-highlight {
   color: var(--text-normal);
 }
 
-.infio-llm-setting-item-control::placeholder {
+.icf-llm-setting-item-control::placeholder {
   color: gray;
   opacity: 0.5;
 }
 
-.infio-llm-setting-item-control[type='range'] {
+.icf-llm-setting-item-control[type='range'] {
   width: 70%;
 }
 
@@ -2386,32 +2386,32 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   }
 }
 
-.infio-llm-add-model-button {
+.icf-llm-add-model-button {
 }
 
 /*
 * ai block, use edit inline
 */
 
-.infio-ai-block {
+.icf-ai-block {
   padding: 0 !important;
   background: transparent !important;
   border: none !important;
 }
 
-.infio-ai-block-container {
+.icf-ai-block-container {
   background: var(--background-secondary);
   border-radius: 4px;
   padding: 0px;
   border: 1px solid var(--background-modifier-border);
 }
 
-.infio-ai-block-input-wrapper {
+.icf-ai-block-input-wrapper {
   position: relative;
   margin-bottom: 0;
 }
 
-.infio-ai-block-content {
+.icf-ai-block-content {
   width: 100%;
   background: transparent;
   border: none !important;
@@ -2431,11 +2431,11 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   }
 }
 
-.infio-ai-block-content::-webkit-scrollbar {
+.icf-ai-block-content::-webkit-scrollbar {
     display: none;
 }
 
-.infio-ai-block-close-button {
+.icf-ai-block-close-button {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -2453,7 +2453,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   z-index: 9999;
 }
 
-.infio-ai-block-controls {
+.icf-ai-block-controls {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -2469,7 +2469,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
   width: 100%;
 }
 
-.infio-ai-block-model-select {
+.icf-ai-block-model-select {
   all: unset;
   border: none;
   &:hover {
@@ -2507,7 +2507,7 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 
 /* Target Webkit browsers specifically */
 
-.infio-ai-block-model-select::-webkit-listbox {
+.icf-ai-block-model-select::-webkit-listbox {
   background: transparent !important;
   border: none !important;
   outline: none !important;
@@ -2515,11 +2515,11 @@ input[type='text'].infio-chat-list-dropdown-item-title-input {
 
 /* Additional styles for the dropdown */
 
-select.infio-ai-block-model-select::-ms-expand {
+select.icf-ai-block-model-select::-ms-expand {
   display: none;
 }
 
-.infio-ai-block-submit-button {
+.icf-ai-block-submit-button {
   background: transparent;
   border: none;
   color: var(--text-muted);
@@ -2538,7 +2538,7 @@ select.infio-ai-block-model-select::-ms-expand {
 	Apply
  */
 
-#infio-apply-view {
+#icf-apply-view {
   height: 100%;
   font-family: var(--font-interface);
   /* 确保ApplyView不会影响外部滚动 */
@@ -2577,7 +2577,7 @@ select.infio-ai-block-model-select::-ms-expand {
   }
 
   /* 确保 diff 相关样式也限制作用域 */
-  .infio-diff-line {
+  .icf-diff-line {
     white-space: pre-wrap;
     word-break: break-word;
     display: flex;
@@ -2587,11 +2587,11 @@ select.infio-ai-block-model-select::-ms-expand {
     line-height: var(--line-height-normal);
   }
 
-  .infio-diff-line.added {
+  .icf-diff-line.added {
     background-color: rgba(var(--color-green-rgb), 0.2);
   }
 
-  .infio-diff-line.removed {
+  .icf-diff-line.removed {
     background-color: rgba(var(--color-red-rgb), 0.2);
   }
 
@@ -2616,7 +2616,7 @@ select.infio-ai-block-model-select::-ms-expand {
     padding: 0 var(--size-4-3);
   }
 
-  .infio-diff-line-actions {
+  .icf-diff-line-actions {
     display: flex;
     gap: 0;
     border-radius: 0 0 var(--radius-s) var(--radius-s);
@@ -2632,20 +2632,20 @@ select.infio-ai-block-model-select::-ms-expand {
     }
   }
 
-	.infio-approve-button {
+	.icf-approve-button {
 		background: rgba(var(--color-green-rgb), 0.7);
 	}
 
-	.infio-reject-button {
+	.icf-reject-button {
 		background: rgba(var(--color-red-rgb), 0.7);
 	}
 
-  .infio-accept {
+  .icf-accept {
     background: rgba(var(--color-green-rgb), 0.7);
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.1);
   }
 
-  .infio-exclude {
+  .icf-exclude {
     background: rgba(var(--color-red-rgb), 0.7);
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.1);
   }
@@ -2681,7 +2681,7 @@ select.infio-ai-block-model-select::-ms-expand {
   }
 }
 
-button.infio-chat-input-model-select {
+button.icf-chat-input-model-select {
   background-color: transparent;
   box-shadow: none;
   border: 1;
@@ -2704,7 +2704,7 @@ button.infio-chat-input-model-select {
     background-color: var(--background-modifier-hover);
   }
 
-  .infio-chat-input-model-select__mode-icon {
+  .icf-chat-input-model-select__mode-icon {
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -2712,7 +2712,7 @@ button.infio-chat-input-model-select {
     color: var(--text-accent);
   }
 
-  .infio-chat-input-model-select__model-name {
+  .icf-chat-input-model-select__model-name {
     flex-shrink: 1;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2720,7 +2720,7 @@ button.infio-chat-input-model-select {
     flex-grow: 1;
   }
 
-  .infio-chat-input-model-select__icon {
+  .icf-chat-input-model-select__icon {
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -2729,22 +2729,22 @@ button.infio-chat-input-model-select {
   }
 }
 
-.infio-query-progress {
+.icf-query-progress {
   font-size: var(--font-ui-smaller);
   color: var(--text-muted);
 }
 
-.infio-query-progress-detail {
+.icf-query-progress-detail {
   font-size: var(--font-smallest);
   color: var(--text-faint);
 }
 
-.infio-dot-loader {
+.icf-dot-loader {
   display: inline-block;
   text-align: left;
 }
 
-.infio-dot-loader::after {
+.icf-dot-loader::after {
   content: '...';
   animation: dotFade 0.75s steps(4, end) infinite;
   color: var(--text-muted);
@@ -2766,7 +2766,7 @@ button.infio-chat-input-model-select {
   }
 }
 
-.infio-tooltip-content {
+.icf-tooltip-content {
   background-color: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--radius-s);
@@ -2784,16 +2784,16 @@ button.infio-chat-input-model-select {
   }
 }
 
-.infio-utils-display-suggestion-opacity {
+.icf-utils-display-suggestion-opacity {
   opacity: 0.4;
 }
 
-.infio-utils-lexical-menu-container {
+.icf-utils-lexical-menu-container {
   position: absolute;
   display: block;
 }
 
-.infio-chat-empty-state {
+.icf-chat-empty-state {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2801,7 +2801,7 @@ button.infio-chat-input-model-select {
   width: 100%;
 }
 
-.infio-chat-loading-container {
+.icf-chat-loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2809,7 +2809,7 @@ button.infio-chat-input-model-select {
   color: var(--text-muted);
 }
 
-.infio-loading-spinner {
+.icf-loading-spinner {
   width: 24px;
   height: 24px;
   border: 2px solid var(--background-modifier-border);
@@ -2818,28 +2818,28 @@ button.infio-chat-input-model-select {
   animation: spin 1s linear infinite;
 }
 
-.infio-chat-code-block-url-list {
+.icf-chat-code-block-url-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.infio-chat-code-block-url-list li {
+.icf-chat-code-block-url-list li {
   padding: 8px 16px;
   border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.infio-chat-code-block-url-list li:last-child {
+.icf-chat-code-block-url-list li:last-child {
   border-bottom: none;
 }
 
-.infio-chat-code-block-url-link {
+.icf-chat-code-block-url-link {
   color: var(--text-accent);
   text-decoration: none;
   word-break: break-all;
 }
 
-.infio-chat-code-block-url-link:hover {
+.icf-chat-code-block-url-link:hover {
   text-decoration: underline;
 }
 
@@ -2873,7 +2873,7 @@ button.infio-chat-input-model-select {
   line-height: 1.4;
 }
 
-.infio-chat-code-block-status-button {
+.icf-chat-code-block-status-button {
   color: var(--color-green); /* 替换原来的 #008000 */
   background: none;
   border: none;
@@ -2889,7 +2889,7 @@ button.infio-chat-input-model-select {
  * - Mermaid 图表渲染样式
  */
 
-.infio-mermaid-loading {
+.icf-mermaid-loading {
   padding: 1rem;
   text-align: center;
   color: var(--text-muted);
@@ -2898,7 +2898,7 @@ button.infio-chat-input-model-select {
   background-color: var(--background-secondary);
 }
 
-.infio-mermaid-error {
+.icf-mermaid-error {
   padding: 1rem;
   color: var(--text-error);
   font-size: var(--font-ui-small);
@@ -2907,28 +2907,28 @@ button.infio-chat-input-model-select {
   border: 1px solid var(--background-modifier-error);
 }
 
-.infio-mermaid-error-title {
+.icf-mermaid-error-title {
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
-.infio-mermaid-error-message {
+.icf-mermaid-error-message {
   font-family: var(--font-monospace);
   font-size: 0.9em;
   margin-bottom: 0.5rem;
 }
 
-.infio-mermaid-error-details {
+.icf-mermaid-error-details {
   margin-top: 0.5rem;
 }
 
-.infio-mermaid-error-details summary {
+.icf-mermaid-error-details summary {
   cursor: pointer;
   color: var(--text-muted);
   font-size: 0.8em;
 }
 
-.infio-mermaid-error-details pre {
+.icf-mermaid-error-details pre {
   margin-top: 0.5rem;
   padding: 0.5rem;
   background-color: var(--background-primary);
@@ -2937,7 +2937,7 @@ button.infio-chat-input-model-select {
   overflow-x: auto;
 }
 
-.infio-mermaid-container {
+.icf-mermaid-container {
   text-align: center;
   padding: 1rem;
   border-radius: var(--radius-s);
@@ -2946,25 +2946,25 @@ button.infio-chat-input-model-select {
 }
 
 /* Mermaid SVG 特定样式 */
-.infio-mermaid-container svg {
+.icf-mermaid-container svg {
   max-width: 100%;
   height: auto;
 }
 
 /* 深色模式下的 Mermaid 样式调整 */
-.theme-dark .infio-mermaid-container .node rect,
-.theme-dark .infio-mermaid-container .node circle,
-.theme-dark .infio-mermaid-container .node ellipse,
-.theme-dark .infio-mermaid-container .node polygon {
+.theme-dark .icf-mermaid-container .node rect,
+.theme-dark .icf-mermaid-container .node circle,
+.theme-dark .icf-mermaid-container .node ellipse,
+.theme-dark .icf-mermaid-container .node polygon {
   fill: var(--background-primary);
   stroke: var(--background-modifier-border);
 }
 
-.theme-dark .infio-mermaid-container .edgePath .path {
+.theme-dark .icf-mermaid-container .edgePath .path {
   stroke: var(--text-muted);
 }
 
-.theme-dark .infio-mermaid-container .edgeLabel {
+.theme-dark .icf-mermaid-container .edgeLabel {
   background-color: var(--background-primary);
   color: var(--text-normal);
 }
@@ -2974,11 +2974,11 @@ button.infio-chat-input-model-select {
  * - 命令管理界面
  */
 
- .infio-chat-commands {
+ .icf-chat-commands {
   overflow-y: auto;
  }
 
-.infio-commands-container {
+.icf-commands-container {
   color: var(--text-normal);
   border-radius: var(--radius-m);
   padding: var(--size-4-3);
@@ -2987,35 +2987,35 @@ button.infio-chat-input-model-select {
   margin: 0 auto;
 }
 
-.infio-commands-header {
+.icf-commands-header {
   margin-bottom: var(--size-4-2);
 }
 
-.infio-commands-new {
+.icf-commands-new {
   display: flex;
   flex-direction: column;
   gap: var(--size-4-2);
 }
 
-.infio-commands-header-title {
+.icf-commands-header-title {
 	margin: 0;
 	font-size: 24px;
 }
 
-.infio-commands-label {
+.icf-commands-label {
   color: var(--text-normal);
   font-size: var(--font-ui-medium);
   font-weight: var(--font-medium);
   margin: var(--size-2-2) 0;
 }
 
-.infio-commands-hint {
+.icf-commands-hint {
   color: var(--text-muted);
   font-size: var(--font-ui-smaller);
   margin-top: var(--size-2-1);
 }
 
-.infio-commands-input {
+.icf-commands-input {
   background-color: var(--background-primary) !important;
   border: none !important;
   border-radius: var(--radius-s) !important;
@@ -3028,7 +3028,7 @@ button.infio-chat-input-model-select {
   height: 36px;
 }
 
-.infio-commands-textarea {
+.icf-commands-textarea {
   background-color: var(--background-primary) !important;
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--radius-s);
@@ -3041,7 +3041,7 @@ button.infio-chat-input-model-select {
   box-sizing: border-box;
 }
 
-.infio-commands-add-btn {
+.icf-commands-add-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3057,13 +3057,13 @@ button.infio-chat-input-model-select {
   margin-top: var(--size-4-2);
 }
 
-.infio-commands-add-btn:disabled {
+.icf-commands-add-btn:disabled {
   background-color: var(--background-modifier-form-field);
   color: var(--text-faint);
   cursor: not-allowed;
 }
 
-.infio-commands-search {
+.icf-commands-search {
   display: flex;
   align-items: center;
   background-color: var(--background-primary) !important;
@@ -3076,17 +3076,17 @@ button.infio-chat-input-model-select {
   max-width: 100%;
 }
 
-.infio-commands-search:focus-within {
+.icf-commands-search:focus-within {
   border-color: var(--background-modifier-border-focus);
 }
 
-.infio-commands-search-icon {
+.icf-commands-search-icon {
   color: var(--text-muted);
   margin-right: 8px;
   opacity: 0.8;
 }
 
-.infio-commands-search-input {
+.icf-commands-search-input {
   background-color: transparent !important;
   border: none !important;
   color: var(--text-normal);
@@ -3102,25 +3102,25 @@ button.infio-chat-input-model-select {
   }
 }
 
-.infio-commands-search-input::placeholder {
+.icf-commands-search-input::placeholder {
   color: var(--text-faint);
   opacity: 0.8;
 }
 
-.infio-commands-list {
+.icf-commands-list {
   display: flex;
   flex-direction: column;
   gap: var(--size-4-2);
 }
 
-.infio-commands-empty {
+.icf-commands-empty {
   display: flex;
   justify-content: center;
   padding: var(--size-4-3);
   color: var(--text-muted);
 }
 
-.infio-commands-item {
+.icf-commands-item {
   background-color: var(--background-primary);
   border-radius: var(--radius-s);
   padding: var(--size-4-2);
@@ -3128,7 +3128,7 @@ button.infio-chat-input-model-select {
   border: 1px solid var(--background-modifier-border);
 }
 
-.infio-commands-name {
+.icf-commands-name {
   font-weight: var(--font-medium);
   font-size: var(--font-ui-medium);
   color: #f1c43f;
@@ -3138,7 +3138,7 @@ button.infio-chat-input-model-select {
   gap: var(--size-2-2);
 }
 
-.infio-commands-content {
+.icf-commands-content {
   color: var(--text-normal);
   margin-bottom: var(--size-4-2);
   font-size: var(--font-ui-small);
@@ -3153,7 +3153,7 @@ button.infio-chat-input-model-select {
   text-overflow: ellipsis;
 }
 
-.infio-commands-actions {
+.icf-commands-actions {
   display: flex;
   justify-content: flex-end;
   gap: var(--size-1-2);
@@ -3161,7 +3161,7 @@ button.infio-chat-input-model-select {
   z-index: 10;
 }
 
-.infio-commands-btn {
+.icf-commands-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3179,13 +3179,13 @@ button.infio-chat-input-model-select {
   }
 }
 
-.infio-commands-edit-mode {
+.icf-commands-edit-mode {
   display: flex;
   flex-direction: column;
   gap: var(--size-4-2);
 }
 
-.infio-commands-edit-name {
+.icf-commands-edit-name {
   display: flex;
   align-items: center;
   justify-content: center !important;
@@ -3201,49 +3201,49 @@ button.infio-chat-input-model-select {
   box-sizing: border-box;
 }
 
-.infio-commands-view-mode {
+.icf-commands-view-mode {
   display: flex;
   flex-direction: column;
 }
 
-.infio-commands-form {
+.icf-commands-form {
   display: flex;
   flex-direction: column;
   gap: var(--size-4-3);
 }
 
-.infio-commands-form-group {
+.icf-commands-form-group {
   display: flex;
   flex-direction: column;
 }
 
-.infio-commands-form-row {
+.icf-commands-form-row {
   display: flex;
   gap: var(--size-4-2);
   align-items: flex-end;
 }
 
-.infio-commands-form-row .infio-commands-label {
+.icf-commands-form-row .icf-commands-label {
   margin-bottom: var(--size-2-1);
 }
 
-.infio-commands-form-row .infio-commands-icon-group {
+.icf-commands-form-row .icf-commands-icon-group {
   flex-shrink: 0;
   width: auto;
 }
 
-.infio-commands-form-row .infio-commands-form-group:not(.infio-commands-icon-group) {
+.icf-commands-form-row .icf-commands-form-group:not(.icf-commands-icon-group) {
   flex: 1;
 }
 
-.infio-commands-item-header {
+.icf-commands-item-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--size-2-3);
 }
 
-.infio-commands-market-name {
+.icf-commands-market-name {
   font-weight: var(--font-medium);
   font-size: var(--font-ui-medium);
   color: var(--text-accent);
@@ -3253,12 +3253,12 @@ button.infio-chat-input-model-select {
 }
 
 /* Icon Selector Styles */
-.infio-icon-selector {
+.icf-icon-selector {
   position: relative;
   display: inline-block;
 }
 
-.infio-icon-selector-button {
+.icf-icon-selector-button {
   display: flex;
   align-items: center;
 	justify-content: center;
@@ -3281,7 +3281,7 @@ button.infio-chat-input-model-select {
 	}
 }
 
-.infio-icon-selector-dropdown {
+.icf-icon-selector-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
@@ -3296,14 +3296,14 @@ button.infio-chat-input-model-select {
   min-width: 280px;
 }
 
-.infio-icon-selector-grid {
+.icf-icon-selector-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: var(--size-2-1);
   padding: var(--size-4-3) var(--size-4-2);
 }
 
-.infio-icon-selector-option {
+.icf-icon-selector-option {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3326,26 +3326,26 @@ button.infio-chat-input-model-select {
 	}
 }
 
-.infio-commands-section {
+.icf-commands-section {
   margin-bottom: var(--size-4-3);
   border-bottom: 1px solid var(--background-modifier-border);
   padding-bottom: var(--size-4-3);
 }
 
-.infio-commands-section-title {
+.icf-commands-section-title {
   color: var(--text-accent);
   font-size: var(--font-ui-medium);
   font-weight: var(--font-medium);
   margin: 0 0 var(--size-4-2) 0;
 }
 
-.infio-commands-location {
+.icf-commands-location {
   display: flex;
   gap: var(--size-4-4);
   margin-bottom: var(--size-4-2);
 }
 
-.infio-commands-location-option {
+.icf-commands-location-option {
   display: flex;
   flex-direction: column;
   background-color: var(--background-primary);
@@ -3355,11 +3355,11 @@ button.infio-chat-input-model-select {
   width: 50%;
 }
 
-.infio-commands-location-option input[type="radio"] {
+.icf-commands-location-option input[type="radio"] {
   margin-right: var(--size-2-2);
 }
 
-.infio-commands-location-option label {
+.icf-commands-location-option label {
   color: var(--text-normal);
   font-weight: var(--font-medium);
   margin-bottom: var(--size-2-2);
@@ -3367,12 +3367,12 @@ button.infio-chat-input-model-select {
   align-items: center;
 }
 
-.infio-commands-location-description {
+.icf-commands-location-description {
   color: var(--text-muted);
   font-size: var(--font-ui-smaller);
 }
 
-.infio-image-selector {
+.icf-image-selector {
   padding: var(--size-4-3); /* 减小内边距 */
   min-width: 450px; /* 减小最小宽度 */
   max-width: 700px; /* 减小最大宽度 */
@@ -3384,7 +3384,7 @@ button.infio-chat-input-model-select {
   flex-direction: column;
 }
 
-.infio-image-selector-header {
+.icf-image-selector-header {
   display: flex;
   gap: var(--size-2-1); /* 减小间距 */
   margin-bottom: var(--size-4-2); /* 减小底部边距 */
@@ -3392,7 +3392,7 @@ button.infio-chat-input-model-select {
   flex-shrink: 0;
 }
 
-.infio-image-search {
+.icf-image-search {
   flex: 1;
   padding: var(--size-2-1); /* 减小内边距 */
   border: 1px solid var(--background-modifier-border);
@@ -3403,7 +3403,7 @@ button.infio-chat-input-model-select {
   height: 28px; /* 固定高度 */
 }
 
-.infio-upload-button {
+.icf-upload-button {
   padding: var(--size-2-1) var(--size-4-3); /* 减小内边距 */
   background-color: var(--interactive-accent);
   color: var(--text-on-accent);
@@ -3416,7 +3416,7 @@ button.infio-chat-input-model-select {
   height: 28px; /* 固定高度 */
 }
 
-.infio-image-grid {
+.icf-image-grid {
   display: grid;
   /* 减小每个图片项的最小宽度，使每行可以显示更多图片 */
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -3430,7 +3430,7 @@ button.infio-chat-input-model-select {
   max-height: calc(70vh - 80px);
 }
 
-.infio-image-item {
+.icf-image-item {
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--radius-s);
   padding: var(--size-2-1); /* 减小内边距 */
@@ -3439,11 +3439,11 @@ button.infio-chat-input-model-select {
   background-color: var(--background-primary);
 }
 
-.infio-image-item:hover {
+.icf-image-item:hover {
   background-color: var(--background-modifier-hover);
 }
 
-.infio-image-item img {
+.icf-image-item img {
   width: 100%;
   /* 减小图片高度 */
   height: 100px;
@@ -3451,7 +3451,7 @@ button.infio-chat-input-model-select {
   border-radius: var(--radius-xs);
 }
 
-.infio-image-name {
+.icf-image-name {
   margin-top: var(--size-2-1); /* 减小上边距 */
   font-size: var(--font-ui-smallest); /* 使用更小的字体 */
   text-align: center;
@@ -3479,7 +3479,7 @@ button.infio-chat-input-model-select {
  * - 确保 KaTeX 数学公式的正确渲染
  * - 隐藏 HTML 部分，只显示 MathML 部分
  */
-.infio-markdown .katex .katex-html {
+.icf-markdown .katex .katex-html {
   clip: rect(1px, 1px, 1px, 1px) !important;
   border: 0 !important;
   height: 1px !important;
@@ -3490,7 +3490,7 @@ button.infio-chat-input-model-select {
   white-space: nowrap !important;
 }
 
-.infio-markdown .katex .katex-mathml {
+.icf-markdown .katex .katex-mathml {
   display: inline !important;
   clip: auto !important;
   border: inherit !important;
@@ -3503,35 +3503,35 @@ button.infio-chat-input-model-select {
 }
 
 /* 确保 KaTeX 数学公式在复制时能正确处理 */
-.infio-markdown .katex {
+.icf-markdown .katex {
   position: relative;
   display: inline-block;
   white-space: nowrap;
 }
 
-.infio-markdown .katex-display {
+.icf-markdown .katex-display {
   display: block !important;
   text-align: center;
   margin: 0.5em 0;
 }
 
-.infio-markdown .katex-display .katex {
+.icf-markdown .katex-display .katex {
   display: inline-block;
   white-space: nowrap;
 }
 
 /* 确保 KaTeX 样式不会影响到其他元素的滚动行为 */
-.infio-markdown .katex,
-.infio-markdown .katex-display {
+.icf-markdown .katex,
+.icf-markdown .katex-display {
   overflow: visible !important;
 }
 
-.infio-markdown .katex * {
+.icf-markdown .katex * {
   overflow: visible !important;
 }
 
 /* Apply button styles */
-.infio-apply-button-primary {
+.icf-apply-button-primary {
   background-color: var(--color-green) !important;
   color: #ffffff !important;
   border: none !important;
@@ -3547,7 +3547,7 @@ button.infio-chat-input-model-select {
   transition: background-color 0.2s ease !important;
 }
 
-.infio-apply-button-secondary {
+.icf-apply-button-secondary {
   background-color: var(--background-modifier-border) !important;
   color: var(--text-normal) !important;
   border: none !important;
@@ -3563,7 +3563,7 @@ button.infio-chat-input-model-select {
   transition: background-color 0.2s ease !important;
 }
 
-.infio-apply-button-applying {
+.icf-apply-button-applying {
   background-color: var(--background-modifier-border) !important;
   color: var(--text-muted) !important;
   border: none !important;
@@ -3578,11 +3578,11 @@ button.infio-chat-input-model-select {
   justify-content: center !important;
 }
 
-.infio-apply-status-icon {
+.icf-apply-status-icon {
   margin-left: 8px !important;
 }
 
-.infio-applying-status {
+.icf-applying-status {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -3596,15 +3596,15 @@ button.infio-chat-input-model-select {
 }
 
 /* 覆盖标题栏按钮的默认高度设置 */
-.infio-chat-code-block.has-filename .infio-chat-code-block-header-button .infio-apply-button-primary,
-.infio-chat-code-block.has-filename .infio-chat-code-block-header-button .infio-apply-button-secondary,
-.infio-chat-code-block.has-filename .infio-chat-code-block-header-button .infio-apply-button-applying {
+.icf-chat-code-block.has-filename .icf-chat-code-block-header-button .icf-apply-button-primary,
+.icf-chat-code-block.has-filename .icf-chat-code-block-header-button .icf-apply-button-secondary,
+.icf-chat-code-block.has-filename .icf-chat-code-block-header-button .icf-apply-button-applying {
   height: 20px !important;
   margin: 4px 0 !important;
 }
 
 /* 确保复制按钮也有相同的高度限制 */
-.infio-chat-code-block.has-filename .infio-chat-code-block-header-button button:not(.infio-apply-button-primary):not(.infio-apply-button-secondary):not(.infio-apply-button-applying) {
+.icf-chat-code-block.has-filename .icf-chat-code-block-header-button button:not(.icf-apply-button-primary):not(.icf-apply-button-secondary):not(.icf-apply-button-applying) {
   height: 20px !important;
   margin: 4px 0 !important;
   padding: 0 8px !important;
@@ -3633,7 +3633,7 @@ button.infio-chat-input-model-select {
 }
 
 /* Search Web Button Styles */
-.infio-search-web-button {
+.icf-search-web-button {
 	color: #008000 !important;
 }
 
@@ -3644,7 +3644,7 @@ button.infio-chat-input-model-select {
  * - Non-intrusive and doesn't affect layout
  */
 
-.infio-markdown-container-with-actions {
+.icf-markdown-container-with-actions {
 	position: relative;
 	/* 确保不会影响内部代码块的显示 */
 	overflow: visible;
@@ -3653,7 +3653,7 @@ button.infio-chat-input-model-select {
 	}
 }
 
-.infio-markdown-actions {
+.icf-markdown-actions {
 	position: absolute;
 	bottom: 1px;
 	right: 1px;
@@ -3667,7 +3667,7 @@ button.infio-chat-input-model-select {
 	pointer-events: none;
 }
 
-.infio-markdown-actions button {
+.icf-markdown-actions button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3688,16 +3688,16 @@ button.infio-chat-input-model-select {
     }
   }
 
-.infio-chat-message-actions-icon--copied {
+.icf-chat-message-actions-icon--copied {
   color: var(--text-muted);
 }
 
-.infio-markdown-container-with-actions:hover .infio-markdown-actions {
+.icf-markdown-container-with-actions:hover .icf-markdown-actions {
 	opacity: 1;
 	visibility: visible;
 }
 
-.infio-markdown-action-button {
+.icf-markdown-action-button {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -3712,27 +3712,27 @@ button.infio-chat-input-model-select {
 	padding: 0;
 }
 
-.infio-markdown-action-button:hover {
+.icf-markdown-action-button:hover {
 	background: var(--background-modifier-hover);
 	color: var(--text-normal);
 	transform: scale(1.1);
 }
 
-.infio-markdown-action-button:active {
+.icf-markdown-action-button:active {
 	transform: scale(0.95);
 }
 
-.infio-markdown-create-button {
+.icf-markdown-create-button {
 	color: #008000;
 }
 
-.infio-markdown-create-button:hover {
+.icf-markdown-create-button:hover {
 	background: rgba(0, 128, 0, 0.1);
 	color: #008000;
 }
 
 /* Commands View Tabs Styles */
-.infio-commands-tabs {
+.icf-commands-tabs {
   display: flex;
   gap: 0;
 	border: none;
@@ -3742,7 +3742,7 @@ button.infio-chat-input-model-select {
   width: 100%;
 }
 
-.infio-commands-tab-button {
+.icf-commands-tab-button {
   border: none;
   padding: 16px 24px;
   cursor: pointer;
@@ -3762,25 +3762,25 @@ button.infio-chat-input-model-select {
   text-align: center;
 }
 
-.infio-commands-tab-button.active {
+.icf-commands-tab-button.active {
   border-bottom: 2px solid var(--interactive-accent);
 }
 
-.infio-commands-tab-content {
+.icf-commands-tab-content {
   display: flex;
   flex-direction: column;
   gap: var(--size-4-3);
 }
 
 /* Commands Create Section Collapsible Styles */
-.infio-commands-create-section {
+.icf-commands-create-section {
   background-color: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
   border-radius: var(--radius-s);
   margin-bottom: 16px;
 }
 
-.infio-commands-create-item-header {
+.icf-commands-create-item-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -3789,18 +3789,18 @@ button.infio-chat-input-model-select {
   transition: all 0.2s ease;
 }
 
-.infio-commands-create-item-header:hover {
+.icf-commands-create-item-header:hover {
   background-color: var(--background-modifier-hover);
 }
 
-.infio-commands-create-item-info {
+.icf-commands-create-item-info {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 1;
 }
 
-.infio-commands-hub-expander {
+.icf-commands-hub-expander {
   color: var(--text-muted);
   font-size: 0.9em;
   width: 16px;
@@ -3811,14 +3811,14 @@ button.infio-chat-input-model-select {
   flex-shrink: 0;
 }
 
-.infio-commands-create-title {
+.icf-commands-create-title {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
   color: var(--text-normal);
 }
 
-.infio-commands-create-expanded {
+.icf-commands-create-expanded {
   border-top: 1px solid var(--background-modifier-border);
   background-color: var(--background-secondary);
   padding: 16px;
@@ -3842,7 +3842,7 @@ button.infio-chat-input-model-select {
 }
 
 /* Market Commands Styles */
-.infio-commands-market-item {
+.icf-commands-market-item {
   background-color: var(--background-primary);
   border-radius: var(--radius-s);
   padding: var(--size-4-2);
@@ -3851,32 +3851,32 @@ button.infio-chat-input-model-select {
   transition: all 0.2s ease;
 }
 
-.infio-commands-market-item:hover {
+.icf-commands-market-item:hover {
   box-shadow: var(--shadow-l);
   border-color: var(--background-modifier-border-hover);
 }
 
-.infio-commands-market-header {
+.icf-commands-market-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: var(--size-2-3);
 }
 
-.infio-commands-market-info {
+.icf-commands-market-info {
   display: flex;
   flex-direction: column;
   gap: var(--size-2-1);
 }
 
-.infio-commands-market-name {
+.icf-commands-market-name {
   font-weight: var(--font-medium);
   font-size: var(--font-ui-medium);
   color: #f1c43f;
   user-select: text;
 }
 
-.infio-commands-market-category {
+.icf-commands-market-category {
   background-color: #f1c43f;
   color: #000000;
   padding: 2px 8px;
@@ -3887,13 +3887,13 @@ button.infio-chat-input-model-select {
 	margin-top: var(--size-4-2);
 }
 
-.infio-commands-market-stats {
+.icf-commands-market-stats {
   display: flex;
   align-items: center;
   gap: var(--size-2-2);
 }
 
-.infio-commands-market-downloads {
+.icf-commands-market-downloads {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -3901,7 +3901,7 @@ button.infio-chat-input-model-select {
   font-size: 12px;
 }
 
-.infio-commands-market-description {
+.icf-commands-market-description {
   color: #f1c43f;
   margin-bottom: var(--size-2-3);
   font-size: var(--font-ui-medium);
@@ -3909,7 +3909,7 @@ button.infio-chat-input-model-select {
   user-select: text;
 }
 
-.infio-commands-market-content {
+.icf-commands-market-content {
   font-size: var(--font-ui-smaller);
 	color: var(--text-muted);
   margin-bottom: var(--size-4-2);
@@ -3924,13 +3924,13 @@ button.infio-chat-input-model-select {
   text-overflow: ellipsis;
 }
 
-.infio-commands-market-actions {
+.icf-commands-market-actions {
   display: flex;
   justify-content: flex-end;
   gap: var(--size-2-2);
 }
 
-.infio-commands-install-btn {
+.icf-commands-install-btn {
   display: flex;
 	align-items: center;
 	justify-content: center;
@@ -3959,7 +3959,7 @@ button.infio-chat-input-model-select {
 }
 
 /* Structured Progress Styles */
-.infio-structured-progress {
+.icf-structured-progress {
   padding: 16px;
   background-color: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
@@ -3967,20 +3967,20 @@ button.infio-chat-input-model-select {
   margin: 12px 0;
 }
 
-.infio-progress-steps {
+.icf-progress-steps {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
-.infio-progress-step {
+.icf-progress-step {
   display: flex;
   align-items: flex-start;
   position: relative;
   min-height: 60px;
 }
 
-.infio-progress-step-indicator {
+.icf-progress-step-indicator {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3989,7 +3989,7 @@ button.infio-chat-input-model-select {
   flex-shrink: 0;
 }
 
-.infio-progress-step-icon {
+.icf-progress-step-icon {
   width: 24px;
   height: 24px;
   display: flex;
@@ -4000,31 +4000,31 @@ button.infio-chat-input-model-select {
   position: relative;
 }
 
-.infio-progress-step-line {
+.icf-progress-step-line {
   width: 2px;
   height: 40px;
   background-color: var(--background-modifier-border);
   margin-top: 8px;
 }
 
-.infio-progress-step-line.completed {
+.icf-progress-step-line.completed {
   background-color: var(--color-green, #28a745);
 }
 
-.infio-progress-step-content {
+.icf-progress-step-content {
   flex: 1;
   min-width: 0;
   padding-top: 4px;
 }
 
-.infio-progress-step-header {
+.icf-progress-step-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 4px;
 }
 
-.infio-progress-step-title {
+.icf-progress-step-title {
   font-size: var(--font-ui-medium);
   font-weight: 600;
   color: var(--text-normal);
@@ -4032,11 +4032,11 @@ button.infio-chat-input-model-select {
   line-height: 1.3;
 }
 
-.infio-progress-step.running .infio-progress-step-title {
+.icf-progress-step.running .icf-progress-step-title {
   color: var(--interactive-accent);
 }
 
-.infio-progress-step-counter {
+.icf-progress-step-counter {
   font-size: var(--font-ui-small);
   color: var(--text-muted);
   font-family: var(--font-monospace);
@@ -4045,14 +4045,14 @@ button.infio-chat-input-model-select {
   border-radius: var(--radius-s);
 }
 
-.infio-progress-step-description {
+.icf-progress-step-description {
   font-size: var(--font-ui-small);
   color: var(--text-muted);
   margin: 4px 0 0 0;
   line-height: 1.4;
 }
 
-.infio-progress-step-details {
+.icf-progress-step-details {
   font-size: var(--font-ui-smaller);
   color: var(--text-faint);
   margin: 2px 0 0 0;
@@ -4060,7 +4060,7 @@ button.infio-chat-input-model-select {
   font-family: var(--font-monospace);
 }
 
-.infio-progress-step-bar {
+.icf-progress-step-bar {
   width: 100%;
   height: 4px;
   background-color: var(--background-modifier-border);
@@ -4069,7 +4069,7 @@ button.infio-chat-input-model-select {
   overflow: hidden;
 }
 
-.infio-progress-step-bar-fill {
+.icf-progress-step-bar-fill {
   height: 100%;
   background-color: var(--interactive-accent);
   border-radius: 2px;
@@ -4077,7 +4077,7 @@ button.infio-chat-input-model-select {
 }
 
 /* Tool result content display */
-.infio-tool-result-content {
+.icf-tool-result-content {
   font-family: var(--font-monospace);
   font-size: 13px;
   line-height: 1.5;

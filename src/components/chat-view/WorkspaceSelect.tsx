@@ -126,23 +126,23 @@ const WorkspaceSelect = () => {
 	return (
 		<>
 			<DropdownMenu.Root open={isOpen} onOpenChange={handleOpenChange}>
-				<DropdownMenu.Trigger className="infio-workspace-select">
-					<span className="infio-workspace-select__name">
+				<DropdownMenu.Trigger className="icf-workspace-select">
+					<span className="icf-workspace-select__name">
 						{displayName}
 					</span>
-					<div className="infio-workspace-select__icon">
+					<div className="icf-workspace-select__icon">
 						{isOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
 					</div>
 				</DropdownMenu.Trigger>
 
 				<DropdownMenu.Portal>
-					<DropdownMenu.Content className="infio-popover infio-workspace-select-content">
+					<DropdownMenu.Content className="icf-popover icf-workspace-select-content">
 						{isLoading ? (
-							<div className="infio-workspace-loading">
+							<div className="icf-workspace-loading">
 								加载中...
 							</div>
 						) : workspaces.length === 0 ? (
-							<div className="infio-workspace-empty">
+							<div className="icf-workspace-empty">
 								暂无工作区
 							</div>
 						) : (
@@ -153,12 +153,12 @@ const WorkspaceSelect = () => {
 										onSelect={() => switchToWorkspace(workspace)}
 										asChild
 									>
-										<li className={`infio-workspace-item`}>
-											<span className="infio-workspace-item-name">
+										<li className={`icf-workspace-item`}>
+											<span className="icf-workspace-item-name">
 												{workspace.name}
 											</span>
 											{workspace.isCurrent && (
-												<Check size={14} className="infio-workspace-check" />
+												<Check size={14} className="icf-workspace-check" />
 											)}
 										</li>
 									</DropdownMenu.Item>
@@ -170,7 +170,7 @@ const WorkspaceSelect = () => {
 			</DropdownMenu.Root>
 
 			<style>{`
-				button.infio-workspace-select {
+				button.icf-workspace-select {
 					background-color: var(--background-modifier-hover);
 					box-shadow: none;
 					border: none;
@@ -189,17 +189,17 @@ const WorkspaceSelect = () => {
 					transition: all 0.15s ease-in-out;
 				}
 
-				button.infio-workspace-select:hover {
+				button.icf-workspace-select:hover {
 					color: var(--text-normal);
 					background-color: var(--background-modifier-hover);
 				}
 
-				button.infio-workspace-select:disabled {
+				button.icf-workspace-select:disabled {
 					opacity: 0.5;
 					cursor: not-allowed;
 				}
 
-				.infio-workspace-select__name {
+				.icf-workspace-select__name {
 					flex-shrink: 1;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -207,7 +207,7 @@ const WorkspaceSelect = () => {
 					flex-grow: 1;
 				}
 
-				.infio-workspace-select__icon {
+				.icf-workspace-select__icon {
 					flex-shrink: 0;
 					display: flex;
 					align-items: center;
@@ -215,7 +215,7 @@ const WorkspaceSelect = () => {
 					margin-left: auto;
 				}
 
-				.infio-workspace-select-content {
+				.icf-workspace-select-content {
 					min-width: auto !important;
 					width: fit-content !important;
 					max-width: 200px;
@@ -223,15 +223,15 @@ const WorkspaceSelect = () => {
 					overflow-y: auto;
 				}
 
-				.infio-workspace-loading,
-				.infio-workspace-empty {
+				.icf-workspace-loading,
+				.icf-workspace-empty {
 					padding: var(--size-4-3) var(--size-4-2);
 					color: var(--text-muted);
 					font-size: var(--font-small);
 					text-align: center;
 				}
 
-				.infio-workspace-item {
+				.icf-workspace-item {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
@@ -241,7 +241,7 @@ const WorkspaceSelect = () => {
 					cursor: pointer;
 				}
 
-				.infio-workspace-item-content {
+				.icf-workspace-item-content {
 					display: flex;
 					flex-direction: column;
 					gap: var(--size-2-1);
@@ -249,7 +249,7 @@ const WorkspaceSelect = () => {
 					min-width: 0;
 				}
 
-				.infio-workspace-item-name {
+				.icf-workspace-item-name {
 					font-size: var(--font-small);
 					font-weight: 500;
 					overflow: hidden;
@@ -257,7 +257,7 @@ const WorkspaceSelect = () => {
 					white-space: nowrap;
 				}
 
-				.infio-workspace-item-info {
+				.icf-workspace-item-info {
 					font-size: var(--font-smallest);
 					color: var(--text-muted);
 					overflow: hidden;
@@ -265,26 +265,26 @@ const WorkspaceSelect = () => {
 					white-space: nowrap;
 				}
 
-				.infio-workspace-check {
+				.icf-workspace-check {
 					color: var(--text-accent);
 					flex-shrink: 0;
 				}
 
 				/* 滚动条样式 */
-				.infio-workspace-select-content::-webkit-scrollbar {
+				.icf-workspace-select-content::-webkit-scrollbar {
 					width: 6px;
 				}
 
-				.infio-workspace-select-content::-webkit-scrollbar-track {
+				.icf-workspace-select-content::-webkit-scrollbar-track {
 					background: transparent;
 				}
 
-				.infio-workspace-select-content::-webkit-scrollbar-thumb {
+				.icf-workspace-select-content::-webkit-scrollbar-thumb {
 					background: var(--background-modifier-border);
 					border-radius: 3px;
 				}
 
-				.infio-workspace-select-content::-webkit-scrollbar-thumb:hover {
+				.icf-workspace-select-content::-webkit-scrollbar-thumb:hover {
 					background: var(--background-modifier-border-hover);
 				}
 			`}</style>

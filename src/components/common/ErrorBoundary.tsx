@@ -35,20 +35,20 @@ class ErrorBoundary extends Component<Props, State> {
 			}
 
 			return (
-				<div className="infio-error-boundary">
-					<div className="infio-error-boundary-content">
+				<div className="icf-error-boundary">
+					<div className="icf-error-boundary-content">
 						<AlertTriangle size={24} color="var(--text-error)" />
 						<h3>出现了一个错误</h3>
 						<p>渲染此组件时发生了错误。请尝试刷新页面或重新打开聊天窗口。</p>
 						{this.state.error && (
-							<details className="infio-error-details">
+							<details className="icf-error-details">
 								<summary>错误详情</summary>
 								<pre>{this.state.error.toString()}</pre>
 							</details>
 						)}
 						<button
 							onClick={() => this.setState({ hasError: false, error: undefined })}
-							className="infio-retry-button"
+							className="icf-retry-button"
 						>
 							重试
 						</button>
@@ -56,7 +56,7 @@ class ErrorBoundary extends Component<Props, State> {
 
 					<style>
 						{`
-							.infio-error-boundary {
+							.icf-error-boundary {
 								display: flex;
 								align-items: center;
 								justify-content: center;
@@ -67,7 +67,7 @@ class ErrorBoundary extends Component<Props, State> {
 								margin: var(--size-2-2);
 							}
 
-							.infio-error-boundary-content {
+							.icf-error-boundary-content {
 								text-align: center;
 								max-width: 400px;
 								display: flex;
@@ -76,30 +76,30 @@ class ErrorBoundary extends Component<Props, State> {
 								gap: var(--size-4-2);
 							}
 
-							.infio-error-boundary-content h3 {
+							.icf-error-boundary-content h3 {
 								margin: 0;
 								color: var(--text-error);
 								font-size: var(--font-ui-large);
 							}
 
-							.infio-error-boundary-content p {
+							.icf-error-boundary-content p {
 								margin: 0;
 								color: var(--text-normal);
 								line-height: var(--line-height-normal);
 							}
 
-							.infio-error-details {
+							.icf-error-details {
 								width: 100%;
 								margin-top: var(--size-2-2);
 							}
 
-							.infio-error-details summary {
+							.icf-error-details summary {
 								cursor: pointer;
 								color: var(--text-muted);
 								font-size: var(--font-ui-small);
 							}
 
-							.infio-error-details pre {
+							.icf-error-details pre {
 								background: var(--background-primary-alt);
 								padding: var(--size-2-2);
 								border-radius: var(--radius-s);
@@ -112,7 +112,7 @@ class ErrorBoundary extends Component<Props, State> {
 								overflow: auto;
 							}
 
-							.infio-retry-button {
+							.icf-retry-button {
 								background: var(--interactive-accent);
 								color: var(--text-on-accent);
 								border: none;
@@ -123,7 +123,7 @@ class ErrorBoundary extends Component<Props, State> {
 								transition: background-color 0.15s ease-in-out;
 							}
 
-							.infio-retry-button:hover {
+							.icf-retry-button:hover {
 								background: var(--interactive-accent-hover);
 							}
 						`}

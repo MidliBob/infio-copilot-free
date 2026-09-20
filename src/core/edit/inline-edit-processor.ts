@@ -37,7 +37,7 @@ export class InlineEdit {
     // 移除父元素的代码块样式
     const parent = el.parentElement;
     if (parent) {
-			parent.addClass("infio-ai-block");
+			parent.addClass("icf-ai-block");
     }
     el.replaceWith(container);
   }

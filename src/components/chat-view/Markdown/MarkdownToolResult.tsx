@@ -41,16 +41,16 @@ export default function MarkdownToolResult({
 	return (
 		processedContent && (
 			<div
-				className={`infio-chat-code-block-response has-filename infio-reasoning-block`}
+				className={`icf-chat-code-block-response has-filename icf-reasoning-block`}
 			>
-				<div className={'infio-chat-code-block-response-header'}>
-					<div className={'infio-chat-code-block-response-header-filename'}>
-						<CheckCheck size={10} className="infio-chat-code-block-response-header-icon" />
+				<div className={'icf-chat-code-block-response-header'}>
+					<div className={'icf-chat-code-block-response-header-filename'}>
+						<CheckCheck size={10} className="icf-chat-code-block-response-header-icon" />
 						{t('response_from_tool')}
-						<span className="infio-mcp-tool-server-name">{serverName}</span>
+						<span className="icf-mcp-tool-server-name">{serverName}</span>
 					</div>
 					<button
-						className="clickable-icon infio-chat-list-dropdown"
+						className="clickable-icon icf-chat-list-dropdown"
 						onClick={() => setIsOpen(!isOpen)}
 					>
 						{isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
@@ -58,7 +58,7 @@ export default function MarkdownToolResult({
 				</div>
 				<div
 					ref={containerRef}
-					className="infio-reasoning-content-wrapper"
+					className="icf-reasoning-content-wrapper"
 				>
 					<MemoizedSyntaxHighlighterWrapper
 						isDarkMode={isDarkMode}
@@ -73,7 +73,7 @@ export default function MarkdownToolResult({
 				<style>
 					{`
 
-					.infio-chat-code-block-response {
+					.icf-chat-code-block-response {
 						position: relative;
 						border: 1px solid var(--background-modifier-border);
 						border-radius: var(--radius-s);
@@ -81,16 +81,16 @@ export default function MarkdownToolResult({
 						margin-bottom: 12px;
 					}
 
-					.infio-chat-code-block-response.infio-reasoning-block {
+					.icf-chat-code-block-response.icf-reasoning-block {
 						max-height: 200px;
 						overflow: hidden;
 					}
 
-					.infio-chat-code-block-response code {
+					.icf-chat-code-block-response code {
 						padding: 0;
 					}
 
-					.infio-chat-code-block-response-header {
+					.icf-chat-code-block-response-header {
 						display: none;
 						justify-content: space-between;
 						align-items: center;
@@ -98,14 +98,14 @@ export default function MarkdownToolResult({
 						padding: 0 var(--size-4-1) 0 0;
 					}
 
-					.infio-chat-code-block-response:hover .infio-chat-code-block-response-header {
+					.icf-chat-code-block-response:hover .icf-chat-code-block-response-header {
 						position: absolute;
 						top: calc(var(--size-4-3) * -1);
 						right: var(--size-4-1);
 						display: flex;
 					}
 
-					.infio-chat-code-block-response.has-filename .infio-chat-code-block-response-header {
+					.icf-chat-code-block-response.has-filename .icf-chat-code-block-response-header {
 						display: flex;
 						border-bottom: 1px solid var(--background-modifier-border);
 						background-color: var(--background-secondary);
@@ -113,13 +113,13 @@ export default function MarkdownToolResult({
 						height: calc(var(--size-4-8) - var(--size-4-1));
 					}
 
-					.infio-chat-code-block-response.has-filename:hover .infio-chat-code-block-response-header {
+					.icf-chat-code-block-response.has-filename:hover .icf-chat-code-block-response-header {
 						position: inherit;
 						top: 0;
 						left: 0;
 					}
 
-					.infio-chat-code-block-response-header-filename {
+					.icf-chat-code-block-response-header-filename {
 						padding-left: var(--size-4-2);
 						font-size: var(--font-medium);
 						overflow: hidden;
@@ -127,11 +127,11 @@ export default function MarkdownToolResult({
 						white-space: nowrap;
 					}
 
-					.infio-chat-code-block-response-header-icon {
+					.icf-chat-code-block-response-header-icon {
 						margin-right: 6px;
 					}
 
-					.infio-chat-code-block-response-header-button {
+					.icf-chat-code-block-response-header-button {
 						display: flex;
 						gap: var(--size-4-1);
 						right: 0;
@@ -142,15 +142,15 @@ export default function MarkdownToolResult({
 						color: var(--text-muted);
 					}
 
-					.infio-chat-code-block-response.has-filename .infio-chat-code-block-response-header-button {
+					.icf-chat-code-block-response.has-filename .icf-chat-code-block-response-header-button {
 						gap: 0;
 						overflow: hidden;
 						min-width: fit-content;
 						height: 100%;
 					}
 
-					.infio-chat-code-block-response.has-filename
-						.infio-chat-code-block-response-header-button
+					.icf-chat-code-block-response.has-filename
+						.icf-chat-code-block-response-header-button
 						button {
 						box-shadow: none;
 						border: 0;
@@ -166,17 +166,17 @@ export default function MarkdownToolResult({
 						}
 					}
 
-					.infio-chat-code-block-response-header-button button {
+					.icf-chat-code-block-response-header-button button {
 						display: flex;
 						gap: var(--size-4-1);
 						font-size: var(--font-ui-smaller);
 					}
 
-					.infio-chat-code-block-response-content {
+					.icf-chat-code-block-response-content {
 						margin: 0;
 					}
 
-					.infio-mcp-tool-server-name {
+					.icf-mcp-tool-server-name {
 						color: var(--text-accent);
 					border-radius: 4px;
 					margin-left: 4px;

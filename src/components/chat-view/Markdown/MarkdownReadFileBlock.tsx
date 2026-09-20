@@ -34,12 +34,12 @@ export default function MarkdownReadFileBlock({
 
 	return (
 		<div
-			className={`infio-chat-code-block ${path ? 'has-filename' : ''}`}
+			className={`icf-chat-code-block ${path ? 'has-filename' : ''}`}
 			onClick={handleClick}
 		>
-			<div className={'infio-chat-code-block-header'}>
-				<div className={'infio-chat-code-block-header-filename'}>
-					<ExternalLink size={10} className="infio-chat-code-block-header-icon" />
+			<div className={'icf-chat-code-block-header'}>
+				<div className={'icf-chat-code-block-header-filename'}>
+					<ExternalLink size={10} className="icf-chat-code-block-header-icon" />
 					{t('chat.reactMarkdown.readFile').replace('{path}', path)}
 				</div>
 			</div>

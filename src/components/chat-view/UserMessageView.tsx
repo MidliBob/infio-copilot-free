@@ -38,15 +38,15 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 	}
 
 	return (
-		<div className="infio-user-message-view">
-			<div className="infio-user-message-content">
+		<div className="icf-user-message-view">
+			<div className="icf-user-message-content">
 				{/* 显示 mentionables */}
 				{mentionables.length > 0 && (
-					<div className="infio-user-message-mentions">
+					<div className="icf-user-message-mentions">
 						{mentionables.map((mentionable, index) => {
 							const Icon = getMentionableIcon(mentionable)
 							return (
-								<span key={index} className="infio-mention-tag">
+								<span key={index} className="icf-mention-tag">
 									{Icon && <Icon size={12} />}
 									{mentionable.type === 'current-file' && (
 										<span>{mentionable.file?.name || 'Not Found'}</span>
@@ -76,11 +76,11 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 				)}
 
 				{/* 显示文本内容 */}
-				<div className="infio-user-message-text">
+				<div className="icf-user-message-text">
 					<pre>{displayText}</pre>
 					{/* {needsTruncation && (
 						<button
-							className="infio-user-message-expand-btn"
+							className="icf-user-message-expand-btn"
 							onClick={() => setIsExpanded(!isExpanded)}
 						>
 							{isExpanded ? (
@@ -99,7 +99,7 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 
 			{/* 编辑按钮 */}
 			<button
-				className="infio-user-message-edit-btn"
+				className="icf-user-message-edit-btn"
 				onClick={onEdit}
 				title="编辑消息"
 			>
@@ -112,7 +112,7 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 					* User Message View
 					* - Readonly view for user messages with edit functionality
 					*/
-					.infio-user-message-view {
+					.icf-user-message-view {
 						position: relative;
 						display: flex;
 						align-items: flex-start;
@@ -125,11 +125,11 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 						transition: all 0.15s ease-in-out;
 					}
 
-					.infio-user-message-view:hover {
+					.icf-user-message-view:hover {
 						box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 					}
 
-					.infio-user-message-avatar {
+					.icf-user-message-avatar {
 						flex-shrink: 0;
 						display: flex;
 						align-items: center;
@@ -142,7 +142,7 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 						margin-top: 2px;
 					}
 
-					.infio-user-message-content {
+					.icf-user-message-content {
 						flex: 1;
 						display: flex;
 						flex-direction: column;
@@ -150,13 +150,13 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 						min-width: 0; /* 防止内容溢出 */
 					}
 
-					.infio-user-message-mentions {
+					.icf-user-message-mentions {
 						display: flex;
 						flex-wrap: wrap;
 						gap: var(--size-2-1);
 					}
 
-					.infio-mention-tag {
+					.icf-mention-tag {
 						display: inline-flex;
 						align-items: center;
 						background-color: var(--background-secondary-alt);
@@ -170,13 +170,13 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 						font-weight: 500;
 					}
 
-					.infio-user-message-text {
+					.icf-user-message-text {
 						color: var(--text-normal);
 						font-size: var(--font-ui-medium);
 						line-height: var(--line-height-normal);
 					}
 
-					.infio-user-message-text pre {
+					.icf-user-message-text pre {
 						margin: 0;
 						font-family: inherit;
 						white-space: pre-wrap;
@@ -184,11 +184,11 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 						overflow-wrap: break-word;
 					}
 
-					.infio-user-message-view:hover {
+					.icf-user-message-view:hover {
 						opacity: 1;
 					}
 
-					.infio-user-message-edit-btn {
+					.icf-user-message-edit-btn {
 						display: flex;
 						align-items: center;
 						justify-content: center;
@@ -206,7 +206,7 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 						}
 					}
 
-					.infio-user-message-expand-btn {
+					.icf-user-message-expand-btn {
 						display: flex;
 						align-items: center;
 						justify-content: center;

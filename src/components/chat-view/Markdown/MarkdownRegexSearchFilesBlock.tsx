@@ -38,12 +38,12 @@ export default function MarkdownRegexSearchFilesBlock({
 
 	return (
 		<div
-			className={`infio-chat-code-block ${path ? 'has-filename' : ''}`}
+			className={`icf-chat-code-block ${path ? 'has-filename' : ''}`}
 			onClick={handleClick}
 		>
-			<div className={'infio-chat-code-block-header'}>
-				<div className={'infio-chat-code-block-header-filename'}>
-					<FileSearch size={14} className="infio-chat-code-block-header-icon" />
+			<div className={'icf-chat-code-block-header'}>
+				<div className={'icf-chat-code-block-header-filename'}>
+					<FileSearch size={14} className="icf-chat-code-block-header-icon" />
 					<span>{t('chat.reactMarkdown.regexSearchInPath').replace('{regex}', regex).replace('{path}', path)}</span>
 				</div>
 			</div>

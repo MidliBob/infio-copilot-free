@@ -21,14 +21,14 @@ function SimiliartySearchItem({
 		openMarkdownFile(app, chunk.path, chunk.metadata.startLine)
 	}
 	return (
-		<div onClick={handleClick} className="infio-similarity-search-item">
-			<div className="infio-similarity-search-item__similarity">
+		<div onClick={handleClick} className="icf-similarity-search-item">
+			<div className="icf-similarity-search-item__similarity">
 				{chunk.similarity.toFixed(3)}
 			</div>
-			<div className="infio-similarity-search-item__path">
+			<div className="icf-similarity-search-item__path">
 				{path.basename(chunk.path)}
 			</div>
-			<div className="infio-similarity-search-item__line-numbers">
+			<div className="icf-similarity-search-item__line-numbers">
 				{`${chunk.metadata.startLine} - ${chunk.metadata.endLine}`}
 			</div>
 		</div>
@@ -45,12 +45,12 @@ export default function SimilaritySearchResults({
 	const [isOpen, setIsOpen] = useState(false)
 
 	return (
-		<div className="infio-similarity-search-results">
+		<div className="icf-similarity-search-results">
 			<div
 				onClick={() => {
 					setIsOpen(!isOpen)
 				}}
-				className="infio-similarity-search-results__trigger"
+				className="icf-similarity-search-results__trigger"
 			>
 				{isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
 				<div>

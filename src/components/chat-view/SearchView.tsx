@@ -638,9 +638,9 @@ const SearchView = () => {
 							</div>
 						</div>
 					)}
-					<div className="infio-search-model-info">
-						<div className="infio-search-model-row">
-							<span className="infio-search-model-label">{t('semanticSearch.embeddingModel')}</span>
+					<div className="icf-search-model-info">
+						<div className="icf-search-model-row">
+							<span className="icf-search-model-label">{t('semanticSearch.embeddingModel')}</span>
 							<ModelSelect modelType="embedding" />
 						</div>
 						<div className="obsidian-search-actions">
@@ -1051,14 +1051,14 @@ const SearchView = () => {
 			{/* 样式 */}
 			<style>
 				{`
-				.infio-search-model-info {
+				.icf-search-model-info {
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
 					gap: var(--size-4-3);
 				}
 
-				.infio-search-model-row {
+				.icf-search-model-row {
 					display: flex;
 					align-items: center;
 					gap: var(--size-2-2);
@@ -1067,13 +1067,13 @@ const SearchView = () => {
 					padding: var(--size-2-2);
 				}
 
-				.infio-search-model-label {
+				.icf-search-model-label {
 					font-size: var(--font-ui-small);
 					color: var(--text-muted);
 					font-weight: var(--font-medium);
 				}
 
-				.infio-search-model-value {
+				.icf-search-model-value {
 					font-size: var(--font-ui-small);
 					color: var(--text-accent);
 					font-weight: 600;

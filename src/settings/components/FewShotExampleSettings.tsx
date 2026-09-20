@@ -197,7 +197,7 @@ export default function FewShotExampleSettings(
 								</div>
 							)}
 							<textarea
-								className="infio-autocomplete-setting-item-textarea"
+								className="icf-autocomplete-setting-item-textarea"
 								rows={5}
 								style={{ width: "100%" }}
 								value={example.input}
@@ -217,7 +217,7 @@ export default function FewShotExampleSettings(
 								</div>
 							)}
 							<textarea
-								className="infio-autocomplete-setting-item-textarea"
+								className="icf-autocomplete-setting-item-textarea"
 								rows={5}
 								style={{ width: "100%" }}
 								value={example.answer}

@@ -158,7 +158,7 @@ function MentionsTypeaheadMenuItem({
 			onMouseEnter={onMouseEnter}
 			onClick={onClick}
 		>
-			{Icon && <Icon size={14} className="infio-popover-item-icon" />}
+			{Icon && <Icon size={14} className="icf-popover-item-icon" />}
 			<span className="text">{option.name}</span>
 		</li>
 	)
@@ -241,7 +241,7 @@ export default function NewMentionsPlugin({
 				anchorElementRef.current && results.length
 					? createPortal(
 						<div
-							className="infio-popover"
+							className="icf-popover"
 							style={{
 								position: 'fixed',
 							}}

@@ -7,7 +7,7 @@ export default {
 	"chat": {
 		"stop": "Стоп",
 		"welcome": {
-			"title": "Добро пожаловать в Infio Copilot",
+			"title": "Добро пожаловать в Infio Copilot Free",
 			"subtitle": "Изучите разные режимы, чтобы повысить продуктивность"
 		},
 		"navigation": {
@@ -411,7 +411,7 @@ export default {
 	},
 	"main": {
 		"openNewChat": "Открыть новый чат",
-		"openInfioCopilot": "Открыть Infio Copilot",
+		"openInfioCopilot": "Открыть Infio Copilot Free",
 		"addSelectionToChat": "Добавить выделенное в чат",
 		"rebuildVaultIndex": "Перестроить индекс всего хранилища",
 		"updateVaultIndex": "Обновить индекс изменённых файлов",
@@ -432,7 +432,7 @@ export default {
 		"updateFailed": "Ошибка обновления индекса хранилища",
 		"selectTextFirst": "Сначала выделите какой-нибудь текст",
 		"migrationFailed": "Не удалось мигрировать на JSON-хранилище. Подробности — в консоли.",
-		"reloadingInfio": "Перезагрузка «infio» из-за миграции"
+		"reloadingInfio": "Перезагрузка «Infio Copilot Free» из-за миграции"
 	},
 	"applyView": {
 		"applyingFile": "Применение: {{file}}",

@@ -59,15 +59,15 @@ export default function MarkdownEditFileBlock({
 	}
 
 	return (
-		<div className={`infio-chat-code-block ${path ? 'has-filename' : ''} infio-reasoning-block`}>
-			<div className={'infio-chat-code-block-header'}>
+		<div className={`icf-chat-code-block ${path ? 'has-filename' : ''} icf-reasoning-block`}>
+			<div className={'icf-chat-code-block-header'}>
 				{path && (
-					<div className={'infio-chat-code-block-header-filename'}>
-						<Edit size={10} className="infio-chat-code-block-header-icon" />
+					<div className={'icf-chat-code-block-header-filename'}>
+						<Edit size={10} className="icf-chat-code-block-header-icon" />
 						{t('chat.reactMarkdown.editOrApplyDiff').replace('{mode}', mode).replace('{path}', path)}
 					</div>
 				)}
-				<div className={'infio-chat-code-block-header-button'}>
+				<div className={'icf-chat-code-block-header-button'}>
 					<button
 						onClick={() => {
 							handleCopy()
@@ -85,7 +85,7 @@ export default function MarkdownEditFileBlock({
 					</button>
 					<button
 						onClick={handleApply}
-						className="infio-apply-button"
+						className="icf-apply-button"
 						disabled={applyStatus !== ApplyStatus.Idle || applying}
 					>
 						{applyStatus === ApplyStatus.Idle ? (
@@ -108,7 +108,7 @@ export default function MarkdownEditFileBlock({
 					</button>
 				</div>
 			</div>
-			<div className="infio-reasoning-content-wrapper">
+			<div className="icf-reasoning-content-wrapper">
 				<MemoizedSyntaxHighlighterWrapper
 					isDarkMode={isDarkMode}
 					language={language}

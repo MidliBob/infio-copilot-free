@@ -26,12 +26,12 @@ function BadgeBase({
 }>) {
 	return (
 		<div
-			className={`infio-chat-user-input-file-badge ${isFocused ? 'infio-chat-user-input-file-badge-focused' : ''}`}
+			className={`icf-chat-user-input-file-badge ${isFocused ? 'icf-chat-user-input-file-badge-focused' : ''}`}
 			onClick={onClick}
 		>
 			{children}
 			<div
-				className="infio-chat-user-input-file-badge-delete"
+				className="icf-chat-user-input-file-badge-delete"
 				onClick={(evt) => {
 					evt.stopPropagation()
 					onDelete()
@@ -57,11 +57,11 @@ function FileBadge({
 	const Icon = getMentionableIcon(mentionable)
 	return (
 		<BadgeBase onDelete={onDelete} onClick={onClick} isFocused={isFocused}>
-			<div className="infio-chat-user-input-file-badge-name">
+			<div className="icf-chat-user-input-file-badge-name">
 				{Icon && (
 					<Icon
 						size={10}
-						className="infio-chat-user-input-file-badge-name-icon"
+						className="icf-chat-user-input-file-badge-name-icon"
 					/>
 				)}
 				<span>{mentionable.file?.name || 'Unknown File'}</span>
@@ -84,11 +84,11 @@ function FolderBadge({
 	const Icon = getMentionableIcon(mentionable)
 	return (
 		<BadgeBase onDelete={onDelete} onClick={onClick} isFocused={isFocused}>
-			<div className="infio-chat-user-input-file-badge-name">
+			<div className="icf-chat-user-input-file-badge-name">
 				{Icon && (
 					<Icon
 						size={10}
-						className="infio-chat-user-input-file-badge-name-icon"
+						className="icf-chat-user-input-file-badge-name-icon"
 					/>
 				)}
 				<span>{mentionable.folder?.name || 'Unknown Folder'}</span>
@@ -113,11 +113,11 @@ function VaultBadge({
 	return (
 		<BadgeBase onDelete={onDelete} onClick={onClick} isFocused={isFocused}>
 			{/* TODO: Update style */}
-			<div className="infio-chat-user-input-file-badge-name">
+			<div className="icf-chat-user-input-file-badge-name">
 				{Icon && (
 					<Icon
 						size={10}
-						className="infio-chat-user-input-file-badge-name-icon"
+						className="icf-chat-user-input-file-badge-name-icon"
 					/>
 				)}
 				<span>Vault</span>
@@ -140,16 +140,16 @@ function CurrentFileBadge({
 	const Icon = getMentionableIcon(mentionable)
 	return mentionable.file ? (
 		<BadgeBase onDelete={onDelete} onClick={onClick} isFocused={isFocused}>
-			<div className="infio-chat-user-input-file-badge-name">
+			<div className="icf-chat-user-input-file-badge-name">
 				{Icon && (
 					<Icon
 						size={10}
-						className="infio-chat-user-input-file-badge-name-icon"
+						className="icf-chat-user-input-file-badge-name-icon"
 					/>
 				)}
 				<span>{mentionable.file?.name || 'Unknown File'}</span>
 			</div>
-			<div className="infio-chat-user-input-file-badge-name-block-suffix">
+			<div className="icf-chat-user-input-file-badge-name-block-suffix">
 				{' (Current file)'}
 			</div>
 		</BadgeBase>
@@ -170,16 +170,16 @@ function BlockBadge({
 	const Icon = getMentionableIcon(mentionable)
 	return (
 		<BadgeBase onDelete={onDelete} onClick={onClick} isFocused={isFocused}>
-			<div className="infio-chat-user-input-file-badge-name-block-name">
+			<div className="icf-chat-user-input-file-badge-name-block-name">
 				{Icon && (
 					<Icon
 						size={10}
-						className="infio-chat-user-input-file-badge-name-block-name-icon"
+						className="icf-chat-user-input-file-badge-name-block-name-icon"
 					/>
 				)}
 				<span>{mentionable.file?.name || 'Unknown File'}</span>
 			</div>
-			<div className="infio-chat-user-input-file-badge-name-block-suffix">
+			<div className="icf-chat-user-input-file-badge-name-block-suffix">
 				{` (${mentionable.startLine}:${mentionable.endLine})`}
 			</div>
 		</BadgeBase>
@@ -200,11 +200,11 @@ function UrlBadge({
 	const Icon = getMentionableIcon(mentionable)
 	return (
 		<BadgeBase onDelete={onDelete} onClick={onClick} isFocused={isFocused}>
-			<div className="infio-chat-user-input-file-badge-name">
+			<div className="icf-chat-user-input-file-badge-name">
 				{Icon && (
 					<Icon
 						size={10}
-						className="infio-chat-user-input-file-badge-name-icon"
+						className="icf-chat-user-input-file-badge-name-icon"
 					/>
 				)}
 				<span>{mentionable.url}</span>
@@ -227,11 +227,11 @@ function ImageBadge({
 	const Icon = getMentionableIcon(mentionable)
 	return (
 		<BadgeBase onDelete={onDelete} onClick={onClick} isFocused={isFocused}>
-			<div className="infio-chat-user-input-file-badge-name">
+			<div className="icf-chat-user-input-file-badge-name">
 				{Icon && (
 					<Icon
 						size={10}
-						className="infio-chat-user-input-file-badge-name-icon"
+						className="icf-chat-user-input-file-badge-name-icon"
 					/>
 				)}
 				<span>{mentionable.name || 'Unknown Image'}</span>

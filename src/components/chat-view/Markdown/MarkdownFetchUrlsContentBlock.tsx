@@ -35,15 +35,15 @@ export default function MarkdownFetchUrlsContentBlock({
 
 	return (
 		urls.length > 0 && (
-			<div className="infio-chat-code-block has-filename infio-reasoning-block">
-				<div className="infio-chat-code-block-header">
-					<div className="infio-chat-code-block-header-filename">
-						<Globe size={10} className="infio-chat-code-block-header-icon" />
+			<div className="icf-chat-code-block has-filename icf-reasoning-block">
+				<div className="icf-chat-code-block-header">
+					<div className="icf-chat-code-block-header-filename">
+						<Globe size={10} className="icf-chat-code-block-header-icon" />
 						{t('chat.reactMarkdown.fetchUrlsContent')}
 					</div>
-					<div className="infio-chat-code-block-header-button">
+					<div className="icf-chat-code-block-header-button">
 						<button
-							className="infio-chat-code-block-status-button"
+							className="icf-chat-code-block-status-button"
 							disabled={true}
 						>
 							{
@@ -62,7 +62,7 @@ export default function MarkdownFetchUrlsContentBlock({
 								)}
 						</button>
 						<button
-							className="clickable-icon infio-chat-list-dropdown"
+							className="clickable-icon icf-chat-list-dropdown"
 							onClick={() => setIsOpen(!isOpen)}
 						>
 							{isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
@@ -71,17 +71,17 @@ export default function MarkdownFetchUrlsContentBlock({
 				</div>
 				<div
 					ref={containerRef}
-					className="infio-reasoning-content-wrapper"
+					className="icf-reasoning-content-wrapper"
 					style={{ display: isOpen ? 'block' : 'none' }}
 				>
-					<ul className="infio-chat-code-block-url-list">
+					<ul className="icf-chat-code-block-url-list">
 						{urls.map((url, index) => (
 							<li key={index}>
 								<a
 									href={url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="infio-chat-code-block-url-link"
+									className="icf-chat-code-block-url-link"
 								>
 									{url}
 								</a>

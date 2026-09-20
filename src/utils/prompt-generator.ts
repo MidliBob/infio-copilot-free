@@ -1143,7 +1143,7 @@ ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
 
 		// 如果没有缓存，进行转换
 		const response = await mcpHub.callTool(
-			'infio-builtin-server',
+			'icf-builtin-server',
 			'CONVERT_VIDEO',
 			{ url, detect_language: 'en' }
 		)
@@ -1203,7 +1203,7 @@ ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
 		const fileType = file.extension
 
 		const response = await mcpHub.callTool(
-			'infio-builtin-server',
+			'icf-builtin-server',
 			'CONVERT_DOCUMENT',
 			{
 				file_content: base64Content,

@@ -39,15 +39,15 @@ export default function MarkdownApplyDiffBlock({
 	}
 
 	return (
-		<div className={`infio-chat-code-block ${path ? 'has-filename' : ''} infio-reasoning-block`}>
-			<div className={'infio-chat-code-block-header'}>
+		<div className={`icf-chat-code-block ${path ? 'has-filename' : ''} icf-reasoning-block`}>
+			<div className={'icf-chat-code-block-header'}>
 				{path && (
-					<div className={'infio-chat-code-block-header-filename'}>
-						<Diff size={10} className="infio-chat-code-block-header-icon" />
+					<div className={'icf-chat-code-block-header-filename'}>
+						<Diff size={10} className="icf-chat-code-block-header-icon" />
 						{mode}: {path}
 					</div>
 				)}
-				<div className={'infio-chat-code-block-header-button'}>
+				<div className={'icf-chat-code-block-header-button'}>
 					<button
 						onClick={handleApply}
 						style={{ color: '#008000' }}
@@ -78,7 +78,7 @@ export default function MarkdownApplyDiffBlock({
 					</button>
 				</div>
 			</div>
-			<div className="infio-reasoning-content-wrapper">
+			<div className="icf-reasoning-content-wrapper">
 				<MemoizedSyntaxHighlighterWrapper
 					isDarkMode={isDarkMode}
 					language="diff"

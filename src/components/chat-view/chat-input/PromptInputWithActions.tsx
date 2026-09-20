@@ -249,9 +249,9 @@ const PromptInputWithActions = forwardRef<ChatUserInputRef, ChatUserInputProps>(
 		}
 
 		return (
-			<div className="infio-chat-user-input-container" ref={containerRef}>
+			<div className="icf-chat-user-input-container" ref={containerRef}>
 				{mentionables.length > 0 && (
-					<div className="infio-chat-user-input-files">
+					<div className="icf-chat-user-input-files">
 						{mentionables.map((m) => (
 							<MentionableBadge
 								key={getMentionableKey(serializeMentionable(m))}
@@ -321,12 +321,12 @@ const PromptInputWithActions = forwardRef<ChatUserInputRef, ChatUserInputProps>(
 					}}
 				/>
 
-				<div className="infio-chat-user-input-controls">
-					<div className="infio-chat-user-input-controls__model-select-container">
+				<div className="icf-chat-user-input-controls">
+					<div className="icf-chat-user-input-controls__model-select-container">
 						<ModeSelect />
 						<ModelSelect />
 					</div>
-					<div className="infio-chat-user-input-controls__buttons">
+					<div className="icf-chat-user-input-controls__buttons">
 						<ImageUploadButton onUpload={handleUploadImages} />
 						<SubmitButton onClick={() => handleSubmit()} />
 					</div>
@@ -397,7 +397,7 @@ function MentionableContentPreview({
 	}, [displayedMentionable])
 
 	return displayFileContent ? (
-		<div className="infio-chat-user-input-file-content-preview">
+		<div className="icf-chat-user-input-file-content-preview">
 			<MemoizedSyntaxHighlighterWrapper
 				isDarkMode={isDarkMode}
 				language="markdown"
@@ -408,7 +408,7 @@ function MentionableContentPreview({
 			</MemoizedSyntaxHighlighterWrapper>
 		</div>
 	) : displayImage ? (
-		<div className="infio-chat-user-input-file-content-preview">
+		<div className="icf-chat-user-input-file-content-preview">
 			<img src={displayImage.data} alt={displayImage.name} />
 		</div>
 	) : null

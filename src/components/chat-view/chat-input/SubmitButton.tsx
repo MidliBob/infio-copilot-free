@@ -5,15 +5,15 @@ import { ArrowUpIcon } from 'lucide-react'
 export function SubmitButton({ onClick }: { onClick: () => void }) {
 	return (
 		<>
-			<button className="infio-chat-user-input-submit1-button" onClick={onClick}>
+			<button className="icf-chat-user-input-submit1-button" onClick={onClick}>
 				{/* {t('chat.input.submit')} */}
-				<div className="infio-chat-user-input-submit1-button-icons">
+				<div className="icf-chat-user-input-submit1-button-icons">
 					<ArrowUpIcon size={14} />
 				</div>
 			</button>
 			<style>
 				{`
-				.infio-chat-user-input-controls .infio-chat-user-input-submit1-button {
+				.icf-chat-user-input-controls .icf-chat-user-input-submit1-button {
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -39,7 +39,7 @@ export function SubmitButton({ onClick }: { onClick: () => void }) {
 						transform: scale(0.95);
 					}
 
-					.infio-chat-user-input-submit-button-icons {
+					.icf-chat-user-input-submit-button-icons {
 						display: flex;
 						align-items: center;
 						justify-content: center;

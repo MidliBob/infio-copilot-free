@@ -38,16 +38,16 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({
   }
 
   return (
-    <div className="infio-image-selector">
-      <div className="infio-image-selector-header">
+    <div className="icf-image-selector">
+      <div className="icf-image-selector-header">
         <input
           type="text"
           placeholder="Search images in vault..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="infio-image-search"
+          className="icf-image-search"
         />
-        <label className="infio-upload-button">
+        <label className="icf-upload-button">
           {t('chat.input.uploadNewImage')}
           <input
             type="file"
@@ -59,11 +59,11 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({
         </label>
       </div>
 
-      <div className="infio-image-grid">
+      <div className="icf-image-grid">
         {vaultImages.map((file) => (
           <div
             key={file.path}
-            className="infio-image-item"
+            className="icf-image-item"
             onClick={() => {
               onSelectVaultImages([file])
               onClose()
@@ -73,7 +73,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({
               src={app.vault.adapter.getResourcePath(file.path)}
               alt={file.name}
             />
-            <div className="infio-image-name">{file.name}</div>
+            <div className="icf-image-name">{file.name}</div>
           </div>
         ))}
       </div>

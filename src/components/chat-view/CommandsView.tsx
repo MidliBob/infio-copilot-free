@@ -187,20 +187,20 @@ const CommandsView = (
 	}
 
 	return (
-		<div className="infio-commands-container">
+		<div className="icf-commands-container">
 			{/* header */}
-			<div className="infio-commands-header">
-				<div className="infio-commands-new">
-					<h2 className="infio-commands-header-title">{t('command.createQuickCommand')}</h2>
-					<div className="infio-commands-label">{t('command.name')}</div>
+			<div className="icf-commands-header">
+				<div className="icf-commands-new">
+					<h2 className="icf-commands-header-title">{t('command.createQuickCommand')}</h2>
+					<div className="icf-commands-label">{t('command.name')}</div>
 					<input
 						type="text"
 						value={newCommandName}
 						onChange={(e) => setNewCommandName(e.target.value)}
-						className="infio-commands-input"
+						className="icf-commands-input"
 					/>
-					<div className="infio-commands-label">{t('command.content')}</div>
-					<div className="infio-commands-textarea">
+					<div className="icf-commands-label">{t('command.content')}</div>
+					<div className="icf-commands-textarea">
 						<LexicalContentEditable
 							initialEditorState={initialEditorState}
 							editorRef={editorRef}
@@ -209,7 +209,7 @@ const CommandsView = (
 					</div>
 					<button
 						onClick={handleAddCommand}
-						className="infio-commands-add-btn"
+						className="icf-commands-add-btn"
 						disabled={!newCommandName.trim()}
 					>
 						<span>{t('command.createCommand')}</span>
@@ -218,48 +218,48 @@ const CommandsView = (
 			</div>
 
 			{/* search bar */}
-			<div className="infio-commands-search">
-				<Search size={18} className="infio-commands-search-icon" />
+			<div className="icf-commands-search">
+				<Search size={18} className="icf-commands-search-icon" />
 				<input
 					type="text"
 					placeholder={t('command.searchPlaceholder')}
 					value={searchTerm}
 					onChange={handleSearch}
-					className="infio-commands-search-input"
+					className="icf-commands-search-input"
 				/>
 			</div>
 
 			{/* commands list */}
-			<div className="infio-commands-list">
+			<div className="icf-commands-list">
 				{filteredCommands.length === 0 ? (
-					<div className="infio-commands-empty">
+					<div className="icf-commands-empty">
 						<p>{t('command.noCommandsFound')}</p>
 					</div>
 				) : (
 					filteredCommands.map(command => (
-						<div key={command.name} className="infio-commands-item">
+						<div key={command.name} className="icf-commands-item">
 							{editingCommandId === command.id ? (
 								// edit mode
-								<div className="infio-commands-edit-mode">
+								<div className="icf-commands-edit-mode">
 									<input
 										type="text"
 										defaultValue={command.name}
-										className="infio-commands-edit-name"
+										className="icf-commands-edit-name"
 										ref={(el) => {
 											if (el) nameInputRefs.current.set(command.id, el)
 										}}
 									/>
-									<div className="infio-commands-textarea">
+									<div className="icf-commands-textarea">
 										<LexicalContentEditable
 											initialEditorState={getCommandEditorState(command.content)}
 											editorRef={getCommandEditRefs(command.id).editorRef}
 											contentEditableRef={getCommandEditRefs(command.id).contentEditableRef}
 										/>
 									</div>
-									<div className="infio-commands-actions">
+									<div className="icf-commands-actions">
 										<button
 											onClick={() => handleSaveEdit(command.id)}
-											className="infio-commands-add-btn"
+											className="icf-commands-add-btn"
 										>
 											<span>{t('command.updateCommand')}</span>
 										</button>
@@ -267,19 +267,19 @@ const CommandsView = (
 								</div>
 							) : (
 								// view mode
-								<div className="infio-commands-view-mode">
-									<div className="infio-commands-name">{command.name}</div>
-									<div className="infio-commands-content">{command.contentText}</div>
-									<div className="infio-commands-actions">
+								<div className="icf-commands-view-mode">
+									<div className="icf-commands-name">{command.name}</div>
+									<div className="icf-commands-content">{command.contentText}</div>
+									<div className="icf-commands-actions">
 										<button
 											onClick={() => handleEditCommand(command)}
-											className="infio-commands-btn"
+											className="icf-commands-btn"
 										>
 											<Pencil size={16} />
 										</button>
 										<button
 											onClick={() => handleDeleteCommand(command.id)}
-											className="infio-commands-btn"
+											className="icf-commands-btn"
 										>
 											<Trash2 size={16} />
 										</button>

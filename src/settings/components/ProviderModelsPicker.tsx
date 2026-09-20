@@ -141,7 +141,7 @@ const HighlightedText: React.FC<{ segments: TextSegment[] }> = ({ segments }) =>
 		<>
 			{segments.map((segment, index) => (
 				segment.isHighlighted ? (
-					<span key={index} className="infio-llm-setting-model-item-highlight">{segment.text}</span>
+					<span key={index} className="icf-llm-setting-model-item-highlight">{segment.text}</span>
 				) : (
 					<span key={index}>{segment.text}</span>
 				)
@@ -292,17 +292,17 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 	};
 
 	return (
-		<div className="infio-llm-setting-item">
-			<div className="infio-llm-setting-item-name">{name}</div>
+		<div className="icf-llm-setting-item">
+			<div className="icf-llm-setting-item-name">{name}</div>
 			{description && (
-				<div className="infio-llm-setting-item-description">{description}</div>
+				<div className="icf-llm-setting-item-description">{description}</div>
 			)}
-			<div className="infio-llm-setting-item-content">
+			<div className="icf-llm-setting-item-content">
 				{/* Provider Selection - Now visible outside */}
-				<div className="infio-llm-setting-provider-container">
-					<label className="infio-llm-setting-provider-label">{t("settings.ModelProvider.provider")}</label>
+				<div className="icf-llm-setting-provider-container">
+					<label className="icf-llm-setting-provider-label">{t("settings.ModelProvider.provider")}</label>
 					<select
-						className="dropdown infio-llm-setting-provider-select"
+						className="dropdown icf-llm-setting-provider-select"
 						value={modelProvider}
 						onChange={(e) => handleProviderChange(e.target.value)}
 					>
@@ -318,16 +318,16 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 				</div>
 
 				{/* Model Selection */}
-				<div className="infio-llm-setting-model-container">
-					<label className="infio-llm-setting-model-label">{t("settings.ModelProvider.model")}</label>
+				<div className="icf-llm-setting-model-container">
+					<label className="icf-llm-setting-model-label">{t("settings.ModelProvider.model")}</label>
 					<Popover.Root modal={false} open={isOpen} onOpenChange={setIsOpen}>
 						<Popover.Trigger asChild>
-							<button className="infio-llm-setting-model-trigger clickable-icon" type="button">
-								<span className="infio-llm-setting-model-display">
+							<button className="icf-llm-setting-model-trigger clickable-icon" type="button">
+								<span className="icf-llm-setting-model-display">
 									{modelId || t("settings.ModelProvider.selectModel")}
 								</span>
 								<svg
-									className="infio-llm-setting-model-arrow"
+									className="icf-llm-setting-model-arrow"
 									width="12"
 									height="12"
 									viewBox="0 0 12 12"
@@ -348,7 +348,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 								side="bottom"
 								align="start"
 								sideOffset={4}
-								className="infio-model-picker-dropdown"
+								className="icf-model-picker-dropdown"
 								avoidCollisions={true}
 								collisionPadding={8}
 								onOpenAutoFocus={(e) => {
@@ -371,10 +371,10 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 									e.stopPropagation();
 								}}
 							>
-								<div className="infio-llm-setting-search-container">
+								<div className="icf-llm-setting-search-container">
 									<input
 										type="text"
-										className="infio-llm-setting-item-search"
+										className="icf-llm-setting-item-search"
 										placeholder={modelIds.length > 0 ? t("settings.ModelProvider.searchOrEnterModelName") : t("settings.ModelProvider.enterCustomModelName")}
 										value={searchTerm}
 										onChange={(e) => {
@@ -426,7 +426,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 									/>
 								</div>
 								{filteredOptions.length > 0 ? (
-									<div className="infio-llm-setting-options-list">
+									<div className="icf-llm-setting-options-list">
 										{filteredOptions.map((option, index) => (
 											<div
 												key={option.id}
@@ -440,7 +440,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 													setSearchTerm("");
 													setIsOpen(false);
 												}}
-												className={`infio-llm-setting-combobox-option ${index === selectedIndex ? 'is-selected' : ''}`}
+												className={`icf-llm-setting-combobox-option ${index === selectedIndex ? 'is-selected' : ''}`}
 											>
 												<HighlightedText segments={option.html} />
 											</div>
@@ -454,7 +454,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 				</div>
 			</div>
 			<style>{`
-				.infio-llm-setting-item {
+				.icf-llm-setting-item {
 					margin-bottom: 8px;
 					padding: 12px;
 					background: var(--background-secondary);
@@ -462,7 +462,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 					border: 1px solid var(--background-modifier-border);
 				}
 
-				.infio-llm-setting-item-name {
+				.icf-llm-setting-item-name {
 					font-size: 14px;
 					font-weight: 500;
 					color: var(--text-normal);
@@ -471,29 +471,29 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 					border-bottom: 1px solid var(--background-modifier-border);
 				}
 
-				.infio-llm-setting-item-description {
+				.icf-llm-setting-item-description {
 					font-size: 12px;
 					color: var(--text-muted);
 					margin-bottom: 8px;
 					line-height: 1.4;
 				}
 
-				.infio-llm-setting-item-content {
+				.icf-llm-setting-item-content {
 					display: flex;
 					flex-direction: column;
 					gap: 8px;
 				}
 
-				.infio-llm-setting-provider-container,
-				.infio-llm-setting-model-container {
+				.icf-llm-setting-provider-container,
+				.icf-llm-setting-model-container {
 					display: flex;
 					align-items: center;
 					gap: 12px;
 					position: relative;
 				}
 
-				.infio-llm-setting-provider-label,
-				.infio-llm-setting-model-label {
+				.icf-llm-setting-provider-label,
+				.icf-llm-setting-model-label {
 					font-size: 13px;
 					font-weight: 500;
 					color: var(--text-muted);
@@ -501,7 +501,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 					text-align: left;
 				}
 
-				.infio-llm-setting-provider-select {
+				.icf-llm-setting-provider-select {
 					max-width: 200px;
 					min-width: 120px;
 					padding: 6px 8px;
@@ -519,17 +519,17 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 					padding-right: 28px;
 				}
 
-				.infio-llm-setting-provider-select:hover {
+				.icf-llm-setting-provider-select:hover {
 					border-color: var(--interactive-accent);
 				}
 
-				.infio-llm-setting-provider-select:focus {
+				.icf-llm-setting-provider-select:focus {
 					outline: none;
 					border-color: var(--interactive-accent);
 					box-shadow: 0 0 0 2px var(--interactive-accent-hover);
 				}
 
-				.infio-llm-setting-model-trigger {
+				.icf-llm-setting-model-trigger {
 					max-width: 300px;
 					min-width: 150px;
 					display: flex;
@@ -546,18 +546,18 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 					min-height: 32px;
 				}
 
-				.infio-llm-setting-model-trigger:hover {
+				.icf-llm-setting-model-trigger:hover {
 					border-color: var(--interactive-accent);
 					background: var(--background-modifier-hover);
 				}
 
-				.infio-llm-setting-model-trigger:focus {
+				.icf-llm-setting-model-trigger:focus {
 					outline: none;
 					border-color: var(--interactive-accent);
 					box-shadow: 0 0 0 2px var(--interactive-accent-hover);
 				}
 
-				.infio-llm-setting-model-display {
+				.icf-llm-setting-model-display {
 					flex: 1;
 					text-align: left;
 					color: var(--text-normal);
@@ -568,17 +568,17 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 					white-space: nowrap;
 				}
 
-				.infio-llm-setting-model-arrow {
+				.icf-llm-setting-model-arrow {
 					color: var(--text-muted);
 					transition: transform 0.2s ease;
 					flex-shrink: 0;
 				}
 
-				.infio-llm-setting-model-trigger[data-state="open"] .infio-llm-setting-model-arrow {
+				.icf-llm-setting-model-trigger[data-state="open"] .icf-llm-setting-model-arrow {
 					transform: rotate(180deg);
 				}
 
-				.infio-model-picker-dropdown {
+				.icf-model-picker-dropdown {
 					background: var(--background-primary);
 					border: 1px solid var(--background-modifier-border);
 					border-radius: 6px;
@@ -604,11 +604,11 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 					}
 				}
 
-				.infio-llm-setting-search-container {
+				.icf-llm-setting-search-container {
 					margin-bottom: 6px;
 				}
 
-				.infio-llm-setting-item-search {
+				.icf-llm-setting-item-search {
 					width: 100%;
 					padding: 6px 8px;
 					border: 1px solid var(--background-modifier-border);
@@ -619,19 +619,19 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 					transition: all 0.2s ease;
 				}
 
-				.infio-llm-setting-item-search:focus {
+				.icf-llm-setting-item-search:focus {
 					outline: none;
 					border-color: var(--interactive-accent);
 					box-shadow: 0 0 0 2px var(--interactive-accent-hover);
 				}
 
-				.infio-llm-setting-options-list {
+				.icf-llm-setting-options-list {
 					max-height: 240px;
 					overflow-y: auto;
 					overscroll-behavior: contain;
 				}
 
-				.infio-llm-setting-combobox-option {
+				.icf-llm-setting-combobox-option {
 					padding: 6px 8px;
 					border-radius: 3px;
 					cursor: pointer;
@@ -642,17 +642,17 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 					word-break: break-all;
 				}
 
-				.infio-llm-setting-combobox-option:hover,
-				.infio-llm-setting-combobox-option.is-selected {
+				.icf-llm-setting-combobox-option:hover,
+				.icf-llm-setting-combobox-option.is-selected {
 					background: var(--background-modifier-hover);
 					color: var(--text-accent);
 				}
 
-				.infio-llm-setting-model-item-highlight {
+				.icf-llm-setting-model-item-highlight {
 					color: var(--text-accent);
 				}
 
-				.infio-llm-setting-no-results {
+				.icf-llm-setting-no-results {
 					padding: 12px 8px;
 					text-align: center;
 					color: var(--text-muted);
@@ -660,40 +660,40 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 				}
 
 				/* 滚动条样式 */
-				.infio-llm-setting-options-list::-webkit-scrollbar {
+				.icf-llm-setting-options-list::-webkit-scrollbar {
 					width: 4px;
 				}
 
-				.infio-llm-setting-options-list::-webkit-scrollbar-track {
+				.icf-llm-setting-options-list::-webkit-scrollbar-track {
 					background: var(--background-secondary);
 					border-radius: 2px;
 				}
 
-				.infio-llm-setting-options-list::-webkit-scrollbar-thumb {
+				.icf-llm-setting-options-list::-webkit-scrollbar-thumb {
 					background: var(--background-modifier-border);
 					border-radius: 2px;
 				}
 
-				.infio-llm-setting-options-list::-webkit-scrollbar-thumb:hover {
+				.icf-llm-setting-options-list::-webkit-scrollbar-thumb:hover {
 					background: var(--text-muted);
 				}
 
 				/* 响应式设计 */
 				@media (max-width: 768px) {
-					.infio-llm-setting-provider-container,
-					.infio-llm-setting-model-container {
+					.icf-llm-setting-provider-container,
+					.icf-llm-setting-model-container {
 						flex-direction: column;
 						align-items: flex-start;
 						gap: 6px;
 					}
 
-					.infio-llm-setting-provider-label,
-					.infio-llm-setting-model-label {
+					.icf-llm-setting-provider-label,
+					.icf-llm-setting-model-label {
 						min-width: auto;
 					}
 
-					.infio-llm-setting-provider-select,
-					.infio-llm-setting-model-trigger {
+					.icf-llm-setting-provider-select,
+					.icf-llm-setting-model-trigger {
 						width: 100%;
 						max-width: none;
 					}

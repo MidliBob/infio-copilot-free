@@ -1277,19 +1277,19 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 	}))
 
 	return (
-		<div className="infio-chat-container">
+		<div className="icf-chat-container">
 			{/* header view */}
-			<div className="infio-chat-header">
-				<div className="infio-chat-header-title">
+			<div className="icf-chat-header">
+				<div className="icf-chat-header-title">
 					<WorkspaceSelect />
 				</div>
-				<div className="infio-chat-header-buttons">
+				<div className="icf-chat-header-buttons">
 					<button
 						onClick={() => {
 							setTab('chat')
 							handleNewChat()
 						}}
-						className="infio-chat-list-dropdown"
+						className="icf-chat-list-dropdown"
 					>
 						<Plus size={18} />
 					</button>
@@ -1301,7 +1301,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 								setTab('history')
 							}
 						}}
-						className="infio-chat-list-dropdown"
+						className="icf-chat-list-dropdown"
 					>
 						<History size={18} color={tab === 'history' ? 'var(--text-accent)' : 'var(--text-color)'} />
 					</button>
@@ -1313,7 +1313,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 								setTab('search')
 							}
 						}}
-						className="infio-chat-list-dropdown"
+						className="icf-chat-list-dropdown"
 					>
 						<Search size={18} color={tab === 'search' ? 'var(--text-accent)' : 'var(--text-color)'} />
 					</button>
@@ -1325,7 +1325,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 								setTab('insights')
 							}
 						}}
-						className="infio-chat-list-dropdown"
+						className="icf-chat-list-dropdown"
 					>
 						<Lightbulb size={18} color={tab === 'insights' ? 'var(--text-accent)' : 'var(--text-color)'} />
 					</button>
@@ -1337,7 +1337,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 								setTab('workspace')
 							}
 						}}
-						className="infio-chat-list-dropdown"
+						className="icf-chat-list-dropdown"
 					>
 						<Box size={18} color={tab === 'workspace' ? 'var(--text-accent)' : 'var(--text-color)'} />
 					</button>
@@ -1350,7 +1350,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 								setTab('commands')
 							}
 						}}
-						className="infio-chat-list-dropdown"
+						className="icf-chat-list-dropdown"
 					>
 						<SquareSlash size={18} color={tab === 'commands' ? 'var(--text-accent)' : 'var(--text-color)'} />
 					</button>
@@ -1363,7 +1363,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 								setTab('custom-mode')
 							}
 						}}
-						className="infio-chat-list-dropdown"
+						className="icf-chat-list-dropdown"
 					>
 						<NotebookPen size={18} color={tab === 'custom-mode' ? 'var(--text-accent)' : 'var(--text-color)'} />
 					</button>
@@ -1375,7 +1375,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 								setTab('mcp')
 							}
 						}}
-						className="infio-chat-list-dropdown"
+						className="icf-chat-list-dropdown"
 					>
 						<Server size={18} color={tab === 'mcp' ? 'var(--text-accent)' : 'var(--text-color)'} />
 					</button>
@@ -1384,11 +1384,11 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 			{/* main view */}
 			{tab === 'chat' ? (
 				<>
-					<div className="infio-chat-messages" ref={chatMessagesRef}>
+					<div className="icf-chat-messages" ref={chatMessagesRef}>
 						{
 							// If the chat is empty, show a message to start a new chat
 							chatMessages.length === 0 && (
-								<div className="infio-chat-empty-state">
+								<div className="icf-chat-empty-state">
 									<HelloInfo onNavigate={(tab) => setTab(tab)} />
 								</div>
 							)
@@ -1396,15 +1396,15 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						{chatMessages.map((message, index) =>
 							message.role === 'user' ? (
 								message.content &&
-								<div key={"user-" + message.id} className="infio-chat-messages-user">
+								<div key={"user-" + message.id} className="icf-chat-messages-user">
 									{editingMessageId === message.id ? (
-										<div className="infio-chat-edit-container">
+										<div className="icf-chat-edit-container">
 											<button
 												onClick={() => {
 													setEditingMessageId(null)
 													chatUserInputRefs.current.get(inputMessage.id)?.focus()
 												}}
-												className="infio-chat-edit-cancel-button"
+												className="icf-chat-edit-cancel-button"
 												title="取消编辑"
 											>
 												<Undo size={16} />
@@ -1483,7 +1483,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 									)}
 								</div>
 							) : (
-								<div key={"assistant-" + message.id} className="infio-chat-messages-assistant">
+								<div key={"assistant-" + message.id} className="icf-chat-messages-assistant">
 									<MarkdownReasoningBlock
 										key={"reasoning-" + message.id}
 										reasoningContent={message.reasoningContent} />
@@ -1499,7 +1499,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						)}
 						<QueryProgress state={queryProgress} />
 						{submitMutation.isPending && (
-							<button onClick={abortActiveStreams} className="infio-stop-gen-btn">
+							<button onClick={abortActiveStreams} className="icf-stop-gen-btn">
 								<CircleStop size={16} />
 								<div>{t('chat.stop')}</div>
 							</button>
@@ -1535,21 +1535,21 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					/>
 				</>
 			) : tab === 'search' ? (
-				<div className="infio-chat-commands">
+				<div className="icf-chat-commands">
 					<SearchView />
 				</div>
 			) : tab === 'commands' ? (
-				<div className="infio-chat-commands">
+				<div className="icf-chat-commands">
 					<CommandsView
 						selectedSerializedNodes={selectedSerializedNodes}
 					/>
 				</div>
 			) : tab === 'custom-mode' ? (
-				<div className="infio-chat-commands">
+				<div className="icf-chat-commands">
 					<CustomModeView />
 				</div>
 			) : tab === 'history' ? (
-				<div className="infio-chat-commands">
+				<div className="icf-chat-commands">
 					<ChatHistoryView
 						currentConversationId={currentConversationId}
 						onSelect={async (conversationId) => {
@@ -1576,15 +1576,15 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					/>
 				</div>
 			) : tab === 'workspace' ? (
-				<div className="infio-chat-commands">
+				<div className="icf-chat-commands">
 					<WorkspaceView />
 				</div>
 			) : tab === 'insights' ? (
-				<div className="infio-chat-commands">
+				<div className="icf-chat-commands">
 					<InsightView />
 				</div>
 			) : (
-				<div className="infio-chat-commands">
+				<div className="icf-chat-commands">
 					<McpHubView />
 				</div>
 			)}

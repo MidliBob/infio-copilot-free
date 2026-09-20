@@ -136,7 +136,7 @@ export default function PluginInfoSettings({
 				)}
 
 				<a
-					href="https://github.com/infiolab/infio-copilot"
+					href="https://github.com/infiolab/icf-copilot"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="plugin-link"
@@ -156,7 +156,7 @@ export default function PluginInfoSettings({
 				</a>
 
 				<a
-					href="https://github.com/infiolab/obsidian-infio-copilot/issues"
+					href="https://github.com/infiolab/obsidian-icf-copilot/issues"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="plugin-link"

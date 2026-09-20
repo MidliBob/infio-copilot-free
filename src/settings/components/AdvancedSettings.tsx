@@ -43,7 +43,7 @@ export default function AdvancedSettings({ settings, updateSettings, errors }: P
                 errorMessage={errors.get("systemMessage")}
             >
                 <textarea
-                    className="infio-autocomplete-setting-item-textarea"
+                    className="icf-autocomplete-setting-item-textarea"
                     rows={10}
                     placeholder={t("settings.AutoComplete.advanced.systemMessagePlaceholder")}
                     value={settings.systemMessage}
@@ -64,7 +64,7 @@ export default function AdvancedSettings({ settings, updateSettings, errors }: P
                 errorMessage={errors.get("userMessageTemplate")}
             >
                 <textarea
-                    className="infio-autocomplete-setting-item-textarea"
+                    className="icf-autocomplete-setting-item-textarea"
                     rows={3}
                     placeholder="{{prefix}}<mask/>{{suffix}}"
                     value={settings.userMessageTemplate}

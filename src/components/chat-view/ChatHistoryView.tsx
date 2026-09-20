@@ -231,16 +231,16 @@ const ChatHistoryView = ({
 	}
 
 	return (
-		<div className="infio-chat-history-container">
+		<div className="icf-chat-history-container">
 			{/* header */}
-			<div className="infio-chat-history-header">
-				<div className="infio-chat-history-title">
+			<div className="icf-chat-history-header">
+				<div className="icf-chat-history-title">
 					<h2>{t('chat.history.title')}</h2>
 				</div>
-				<div className="infio-chat-history-header-actions">
+				<div className="icf-chat-history-header-actions">
 					<button
 						onClick={handleCleanup}
-						className="infio-chat-history-cleanup-btn"
+						className="icf-chat-history-cleanup-btn"
 						title={String(t('chat.history.cleanupTitle'))}
 					>
 						<Sparkles size={16} />
@@ -248,7 +248,7 @@ const ChatHistoryView = ({
 					</button>
 					<button
 						onClick={toggleSelectionMode}
-						className={`infio-chat-history-selection-btn ${selectionMode ? 'active' : ''}`}
+						className={`icf-chat-history-selection-btn ${selectionMode ? 'active' : ''}`}
 						title={selectionMode ? String(t('chat.history.exitSelection')) : String(t('chat.history.enterSelection'))}
 					>
 						<CopyPlus size={16} />
@@ -258,7 +258,7 @@ const ChatHistoryView = ({
 			</div>
 
 			{/* description */}
-			<div className="infio-chat-history-tip">
+			<div className="icf-chat-history-tip">
 				{selectionMode 
 					? String(t('chat.history.selectionMode', { count: selectedConversations.size }))
 					: String(t('chat.history.description'))
@@ -267,11 +267,11 @@ const ChatHistoryView = ({
 
 			{/* batch operations bar */}
 			{selectionMode && (
-				<div className="infio-chat-history-batch-actions">
-					<div className="infio-chat-history-select-actions">
+				<div className="icf-chat-history-batch-actions">
+					<div className="icf-chat-history-select-actions">
 						<button
 							onClick={isAllSelected ? clearAllSelections : selectAllConversations}
-							className="infio-chat-history-select-all-btn"
+							className="icf-chat-history-select-all-btn"
 						>
 							{isAllSelected ? (
 								<>
@@ -286,11 +286,11 @@ const ChatHistoryView = ({
 							)}
 						</button>
 					</div>
-					<div className="infio-chat-history-batch-delete">
+					<div className="icf-chat-history-batch-delete">
 						<button
 							onClick={handleBatchDelete}
 							disabled={selectedConversations.size === 0}
-							className="infio-chat-history-batch-delete-btn"
+							className="icf-chat-history-batch-delete-btn"
 						>
 							<Trash2 size={16} />
 							{t('chat.history.batchDelete')} ({selectedConversations.size})
@@ -300,22 +300,22 @@ const ChatHistoryView = ({
 			)}
 
 			{/* search bar */}
-			<div className="infio-chat-history-search">
-				<Search size={18} className="infio-chat-history-search-icon" />
+			<div className="icf-chat-history-search">
+				<Search size={18} className="icf-chat-history-search-icon" />
 				<input
 					type="text"
 					placeholder={String(t('chat.history.searchPlaceholder'))}
 					value={searchTerm}
 					onChange={handleSearch}
-					className="infio-chat-history-search-input"
+					className="icf-chat-history-search-input"
 				/>
 			</div>
 
 			{/* workspace filter */}
-			<div className="infio-chat-history-workspace-filter">
+			<div className="icf-chat-history-workspace-filter">
 				<button
 					onClick={toggleWorkspaceFilter}
-					className={`infio-chat-history-workspace-filter-btn ${filterByWorkspace ? 'active' : ''}`}
+					className={`icf-chat-history-workspace-filter-btn ${filterByWorkspace ? 'active' : ''}`}
 					title={filterByWorkspace ? String(t('chat.history.showAllChats')) : String(t('chat.history.showWorkspaceChats'))}
 				>
 					<Globe size={14} />
@@ -324,25 +324,25 @@ const ChatHistoryView = ({
 			</div>
 
 			{/* conversations list */}
-			<div className="infio-chat-history-list">
+			<div className="icf-chat-history-list">
 				{filteredConversations.length === 0 ? (
-					<div className="infio-chat-history-empty">
-						<MessageSquare size={48} className="infio-chat-history-empty-icon" />
+					<div className="icf-chat-history-empty">
+						<MessageSquare size={48} className="icf-chat-history-empty-icon" />
 						<p>{searchTerm ? String(t('chat.history.noMatchingChats')) : String(t('chat.history.noChats'))}</p>
 					</div>
 				) : (
 					filteredConversations.map(conversation => (
 						<div 
 							key={conversation.id} 
-							className={`infio-chat-history-item ${currentConversationId === conversation.id ? 'active' : ''} ${selectedConversations.has(conversation.id) ? 'selected' : ''}`}
+							className={`icf-chat-history-item ${currentConversationId === conversation.id ? 'active' : ''} ${selectedConversations.has(conversation.id) ? 'selected' : ''}`}
 						>
 							{editingConversationId === conversation.id ? (
 								// edit mode
-								<div className="infio-chat-history-edit-mode">
+								<div className="icf-chat-history-edit-mode">
 									<input
 										type="text"
 										defaultValue={conversation.title}
-										className="infio-chat-history-edit-title"
+										className="icf-chat-history-edit-title"
 										ref={(el) => {
 											if (el) titleInputRefs.current.set(conversation.id, el)
 										}}
@@ -355,16 +355,16 @@ const ChatHistoryView = ({
 										}}
 										autoFocus
 									/>
-									<div className="infio-chat-history-actions">
+									<div className="icf-chat-history-actions">
 										<button
 											onClick={() => handleSaveEdit(conversation.id)}
-											className="infio-chat-history-save-btn"
+											className="icf-chat-history-save-btn"
 										>
 											<span>{String(t('chat.history.save'))}</span>
 										</button>
 										<button
 											onClick={() => setEditingConversationId(null)}
-											className="infio-chat-history-cancel-btn"
+											className="icf-chat-history-cancel-btn"
 										>
 											<span>{String(t('chat.history.cancel'))}</span>
 										</button>
@@ -373,38 +373,38 @@ const ChatHistoryView = ({
 							) : (
 								// view mode
 								<div 
-									className="infio-chat-history-view-mode"
+									className="icf-chat-history-view-mode"
 									onClick={() => handleSelectConversation(conversation.id)}
 								>
 									{selectionMode && (
-										<div className="infio-chat-history-checkbox">
+										<div className="icf-chat-history-checkbox">
 											{selectedConversations.has(conversation.id) ? (
-												<CheckSquare size={20} className="infio-chat-history-checkbox-checked" />
+												<CheckSquare size={20} className="icf-chat-history-checkbox-checked" />
 											) : (
-												<Square size={20} className="infio-chat-history-checkbox-unchecked" />
+												<Square size={20} className="icf-chat-history-checkbox-unchecked" />
 											)}
 										</div>
 									)}
-									<div className="infio-chat-history-content">
-										<div className="infio-chat-history-date">
+									<div className="icf-chat-history-content">
+										<div className="icf-chat-history-date">
 											<Clock size={12} />
 											{formatDate(conversation.updatedAt)}
 										</div>
-										<div className="infio-chat-history-conversation-title">{conversation.title}</div>
+										<div className="icf-chat-history-conversation-title">{conversation.title}</div>
 										{conversation.workspace && (
-											<div className="infio-chat-history-workspace">
+											<div className="icf-chat-history-workspace">
 												{t('chat.history.workspaceLabel', { workspace: conversation.workspace })}
 											</div>
 										)}
 									</div>
 									{!selectionMode && (
-										<div className="infio-chat-history-actions">
+										<div className="icf-chat-history-actions">
 											<button
 												onClick={(e) => {
 													e.stopPropagation()
 													handleEditConversation(conversation)
 												}}
-												className="infio-chat-history-btn"
+												className="icf-chat-history-btn"
 												title={String(t('chat.history.editTitle'))}
 											>
 												<Pencil size={16} />
@@ -414,7 +414,7 @@ const ChatHistoryView = ({
 													e.stopPropagation()
 													handleDeleteConversation(conversation.id)
 												}}
-												className="infio-chat-history-btn infio-chat-history-delete-btn"
+												className="icf-chat-history-btn icf-chat-history-delete-btn"
 												title={String(t('chat.history.deleteConversation'))}
 											>
 												<Trash2 size={16} />
@@ -431,7 +431,7 @@ const ChatHistoryView = ({
 			{/* Styles */}
 			<style>
 				{`
-				.infio-chat-history-container {
+				.icf-chat-history-container {
 					display: flex;
 					flex-direction: column;
 					padding: 16px;
@@ -444,11 +444,11 @@ const ChatHistoryView = ({
 					-ms-overflow-style: none; /* IE and Edge */
 				}
 
-				.infio-chat-history-container::-webkit-scrollbar {
+				.icf-chat-history-container::-webkit-scrollbar {
 					display: none; /* Webkit browsers */
 				}
 
-				.infio-chat-history-header {
+				.icf-chat-history-header {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
@@ -457,21 +457,21 @@ const ChatHistoryView = ({
 					margin-bottom: 8px;
 				}
 
-				.infio-chat-history-title h2 {
+				.icf-chat-history-title h2 {
 					margin: 0;
 					font-size: 24px;
 					flex: 1;
 				}
 
-				.infio-chat-history-header-actions {
+				.icf-chat-history-header-actions {
 					display: flex;
 					gap: 8px;
 					flex-shrink: 0;
 				}
 
-				.infio-chat-history-filter-btn,
-				.infio-chat-history-cleanup-btn,
-				.infio-chat-history-selection-btn {
+				.icf-chat-history-filter-btn,
+				.icf-chat-history-cleanup-btn,
+				.icf-chat-history-selection-btn {
 					display: flex !important;
 					align-items: center;
 					gap: 6px;
@@ -488,21 +488,21 @@ const ChatHistoryView = ({
 					box-sizing: border-box;
 				}
 
-				.infio-chat-history-filter-btn:hover,
-				.infio-chat-history-cleanup-btn:hover,
-				.infio-chat-history-selection-btn:hover {
+				.icf-chat-history-filter-btn:hover,
+				.icf-chat-history-cleanup-btn:hover,
+				.icf-chat-history-selection-btn:hover {
 					background-color: var(--background-modifier-hover, #f5f5f5);
 					border-color: var(--background-modifier-border-hover, #d0d0d0);
 				}
 
-				.infio-chat-history-filter-btn.active,
-				.infio-chat-history-selection-btn.active {
+				.icf-chat-history-filter-btn.active,
+				.icf-chat-history-selection-btn.active {
 					background-color: var(--interactive-accent, #007acc);
 					color: var(--text-on-accent, #ffffff);
 					border-color: var(--interactive-accent, #007acc);
 				}
 
-				.infio-chat-history-batch-actions {
+				.icf-chat-history-batch-actions {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
@@ -513,12 +513,12 @@ const ChatHistoryView = ({
 					gap: 12px;
 				}
 
-				.infio-chat-history-select-actions {
+				.icf-chat-history-select-actions {
 					display: flex;
 					gap: 8px;
 				}
 
-				.infio-chat-history-select-all-btn {
+				.icf-chat-history-select-all-btn {
 					display: flex;
 					align-items: center;
 					gap: 6px;
@@ -532,16 +532,16 @@ const ChatHistoryView = ({
 					transition: all 0.2s ease;
 				}
 
-				.infio-chat-history-select-all-btn:hover {
+				.icf-chat-history-select-all-btn:hover {
 					background-color: var(--background-modifier-hover);
 				}
 
-				.infio-chat-history-batch-delete {
+				.icf-chat-history-batch-delete {
 					display: flex;
 					gap: 8px;
 				}
 
-				.infio-chat-history-batch-delete-btn {
+				.icf-chat-history-batch-delete-btn {
 					display: flex;
 					align-items: center;
 					gap: 6px;
@@ -555,30 +555,30 @@ const ChatHistoryView = ({
 					transition: all 0.2s ease;
 				}
 
-				.infio-chat-history-batch-delete-btn:hover:not(:disabled) {
+				.icf-chat-history-batch-delete-btn:hover:not(:disabled) {
 					background-color: var(--background-modifier-error-hover);
 				}
 
-				.infio-chat-history-batch-delete-btn:disabled {
+				.icf-chat-history-batch-delete-btn:disabled {
 					background-color: var(--background-modifier-form-field);
 					color: var(--text-faint);
 					border-color: var(--background-modifier-border);
 					cursor: not-allowed;
 				}
 
-				.infio-chat-history-tip {
+				.icf-chat-history-tip {
 					color: var(--text-muted);
 					font-size: 14px;
 					margin-bottom: 8px;
 				}
 
-				.infio-chat-history-add-btn:disabled {
+				.icf-chat-history-add-btn:disabled {
 					background-color: var(--background-modifier-form-field);
 					color: var(--text-faint);
 					cursor: not-allowed;
 				}
 
-				.infio-chat-history-search {
+				.icf-chat-history-search {
 					display: flex;
 					align-items: center;
 					background-color: var(--background-primary) !important;
@@ -590,17 +590,17 @@ const ChatHistoryView = ({
 					max-width: 100%;
 				}
 
-				.infio-chat-history-search:focus-within {
+				.icf-chat-history-search:focus-within {
 					border-color: var(--background-modifier-border-focus);
 				}
 
-				.infio-chat-history-search-icon {
+				.icf-chat-history-search-icon {
 					color: var(--text-muted);
 					margin-right: 8px;
 					opacity: 0.8;
 				}
 
-				.infio-chat-history-search-input {
+				.icf-chat-history-search-input {
 					background-color: transparent !important;
 					border: none !important;
 					color: var(--text-normal);
@@ -616,12 +616,12 @@ const ChatHistoryView = ({
 					}
 				}
 
-				.infio-chat-history-search-input::placeholder {
+				.icf-chat-history-search-input::placeholder {
 					color: var(--text-faint);
 					opacity: 0.8;
 				}
 
-				.infio-chat-history-list {
+				.icf-chat-history-list {
 					display: flex;
 					flex-direction: column;
 					gap: 8px;
@@ -632,11 +632,11 @@ const ChatHistoryView = ({
 					-ms-overflow-style: none; /* IE and Edge */
 				}
 
-				.infio-chat-history-list::-webkit-scrollbar {
+				.icf-chat-history-list::-webkit-scrollbar {
 					display: none; /* Webkit browsers */
 				}
 
-				.infio-chat-history-empty {
+				.icf-chat-history-empty {
 					display: flex;
 					flex-direction: column;
 					align-items: center;
@@ -647,33 +647,33 @@ const ChatHistoryView = ({
 					gap: 16px;
 				}
 
-				.infio-chat-history-empty-icon {
+				.icf-chat-history-empty-icon {
 					opacity: 0.5;
 				}
 
-				.infio-chat-history-item {
+				.icf-chat-history-item {
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-s);
 					background-color: var(--background-primary);
 					transition: all 0.2s ease;
 				}
 
-				.infio-chat-history-item:hover {
+				.icf-chat-history-item:hover {
 					background-color: var(--background-modifier-hover);
 					border-color: var(--background-modifier-border-hover);
 				}
 
-				.infio-chat-history-item.active {
+				.icf-chat-history-item.active {
 					background-color: var(--background-modifier-active);
 					border-color: var(--text-accent);
 				}
 
-				.infio-chat-history-item.selected {
+				.icf-chat-history-item.selected {
 					background-color: var(--background-modifier-active);
 					border-color: var(--interactive-accent);
 				}
 
-				.infio-chat-history-view-mode {
+				.icf-chat-history-view-mode {
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
@@ -681,21 +681,21 @@ const ChatHistoryView = ({
 					cursor: pointer;
 				}
 
-				.infio-chat-history-checkbox {
+				.icf-chat-history-checkbox {
 					margin-right: 12px;
 					display: flex;
 					align-items: center;
 				}
 
-				.infio-chat-history-checkbox-checked {
+				.icf-chat-history-checkbox-checked {
 					color: var(--interactive-accent);
 				}
 
-				.infio-chat-history-checkbox-unchecked {
+				.icf-chat-history-checkbox-unchecked {
 					color: var(--text-muted);
 				}
 
-				.infio-chat-history-content {
+				.icf-chat-history-content {
 					flex: 1;
 					min-width: 0;
 					display: flex;
@@ -703,7 +703,7 @@ const ChatHistoryView = ({
 					gap: 4px;
 				}
 
-				.infio-chat-history-conversation-title {
+				.icf-chat-history-conversation-title {
 					font-weight: 500;
 					color: var(--text-normal);
 					overflow: hidden;
@@ -712,7 +712,7 @@ const ChatHistoryView = ({
 					font-size: 14px;
 				}
 
-				.infio-chat-history-date {
+				.icf-chat-history-date {
 					display: flex;
 					align-items: center;
 					gap: 4px;
@@ -720,25 +720,25 @@ const ChatHistoryView = ({
 					font-size: 12px;
 				}
 
-				.infio-chat-history-workspace {
+				.icf-chat-history-workspace {
 					color: var(--text-muted);
 					font-size: 11px;
 					margin-top: 2px;
 					opacity: 0.8;
 				}
 
-				.infio-chat-history-actions {
+				.icf-chat-history-actions {
 					display: flex;
 					gap: 4px;
 					opacity: 0;
 					transition: opacity 0.2s ease;
 				}
 
-				.infio-chat-history-item:hover .infio-chat-history-actions {
+				.icf-chat-history-item:hover .icf-chat-history-actions {
 					opacity: 1;
 				}
 
-				.infio-chat-history-btn {
+				.icf-chat-history-btn {
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -756,24 +756,24 @@ const ChatHistoryView = ({
 					}
 				}
 
-				.infio-chat-history-btn:hover {
+				.icf-chat-history-btn:hover {
 					background-color: var(--background-modifier-hover);
 					color: var(--text-normal);
 				}
 
-				.infio-chat-history-delete-btn:hover {
+				.icf-chat-history-delete-btn:hover {
 					background-color: var(--background-modifier-error);
 					color: var(--text-error);
 				}
 
-				.infio-chat-history-edit-mode {
+				.icf-chat-history-edit-mode {
 					padding: 12px;
 					display: flex;
 					flex-direction: column;
 					gap: 12px;
 				}
 
-				.infio-chat-history-edit-title {
+				.icf-chat-history-edit-title {
 					background-color: var(--background-primary);
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-s);
@@ -784,13 +784,13 @@ const ChatHistoryView = ({
 					box-sizing: border-box;
 				}
 
-				.infio-chat-history-edit-title:focus {
+				.icf-chat-history-edit-title:focus {
 					outline: none;
 					border-color: var(--text-accent);
 				}
 
-				.infio-chat-history-save-btn,
-				.infio-chat-history-cancel-btn {
+				.icf-chat-history-save-btn,
+				.icf-chat-history-cancel-btn {
 					border: 1px solid var(--background-modifier-border);
 					color: var(--text-normal);
 					padding: 6px 12px;
@@ -803,32 +803,32 @@ const ChatHistoryView = ({
 					transition: background-color 0.2s ease;
 				}
 
-				.infio-chat-history-save-btn {
+				.icf-chat-history-save-btn {
 					background-color: var(--interactive-accent);
 					color: var(--text-on-accent);
 					border-color: var(--interactive-accent);
 				}
 
-				.infio-chat-history-save-btn:hover {
+				.icf-chat-history-save-btn:hover {
 					background-color: var(--interactive-accent-hover);
 				}
 
-				.infio-chat-history-cancel-btn {
+				.icf-chat-history-cancel-btn {
 					background-color: transparent;
 				}
 
-				.infio-chat-history-cancel-btn:hover {
+				.icf-chat-history-cancel-btn:hover {
 					background-color: var(--background-modifier-hover);
 				}
 
-				.infio-chat-history-workspace-filter {
+				.icf-chat-history-workspace-filter {
 					display: flex;
 					justify-content: flex-start;
 					align-items: center;
 					margin-bottom: 12px;
 				}
 
-				.infio-chat-history-workspace-filter-btn {
+				.icf-chat-history-workspace-filter-btn {
 					display: flex;
 					align-items: center;
 					gap: 6px;
@@ -842,12 +842,12 @@ const ChatHistoryView = ({
 					transition: all 0.2s ease;
 				}
 
-				.infio-chat-history-workspace-filter-btn:hover {
+				.icf-chat-history-workspace-filter-btn:hover {
 					background-color: var(--background-modifier-hover);
 					color: var(--text-normal);
 				}
 
-				.infio-chat-history-workspace-filter-btn.active {
+				.icf-chat-history-workspace-filter-btn.active {
 					background-color: var(--interactive-accent);
 					color: var(--text-on-accent);
 					border-color: var(--interactive-accent);

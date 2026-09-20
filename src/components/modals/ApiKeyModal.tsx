@@ -22,7 +22,7 @@ const ApiKeyModalContent: React.FC<ApiKeyModalContentProps> = ({ onClose, app })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const setting = (app as any).setting
     setting.open()
-    setting.openTabById('infio-copilot')
+    setting.openTabById('infio-copilot-free')
   }
 
   return (

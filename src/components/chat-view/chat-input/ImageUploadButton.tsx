@@ -28,10 +28,10 @@ export function ImageUploadButton({
 
   return (
     <button 
-      className="infio-chat-user-input-submit-button"
+      className="icf-chat-user-input-submit-button"
       onClick={handleClick}
     >
-      <div className="infio-chat-user-input-submit-button-icons">
+      <div className="icf-chat-user-input-submit-button-icons">
 				<ImageUp size={14} />
       </div>
       {/* <div>{t('chat.input.image')}</div> */}

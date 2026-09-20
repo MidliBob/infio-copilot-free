@@ -170,33 +170,33 @@ const CustomModeView = () => {
 	}, [isNewMode, isBuiltinMode, customModeId])
 
 	return (
-		<div className="infio-custom-modes-container">
+		<div className="icf-custom-modes-container">
 			{/* Mode configuration title and buttons */}
-			<div className="infio-custom-modes-header">
-				<div className="infio-custom-modes-title">
+			<div className="icf-custom-modes-header">
+				<div className="icf-custom-modes-title">
 					<h2>{t('prompt.title')}</h2>
 				</div>
-				{/* <div className="infio-custom-modes-actions">
-					<button className="infio-custom-modes-btn">
+				{/* <div className="icf-custom-modes-actions">
+					<button className="icf-custom-modes-btn">
 						<PlusCircle size={18} />
 					</button>
-					<button className="infio-custom-modes-btn">
+					<button className="icf-custom-modes-btn">
 						<Settings size={18} />
 					</button>
 				</div> */}
 			</div>
 
 			{/* Create mode tip */}
-			<div className="infio-custom-modes-tip">
+			<div className="icf-custom-modes-tip">
 				{t('prompt.description')}
 			</div>
 
 			{/* Mode selection area */}
-			<div className="infio-custom-modes-builtin">
+			<div className="icf-custom-modes-builtin">
 				{[...buildinModes, ...customModeList].map(mode => (
 					<button
 						key={mode.slug}
-						className={`infio-mode-btn ${selectedMode === mode.slug ? 'active' : ''}`}
+						className={`icf-mode-btn ${selectedMode === mode.slug ? 'active' : ''}`}
 						onClick={() => { setSelectedMode(mode.slug) }}
 					>
 						{mode.name}
@@ -204,7 +204,7 @@ const CustomModeView = () => {
 				))}
 				<button
 					key={"add_new_mode"}
-					className={`infio-mode-btn ${selectedMode === "add_new_mode" ? 'active' : ''}`}
+					className={`icf-mode-btn ${selectedMode === "add_new_mode" ? 'active' : ''}`}
 					onClick={() => setSelectedMode("add_new_mode")}
 				>
 					<Plus size={18} />
@@ -212,20 +212,20 @@ const CustomModeView = () => {
 			</div>
 
 			{/* Mode name */}
-			<div className="infio-custom-modes-section">
-				<div className="infio-section-header">
+			<div className="icf-custom-modes-section">
+				<div className="icf-section-header">
 					<h3>{t('prompt.modeName')}</h3>
 					{!isBuiltinMode && !isNewMode && (
-						<button className="infio-section-btn" onClick={deleteMode}>
+						<button className="icf-section-btn" onClick={deleteMode}>
 							<Trash2 size={16} />
 						</button>
 					)}
 				</div>
 				{
 					isBuiltinMode ? (
-						<p className="infio-section-subtitle">{t('prompt.builtinModeNameWarning')}</p>
+						<p className="icf-section-subtitle">{t('prompt.builtinModeNameWarning')}</p>
 					) : (
-						<p className="infio-section-subtitle">
+						<p className="icf-section-subtitle">
 							{t('prompt.modeNameRequirements')}
 						</p>
 					)
@@ -239,25 +239,25 @@ const CustomModeView = () => {
 						}
 						setModeName(e.target.value)
 					}}
-					className="infio-custom-modes-input"
+					className="icf-custom-modes-input"
 					placeholder={t('prompt.modeNamePlaceholder')}
 					disabled={isBuiltinMode}
 				/>
 			</div>
 
 			{/* Role definition */}
-			<div className="infio-custom-modes-section">
-				<div className="infio-section-header">
+			<div className="icf-custom-modes-section">
+				<div className="icf-section-header">
 					<h3>{t('prompt.roleDefinition')}</h3>
 					{isBuiltinMode && (
-						<button className="infio-section-btn">
+						<button className="icf-section-btn">
 							<Undo2 size={16} />
 						</button>
 					)}
 				</div>
-				<p className="infio-section-subtitle">{t('prompt.roleDefinitionDescription')}</p>
+				<p className="icf-section-subtitle">{t('prompt.roleDefinitionDescription')}</p>
 				<textarea
-					className="infio-custom-textarea"
+					className="icf-custom-textarea"
 					value={roleDefinition}
 					onChange={(e) => {
 						if (isNewMode) {
@@ -270,22 +270,22 @@ const CustomModeView = () => {
 			</div>
 
 			{/* Available features */}
-			<div className="infio-custom-modes-section">
-				<div className="infio-section-header">
+			<div className="icf-custom-modes-section">
+				<div className="icf-section-header">
 					<h3>{t('prompt.availableFeatures')}</h3>
 					{/* {!isBuiltinMode && (
-					<button className="infio-section-btn">
+					<button className="icf-section-btn">
 						<Undo2 size={16} />
 						</button>
 					)} */}
 				</div>
 				{
 					isBuiltinMode && (
-						<p className="infio-section-subtitle">{t('prompt.builtinFeaturesWarning')}</p>
+						<p className="icf-section-subtitle">{t('prompt.builtinFeaturesWarning')}</p>
 					)
 				}
-				<div className="infio-tools-list">
-					<div className="infio-tool-item">
+				<div className="icf-tools-list">
+					<div className="icf-tool-item">
 						<label>
 							<input
 								type="checkbox"
@@ -296,7 +296,7 @@ const CustomModeView = () => {
 							{t('prompt.readFiles')}
 						</label>
 					</div>
-					<div className="infio-tool-item">
+					<div className="icf-tool-item">
 						<label>
 							<input
 								type="checkbox"
@@ -307,7 +307,7 @@ const CustomModeView = () => {
 							{t('prompt.editFiles')}
 						</label>
 					</div>
-					<div className="infio-tool-item">
+					<div className="icf-tool-item">
 						<label>
 							<input
 								type="checkbox"
@@ -322,18 +322,18 @@ const CustomModeView = () => {
 			</div>
 
 			{/* Mode-specific rules */}
-			<div className="infio-custom-modes-section">
-				<div className="infio-section-header">
+			<div className="icf-custom-modes-section">
+				<div className="icf-section-header">
 					<h3>{t('prompt.modeSpecificRules')}</h3>
 					{isBuiltinMode && (
-						<button className="infio-section-btn">
+						<button className="icf-section-btn">
 							<Undo2 size={16} />
 						</button>
 					)}
 				</div>
-				<p className="infio-section-subtitle">{t('prompt.modeSpecificRulesDescription')}</p>
+				<p className="icf-section-subtitle">{t('prompt.modeSpecificRulesDescription')}</p>
 				<textarea
-					className="infio-custom-textarea"
+					className="icf-custom-textarea"
 					value={customInstructions}
 					onChange={(e) => {
 						if (isNewMode) {
@@ -343,29 +343,29 @@ const CustomModeView = () => {
 					}}
 					placeholder={t('prompt.modeSpecificRulesPlaceholder')}
 				/>
-				<p className="infio-section-footer">
-					{t('prompt.supportReadingConfig')}<a href="#" className="infio-link" onClick={() => openOrCreateMarkdownFile(app, `_infio_prompts/${modeName}/rules.md`, 0)}>_infio_prompts/{modeName}/rules</a> {t('prompt.file')}
+				<p className="icf-section-footer">
+					{t('prompt.supportReadingConfig')}<a href="#" className="icf-link" onClick={() => openOrCreateMarkdownFile(app, `_infio_prompts/${modeName}/rules.md`, 0)}>_infio_prompts/{modeName}/rules</a> {t('prompt.file')}
 				</p>
 			</div>
 
 			{/* Advanced, override system prompt */}
-			<div className="infio-custom-modes-section">
+			<div className="icf-custom-modes-section">
 				<div
-					className="infio-section-header infio-section-header-collapsible"
+					className="icf-section-header icf-section-header-collapsible"
 					onClick={() => setIsAdvancedCollapsed(!isAdvancedCollapsed)}
 				>
-					<div className="infio-section-header-title-container">
+					<div className="icf-section-header-title-container">
 						{isAdvancedCollapsed ? <ChevronRight size={16} /> : <ChevronDown size={16} />}
-						<h6 className="infio-section-header-title">{t('prompt.overrideSystemPrompt')}</h6>
+						<h6 className="icf-section-header-title">{t('prompt.overrideSystemPrompt')}</h6>
 					</div>
 				</div>
 				{!isAdvancedCollapsed && (
 					<>
-						<p className="infio-section-subtitle">
+						<p className="icf-section-subtitle">
 							{t('prompt.overrideDescription')}
-							<a href="#" className="infio-link" onClick={() => openOrCreateMarkdownFile(app, `_infio_prompts/${modeName}/system_prompt.md`, 0)}>_infio_prompts/{modeName}/system_prompt</a>
+							<a href="#" className="icf-link" onClick={() => openOrCreateMarkdownFile(app, `_infio_prompts/${modeName}/system_prompt.md`, 0)}>_infio_prompts/{modeName}/system_prompt</a>
 							{t('prompt.overrideWarning')}						<button
-								className="infio-preview-btn"
+								className="icf-preview-btn"
 								onClick={async () => {
 									let filesSearchMethod = settings.filesSearchSettings.method
 									if (filesSearchMethod === 'auto' && settings.embeddingModelId && settings.embeddingModelId !== '') {
@@ -402,9 +402,9 @@ const CustomModeView = () => {
 			</div>
 
 			{/* Save */}
-			<div className="infio-custom-modes-actions">
+			<div className="icf-custom-modes-actions">
 				<button
-					className="infio-preview-btn"
+					className="icf-preview-btn"
 					onClick={() => {
 						if (isNewMode) {
 							createNewMode()
@@ -420,7 +420,7 @@ const CustomModeView = () => {
 			{/* Styles */}
 			<style>
 				{`
-				.infio-custom-modes-container {
+				.icf-custom-modes-container {
 					display: flex;
 					flex-direction: column;
 					padding: 16px;
@@ -430,7 +430,7 @@ const CustomModeView = () => {
 					overflow-y: auto;
 				}
 
-				.infio-custom-modes-input {
+				.icf-custom-modes-input {
 				  background-color: var(--background-primary) !important;
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-s);
@@ -442,23 +442,23 @@ const CustomModeView = () => {
 					margin-bottom: var(--size-4-2);
 				}
 				
-				.infio-custom-modes-header {
+				.icf-custom-modes-header {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
 				}
 				
-				.infio-custom-modes-title h2 {
+				.icf-custom-modes-title h2 {
 					margin: 0;
 					font-size: 24px;
 				}
 				
-				.infio-custom-modes-actions {
+				.icf-custom-modes-actions {
 					display: flex;
 					gap: 8px;
 				}
 				
-				.infio-custom-modes-btn {
+				.icf-custom-modes-btn {
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -470,20 +470,20 @@ const CustomModeView = () => {
 					cursor: pointer;
 				}
 				
-				.infio-custom-modes-tip {
+				.icf-custom-modes-tip {
 					color: #888;
 					font-size: 14px;
 					margin-bottom: 8px;
 				}
 				
-				.infio-custom-modes-builtin {
+				.icf-custom-modes-builtin {
 					display: flex;
 					flex-wrap: wrap;
 					gap: 10px;
 					margin-bottom: 10px;
 				}
 				
-				.infio-mode-btn {
+				.icf-mode-btn {
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -499,18 +499,18 @@ const CustomModeView = () => {
 					margin-top: var(--size-4-2);
 				}
 				
-				.infio-mode-btn.active {
+				.icf-mode-btn.active {
 					background-color: var(--text-accent);
 				}
 				
-				.infio-custom-modes-custom {
+				.icf-custom-modes-custom {
 					display: flex;
 					flex-wrap: wrap;
 					gap: 10px;
 					margin-bottom: 16px;
 				}
 				
-				.infio-mode-btn-custom {
+				.icf-mode-btn-custom {
 					background-color: transparent;
 					border: 1px solid #444;
 					border-radius: 4px;
@@ -520,29 +520,29 @@ const CustomModeView = () => {
 					font-size: 14px;
 				}
 				
-				.infio-mode-btn-custom.active {
+				.icf-mode-btn-custom.active {
 					background-color: var(--text-accent);
 					border-color: var(--text-accent);
 					color: var(--text-normal);
 				}
 				
-				.infio-custom-modes-section {
+				.icf-custom-modes-section {
 					margin-bottom: 16px;
 				}
 				
-				.infio-section-header {
+				.icf-section-header {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
 					margin-bottom: 4px;
 				}
 				
-				.infio-section-header h3 {
+				.icf-section-header h3 {
 					margin: 0;
 					font-size: 16px;
 				}
 				
-				.infio-section-btn {
+				.icf-section-btn {
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -560,13 +560,13 @@ const CustomModeView = () => {
 					}
 				}
 				
-				.infio-section-subtitle {
+				.icf-section-subtitle {
 					color: #888;
 					font-size: 14px;
 					margin: 4px 0 12px;
 				}
 				
-				.infio-custom-textarea {
+				.icf-custom-textarea {
 					background-color: var(--background-primary) !important;
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-s);
@@ -579,7 +579,7 @@ const CustomModeView = () => {
 					box-sizing: border-box;
 				}
 				
-				.infio-select {
+				.icf-select {
 					width: 100%;
 					border: 1px solid #444;
 					border-radius: 4px;
@@ -588,32 +588,32 @@ const CustomModeView = () => {
 					margin-bottom: 8px;
 				}
 				
-				.infio-tools-list {
+				.icf-tools-list {
 					display: flex;
 					flex-direction: column;
 					gap: 10px;
 				}
 				
-				.infio-tool-item {
+				.icf-tool-item {
 					display: flex;
 					align-items: center;
 				}
 				
-				.infio-tool-item label {
+				.icf-tool-item label {
 					display: flex;
 					align-items: center;
 					gap: 8px;
 					cursor: pointer;
 				}
 				
-				.infio-code-section {
+				.icf-code-section {
 					border: 1px solid #444;
 					border-radius: 4px;
 					padding: 8px;
 					margin-bottom: 12px;
 				}
 				
-				.infio-code-header {
+				.icf-code-header {
 					display: flex;
 					align-items: center;
 					gap: 8px;
@@ -621,18 +621,18 @@ const CustomModeView = () => {
 					color: #888;
 				}
 				
-				.infio-section-footer {
+				.icf-section-footer {
 					margin-top: 0px;
 					font-size: 14px;
 					color: #888;
 				}
 				
-				.infio-link {
+				.icf-link {
 					color: var(--text-accent);
 					text-decoration: none;
 				}
 				
-				.infio-preview-btn {
+				.icf-preview-btn {
 					border: 1px solid #444;
 					color: var(--text-normal);
 					padding: 8px 16px;
@@ -644,18 +644,18 @@ const CustomModeView = () => {
 					width: fit-content;
 				}
 
-				.infio-section-header-collapsible {
+				.icf-section-header-collapsible {
 					cursor: pointer;
 					user-select: none;
 				}
 
-				.infio-section-header-title-container {
+				.icf-section-header-title-container {
 					display: flex;
 					align-items: center;
 					gap: 4px;
 				}
 
-				.infio-section-header-title {
+				.icf-section-header-title {
 					margin: 0;
 				}
 				`}

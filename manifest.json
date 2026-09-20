@@ -1,10 +1,10 @@
 {
-	"id": "infio-copilot",
-	"name": "Infio Copilot",
-	"version": "0.8.7",
+	"id": "infio-copilot-free",
+	"name": "Infio Copilot Free",
+	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "A Cursor-inspired AI assistant for notes that offers smart autocomplete and interactive chat with your selected notes",
-	"author": "Felix.D",
-	"authorUrl": "https://github.com/infiolab",
+	"description": "Community-maintained Cursor-inspired AI assistant: agent chat with your vault, RAG semantic search, autocomplete and AI insights. Continuation of Infio Copilot.",
+	"author": "MidliBob",
+	"authorUrl": "https://github.com/MidliBob",
 	"isDesktopOnly": false
 }

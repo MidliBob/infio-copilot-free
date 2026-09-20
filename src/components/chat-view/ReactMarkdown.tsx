@@ -4,7 +4,7 @@ import { ApplyStatus, ToolArgs } from '../../types/apply'
 import {
 	ParsedMsgBlock,
 	parseMsgBlocks,
-} from '../../utils/parse-infio-block'
+} from '../../utils/parse-icf-block'
 
 import MarkdownApplyDiffBlock from './Markdown/MarkdownApplyDiffBlock'
 import MarkdownDataviewQueryBlock from './Markdown/MarkdownDataviewQueryBlock'
@@ -152,22 +152,22 @@ function ReactMarkdown({
 				) : block.type === 'attempt_completion' ? (
 					<MarkdownWithIcons
 						key={"attempt-completion-" + index}
-						className="infio-markdown infio-attempt-completion"
+						className="icf-markdown icf-attempt-completion"
 						markdownContent={block.result}
 						finish={block.finish}
 						iconName="attempt_completion"
 						iconSize={14}
-						iconClassName="infio-markdown-icon"
+						iconClassName="icf-markdown-icon"
 					/>
 				) : block.type === 'ask_followup_question' ? (
 					<MarkdownWithIcons
 						key={"ask-followup-question-" + index}
-						className="infio-markdown infio-followup-question"
+						className="icf-markdown icf-followup-question"
 						markdownContent={block.question}
 						finish={block.finish}
 						iconName="ask_followup_question"
 						iconSize={14}
-						iconClassName="infio-markdown-icon"
+						iconClassName="icf-markdown-icon"
 					/>
 				) : block.type === 'switch_mode' ? (
 					<MarkdownSwitchModeBlock
@@ -240,7 +240,7 @@ function ReactMarkdown({
 					<RawMarkdownBlock
 						key={"markdown-" + index}
 						content={block.content}
-						className="infio-markdown"
+						className="icf-markdown"
 					/>
 				),
 			)}

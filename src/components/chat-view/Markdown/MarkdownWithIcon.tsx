@@ -26,7 +26,7 @@ export function CopyButton({ message }: { message: string }) {
 						{copied ? (
 							<Check
 								size={12}
-								className="infio-chat-message-actions-icon--copied"
+								className="icf-chat-message-actions-icon--copied"
 							/>
 						) : (
 							<CopyIcon onClick={handleCopy} size={12} />
@@ -34,7 +34,7 @@ export function CopyButton({ message }: { message: string }) {
 					</button>
 				</Tooltip.Trigger>
 				<Tooltip.Portal>
-					<Tooltip.Content className="infio-tooltip-content">
+					<Tooltip.Content className="icf-tooltip-content">
 						{t('chat.reactMarkdown.copyMsg')}
 					</Tooltip.Content>
 				</Tooltip.Portal>
@@ -70,7 +70,7 @@ export function CreateNewFileButton({ message }: { message: string }) {
 						{created ? (
 							<Check
 								size={12}
-								className="infio-chat-message-actions-icon--copied"
+								className="icf-chat-message-actions-icon--copied"
 							/>
 						) : (
 							<FilePlus2 onClick={handleCreate} size={12} />
@@ -78,7 +78,7 @@ export function CreateNewFileButton({ message }: { message: string }) {
 					</button>
 				</Tooltip.Trigger>
 				<Tooltip.Portal>
-					<Tooltip.Content className="infio-tooltip-content">
+					<Tooltip.Content className="icf-tooltip-content">
 						{t('chat.reactMarkdown.createNewNote')}
 					</Tooltip.Content>
 				</Tooltip.Portal>
@@ -104,7 +104,7 @@ const MarkdownWithIcons = ({
 	className,
 	iconName,
 	iconSize = 14,
-	iconClassName = "infio-markdown-icon"
+	iconClassName = "icf-markdown-icon"
 }: MarkdownWithIconsProps) => {
 	// Handle icon rendering directly without string manipulation
 	const renderIcon = (): ReactNode => {
@@ -144,7 +144,7 @@ const MarkdownWithIcons = ({
 				/>
 			</div>
 			{markdownContent && finish && iconName === "attempt_completion" &&
-				<div className="infio-chat-message-actions">
+				<div className="icf-chat-message-actions">
 					<CopyButton message={markdownContent} />
 					<CreateNewFileButton message={markdownContent} />
 				</div>}

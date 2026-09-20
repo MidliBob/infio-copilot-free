@@ -61,7 +61,7 @@ export function t(str: string, params?: Record<string, any>): any {
 
 	if (!locale) {
 		console.error({
-			plugin: "infio-copilot",
+			plugin: "infio-copilot-free",
 			fn: t,
 			where: "src/lang/helpers.ts",
 			message: "Error: locale not found",

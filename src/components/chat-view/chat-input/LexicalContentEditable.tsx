@@ -70,8 +70,8 @@ export default function LexicalContentEditable({
 	const initialConfig: InitialConfigType = {
 		namespace: 'LexicalContentEditable',
 		theme: {
-			root: rootTheme || 'infio-chat-lexical-content-editable-root',
-			paragraph: 'infio-chat-lexical-content-editable-paragraph',
+			root: rootTheme || 'icf-chat-lexical-content-editable-root',
+			paragraph: 'icf-chat-lexical-content-editable-paragraph',
 		},
 		nodes: [MentionNode],
 		editorState: initialEditorState,

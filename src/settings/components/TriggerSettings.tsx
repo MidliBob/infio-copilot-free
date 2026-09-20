@@ -90,7 +90,7 @@ function TriggerSettings(props: IProps): React.JSX.Element {
 
 			{triggers.map((trigger: Trigger, index: number) => (
 				<div
-					className="infio-autocomplete-setting-list-item"
+					className="icf-autocomplete-setting-list-item"
 					key={`setting-list-item-${name.replace(" ", "-")}-${index}`}
 				>
 					{(props.errorMessages.get(`triggers.${index}.value`) !== undefined || props.errorMessages.get(`triggers.${index}.type`) !== undefined) && (

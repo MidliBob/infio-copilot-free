@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-infio-copilot",
-	"version": "0.8.7",
-	"description": "A Cursor-inspired AI assistant that offers smart autocomplete and interactive chat with your selected notes",
+	"name": "infio-copilot-free",
+	"version": "1.0.0",
+	"description": "Community-maintained Cursor-inspired AI assistant: agent chat with your vault, RAG semantic search, autocomplete and AI insights. Continuation of Infio Copilot.",
 	"main": "main.js",
 	"scripts": {
 		"copy-pglite-assets": "node scripts/copy-pglite-assets.mjs",
@@ -15,7 +15,7 @@
 		"lint": "eslint 'src/**/*.{ts,tsx}'"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "MidliBob",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/diff": "^5.2.3",

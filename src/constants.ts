@@ -1,9 +1,9 @@
 import { LLMModel } from './types/llm/model'
 // import { ApiProvider } from './utils/api'
-export const CHAT_VIEW_TYPE = 'infio-chat-view'
-export const APPLY_VIEW_TYPE = 'infio-apply-view'
-export const PREVIEW_VIEW_TYPE = 'infio-preview-view'
-export const JSON_VIEW_TYPE = 'infio-json-view'
+export const CHAT_VIEW_TYPE = 'icf-chat-view'
+export const APPLY_VIEW_TYPE = 'icf-apply-view'
+export const PREVIEW_VIEW_TYPE = 'icf-preview-view'
+export const JSON_VIEW_TYPE = 'icf-json-view'
 
 export const DEFAULT_MODELS: LLMModel[] = []
 

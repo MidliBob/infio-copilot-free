@@ -162,15 +162,15 @@ export class McpHub {
 	private shellEnv: EnvironmentVariables
 
 	// 内置服务器配置
-	private readonly BUILTIN_SERVER_NAME = "infio-builtin-server"
+	private readonly BUILTIN_SERVER_NAME = "icf-builtin-server"
 
 	constructor(app: App, plugin: InfioPlugin) {
 		this.app = app
 		this.plugin = plugin
 		this.shellEnv = shellEnvSync()
 		// Placeholder for providerRef initialization - this needs a proper solution if providerRef is essential.
-		// if ((this.app as any).plugins?.plugins['obsidian-infio-copilot']) {
-		// 	this.providerRef = (this.app as any).plugins.plugins['obsidian-infio-copilot'];
+		// if ((this.app as any).plugins?.plugins['obsidian-icf-copilot']) {
+		// 	this.providerRef = (this.app as any).plugins.plugins['obsidian-icf-copilot'];
 		// }
 	}
 

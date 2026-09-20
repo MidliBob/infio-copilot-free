@@ -51,12 +51,12 @@ export default function MarkdownReferenceBlock({
   return (
     blockContent && (
       <div
-        className={`infio-chat-code-block ${filename ? 'has-filename' : ''}`}
+        className={`icf-chat-code-block ${filename ? 'has-filename' : ''}`}
         onClick={handleClick}
       >
-        <div className={'infio-chat-code-block-header'}>
+        <div className={'icf-chat-code-block-header'}>
           {filename && (
-            <div className={'infio-chat-code-block-header-filename'}>
+            <div className={'icf-chat-code-block-header-filename'}>
               {filename}
             </div>
           )}

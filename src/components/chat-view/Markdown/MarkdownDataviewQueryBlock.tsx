@@ -32,26 +32,26 @@ export default function MarkdownDataviewQueryBlock({
 
 	return (
 		<div 
-			className={`infio-chat-code-block has-filename`}
+			className={`icf-chat-code-block has-filename`}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 		>
-			<div className={'infio-chat-code-block-header'}>
+			<div className={'icf-chat-code-block-header'}>
 				<div 
-					className={'infio-chat-code-block-header-filename'}
+					className={'icf-chat-code-block-header-filename'}
 					onClick={() => setIsOpen(!isOpen)}
 					style={{ cursor: isHovered ? 'pointer' : 'default' }}
 				>
 					{isHovered ? (
-						isOpen ? <ChevronDown size={14} className="infio-chat-code-block-header-icon" /> : <ChevronRight size={14} className="infio-chat-code-block-header-icon" />
+						isOpen ? <ChevronDown size={14} className="icf-chat-code-block-header-icon" /> : <ChevronRight size={14} className="icf-chat-code-block-header-icon" />
 					) : (
-						<Database size={14} className="infio-chat-code-block-header-icon" />
+						<Database size={14} className="icf-chat-code-block-header-icon" />
 					)}
 					Dataview 查询 ({outputFormat})
 				</div>
-				<div className={'infio-chat-code-block-header-button'}>
+				<div className={'icf-chat-code-block-header-button'}>
 					<button
-						className="infio-dataview-query-button"
+						className="icf-dataview-query-button"
 						disabled={true}
 					>
 						{
@@ -72,7 +72,7 @@ export default function MarkdownDataviewQueryBlock({
 				</div>
 			</div>
 			{isOpen && (
-				<div className={'infio-chat-code-block-content'}>
+				<div className={'icf-chat-code-block-content'}>
 					<pre>
 						<code>{query}</code>
 					</pre>

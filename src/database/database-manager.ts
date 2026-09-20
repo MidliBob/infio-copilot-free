@@ -38,7 +38,7 @@ async function loadLocalPgliteAssets(
 		return { wasm, data, vector }
 	} catch (error) {
 		console.warn(
-			'[infio-copilot] could not read local PGlite assets, falling back to CDN',
+			'[icf-copilot] could not read local PGlite assets, falling back to CDN',
 			error,
 		)
 		return undefined
@@ -60,7 +60,7 @@ export class DBManager {
 	static async create(
 		app: App,
 		filesystem: string,
-		pluginId = 'infio-copilot',
+		pluginId = 'infio-copilot-free',
 	): Promise<DBManager> {
 		const dbManager = new DBManager(app)
 		const assets = await loadLocalPgliteAssets(app, pluginId)

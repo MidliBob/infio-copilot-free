@@ -56,7 +56,7 @@ export default function QueryProgress({
 			return null
 		case 'reading-mentionables':
 			return (
-				<div className="infio-query-progress">
+				<div className="icf-query-progress">
 					<p>
 						{t('chat.queryProgress.readingMentionableFiles')}
 						<DotLoader />
@@ -65,13 +65,13 @@ export default function QueryProgress({
 			)
 		case 'reading-files':
 			return (
-				<div className="infio-query-progress">
+				<div className="icf-query-progress">
 					<p>
 						{t('chat.queryProgress.readingFiles')}
 						<DotLoader />
 					</p>
 					{state.currentFile && (
-						<p className="infio-query-progress-detail">
+						<p className="icf-query-progress-detail">
 							{state.currentFile}
 							{state.totalFiles && state.completedFiles !== undefined && (
 								<span> ({state.completedFiles}/{state.totalFiles})</span>
@@ -82,24 +82,24 @@ export default function QueryProgress({
 			)
 		case 'reading-files-done':
 			return (
-				<div className="infio-query-progress">
+				<div className="icf-query-progress">
 					<p>
 						{t('chat.queryProgress.readingFilesDone')}
 					</p>
-					<p className="infio-query-progress-detail">
+					<p className="icf-query-progress-detail">
 						{t('chat.queryProgress.filesLoaded').replace('{count}', state.fileContents.length.toString())}
 					</p>
 				</div>
 			)
 		case 'reading-websites':
 			return (
-				<div className="infio-query-progress">
+				<div className="icf-query-progress">
 					<p>
 						{t('chat.queryProgress.readingWebsites')}
 						<DotLoader />
 					</p>
 					{state.currentUrl && (
-						<p className="infio-query-progress-detail">
+						<p className="icf-query-progress-detail">
 							{state.currentUrl}
 							{state.totalUrls && state.completedUrls !== undefined && (
 								<span> ({state.completedUrls}/{state.totalUrls})</span>
@@ -110,28 +110,28 @@ export default function QueryProgress({
 			)
 		case 'reading-websites-done':
 			return (
-				<div className="infio-query-progress">
+				<div className="icf-query-progress">
 					<p>
 						{t('chat.queryProgress.readingWebsitesDone')}
 					</p>
-					<p className="infio-query-progress-detail">
+					<p className="icf-query-progress-detail">
 						{t('chat.queryProgress.websitesLoaded').replace('{count}', state.websiteContents.length.toString())}
 					</p>
 				</div>
 			)
 		case 'indexing':
 			return (
-				<div className="infio-query-progress">
+				<div className="icf-query-progress">
 					<p>
 						{`${t('chat.queryProgress.indexing')} ${state.indexProgress.totalFiles} ${t('chat.queryProgress.file')}`}
 						<DotLoader />
 					</p>
-					<p className="infio-query-progress-detail">{`${state.indexProgress.completedChunks}/${state.indexProgress.totalChunks} ${t('chat.queryProgress.chunkIndexed')}`}</p>
+					<p className="icf-query-progress-detail">{`${state.indexProgress.completedChunks}/${state.indexProgress.totalChunks} ${t('chat.queryProgress.chunkIndexed')}`}</p>
 				</div>
 			)
 		case 'querying':
 			return (
-				<div className="infio-query-progress">
+				<div className="icf-query-progress">
 					<p>
 						{t('chat.queryProgress.queryingVault')}
 						<DotLoader />
@@ -140,7 +140,7 @@ export default function QueryProgress({
 			)
 		case 'querying-done':
 			return (
-				<div className="infio-query-progress">
+				<div className="icf-query-progress">
 					<p>
 						{t('chat.queryProgress.readingRelatedFiles')}
 						<DotLoader />
@@ -157,5 +157,5 @@ export default function QueryProgress({
 }
 
 function DotLoader() {
-	return <span className="infio-dot-loader" aria-label="Loading"></span>
+	return <span className="icf-dot-loader" aria-label="Loading"></span>
 }

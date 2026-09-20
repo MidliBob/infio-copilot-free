@@ -40,7 +40,7 @@ export default function PreviewViewRoot({
 			} else {
 				// 如果是纯文本，创建预格式化文本元素
 				const preElement = document.createElement('pre')
-				preElement.className = 'infio-raw-content'
+				preElement.className = 'icf-raw-content'
 				preElement.textContent = state.content
 				contentRef.current.appendChild(preElement)
 			}
@@ -48,7 +48,7 @@ export default function PreviewViewRoot({
 	}, [state.content, state.file])
 
 	return (
-		<div id="infio-preview-view">
+		<div id="icf-preview-view">
 			<div className="view-header">
 				<div className="view-header-left">
 					<div className="view-header-nav-buttons"></div>
@@ -59,7 +59,7 @@ export default function PreviewViewRoot({
 					</div>
 					<div className="view-actions">
 						<button
-							className="clickable-icon view-action infio-close-button"
+							className="clickable-icon view-action icf-close-button"
 							aria-label="Close preview"
 							onClick={close}
 						>
@@ -73,31 +73,31 @@ export default function PreviewViewRoot({
 			<div className="view-content">
 				<div className="markdown-preview-view is-readable-line-width">
 					<div className="markdown-preview-sizer">
-						<div className="infio-preview-title">
+						<div className="icf-preview-title">
 							{state.title || (state.file ? state.file.name.replace(/\.[^/.]+$/, '') : '')}
 						</div>
 						<div 
 							ref={contentRef} 
-							className="markdown-preview-section infio-preview-content"
+							className="markdown-preview-section icf-preview-content"
 						></div>
 					</div>
 				</div>
 			</div>
 			<style>{`
-				#infio-preview-view {
+				#icf-preview-view {
 					display: flex;
 					flex-direction: column;
 					height: 100%;
 					background-color: var(--background-primary);
 				}
 				
-				#infio-preview-view .view-content {
+				#icf-preview-view .view-content {
 					flex-grow: 1;
 					overflow: auto;
 					padding: 0 20px;
 				}
 				
-				.infio-preview-title {
+				.icf-preview-title {
 					font-size: 1.8em;
 					font-weight: bold;
 					margin-bottom: 20px;
@@ -109,11 +109,11 @@ export default function PreviewViewRoot({
 					padding: 10px 0;
 				}
 				
-				.infio-preview-content {
+				.icf-preview-content {
 					text-align: center;
 				}
 				
-				.infio-preview-content svg {
+				.icf-preview-content svg {
 					max-width: 100%;
 					height: auto;
 					display: block;
@@ -122,7 +122,7 @@ export default function PreviewViewRoot({
 					box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 				}
 				
-				.infio-raw-content {
+				.icf-raw-content {
 					white-space: pre-wrap;
 					word-break: break-word;
 					font-family: var(--font-monospace);

@@ -1,3 +1,6 @@
+> **公告（2026-09）**：本项目已作为独立插件 **Infio Copilot Free**（`infio-copilot-free`）继续维护，
+> 原文档对应旧版 0.8.x 界面；最新安装与使用说明见英文 README 与 MAINTAINING.md。
+
 <h1 align="center">Obsidian-Infio-Copilot</h1>
 
 **让你的 Obsidian 秒变个人 AI 工作站！**

@@ -28,7 +28,7 @@ function CopyButton({ message }: { message: ChatAssistantMessage }) {
             {copied ? (
               <Check
                 size={12}
-                className="infio-chat-message-actions-icon--copied"
+                className="icf-chat-message-actions-icon--copied"
               />
             ) : (
               <CopyIcon onClick={handleCopy} size={12} />
@@ -36,7 +36,7 @@ function CopyButton({ message }: { message: ChatAssistantMessage }) {
           </button>
         </Tooltip.Trigger>
         <Tooltip.Portal>
-          <Tooltip.Content className="infio-tooltip-content">
+          <Tooltip.Content className="icf-tooltip-content">
             {t('chat.reactMarkdown.copyMsg')}
           </Tooltip.Content>
         </Tooltip.Portal>
@@ -79,7 +79,7 @@ function LLMResponesInfoButton({ message }: { message: ChatAssistantMessage }) {
           </div>
         </Tooltip.Trigger>
         <Tooltip.Portal>
-          <Tooltip.Content className="infio-tooltip-content">
+          <Tooltip.Content className="icf-tooltip-content">
             {t('chat.reactMarkdown.viewDetails')}
           </Tooltip.Content>
         </Tooltip.Portal>
@@ -94,7 +94,7 @@ export default function AssistantMessageActions({
   message: ChatAssistantMessage
 }) {
   return (
-    <div className="infio-chat-message-actions">
+    <div className="icf-chat-message-actions">
       <LLMResponesInfoButton message={message} />
       <CopyButton message={message} />
     </div>

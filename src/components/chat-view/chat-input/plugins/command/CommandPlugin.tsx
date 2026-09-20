@@ -52,7 +52,7 @@ function CommandMenuItem({
 			onMouseEnter={onMouseEnter}
 			onClick={onClick}
 		>
-			<div className="infio-chat-template-menu-item">
+			<div className="icf-chat-template-menu-item">
 				<div className="text">
 					<Slash size={10} />{' '}
 					<span>{option.name}</span>
@@ -128,7 +128,7 @@ export default function CommandPlugin() {
 				anchorElementRef.current && searchResults.length
 					? createPortal(
 						<div
-							className="infio-popover"
+							className="icf-popover"
 							style={{
 								position: 'fixed',
 							}}

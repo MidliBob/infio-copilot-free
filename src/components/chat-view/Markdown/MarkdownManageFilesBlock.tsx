@@ -27,17 +27,17 @@ export default function MarkdownManageFilesBlock({
 	const getOperationIcon = (action: string) => {
 		switch (action) {
 			case 'create_folder':
-				return <FolderPlus size={14} className="infio-chat-code-block-header-icon" />
+				return <FolderPlus size={14} className="icf-chat-code-block-header-icon" />
 			case 'move':
-				return <Move size={14} className="infio-chat-code-block-header-icon" />
+				return <Move size={14} className="icf-chat-code-block-header-icon" />
 			case 'delete':
-				return <Trash2 size={14} className="infio-chat-code-block-header-icon" />
+				return <Trash2 size={14} className="icf-chat-code-block-header-icon" />
 			case 'copy':
-				return <Copy size={14} className="infio-chat-code-block-header-icon" />
+				return <Copy size={14} className="icf-chat-code-block-header-icon" />
 			case 'rename':
-				return <FileIcon size={14} className="infio-chat-code-block-header-icon" />
+				return <FileIcon size={14} className="icf-chat-code-block-header-icon" />
 			default:
-				return <FileIcon size={14} className="infio-chat-code-block-header-icon" />
+				return <FileIcon size={14} className="icf-chat-code-block-header-icon" />
 		}
 	}
 
@@ -70,16 +70,16 @@ export default function MarkdownManageFilesBlock({
 	}
 
 	return (
-		<div className={`infio-chat-code-block has-filename`}>
-			<div className={'infio-chat-code-block-header'}>
-				<div className={'infio-chat-code-block-header-filename'}>
-					<FolderPlus size={14} className="infio-chat-code-block-header-icon" />
+		<div className={`icf-chat-code-block has-filename`}>
+			<div className={'icf-chat-code-block-header'}>
+				<div className={'icf-chat-code-block-header-filename'}>
+					<FolderPlus size={14} className="icf-chat-code-block-header-icon" />
 					文件管理操作 ({operations.length} 个操作)
 				</div>
-				<div className={'infio-chat-code-block-header-button'}>
+				<div className={'icf-chat-code-block-header-button'}>
 					<button
 						onClick={handleApply}
-						className="infio-apply-button"
+						className="icf-apply-button"
 						disabled={applyStatus !== ApplyStatus.Idle || applying || !finish}
 					>
 						{
@@ -107,7 +107,7 @@ export default function MarkdownManageFilesBlock({
 					</button>
 				</div>
 			</div>
-			<div className="infio-chat-code-block-content">
+			<div className="icf-chat-code-block-content">
 				{operations.map((operation, index) => (
 					<div key={index} className="manage-files-operation">
 						<div className="operation-item">

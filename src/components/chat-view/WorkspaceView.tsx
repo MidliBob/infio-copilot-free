@@ -270,16 +270,16 @@ const WorkspaceView = () => {
 	}, [refreshWorkspaces])
 
 	return (
-		<div className="infio-workspace-view-container">
+		<div className="icf-workspace-view-container">
 			{/* 头部 */}
-			<div className="infio-workspace-view-header">
-				<div className="infio-workspace-view-title">
+			<div className="icf-workspace-view-header">
+				<div className="icf-workspace-view-title">
 					<h2>{t('workspace.title')}</h2>
 				</div>
-				<div className="infio-workspace-view-header-actions">
+				<div className="icf-workspace-view-header-actions">
 					<button
 						onClick={refreshWorkspaces}
-						className="infio-workspace-view-refresh-btn"
+						className="icf-workspace-view-refresh-btn"
 						disabled={isLoading}
 						title={t('workspace.refreshTooltip')}
 					>
@@ -289,14 +289,14 @@ const WorkspaceView = () => {
 			</div>
 
 			{/* 描述 */}
-			<div className="infio-workspace-view-tip">
+			<div className="icf-workspace-view-tip">
 				{t('workspace.description')}
 			</div>
 
 			{/* 创建新工作区按钮 */}
-			<div className="infio-workspace-view-create-action">
+			<div className="icf-workspace-view-create-action">
 				<button
-					className="infio-workspace-view-create-btn"
+					className="icf-workspace-view-create-btn"
 					onClick={createNewWorkspace}
 					disabled={isLoading}
 				>
@@ -306,46 +306,46 @@ const WorkspaceView = () => {
 			</div>
 
 			{/* 工作区列表 */}
-			<div className="infio-workspace-view-list">
-				<div className="infio-workspace-view-list-header">
+			<div className="icf-workspace-view-list">
+				<div className="icf-workspace-view-list-header">
 					<h3>{t('workspace.recentWorkspaces')}</h3>
 				</div>
 				
 				{isLoading ? (
-					<div className="infio-workspace-view-loading">
+					<div className="icf-workspace-view-loading">
 						{t('workspace.loading')}
 					</div>
 				) : workspaces.length === 0 ? (
-					<div className="infio-workspace-view-empty">
-						<Box size={48} className="infio-workspace-view-empty-icon" />
+					<div className="icf-workspace-view-empty">
+						<Box size={48} className="icf-workspace-view-empty-icon" />
 						<p>{t('workspace.noWorkspaces')}</p>
 					</div>
 				) : (
-					<div className="infio-workspace-view-items">
+					<div className="icf-workspace-view-items">
 						{workspaces.map((workspace, index) => (
 							<div 
 								key={workspace.id || index} 
-								className={`infio-workspace-view-item ${workspace.isCurrent ? 'current' : ''}`}
+								className={`icf-workspace-view-item ${workspace.isCurrent ? 'current' : ''}`}
 							>
-								<div className="infio-workspace-view-item-header">
-									<div className="infio-workspace-view-item-icon">
+								<div className="icf-workspace-view-item-header">
+									<div className="icf-workspace-view-item-icon">
 										{workspace.isCurrent ? (
 											<Box size={20} />
 										) : (
 											<Box size={20} />
 										)}
 									</div>
-									<div className="infio-workspace-view-item-name">
+									<div className="icf-workspace-view-item-name">
 										{workspace.name}
 										{workspace.isCurrent && (
-											<span className="infio-workspace-view-current-badge">{String(t('workspace.current'))}</span>
+											<span className="icf-workspace-view-current-badge">{String(t('workspace.current'))}</span>
 										)}
 									</div>
-									<div className="infio-workspace-view-item-actions">
+									<div className="icf-workspace-view-item-actions">
 										{!workspace.isCurrent && (
 											<button
 												onClick={() => switchToWorkspace(workspace)}
-												className="infio-workspace-view-action-btn switch-btn"
+												className="icf-workspace-view-action-btn switch-btn"
 												title="切换到此工作区"
 											>
 												<ArrowRight size={16} />
@@ -354,7 +354,7 @@ const WorkspaceView = () => {
 										{workspace.name !== 'vault' && (
 											<button
 												onClick={() => openEditModal(workspace)}
-												className="infio-workspace-view-action-btn"
+												className="icf-workspace-view-action-btn"
 												title={String(t('workspace.editTooltip'))}
 											>
 												<Pencil size={16} />
@@ -367,7 +367,7 @@ const WorkspaceView = () => {
 														deleteWorkspace(workspace)
 													}
 												}}
-												className="infio-workspace-view-action-btn danger"
+												className="icf-workspace-view-action-btn danger"
 												title={String(t('workspace.deleteTooltip'))}
 											>
 												<Trash2 size={16} />
@@ -375,18 +375,18 @@ const WorkspaceView = () => {
 										)}
 									</div>
 								</div>
-								<div className="infio-workspace-view-item-content">
+								<div className="icf-workspace-view-item-content">
 									{/* 工作区内容 */}
 									<div 
-										className="infio-workspace-view-item-path clickable"
+										className="icf-workspace-view-item-path clickable"
 										onClick={() => toggleWorkspaceExpanded(workspace.id)}
 									>
-										<div className="infio-workspace-view-item-path-info">
+										<div className="icf-workspace-view-item-path-info">
 											<FolderOpen size={12} />
 											{formatWorkspaceContent(workspace.content)}
 										</div>
 										{workspace.content.length > 0 && (
-											<div className="infio-workspace-view-expand-icon">
+											<div className="icf-workspace-view-expand-icon">
 												{expandedWorkspaces.has(workspace.id) ? (
 													<ChevronDown size={14} />
 												) : (
@@ -398,19 +398,19 @@ const WorkspaceView = () => {
 									
 									{/* 展开的内容详情 */}
 									{expandedWorkspaces.has(workspace.id) && workspace.content.length > 0 && (
-										<div className="infio-workspace-view-content-details">
-											<div className="infio-workspace-view-content-list">
+										<div className="icf-workspace-view-content-details">
+											<div className="icf-workspace-view-content-list">
 												{workspace.content.map((item, itemIndex) => (
-													<div key={itemIndex} className="infio-workspace-view-content-item">
+													<div key={itemIndex} className="icf-workspace-view-content-item">
 														{item.type === 'folder' ? (
 															<FolderOpen size={14} />
 														) : (
 															<Tag size={14} />
 														)}
-														<span className="infio-workspace-view-content-text">
+														<span className="icf-workspace-view-content-text">
 															{item.content}
 														</span>
-														<span className="infio-workspace-view-content-type">
+														<span className="icf-workspace-view-content-type">
 															{item.type === 'folder' ? '文件夹' : '标签'}
 														</span>
 													</div>
@@ -421,15 +421,15 @@ const WorkspaceView = () => {
 
 									{/* 对话历史 */}
 									<div 
-										className="infio-workspace-view-chat-info clickable"
+										className="icf-workspace-view-chat-info clickable"
 										onClick={() => toggleChatExpanded(workspace.id)}
 									>
-										<div className="infio-workspace-view-chat-info-content">
+										<div className="icf-workspace-view-chat-info-content">
 											<MessageSquare size={12} />
 											<span>{workspace.chatHistory.length} {String(t('workspace.conversations'))}</span>
 										</div>
 										{workspace.chatHistory.length > 0 && (
-											<div className="infio-workspace-view-expand-icon">
+											<div className="icf-workspace-view-expand-icon">
 												{expandedChats.has(workspace.id) ? (
 													<ChevronDown size={14} />
 												) : (
@@ -441,12 +441,12 @@ const WorkspaceView = () => {
 
 									{/* 展开的对话历史详情 */}
 									{expandedChats.has(workspace.id) && workspace.chatHistory.length > 0 && (
-										<div className="infio-workspace-view-chat-details">
-											<div className="infio-workspace-view-chat-list">
+										<div className="icf-workspace-view-chat-details">
+											<div className="icf-workspace-view-chat-list">
 												{workspace.chatHistory.slice(-5).reverse().map((chat, chatIndex) => (
-													<div key={chatIndex} className="infio-workspace-view-chat-item">
+													<div key={chatIndex} className="icf-workspace-view-chat-item">
 														<MessageSquare size={14} />
-														<span className="infio-workspace-view-chat-title">
+														<span className="icf-workspace-view-chat-title">
 															{chat.title || `对话 ${chat.id.slice(0, 8)}`}
 														</span>
 													</div>
@@ -455,7 +455,7 @@ const WorkspaceView = () => {
 										</div>
 									)}
 									
-									<div className="infio-workspace-view-item-meta">
+									<div className="icf-workspace-view-item-meta">
 										{String(t('workspace.created'))}: {new Date(workspace.createdAt).toLocaleDateString('zh-CN')} | 
 										{String(t('workspace.updated'))}: {formatLastOpened(workspace.updatedAt)}
 									</div>
@@ -489,7 +489,7 @@ const WorkspaceView = () => {
 			{/* 样式 */}
 			<style>
 				{`
-				.infio-workspace-view-container {
+				.icf-workspace-view-container {
 					display: flex;
 					flex-direction: column;
 					padding: 16px;
@@ -501,11 +501,11 @@ const WorkspaceView = () => {
 					-ms-overflow-style: none;
 				}
 
-				.infio-workspace-view-container::-webkit-scrollbar {
+				.icf-workspace-view-container::-webkit-scrollbar {
 					display: none;
 				}
 
-				.infio-workspace-view-header {
+				.icf-workspace-view-header {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
@@ -514,19 +514,19 @@ const WorkspaceView = () => {
 					margin-bottom: 8px;
 				}
 
-				.infio-workspace-view-title h2 {
+				.icf-workspace-view-title h2 {
 					margin: 0;
 					font-size: 24px;
 					flex: 1;
 				}
 
-				.infio-workspace-view-header-actions {
+				.icf-workspace-view-header-actions {
 					display: flex;
 					gap: 8px;
 					flex-shrink: 0;
 				}
 
-				.infio-workspace-view-refresh-btn {
+				.icf-workspace-view-refresh-btn {
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -553,17 +553,17 @@ const WorkspaceView = () => {
 					to { transform: rotate(360deg); }
 				}
 
-				.infio-workspace-view-tip {
+				.icf-workspace-view-tip {
 					color: var(--text-muted);
 					font-size: 14px;
 					margin-bottom: 8px;
 				}
 
-				.infio-workspace-view-create-action {
+				.icf-workspace-view-create-action {
 					margin-bottom: 16px;
 				}
 
-				.infio-workspace-view-create-btn {
+				.icf-workspace-view-create-btn {
 					display: flex;
 					align-items: center;
 					gap: 8px;
@@ -580,18 +580,18 @@ const WorkspaceView = () => {
 					justify-content: center;
 				}
 
-				.infio-workspace-view-create-btn:hover:not(:disabled) {
+				.icf-workspace-view-create-btn:hover:not(:disabled) {
 					background-color: var(--background-modifier-hover);
 					border-color: var(--text-accent);
 					color: var(--text-accent);
 				}
 
-				.infio-workspace-view-create-btn:disabled {
+				.icf-workspace-view-create-btn:disabled {
 					opacity: 0.6;
 					cursor: not-allowed;
 				}
 
-				.infio-workspace-view-current {
+				.icf-workspace-view-current {
 					background-color: var(--background-secondary);
 					border: 1px solid var(--background-modifier-border);
 					border-radius: var(--radius-m);
@@ -599,7 +599,7 @@ const WorkspaceView = () => {
 					margin-bottom: 8px;
 				}
 
-				.infio-workspace-view-current-header {
+				.icf-workspace-view-current-header {
 					display: flex;
 					align-items: center;
 					gap: 8px;
@@ -608,40 +608,40 @@ const WorkspaceView = () => {
 					margin-bottom: 8px;
 				}
 
-				.infio-workspace-view-current-info {
+				.icf-workspace-view-current-info {
 					margin-left: 26px;
 				}
 
-				.infio-workspace-view-current-name {
+				.icf-workspace-view-current-name {
 					font-size: 16px;
 					font-weight: 500;
 					margin-bottom: 4px;
 				}
 
-				.infio-workspace-view-current-status {
+				.icf-workspace-view-current-status {
 					color: var(--text-muted);
 					font-size: 14px;
 				}
 
-				.infio-workspace-view-list {
+				.icf-workspace-view-list {
 					flex: 1;
 					display: flex;
 					flex-direction: column;
 				}
 
-				.infio-workspace-view-list-header h3 {
+				.icf-workspace-view-list-header h3 {
 					margin: 0 0 12px 0;
 					font-size: 16px;
 					font-weight: 500;
 				}
 
-				.infio-workspace-view-loading {
+				.icf-workspace-view-loading {
 					padding: 20px;
 					text-align: center;
 					color: var(--text-muted);
 				}
 
-				.infio-workspace-view-empty {
+				.icf-workspace-view-empty {
 					display: flex;
 					flex-direction: column;
 					align-items: center;
@@ -649,18 +649,18 @@ const WorkspaceView = () => {
 					color: var(--text-muted);
 				}
 
-				.infio-workspace-view-empty-icon {
+				.icf-workspace-view-empty-icon {
 					margin-bottom: 16px;
 					opacity: 0.5;
 				}
 
-				.infio-workspace-view-items {
+				.icf-workspace-view-items {
 					display: flex;
 					flex-direction: column;
 					gap: 8px;
 				}
 
-				.infio-workspace-view-item {
+				.icf-workspace-view-item {
 					display: flex;
 					flex-direction: column;
 					background-color: var(--background-primary);
@@ -670,16 +670,16 @@ const WorkspaceView = () => {
 					transition: all 0.2s ease;
 				}
 
-				.infio-workspace-view-item:hover {
+				.icf-workspace-view-item:hover {
 					background-color: var(--background-modifier-hover);
 				}
 
-				.infio-workspace-view-item.current {
+				.icf-workspace-view-item.current {
 					border-color: var(--background-modifier-border);
 					background-color: var(--background-primary);
 				}
 
-				.infio-workspace-view-item-header {
+				.icf-workspace-view-item-header {
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
@@ -687,13 +687,13 @@ const WorkspaceView = () => {
 					margin-bottom: 8px;
 				}
 
-				.infio-workspace-view-item-icon {
+				.icf-workspace-view-item-icon {
 					color: var(--text-muted);
 					flex-shrink: 0;
 					order: 1;
 				}
 
-				.infio-workspace-view-item-name {
+				.icf-workspace-view-item-name {
 					display: flex;
 					align-items: center;
 					gap: 8px;
@@ -705,24 +705,24 @@ const WorkspaceView = () => {
 					order: 2;
 				}
 
-				.infio-workspace-view-item-actions {
+				.icf-workspace-view-item-actions {
 					display: flex;
 					gap: 4px;
 					flex-shrink: 0;
 					order: 3;
 				}
 
-				.infio-workspace-view-item.current .infio-workspace-view-item-icon {
+				.icf-workspace-view-item.current .icf-workspace-view-item-icon {
 					color: var(--text-accent);
 				}
 
-				.infio-workspace-view-item-content {
+				.icf-workspace-view-item-content {
 					display: flex;
 					flex-direction: column;
 					gap: 4px;
 				}
 
-				.infio-workspace-view-current-badge {
+				.icf-workspace-view-current-badge {
 					background-color: var(--text-accent);
 					color: var(--text-on-accent);
 					font-size: 12px;
@@ -732,7 +732,7 @@ const WorkspaceView = () => {
 					box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 				}
 
-				.infio-workspace-view-item-path {
+				.icf-workspace-view-item-path {
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
@@ -745,17 +745,17 @@ const WorkspaceView = () => {
 					transition: all 0.2s ease;
 				}
 
-				.infio-workspace-view-item-path.clickable {
+				.icf-workspace-view-item-path.clickable {
 					cursor: pointer;
 					padding: 6px 8px;
 					margin: -2px -4px;
 				}
 
-				.infio-workspace-view-item-path.clickable:hover {
+				.icf-workspace-view-item-path.clickable:hover {
 					background-color: var(--background-modifier-hover);
 				}
 
-				.infio-workspace-view-item-path-info {
+				.icf-workspace-view-item-path-info {
 					display: flex;
 					align-items: center;
 					gap: 6px;
@@ -765,7 +765,7 @@ const WorkspaceView = () => {
 					white-space: nowrap;
 				}
 
-				.infio-workspace-view-expand-icon {
+				.icf-workspace-view-expand-icon {
 					display: flex;
 					align-items: center;
 					color: var(--text-muted);
@@ -773,19 +773,19 @@ const WorkspaceView = () => {
 					transition: transform 0.2s ease;
 				}
 
-				.infio-workspace-view-content-details {
+				.icf-workspace-view-content-details {
 					margin-top: 8px;
 					padding: 8px 0;
 					border-top: 1px solid var(--background-modifier-border);
 				}
 
-				.infio-workspace-view-content-list {
+				.icf-workspace-view-content-list {
 					display: flex;
 					flex-direction: column;
 					gap: 4px;
 				}
 
-				.infio-workspace-view-content-item {
+				.icf-workspace-view-content-item {
 					display: flex;
 					align-items: center;
 					gap: 8px;
@@ -795,7 +795,7 @@ const WorkspaceView = () => {
 					font-size: 12px;
 				}
 
-				.infio-workspace-view-content-text {
+				.icf-workspace-view-content-text {
 					flex: 1;
 					color: var(--text-normal);
 					font-weight: 500;
@@ -804,7 +804,7 @@ const WorkspaceView = () => {
 					white-space: nowrap;
 				}
 
-				.infio-workspace-view-content-type {
+				.icf-workspace-view-content-type {
 					color: var(--text-muted);
 					font-size: 11px;
 					background-color: var(--background-modifier-border);
@@ -813,7 +813,7 @@ const WorkspaceView = () => {
 					flex-shrink: 0;
 				}
 
-				.infio-workspace-view-chat-info {
+				.icf-workspace-view-chat-info {
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
@@ -826,36 +826,36 @@ const WorkspaceView = () => {
 					transition: all 0.2s ease;
 				}
 
-				.infio-workspace-view-chat-info.clickable {
+				.icf-workspace-view-chat-info.clickable {
 					cursor: pointer;
 					padding: 6px 8px;
 					margin: 2px -4px;
 				}
 
-				.infio-workspace-view-chat-info.clickable:hover {
+				.icf-workspace-view-chat-info.clickable:hover {
 					background-color: var(--background-modifier-hover);
 				}
 
-				.infio-workspace-view-chat-info-content {
+				.icf-workspace-view-chat-info-content {
 					display: flex;
 					align-items: center;
 					gap: 6px;
 					flex: 1;
 				}
 
-				.infio-workspace-view-chat-details {
+				.icf-workspace-view-chat-details {
 					margin-top: 8px;
 					padding: 8px 0;
 					border-top: 1px solid var(--background-modifier-border);
 				}
 
-				.infio-workspace-view-chat-list {
+				.icf-workspace-view-chat-list {
 					display: flex;
 					flex-direction: column;
 					gap: 4px;
 				}
 
-				.infio-workspace-view-chat-item {
+				.icf-workspace-view-chat-item {
 					display: flex;
 					align-items: center;
 					gap: 8px;
@@ -865,7 +865,7 @@ const WorkspaceView = () => {
 					font-size: 12px;
 				}
 
-				.infio-workspace-view-chat-title {
+				.icf-workspace-view-chat-title {
 					flex: 1;
 					color: var(--text-normal);
 					font-weight: 500;
@@ -874,13 +874,13 @@ const WorkspaceView = () => {
 					white-space: nowrap;
 				}
 
-				.infio-workspace-view-item-meta {
+				.icf-workspace-view-item-meta {
 					color: var(--text-muted);
 					font-size: 12px;
 					margin-top: 4px;
 				}
 
-				.infio-workspace-view-action-btn {
+				.icf-workspace-view-action-btn {
 					display: flex;
 					align-items: center;
 					justify-content: center;

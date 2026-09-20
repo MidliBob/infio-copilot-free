@@ -1,4 +1,14 @@
 releases:
+  - version: "1.0.0"
+    features:
+      - "Independent project: rebranded to Infio Copilot Free (plugin id infio-copilot-free, author MidliBob)"
+      - "UI styles, view types and storage keys moved to the icf-* namespace"
+    fixes:
+      - "Settings tab lookup and plugin-folder asset loading now use the new plugin id"
+    other:
+      - "Lineage: community continuation of Infio Copilot 0.8.x (Felix.D), itself a fork of Smart Composer (Heesu Suh); MIT"
+      - "Breaking for custom CSS snippets: class prefix changed from infio- to icf-"
+      - "Chat/vector database keeps its storage name (infio-db) for data continuity; do not run the original Infio Copilot simultaneously"
   - version: "0.8.7"
     fixes:
       - "PGlite database assets now ship with the plugin (local files + CDN fallback); the previous remote host is gone, which broke the plugin on start-up"

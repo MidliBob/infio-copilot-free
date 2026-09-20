@@ -1,6 +1,6 @@
 import { Platform } from 'obsidian'
 
-const DEVICE_ID_STORAGE_KEY = 'infio_device_id'
+const DEVICE_ID_STORAGE_KEY = 'icf_device_id'
 
 function generatePseudoId(): string {
   // RFC4122-ish v4 UUID (non-crypto), sufficient for stable device identifier when persisted

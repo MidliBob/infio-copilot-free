@@ -26,19 +26,19 @@ function FileReadItem({
 	}
 
 	return (
-		<div onClick={handleClick} className="infio-file-read-item">
-			<div className="infio-file-read-item__icon">
+		<div onClick={handleClick} className="icf-file-read-item">
+			<div className="icf-file-read-item__icon">
 				<FileText size={16} />
 			</div>
-			<div className="infio-file-read-item__info">
-				<div className="infio-file-read-item__name">
+			<div className="icf-file-read-item__info">
+				<div className="icf-file-read-item__name">
 					{path.basename(fileResult.path)}
 				</div>
-				<div className="infio-file-read-item__path">
+				<div className="icf-file-read-item__path">
 					{fileResult.path}
 				</div>
 			</div>
-			<div className="infio-file-read-item__size">
+			<div className="icf-file-read-item__size">
 				{getFileSize(fileResult.content)}
 			</div>
 		</div>
@@ -53,12 +53,12 @@ export default function FileReadResults({
 	const [isOpen, setIsOpen] = useState(false)
 
 	return (
-		<div className="infio-file-read-results">
+		<div className="icf-file-read-results">
 			<div
 				onClick={() => {
 					setIsOpen(!isOpen)
 				}}
-				className="infio-file-read-results__trigger"
+				className="icf-file-read-results__trigger"
 			>
 				{isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
 				<div>

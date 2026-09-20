@@ -37,13 +37,13 @@ export default function MarkdownSwitchModeBlock({
 	}
 
 	return (
-		<div className={`infio-chat-code-block has-filename`}>
-			<div className={'infio-chat-code-block-header'}>
-				<div className={'infio-chat-code-block-header-filename'}>
-					<Settings2 size={10} className="infio-chat-code-block-header-icon" />
+		<div className={`icf-chat-code-block has-filename`}>
+			<div className={'icf-chat-code-block-header'}>
+				<div className={'icf-chat-code-block-header-filename'}>
+					<Settings2 size={10} className="icf-chat-code-block-header-icon" />
 					{t('chat.reactMarkdown.switchToMode').replace('{mode}', mode.charAt(0).toUpperCase() + mode.slice(1))}
 				</div>
-				<div className={'infio-chat-code-block-header-button'}>
+				<div className={'icf-chat-code-block-header-button'}>
 					<button
 						onClick={handleApply}
 						style={{ color: '#008000' }}

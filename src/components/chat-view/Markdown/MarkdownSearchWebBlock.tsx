@@ -40,16 +40,16 @@ export default function MarkdownWebSearchBlock({
 
 	return (
 		<div
-			className={`infio-chat-code-block has-filename`
+			className={`icf-chat-code-block has-filename`
 			}
 			onClick={handleClick}
 		>
-			<div className={'infio-chat-code-block-header'}>
-				<div className={'infio-chat-code-block-header-filename'}>
-					<Search size={14} className="infio-chat-code-block-header-icon" />
+			<div className={'icf-chat-code-block-header'}>
+				<div className={'icf-chat-code-block-header-filename'}>
+					<Search size={14} className="icf-chat-code-block-header-icon" />
 					{t('chat.reactMarkdown.webSearch').replace('{query}', query)}
 				</div>
-				<div className={'infio-chat-code-block-header-button'}>
+				<div className={'icf-chat-code-block-header-button'}>
 					<button
 						style={{ color: '#008000' }}
 						disabled={true}

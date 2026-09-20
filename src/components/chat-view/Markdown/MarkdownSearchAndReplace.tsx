@@ -47,15 +47,15 @@ export default function MarkdownSearchAndReplace({
 
 	return (
 		<div
-			className={`infio-chat-code-block ${path ? 'has-filename' : ''}  infio-reasoning-block`}
+			className={`icf-chat-code-block ${path ? 'has-filename' : ''}  icf-reasoning-block`}
 			onClick={handleClick}
 		>
-			<div className={'infio-chat-code-block-header'}>
-				<div className={'infio-chat-code-block-header-filename'}>
-					<Replace size={10} className="infio-chat-code-block-header-icon" />
+			<div className={'icf-chat-code-block-header'}>
+				<div className={'icf-chat-code-block-header-filename'}>
+					<Replace size={10} className="icf-chat-code-block-header-icon" />
 					{t('chat.reactMarkdown.searchAndReplaceInPath').replace('{path}', path)}
 				</div>
-				<div className={'infio-chat-code-block-header-button'}>
+				<div className={'icf-chat-code-block-header-button'}>
 					<button
 						onClick={handleApply}
 						disabled={applyStatus !== ApplyStatus.Idle || applying || !finish}
@@ -84,7 +84,7 @@ export default function MarkdownSearchAndReplace({
 					</button>
 				</div>
 			</div>
-			<div className="infio-reasoning-content-wrapper">
+			<div className="icf-reasoning-content-wrapper">
 				<MemoizedSyntaxHighlighterWrapper
 					isDarkMode={isDarkMode}
 					language="markdown"

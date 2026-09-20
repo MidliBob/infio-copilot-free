@@ -49,10 +49,10 @@ const InputArea: React.FC<InputAreaProps> = ({ value, onChange, handleSubmit, ha
 	};
 
 	return (
-		<div className="infio-ai-block-input-wrapper">
+		<div className="icf-ai-block-input-wrapper">
 			<textarea
 				ref={textareaRef}
-				className="infio-ai-block-content"
+				className="icf-ai-block-content"
 				placeholder={t('inlineEdit.placeholder')}
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
@@ -93,9 +93,9 @@ const ControlArea: React.FC<ControlAreaProps> = ({
 	}, [settings]);
 
 	return (
-		<div className="infio-ai-block-controls">
+		<div className="icf-ai-block-controls">
 			<select
-				className="infio-ai-block-model-select"
+				className="icf-ai-block-model-select"
 				value={selectedModel}
 				onChange={(e) => onModelChange(e.target.value)}
 				disabled={isSubmitting}
@@ -107,14 +107,14 @@ const ControlArea: React.FC<ControlAreaProps> = ({
 				))}
 			</select>
 			<button
-				className="infio-ai-block-submit-button"
+				className="icf-ai-block-submit-button"
 				onClick={onSubmit}
 				disabled={isSubmitting}
 			>
 				{isSubmitting ? t("inlineEdit.submitting") : (
 					<>
 						{t("inlineEdit.submit")}
-						<CornerDownLeft size={11} className="infio-ai-block-submit-icon" />
+						<CornerDownLeft size={11} className="icf-ai-block-submit-icon" />
 					</>
 				)}
 			</button>
@@ -299,11 +299,11 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 	};
 
 	return (
-		<div className="infio-ai-block-container"
-			id="infio-ai-block-container"
+		<div className="icf-ai-block-container"
+			id="icf-ai-block-container"
 		>
 			<InputArea value={instruction} onChange={setInstruction} handleSubmit={handleSubmit} handleClose={handleClose} />
-			<button className="infio-ai-block-close-button" onClick={handleClose}>
+			<button className="icf-ai-block-close-button" onClick={handleClose}>
 				<svg
 					width="16"
 					height="16"

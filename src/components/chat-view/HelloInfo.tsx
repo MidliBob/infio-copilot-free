@@ -48,24 +48,24 @@ const HelloInfo: React.FC<HelloInfoProps> = ({ onNavigate }) => {
 	];
 
 	return (
-		<div className="infio-hello-info">
-			{/* <div className="infio-hello-title">
+		<div className="icf-hello-info">
+			{/* <div className="icf-hello-title">
 				<h3>{t('chat.welcome.title')}</h3>
 				<p>{t('chat.welcome.subtitle')}</p>
 			</div> */}
-			<div className="infio-navigation-cards">
+			<div className="icf-navigation-cards">
 				{navigationItems.map((item, index) => (
 					<a
 						key={index}
-						className="infio-navigation-card"
+						className="icf-navigation-card"
 						onClick={item.action}
 					>
-						<div className="infio-navigation-icon">
+						<div className="icf-navigation-icon">
 							{item.icon}
 						</div>
-						<div className="infio-navigation-content">
-							<div className="infio-navigation-label">{item.label}</div>
-							<div className="infio-navigation-description">{item.description}</div>
+						<div className="icf-navigation-content">
+							<div className="icf-navigation-label">{item.label}</div>
+							<div className="icf-navigation-description">{item.description}</div>
 						</div>
 					</a>
 				))}
@@ -75,7 +75,7 @@ const HelloInfo: React.FC<HelloInfoProps> = ({ onNavigate }) => {
 				/*
 					* Hello Info and Navigation
 					*/
-					.infio-hello-info {
+					.icf-hello-info {
 						display: flex;
 						flex-direction: column;
 						align-items: center;
@@ -85,7 +85,7 @@ const HelloInfo: React.FC<HelloInfoProps> = ({ onNavigate }) => {
 						margin: var(--size-4-4);
 					}
 
-					.infio-hello-title h3 {
+					.icf-hello-title h3 {
 						font-size: 2rem;
 						font-weight: 600;
 						color: var(--text-normal);
@@ -93,21 +93,21 @@ const HelloInfo: React.FC<HelloInfoProps> = ({ onNavigate }) => {
 						text-align: center;
 					}
 
-					.infio-hello-title p {
+					.icf-hello-title p {
 						font-size: var(--font-ui-medium);
 						color: var(--text-muted);
 						margin: 0;
 						line-height: var(--line-height-normal);
 					}
 
-					.infio-navigation-cards {
+					.icf-navigation-cards {
 						display: flex;
 						flex-direction: column;
 						width: 100%;
 						max-width: 480px;
 					}
 
-					.infio-navigation-card {
+					.icf-navigation-card {
 						display: flex;
 						align-items: center;
 						gap: var(--size-4-4);
@@ -118,12 +118,12 @@ const HelloInfo: React.FC<HelloInfoProps> = ({ onNavigate }) => {
 						box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 					}
 
-					.infio-navigation-card:hover {
+					.icf-navigation-card:hover {
 						background: var(--background-modifier-hover);
 						border-color: var(--text-accent);
 					}
 
-					.infio-navigation-icon {
+					.icf-navigation-icon {
 						display: flex;
 						align-items: center;
 						justify-content: center;
@@ -132,21 +132,21 @@ const HelloInfo: React.FC<HelloInfoProps> = ({ onNavigate }) => {
 						flex-shrink: 0;
 					}
 
-					.infio-navigation-content {
+					.icf-navigation-content {
 						display: flex;
 						flex-direction: column;
 						gap: var(--size-2-2);
 						flex-grow: 1;
 					}
 
-					.infio-navigation-label {
+					.icf-navigation-label {
 						font-size: var(--font-ui-large);
 						font-weight: 600;
 						color: var(--text-normal);
 						margin: 0;
 					}
 
-					.infio-navigation-description {
+					.icf-navigation-description {
 						font-size: var(--font-ui-small);
 						color: var(--text-muted);
 						margin: 0;

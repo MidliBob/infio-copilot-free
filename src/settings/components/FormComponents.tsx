@@ -17,13 +17,13 @@ export const DropdownComponent: React.FC<DropdownComponentProps> = ({
 	value,
 	onChange,
 }) => (
-	<div className="infio-llm-setting-item">
-		<div className="infio-llm-setting-item-name">{name}</div>
-		{description && <div className="infio-llm-setting-item-description">{description}</div>}
+	<div className="icf-llm-setting-item">
+		<div className="icf-llm-setting-item-name">{name}</div>
+		{description && <div className="icf-llm-setting-item-description">{description}</div>}
 		<select
 			value={value}
 			onChange={(e) => onChange(e.target.value)}
-			className="infio-llm-setting-item-control, infio-llm-setting-model-id"
+			className="icf-llm-setting-item-control, icf-llm-setting-model-id"
 		>
 			{options.map((option) => (
 				<option key={option} value={option}>
@@ -75,12 +75,12 @@ export const TextComponent: React.FC<TextComponentProps> = ({
 	};
 
 	return (
-		<div className="infio-llm-setting-item">
-			<div className="infio-llm-setting-item-name">{name}</div>
-			{description && <div className="infio-llm-setting-item-description">{description}</div>}
+		<div className="icf-llm-setting-item">
+			<div className="icf-llm-setting-item-name">{name}</div>
+			{description && <div className="icf-llm-setting-item-description">{description}</div>}
 			<input
 				type={type}
-				className="infio-llm-setting-item-control"
+				className="icf-llm-setting-item-control"
 				placeholder={placeholder}
 				value={localValue}
 				onChange={handleChange}
@@ -106,13 +106,13 @@ export const ToggleComponent: React.FC<ToggleComponentProps> = ({
 	onChange,
 	disabled = false,
 }) => (
-	<div className="infio-llm-setting-item">
-		<div className="infio-toggle-setting-section">
-			<div className="infio-toggle-info">
-				<div className="infio-llm-setting-item-name">{name}</div>
-				{description && <div className="infio-llm-setting-item-description">{description}</div>}
+	<div className="icf-llm-setting-item">
+		<div className="icf-toggle-setting-section">
+			<div className="icf-toggle-info">
+				<div className="icf-llm-setting-item-name">{name}</div>
+				{description && <div className="icf-llm-setting-item-description">{description}</div>}
 			</div>
-			<label className={`infio-toggle-switch ${disabled ? "disabled" : ""}`}>
+			<label className={`icf-toggle-switch ${disabled ? "disabled" : ""}`}>
 				<input
 					type="checkbox"
 					checked={value}
@@ -124,7 +124,7 @@ export const ToggleComponent: React.FC<ToggleComponentProps> = ({
 		</div>
 
 		<style>{`
-			.infio-toggle-setting-section {
+			.icf-toggle-setting-section {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
@@ -132,13 +132,13 @@ export const ToggleComponent: React.FC<ToggleComponentProps> = ({
 				gap: var(--size-4-2);
 			}
 
-			.infio-toggle-info {
+			.icf-toggle-info {
 				flex: 1;
 				min-width: 0;
 			}
 
 			/* 开关样式 */
-			.infio-toggle-switch {
+			.icf-toggle-switch {
 				position: relative;
 				display: inline-block;
 				width: 44px;
@@ -147,18 +147,18 @@ export const ToggleComponent: React.FC<ToggleComponentProps> = ({
 				flex-shrink: 0;
 			}
 
-			.infio-toggle-switch.disabled {
+			.icf-toggle-switch.disabled {
 				cursor: not-allowed;
 				opacity: 0.6;
 			}
 
-			.infio-toggle-switch input {
+			.icf-toggle-switch input {
 				opacity: 0;
 				width: 0;
 				height: 0;
 			}
 
-			.infio-toggle-switch .slider {
+			.icf-toggle-switch .slider {
 				position: absolute;
 				top: 0;
 				left: 0;
@@ -170,7 +170,7 @@ export const ToggleComponent: React.FC<ToggleComponentProps> = ({
 				border: 1px solid var(--background-modifier-border-hover);
 			}
 
-			.infio-toggle-switch .slider:before {
+			.icf-toggle-switch .slider:before {
 				position: absolute;
 				content: "";
 				height: 18px;
@@ -183,43 +183,43 @@ export const ToggleComponent: React.FC<ToggleComponentProps> = ({
 				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 			}
 
-			.infio-toggle-switch input:checked + .slider {
+			.icf-toggle-switch input:checked + .slider {
 				background-color: var(--interactive-accent);
 				border-color: var(--interactive-accent);
 			}
 
-			.infio-toggle-switch input:checked + .slider:before {
+			.icf-toggle-switch input:checked + .slider:before {
 				transform: translateX(20px);
 				background-color: white;
 			}
 
-			.infio-toggle-switch:not(.disabled):hover .slider {
+			.icf-toggle-switch:not(.disabled):hover .slider {
 				box-shadow: 0 0 0 2px var(--interactive-accent-hover);
 			}
 
-			.infio-toggle-switch input:focus + .slider {
+			.icf-toggle-switch input:focus + .slider {
 				box-shadow: 0 0 0 2px var(--interactive-accent-hover);
 			}
 
-			.infio-toggle-switch input:disabled + .slider {
+			.icf-toggle-switch input:disabled + .slider {
 				background-color: var(--background-modifier-border);
 				cursor: not-allowed;
 			}
 
-			.infio-toggle-switch input:disabled + .slider:before {
+			.icf-toggle-switch input:disabled + .slider:before {
 				background-color: var(--text-faint);
 			}
 
 			/* 深色模式适配 */
-			.theme-dark .infio-toggle-switch .slider:before {
+			.theme-dark .icf-toggle-switch .slider:before {
 				background-color: var(--text-normal);
 			}
 
-			.theme-dark .infio-toggle-switch input:checked + .slider:before {
+			.theme-dark .icf-toggle-switch input:checked + .slider:before {
 				background-color: white;
 			}
 
-			.theme-dark .infio-toggle-switch input:disabled + .slider:before {
+			.theme-dark .icf-toggle-switch input:disabled + .slider:before {
 				background-color: var(--text-faint);
 			}
 		`}</style>
@@ -292,16 +292,16 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 	};
 
 	return (
-		<div className="infio-api-key-setting-item">
-			<div className="infio-api-key-info">
-				<div className="infio-api-key-name">{name}</div>
-				{description && <div className="infio-api-key-description">{description}</div>}
+		<div className="icf-api-key-setting-item">
+			<div className="icf-api-key-info">
+				<div className="icf-api-key-name">{name}</div>
+				{description && <div className="icf-api-key-description">{description}</div>}
 			</div>
-			<div className="infio-api-key-control-container">
-				<div className="infio-api-key-input-wrapper">
+			<div className="icf-api-key-control-container">
+				<div className="icf-api-key-input-wrapper">
 					<input
 						type={isVisible ? "text" : "password"}
-						className="infio-api-key-input"
+						className="icf-api-key-input"
 						placeholder={placeholder}
 						value={localValue}
 						onChange={handleChange}
@@ -310,7 +310,7 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 					/>
 					<button
 						type="button"
-						className="infio-api-key-toggle"
+						className="icf-api-key-toggle"
 						onClick={toggleVisibility}
 						title={isVisible ? t("settings.ModelProvider.testConnection.hideApiKey") : t("settings.ModelProvider.testConnection.showApiKey")}
 					>
@@ -331,7 +331,7 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 				{onTest && (
 					<button
 						type="button"
-						className={`infio-api-key-test ${isTestingConnection ? 'testing' : ''} ${testResult ? testResult : ''}`}
+						className={`icf-api-key-test ${isTestingConnection ? 'testing' : ''} ${testResult ? testResult : ''}`}
 						onClick={handleTest}
 						disabled={isTestingConnection || !localValue.trim()}
 						title={t("settings.ModelProvider.testConnection.testConnectionTooltip")}
@@ -372,7 +372,7 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 			</div>
 
 			<style>{`
-				.infio-api-key-setting-item {
+				.icf-api-key-setting-item {
 					display: flex;
 					align-items: flex-start;
 					justify-content: space-between;
@@ -381,26 +381,26 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 					border-bottom: 1px solid var(--background-modifier-border);
 				}
 
-				.infio-api-key-info {
+				.icf-api-key-info {
 					flex: 1;
 					min-width: 0;
 					max-width: 60%;
 				}
 
-				.infio-api-key-name {
+				.icf-api-key-name {
 					font-size: var(--font-ui-medium);
 					font-weight: var(--font-weight-medium);
 					color: var(--text-normal);
 					margin-bottom: var(--size-2-1);
 				}
 
-				.infio-api-key-description {
+				.icf-api-key-description {
 					font-size: var(--font-ui-small);
 					color: var(--text-muted);
 					line-height: 1.4;
 				}
 
-				.infio-api-key-control-container {
+				.icf-api-key-control-container {
 					display: flex;
 					align-items: center;
 					gap: var(--size-2-3);
@@ -409,14 +409,14 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 					flex-shrink: 0;
 				}
 
-				.infio-api-key-input-wrapper {
+				.icf-api-key-input-wrapper {
 					display: flex;
 					align-items: center;
 					position: relative;
 					flex: 1;
 				}
 
-				.infio-api-key-input {
+				.icf-api-key-input {
 					width: 100%;
 					padding: var(--size-2-2) var(--size-4-6) var(--size-2-2) var(--size-4-2);
 					border: 1px solid var(--background-modifier-border);
@@ -428,17 +428,17 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 					transition: all 0.15s ease-in-out;
 				}
 
-				.infio-api-key-input:focus {
+				.icf-api-key-input:focus {
 					outline: none;
 					border-color: var(--interactive-accent);
 					box-shadow: 0 0 0 2px var(--interactive-accent-hover);
 				}
 
-				.infio-api-key-input::placeholder {
+				.icf-api-key-input::placeholder {
 					color: var(--text-faint);
 				}
 
-				.infio-api-key-toggle {
+				.icf-api-key-toggle {
 					position: absolute;
 					right: var(--size-2-2);
 					padding: var(--size-2-1);
@@ -455,16 +455,16 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 					border-radius: var(--radius-s);
 				}
 
-				.infio-api-key-toggle:hover {
+				.icf-api-key-toggle:hover {
 					background: var(--background-modifier-hover);
 					color: var(--text-normal);
 				}
 
-				.infio-api-key-toggle:active {
+				.icf-api-key-toggle:active {
 					background: var(--background-modifier-active);
 				}
 
-				.infio-api-key-test {
+				.icf-api-key-test {
 					display: flex;
 					align-items: center;
 					gap: var(--size-2-1);
@@ -482,33 +482,33 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 					white-space: nowrap;
 				}
 
-				.infio-api-key-test:hover:not(:disabled) {
+				.icf-api-key-test:hover:not(:disabled) {
 					background: var(--background-modifier-hover);
 					border-color: var(--background-modifier-border-hover);
 				}
 
-				.infio-api-key-test:active:not(:disabled) {
+				.icf-api-key-test:active:not(:disabled) {
 					background: var(--background-modifier-active);
 				}
 
-				.infio-api-key-test:disabled {
+				.icf-api-key-test:disabled {
 					opacity: 0.5;
 					cursor: not-allowed;
 				}
 
-				.infio-api-key-test.success {
+				.icf-api-key-test.success {
 					border-color: var(--color-green);
 					background: var(--color-green);
 					color: white;
 				}
 
-				.infio-api-key-test.error {
+				.icf-api-key-test.error {
 					border-color: var(--color-red);
 					background: var(--color-red);
 					color: white;
 				}
 
-				.infio-api-key-test.testing {
+				.icf-api-key-test.testing {
 					border-color: var(--interactive-accent);
 				}
 
@@ -528,13 +528,13 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 
 				/* 响应式设计 */
 				@media (max-width: 768px) {
-					.infio-api-key-setting-item {
+					.icf-api-key-setting-item {
 						flex-direction: column;
 						align-items: stretch;
 						gap: var(--size-4-2);
 					}
 
-					.infio-api-key-control-container {
+					.icf-api-key-control-container {
 						flex-direction: column;
 						align-items: stretch;
 						min-width: auto;
@@ -542,30 +542,30 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 						gap: var(--size-2-2);
 					}
 
-					.infio-api-key-input-wrapper {
+					.icf-api-key-input-wrapper {
 						flex: none;
 					}
 
-					.infio-api-key-test {
+					.icf-api-key-test {
 						align-self: flex-start;
 					}
 				}
 
 				/* 深色模式适配 */
-				.theme-dark .infio-api-key-input {
+				.theme-dark .icf-api-key-input {
 					background: var(--background-primary-alt);
 					border-color: var(--background-modifier-border-hover);
 				}
 
-				.theme-dark .infio-api-key-toggle:hover {
+				.theme-dark .icf-api-key-toggle:hover {
 					background: var(--background-modifier-hover);
 				}
 
-				.theme-dark .infio-api-key-test {
+				.theme-dark .icf-api-key-test {
 					background: var(--background-secondary-alt);
 				}
 
-				.theme-dark .infio-api-key-test:hover:not(:disabled) {
+				.theme-dark .icf-api-key-test:hover:not(:disabled) {
 					background: var(--background-modifier-hover);
 				}
 			`}</style>
@@ -614,10 +614,10 @@ export const CustomUrlComponent: React.FC<CustomUrlComponentProps> = ({
 	};
 
 	return (
-		<div className="infio-llm-setting-item">
-			<div className="infio-custom-url-toggle-section">
-				<div className="infio-custom-url-name">{name}</div>
-				<label className="infio-toggle-switch">
+		<div className="icf-llm-setting-item">
+			<div className="icf-custom-url-toggle-section">
+				<div className="icf-custom-url-name">{name}</div>
+				<label className="icf-toggle-switch">
 					<input
 						type="checkbox"
 						checked={useCustomUrl}
@@ -628,10 +628,10 @@ export const CustomUrlComponent: React.FC<CustomUrlComponentProps> = ({
 			</div>
 			
 			{useCustomUrl && (
-				<div className="infio-custom-url-input-section">
+				<div className="icf-custom-url-input-section">
 					<input
 						type="text"
-						className="infio-llm-setting-item-control"
+						className="icf-llm-setting-item-control"
 						placeholder={placeholder}
 						value={localValue}
 						onChange={handleUrlChange}
@@ -642,14 +642,14 @@ export const CustomUrlComponent: React.FC<CustomUrlComponentProps> = ({
 			)}
 
 			<style>{`
-				.infio-custom-url-toggle-section {
+				.icf-custom-url-toggle-section {
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
 					width: 100%;
 				}
 
-				.infio-custom-url-name {
+				.icf-custom-url-name {
 					font-size: var(--font-ui-medium);
 					font-weight: var(--font-weight-medium);
 					color: var(--text-normal);
@@ -657,12 +657,12 @@ export const CustomUrlComponent: React.FC<CustomUrlComponentProps> = ({
 				}
 
 
-				.infio-custom-url-input-section {
+				.icf-custom-url-input-section {
 					margin-top: var(--size-4-2);
 				}
 
 				/* 开关样式 */
-				.infio-toggle-switch {
+				.icf-toggle-switch {
 					position: relative;
 					display: inline-block;
 					width: 44px;
@@ -670,7 +670,7 @@ export const CustomUrlComponent: React.FC<CustomUrlComponentProps> = ({
 					cursor: pointer;
 				}
 
-				.infio-toggle-switch input {
+				.icf-toggle-switch input {
 					opacity: 0;
 					width: 0;
 					height: 0;
@@ -701,21 +701,21 @@ export const CustomUrlComponent: React.FC<CustomUrlComponentProps> = ({
 					box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 				}
 
-				.infio-toggle-switch input:checked + .slider {
+				.icf-toggle-switch input:checked + .slider {
 					background-color: var(--interactive-accent);
 					border-color: var(--interactive-accent);
 				}
 
-				.infio-toggle-switch input:checked + .slider:before {
+				.icf-toggle-switch input:checked + .slider:before {
 					transform: translateX(20px);
 					background-color: white;
 				}
 
-				.infio-toggle-switch:hover .slider {
+				.icf-toggle-switch:hover .slider {
 					box-shadow: 0 0 0 2px var(--interactive-accent-hover);
 				}
 
-				.infio-toggle-switch input:focus + .slider {
+				.icf-toggle-switch input:focus + .slider {
 					box-shadow: 0 0 0 2px var(--interactive-accent-hover);
 				}
 
@@ -724,7 +724,7 @@ export const CustomUrlComponent: React.FC<CustomUrlComponentProps> = ({
 					background-color: var(--text-normal);
 				}
 
-				.theme-dark .infio-toggle-switch input:checked + .slider:before {
+				.theme-dark .icf-toggle-switch input:checked + .slider:before {
 					background-color: white;
 				}
 			`}</style>
