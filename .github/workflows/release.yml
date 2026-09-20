@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Existing release tag to build for (e.g. 0.8.7)'
+        description: 'Release tag to publish (created if missing, e.g. 1.0.1)'
         required: true
 
 env:
@@ -21,14 +21,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # On tag push: check out the tag. On manual dispatch: build from the
+      # default branch and let the release step create the tag if needed.
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.tag || github.ref }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.repository.default_branch || github.ref }}
 
-      - name: Use Node.js 20
+      - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
