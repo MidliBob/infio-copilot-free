@@ -1,4 +1,9 @@
 releases:
+  - version: "1.0.4"
+    fixes:
+      - "Replaced deprecated/unused dependencies flagged by the catalog review: axios and js-yaml removed, lodash/lodash.debounce/lodash.isequal replaced by a small local utility module, builtin-modules replaced by node:module, deprecated eslint plugins dropped"
+    other:
+      - "Bundle is ~90 KB smaller; no user-facing behavior changes"
   - version: "1.0.3"
     fixes:
       - "Obsidian catalog review compliance: all eslint directives now carry descriptions, forbidden rule disables removed, innerHTML and direct style assignments replaced with DOMParser/CSS-class approaches, settings headings use the Setting API"

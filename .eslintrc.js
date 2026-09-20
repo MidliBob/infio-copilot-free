@@ -21,10 +21,7 @@ const config = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:@typescript-eslint/strict',
-    'plugin:import/recommended',
-    'plugin:import/typescript',
     'prettier',
-    'plugin:react/recommended',
     'plugin:react-hooks/recommended',
   ],
   rules: {
@@ -39,10 +36,6 @@ const config = {
     '@typescript-eslint/no-floating-promises': 'off',
     '@typescript-eslint/no-unnecessary-condition': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
-    'react/react-in-jsx-scope': 'off',
-
-    'import/no-unresolved': 'off',
-
     'sort-imports': [
       'error',
       {
@@ -51,16 +44,6 @@ const config = {
         ignoreMemberSort: false,
         memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
         allowSeparatedGroups: true,
-      },
-    ],
-    'import/order': [
-      'error',
-      {
-        'newlines-between': 'always',
-        alphabetize: {
-          order: 'asc',
-          caseInsensitive: true,
-        },
       },
     ],
     'no-console': 'warn',

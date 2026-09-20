@@ -1,7 +1,7 @@
 import path from 'path'
 import esbuild from 'esbuild'
 import process from 'process'
-import builtins from 'builtin-modules'
+import { builtinModules as builtins } from 'node:module'
 import inlineWorkerPlugin from "esbuild-plugin-inline-worker"
 import { visualizer } from "esbuild-visualizer";
 const nodeBuiltins = [...builtins, ...builtins.map((mod) => `node:${mod}`)]

@@ -1,4 +1,4 @@
-import { cloneDeep, get, has, set } from "lodash";
+import { cloneDeep, get, has, set } from "../../utils/lodash-lite";
 
 import { findEqualPaths, isRegexValid } from "../../utils/auto-complete";
 

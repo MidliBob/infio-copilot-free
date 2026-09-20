@@ -1,5 +1,4 @@
-import debounce from 'lodash.debounce'
-import isEqual from 'lodash.isequal'
+import { debounce, isEqual } from '../utils/lodash-lite'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { editorStateToPlainText } from '../components/chat-view/chat-input/utils/editor-state-to-plain-text'

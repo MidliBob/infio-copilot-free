@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { cloneDeep, each, get, has, isArray, isEqual, isNumber, isObject, isString, set, unset } from "lodash";
+import { cloneDeep, each, get, has, isArray, isEqual, isNumber, isObject, isString, set, unset } from "./lodash-lite";
 import * as mm from "micromatch";
 import { Result, err, ok } from "neverthrow";
 import { ZodError, ZodIssueCode, ZodType, z } from 'zod';
