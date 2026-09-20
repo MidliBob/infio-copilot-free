@@ -82,6 +82,7 @@ jobs:
 
       - name: Attest build provenance
         uses: actions/attest-build-provenance@v2
+        continue-on-error: true   # attestations API is unavailable for forks; never block the release
         with:
           subject-path: |
             main.js
