@@ -1,9 +1,6 @@
 import { Notice, Platform, Plugin } from 'obsidian';
 import * as React from 'react';
 
-import { ApiKeyModal } from '../../components/modals/ApiKeyModal';
-import { ProUpgradeModal } from '../../components/modals/ProUpgradeModal';
-import { checkGeneral, fetchUserPlan, upgradeToProVersion } from '../../hooks/use-infio';
 import type { InfioSettings } from '../../types/settings';
 import { getInfioLogoSvg } from '../../utils/icon';
 
@@ -23,76 +20,8 @@ export default function PluginInfoSettings({
 	settings
 }: PluginInfoSettingsProps) {
 	const isPro = false; // this is must be false
-	const [isUpgrading, setIsUpgrading] = React.useState(false);
 	// Convert SVG string to data URL for proper display
 	const logoDataUrl = `data:image/svg+xml;base64,${btoa(getInfioLogoSvg())}`;
-
-	// 处理升级按钮点击
-	const handleUpgrade = async () => {
-		if (!plugin) {
-			new Notice('无法获取插件实例');
-			return;
-		}
-
-		if (!settings?.infioProvider?.apiKey) {
-			if (plugin?.app) {
-				new ApiKeyModal(plugin.app).open();
-			} else {
-				new Notice('请先在Infio Provider设置中配置 Infio API Key');
-			}
-			return;
-		}
-
-		setIsUpgrading(true);
-
-		try {
-			// 检查是否为会员(Pro|General)
-			const userPlan = await fetchUserPlan(settings.infioProvider.apiKey);
-			console.log('userPlan', userPlan);
-			const isProUser = userPlan.plan?.toLowerCase().startsWith('pro') || false;
-			const isGeneralUser = userPlan.plan?.toLowerCase().startsWith('general') || false;
-			let dl_zip = userPlan.dl_zip || '';
-			if (!isProUser && !isGeneralUser) {
-				if (plugin?.app) {
-					new ProUpgradeModal(plugin.app).open();
-				} else {
-					new Notice('您的账户不是会员用户, 请先购买会员');
-				}
-				return;
-			}
-			if (isGeneralUser) {
-				const result = await checkGeneral(settings.infioProvider.apiKey);
-				if (!result.success) {
-					if (plugin?.app) {
-						new ProUpgradeModal(plugin.app).open();
-					} else {
-						new Notice('您的账户不是会员用户, 请先购买会员');
-					}
-					return;
-				}
-				console.log('result', result);
-				dl_zip = result.dl_zip;
-			}
-
-			// 执行升级
-			// check is mobile platform
-			if (Platform.isMobile) {
-				dl_zip = dl_zip.replace('.zip', '.mobile.zip');
-			}
-			const result = await upgradeToProVersion(plugin, dl_zip);
-
-			if (result.success) {
-				// 升级成功的提示已经在upgradeToProVersion中处理了
-			} else {
-				new Notice(`加载失败: ${result.message}`);
-			}
-		} catch (error) {
-			// eslint-disable-next-line no-console
-			console.error('升级过程中发生错误:', error);
-		} finally {
-			setIsUpgrading(false);
-		}
-	};
 
 	return (
 		<div className="plugin-info-container">
@@ -109,13 +38,6 @@ export default function PluginInfoSettings({
 								{isPro ? 'Pro' : 'community'}
 							</span>
 							<span className="version-number">v{pluginVersion}</span>
-							<button
-								className="upgrade-button"
-								onClick={handleUpgrade}
-								disabled={isUpgrading}
-							>
-								{isUpgrading ? '加载中...' : '升级到Pro'}
-							</button>
 						</div>
 					</div>
 				</div>

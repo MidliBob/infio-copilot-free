@@ -15,6 +15,7 @@ env:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   build:
@@ -78,6 +79,15 @@ jobs:
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
+            ${{ env.PLUGIN_NAME }}-${{ steps.get_tag.outputs.tag_name }}.zip
 
       - name: Release
         uses: softprops/action-gh-release@v2

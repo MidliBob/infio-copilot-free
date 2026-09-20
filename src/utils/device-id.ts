@@ -40,31 +40,8 @@ function safeSetLocalStorage(key: string, value: string): void {
 }
 
 export async function getDeviceId(): Promise<string> {
-  // On mobile, generate and persist a stable pseudo ID
-  if (Platform.isMobile) {
-    const existing = safeGetLocalStorage(DEVICE_ID_STORAGE_KEY)
-    if (existing) return existing
-    const generated = generatePseudoId()
-    safeSetLocalStorage(DEVICE_ID_STORAGE_KEY, generated)
-    return generated
-  }
-
-  // Desktop: try node-machine-id; fall back to persisted pseudo ID
-  try {
-    const moduleName = 'node-machine-id'
-    // Use dynamic import via variable to avoid bundlers pulling it into mobile builds
-    const mod: unknown = await import(/* @vite-ignore */ moduleName)
-    if (
-      typeof mod === 'object' && mod !== null &&
-      'machineId' in mod && typeof (mod as Record<string, unknown>).machineId === 'function'
-    ) {
-      const id = await (mod as { machineId: () => Promise<string> }).machineId()
-      if (id) return id
-    }
-  } catch {
-    // ignore and fall back
-  }
-
+  // Stable per-device pseudo identifier, persisted locally.
+  // No hardware fingerprinting (Obsidian developer policies).
   const existing = safeGetLocalStorage(DEVICE_ID_STORAGE_KEY)
   if (existing) return existing
   const generated = generatePseudoId()

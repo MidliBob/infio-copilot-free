@@ -1,4 +1,11 @@
 releases:
+  - version: "1.0.2"
+    fixes:
+      - "Removed the legacy self-update mechanism (download/extract/overwrite own files and programmatic plugin reload) flagged by the Obsidian catalog review"
+      - "Removed node-machine-id hardware fingerprinting; device id is now a locally persisted random pseudo-id"
+    other:
+      - "Dropped jszip dependency and the Pro-upgrade UI of the discontinued Infio service"
+      - "Release assets now ship with GitHub artifact attestations (build provenance)"
   - version: "1.0.0"
     features:
       - "Independent project: rebranded to Infio Copilot Free (plugin id infio-copilot-free, author MidliBob)"
