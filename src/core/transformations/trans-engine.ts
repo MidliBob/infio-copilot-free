@@ -998,7 +998,7 @@ export class TransEngine {
 			const allInsights = await this.insightManager.getAllInsights(this.embeddingModel)
 			// 移除 embedding 字段，避免返回大量数据
 			return allInsights.map((insight) => {
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars -- intentionally unused binding
 				const { embedding, ...rest } = insight;
 				return rest;
 			});

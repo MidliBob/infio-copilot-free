@@ -803,7 +803,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 									return item.text
 								}
 								if (item.type === "resource") {
-									// eslint-disable-next-line @typescript-eslint/no-unused-vars
+									// eslint-disable-next-line @typescript-eslint/no-unused-vars -- intentionally unused binding
 									const { blob, ...rest } = item.resource
 									return JSON.stringify(rest, null, 2)
 								}
@@ -1131,7 +1131,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 		setFocusedMessageId(inputMessage.id)
 		// 初始化当前活动文件引用
 		currentActiveFileRef.current = app.workspace.getActiveFile()
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- dependency list is intentionally narrow
 	}, [])
 
 	useEffect(() => {

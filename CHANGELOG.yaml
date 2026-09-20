@@ -1,4 +1,9 @@
 releases:
+  - version: "1.0.3"
+    fixes:
+      - "Obsidian catalog review compliance: all eslint directives now carry descriptions, forbidden rule disables removed, innerHTML and direct style assignments replaced with DOMParser/CSS-class approaches, settings headings use the Setting API"
+    other:
+      - "Code-quality pass only; no user-facing behavior changes"
   - version: "1.0.2"
     fixes:
       - "Removed the legacy self-update mechanism (download/extract/overwrite own files and programmatic plugin reload) flagged by the Obsidian catalog review"

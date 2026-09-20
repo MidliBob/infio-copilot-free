@@ -17,6 +17,11 @@ export function isYoutubeUrl(url: string) {
 	return RE_YOUTUBE.test(url)
 }
 
+interface CaptionTrack {
+	languageCode: string
+	baseUrl: string
+}
+
 export class YoutubeTranscriptError extends Error {
 	constructor(message: string) {
 		super(`[YoutubeTranscript] 🚨 ${message}`)
@@ -117,14 +122,14 @@ export class YoutubeTranscript {
 
 		const captions = (() => {
 			try {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-				return JSON.parse(
+				const parsed = JSON.parse(
 					splittedHTML[1].split(',"videoDetails')[0].replace('\n', ''),
-				)
+				) as { playerCaptionsTracklistRenderer?: { captionTracks: CaptionTrack[] } }
+				return parsed.playerCaptionsTracklistRenderer
 			} catch (e) {
 				return undefined
 			}
-		})()?.playerCaptionsTracklistRenderer
+		})()
 
 		if (!captions) {
 			throw new YoutubeTranscriptDisabledError(videoId)
@@ -137,14 +142,12 @@ export class YoutubeTranscript {
 		if (
 			config?.lang &&
 			!captions.captionTracks.some(
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				(track: any) => track.languageCode === config?.lang,
+				(track) => track.languageCode === config?.lang,
 			)
 		) {
 			throw new YoutubeTranscriptNotAvailableLanguageError(
 				config?.lang,
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return
-				captions.captionTracks.map((track: any) => track.languageCode),
+				captions.captionTracks.map((track) => track.languageCode),
 				videoId,
 			)
 		}
@@ -152,8 +155,7 @@ export class YoutubeTranscript {
 		const transcriptURL: string = (
 			config?.lang
 				? captions.captionTracks.find(
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					(track: any) => track.languageCode === config?.lang,
+					(track) => track.languageCode === config?.lang,
 				)
 				: captions.captionTracks[0]
 		).baseUrl

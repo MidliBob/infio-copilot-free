@@ -353,41 +353,18 @@ export class InfioSettingTab extends PluginSettingTab {
 		toggleIcon.textContent = "▶"; // 默认为折叠状态，使用右箭头
 
 		// 添加标题文本
-		const titleEl = headerEl.createEl("h3", { text: t('settings.RAG.title') });
+		const titleEl = headerEl.createEl("div", { cls: "icf-collapsible-title", text: t('settings.RAG.title') });
 
 		// 创建内容容器
-		const contentContainer = ragContainer.createEl("div", { cls: "icf-collapsible-content" });
-
-		// 默认设置为隐藏状态
-		contentContainer.style.display = "none";
+		const contentContainer = ragContainer.createEl("div", { cls: "icf-collapsible-content icf-collapsed" });
 
 		// 添加点击事件处理
 		headerEl.addEventListener("click", () => {
-			if (contentContainer.style.display === "none") {
-				contentContainer.style.display = "block";
-				toggleIcon.textContent = "▼"; // 展开状态使用下箭头
-				toggleIcon.style.transform = "rotate(0deg)";
-			} else {
-				contentContainer.style.display = "none";
-				toggleIcon.textContent = "▶"; // 折叠状态使用右箭头
-				toggleIcon.style.transform = "rotate(0deg)";
-			}
+			const wasCollapsed = contentContainer.hasClass("icf-collapsed");
+			contentContainer.toggleClass("icf-collapsed", !wasCollapsed);
+			toggleIcon.textContent = wasCollapsed ? "▼" : "▶";
 		});
 
-		// 添加样式
-		headerEl.style.cursor = "pointer";
-		headerEl.style.display = "flex";
-		headerEl.style.alignItems = "center";
-		headerEl.style.marginBottom = "10px";
-		headerEl.style.padding = "6px 0";
-
-		toggleIcon.style.marginRight = "5px";
-		toggleIcon.style.fontSize = "10px";
-		toggleIcon.style.transition = "transform 0.15s ease";
-
-		titleEl.style.margin = "0";
-		titleEl.style.fontSize = "16px";
-		titleEl.style.fontWeight = "600";
 
 		// 以下是原有的设置内容，移动到内容容器中
 		new Setting(contentContainer)
@@ -609,44 +586,21 @@ export class InfioSettingTab extends PluginSettingTab {
 		toggleIcon.textContent = "▶"; // 默认为折叠状态，使用右箭头
 
 		// 添加标题文本
-		const titleEl = headerEl.createEl("h3", { text: t('settings.AutoComplete.title') });
+		const titleEl = headerEl.createEl("div", { cls: "icf-collapsible-title", text: t('settings.AutoComplete.title') });
 
 		// 创建内容容器
-		const contentContainer = autoCompleteContainer.createEl("div", { cls: "icf-collapsible-content" });
+		const contentContainer = autoCompleteContainer.createEl("div", { cls: "icf-collapsible-content icf-collapsed" });
 
 		// 保存容器引用
 		this.autoCompleteContainer = contentContainer;
 
-		// 默认设置为隐藏状态
-		contentContainer.style.display = "none";
-
 		// 添加点击事件处理
 		headerEl.addEventListener("click", () => {
-			if (contentContainer.style.display === "none") {
-				contentContainer.style.display = "block";
-				toggleIcon.textContent = "▼"; // 展开状态使用下箭头
-				toggleIcon.style.transform = "rotate(0deg)";
-			} else {
-				contentContainer.style.display = "none";
-				toggleIcon.textContent = "▶"; // 折叠状态使用右箭头
-				toggleIcon.style.transform = "rotate(0deg)";
-			}
+			const wasCollapsed = contentContainer.hasClass("icf-collapsed");
+			contentContainer.toggleClass("icf-collapsed", !wasCollapsed);
+			toggleIcon.textContent = wasCollapsed ? "▼" : "▶";
 		});
 
-		// 添加样式
-		headerEl.style.cursor = "pointer";
-		headerEl.style.display = "flex";
-		headerEl.style.alignItems = "center";
-		headerEl.style.marginBottom = "10px";
-		headerEl.style.padding = "6px 0";
-
-		toggleIcon.style.marginRight = "5px";
-		toggleIcon.style.fontSize = "10px";
-		toggleIcon.style.transition = "transform 0.15s ease";
-
-		titleEl.style.margin = "0";
-		titleEl.style.fontSize = "16px";
-		titleEl.style.fontWeight = "600";
 
 		// 在内容容器中渲染AutoComplete设置
 		this.renderAutoCompleteContent(contentContainer);

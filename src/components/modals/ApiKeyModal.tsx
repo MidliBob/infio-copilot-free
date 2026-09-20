@@ -19,8 +19,7 @@ const ApiKeyModalContent: React.FC<ApiKeyModalContentProps> = ({ onClose, app })
   const handleOpenSettingsClick = () => {
     onClose()
     // 打开设置面板到 Infio Provider 选项卡
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const setting = (app as any).setting
+    const setting = (app as unknown as { setting: { open: () => void; openTabById: (id: string) => void } }).setting
     setting.open()
     setting.openTabById('infio-copilot-free')
   }
@@ -222,9 +221,6 @@ export class ApiKeyModal extends Modal {
     // 添加特定的CSS类
     modalEl.addClass('mod-api-key')
 
-    // 设置模态框样式
-    modalEl.style.width = '520px'
-    modalEl.style.maxWidth = '90vw'
 
     this.root = createRoot(contentEl)
 

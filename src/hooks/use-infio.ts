@@ -1,4 +1,3 @@
-/* eslint-disable no-console, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 import { requestUrl } from "obsidian";
 
 import { INFIO_BASE_URL } from "../constants";
@@ -25,8 +24,8 @@ export const fetchUserPlan = async (apiKey: string): Promise<UserPlanResponse> =
 		},
 	});
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-	return response.json;
+	const json = response.json as UserPlanResponse;
+	return json;
 }
 
 // API响应类型定义
@@ -74,14 +73,14 @@ export const checkGeneral = async (
 			}),
 		});
 
-		if (response.json.success) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-			return response.json;
+		const json = response.json as CheckGeneralResponse;
+		if (json.success) {
+			return json;
 		} else {
-			console.error('检查 gerenal 会员失败:', response.json.message);
+			console.error('检查 gerenal 会员失败:', json.message);
 			return {
 				success: false,
-				message: response.json.message || '检查设备一般状态失败',
+				message: json.message || '检查设备一般状态失败',
 			};
 		}
 	} catch (error) {
@@ -98,17 +97,3 @@ export const checkGeneral = async (
 /**
  * 检查用户是否为Pro用户
  */
-// export const checkIsProUser = async (apiKey: string): Promise<boolean> => {
-// 	try {
-// 		if (!apiKey) {
-// 			return false;
-// 		}
-		
-// 		const userPlan = await fetchUserPlan(apiKey);
-// 		return userPlan.plan?.toLowerCase().startsWith('pro') || false;
-// 	} catch (error) {
-// 		// eslint-disable-next-line no-console
-// 		console.error('检查Pro用户状态失败:', error);
-// 		return false;
-// 	}
-// }

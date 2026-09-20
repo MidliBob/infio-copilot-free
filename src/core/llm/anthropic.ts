@@ -116,7 +116,7 @@ export class AnthropicProvider implements BaseLLMProvider {
         },
       )
 
-      // eslint-disable-next-line no-inner-declarations
+      // eslint-disable-next-line no-inner-declarations -- helper stays local to its branch
       async function* streamResponse(): AsyncIterable<LLMResponseStreaming> {
         let messageId = ''
         let model = ''

@@ -41,7 +41,7 @@ export class NoStainlessOpenAI extends OpenAI {
 		const headers: Record<string, string> = req.req.headers
 		Object.keys(headers).forEach((k) => {
 			if (k.startsWith('x-stainless')) {
-				// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+				// eslint-disable-next-line @typescript-eslint/no-dynamic-delete -- key is computed at runtime
 				delete headers[k]
 			}
 		})

@@ -192,7 +192,11 @@ function MermaidBlock({ code }: MermaidBlockProps) {
 				})
 				.then(({ svg }) => {
 					if (containerRef.current) {
-						containerRef.current.innerHTML = svg
+						const parsed = new DOMParser().parseFromString(svg, 'image/svg+xml')
+						const rendered = parsed.querySelector('svg')
+						if (rendered) {
+							containerRef.current.replaceChildren(document.importNode(rendered, true))
+						}
 					}
 				})
 				.catch((err: Error) => {

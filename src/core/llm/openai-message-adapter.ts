@@ -75,7 +75,7 @@ export class OpenAIMessageAdapter {
       },
     )
 
-    // eslint-disable-next-line no-inner-declarations
+    // eslint-disable-next-line no-inner-declarations -- helper stays local to its branch
     async function* streamResponse(): AsyncIterable<LLMResponseStreaming> {
       for await (const chunk of stream) {
         yield OpenAIMessageAdapter.parseStreamingResponseChunk(chunk)

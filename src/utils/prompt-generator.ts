@@ -488,7 +488,7 @@ export class PromptGenerator {
 		let similaritySearchResults = undefined
 
 		useVaultSearch =
-			// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+			// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- falsy fallback is intended here
 			useVaultSearch ||
 			message.mentionables.some(
 				(m): m is MentionableVault => m.type === 'vault',

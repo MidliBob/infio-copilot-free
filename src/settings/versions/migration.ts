@@ -15,7 +15,6 @@ import {
 } from "./v1/v1";
 
 export function migrateFromV0ToV1(settings: SettingsV0): SettingsV1 {
-	// eslint-disable  @typescript-eslint/no-explicit-any
 	const updatedSettings: any = cloneDeep(settings);
 	migrateDefaultSettings(updatedSettings, DEFAULT_SETTINGS_V0, DEFAULT_SETTINGS_V1);
 

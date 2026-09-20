@@ -1,7 +1,7 @@
 {
 	"id": "infio-copilot-free",
 	"name": "Infio Copilot Free",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"minAppVersion": "0.15.0",
 	"description": "Community-maintained Cursor-inspired AI assistant: agent chat with your vault, RAG semantic search, autocomplete and AI insights. Continuation of Infio Copilot.",
 	"author": "MidliBob",

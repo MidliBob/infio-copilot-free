@@ -54,7 +54,7 @@ export const checkGeneral = async (
 		});
 
 		if (response.json.success) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-return -- requestUrl json is untyped by design
 			return response.json;
 		} else {
 			console.error('检查 gerenal 会员失败:', response.json.message);
@@ -95,7 +95,7 @@ export const fetchUserPlan = async (apiKey: string): Promise<UserPlanResponse> =
 		},
 	});
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-return -- requestUrl json is untyped by design
 	return response.json;
 }
 
@@ -115,8 +115,7 @@ export class MobileSettingTab extends PluginSettingTab {
 		containerEl.empty()
 
 		// Title
-		const title = containerEl.createEl('h2', { text: 'Infio Mobile' })
- 		title.style.marginBottom = '8px'
+		new Setting(containerEl).setName('Infio Mobile').setHeading()
 
  		// Description
 		const descEl = containerEl.createEl('div')

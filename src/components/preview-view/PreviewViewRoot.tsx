@@ -18,7 +18,7 @@ export default function PreviewViewRoot({
 	useEffect(() => {
 		if (contentRef.current && state.content) {
 			// 清空现有内容
-			contentRef.current.innerHTML = ''
+			contentRef.current.replaceChildren()
 			
 			// 判断是否为 HTML 内容（包含 SVG）
 			const isHtmlContent = state.content.trim().startsWith('<') && 
@@ -26,17 +26,11 @@ export default function PreviewViewRoot({
 				 state.content.includes('<span') || state.content.includes('<pre'))
 			
 			if (isHtmlContent) {
-				// 如果是 HTML 内容，直接渲染
-				contentRef.current.innerHTML = state.content
+				// HTML/SVG контент парсится через DOMParser (без innerHTML)
+				const parsed = new DOMParser().parseFromString(state.content, 'text/html')
+				const nodes = Array.from(parsed.body.childNodes).map((n) => document.importNode(n, true))
+				contentRef.current.replaceChildren(...nodes)
 				
-				// 为 SVG 添加适当的样式
-				const svgElements = contentRef.current.querySelectorAll('svg')
-				svgElements.forEach(svg => {
-					svg.style.maxWidth = '100%'
-					svg.style.height = 'auto'
-					svg.style.display = 'block'
-					svg.style.margin = '0 auto'
-				})
 			} else {
 				// 如果是纯文本，创建预格式化文本元素
 				const preElement = document.createElement('pre')

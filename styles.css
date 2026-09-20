@@ -4090,3 +4090,34 @@ button.icf-chat-input-model-select {
   word-break: break-word;
   overflow: auto;
 }
+
+/* Styles moved from inline JS assignments (Obsidian catalog review compliance) */
+.mod-api-key {
+	width: 520px;
+	max-width: 90vw;
+}
+.icf-collapsible-heading {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+	padding: 6px 0;
+}
+.icf-toggle-icon {
+	margin-right: 5px;
+	font-size: 10px;
+}
+.icf-collapsible-title {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 600;
+}
+.icf-collapsible-content.icf-collapsed {
+	display: none;
+}
+.icf-preview-content svg {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin: 0 auto;
+}
