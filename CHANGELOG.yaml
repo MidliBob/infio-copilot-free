@@ -1,4 +1,13 @@
 releases:
+  - version: "0.8.7"
+    fixes:
+      - "PGlite database assets now ship with the plugin (local files + CDN fallback); the previous remote host is gone, which broke the plugin on start-up"
+      - "model picker no longer throws when opening the dropdown (null currentTarget)"
+      - "no more 401 spam from the Infio model list when no Infio API key is set"
+    features:
+      - "complete Russian (ru) interface translation"
+    other:
+      - "removed client-side telemetry for Obsidian developer policy compliance"
   - version: "0.8.6"
     features:
       - "fix mobile version build index error"

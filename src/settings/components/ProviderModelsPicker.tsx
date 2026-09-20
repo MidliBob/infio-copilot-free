@@ -353,10 +353,12 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 								collisionPadding={8}
 								onOpenAutoFocus={(e) => {
 									e.preventDefault();
+									// Capture the target synchronously: React nulls out
+									// e.currentTarget by the time the timeout fires.
+									const target = e.currentTarget as HTMLElement | null;
 									// 延迟聚焦到搜索输入框
 									setTimeout(() => {
-										// @ts-expect-error - currentTarget is HTMLElement
-										const input = e.currentTarget.querySelector('input');
+										const input = target?.querySelector('input');
 										input?.focus();
 									}, 0);
 								}}

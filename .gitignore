@@ -21,3 +21,6 @@ data.json
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
 tag.sh
+
+# generated PGlite runtime assets (pnpm copy-pglite-assets)
+pglite-assets/

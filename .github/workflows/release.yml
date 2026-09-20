@@ -33,6 +33,7 @@ jobs:
           pnpm install
           pnpm add js-yaml
           pnpm build
+          pnpm copy-pglite-assets
 
       - name: Test
         id: test
@@ -49,6 +50,7 @@ jobs:
         run: |
           mkdir ${{ env.PLUGIN_NAME }}
           cp main.js manifest.json styles.css ${{ env.PLUGIN_NAME }}
+          cp pglite-assets/postgres.wasm pglite-assets/postgres.data pglite-assets/vector.tar.gz ${{ env.PLUGIN_NAME }}
           zip -r ${{ env.PLUGIN_NAME }}-${{ steps.get_tag.outputs.tag_name }}.zip ${{ env.PLUGIN_NAME }}
           ls
 
@@ -75,4 +77,7 @@ jobs:
             main.js
             manifest.json
             styles.css
+            pglite-assets/postgres.wasm
+            pglite-assets/postgres.data
+            pglite-assets/vector.tar.gz
           body: ${{ steps.release_notes.outputs.changelog }}

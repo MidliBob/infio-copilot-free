@@ -2,7 +2,6 @@ import { Notice } from "obsidian";
 
 import EventListener from "../../../event-listener";
 import { DocumentChanges } from "../../../render-plugin/document-changes-listener";
-import { onEnt } from "../../../utils/web-search";
 import Context from "../context-detection";
 
 import State from "./state";
@@ -58,8 +57,6 @@ class PredictingState extends State {
 	}
 
 	private async predict(): Promise<void> {
-		onEnt(`predict`)
-
 		const result =
 			await this.context.autocomplete?.fetchPredictions(
 				this.prefix,

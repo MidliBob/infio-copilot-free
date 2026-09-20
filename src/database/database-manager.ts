@@ -2,12 +2,48 @@
 import { type PGliteWithLive } from '@electric-sql/pglite/live'
 import { App } from 'obsidian'
 
-import { createAndInitDb } from '../pgworker'
+import { createAndInitDb, PgliteAssets } from '../pgworker'
 
 import { CommandManager } from './modules/command/command-manager'
 import { ConversationManager } from './modules/conversation/conversation-manager'
 import { InsightManager } from './modules/insight/insight-manager'
 import { VectorManager } from './modules/vector/vector-manager'
+
+/**
+ * Loads the PGlite runtime assets (postgres.wasm / postgres.data /
+ * vector.tar.gz) shipped next to main.js in the plugin folder.
+ * Returns undefined when the files are absent, so the worker can fall back
+ * to the CDN mirrors instead.
+ */
+async function loadLocalPgliteAssets(
+	app: App,
+	pluginId: string,
+): Promise<PgliteAssets | undefined> {
+	try {
+		const adapter = app.vault.adapter
+		const dir = `${app.vault.configDir}/plugins/${pluginId}`
+		const paths = {
+			wasm: `${dir}/postgres.wasm`,
+			data: `${dir}/postgres.data`,
+			vector: `${dir}/vector.tar.gz`,
+		}
+		for (const path of Object.values(paths)) {
+			if (!(await adapter.exists(path))) return undefined
+		}
+		const [wasm, data, vector] = await Promise.all([
+			adapter.readBinary(paths.wasm),
+			adapter.readBinary(paths.data),
+			adapter.readBinary(paths.vector),
+		])
+		return { wasm, data, vector }
+	} catch (error) {
+		console.warn(
+			'[infio-copilot] could not read local PGlite assets, falling back to CDN',
+			error,
+		)
+		return undefined
+	}
+}
 
 export class DBManager {
 	private app: App
@@ -21,9 +57,14 @@ export class DBManager {
 		this.app = app
 	}
 
-	static async create(app: App, filesystem: string): Promise<DBManager> {
+	static async create(
+		app: App,
+		filesystem: string,
+		pluginId = 'infio-copilot',
+	): Promise<DBManager> {
 		const dbManager = new DBManager(app)
-		dbManager.db = await createAndInitDb(filesystem)
+		const assets = await loadLocalPgliteAssets(app, pluginId)
+		dbManager.db = await createAndInitDb(filesystem, assets)
 
 		dbManager.vectorManager = new VectorManager(app, dbManager)
 		dbManager.CommandManager = new CommandManager(app, dbManager)

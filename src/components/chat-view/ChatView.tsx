@@ -60,7 +60,7 @@ import { readTFileContent, readTFileContentPdf } from '../../utils/obsidian'
 import { openSettingsModalWithError } from '../../utils/open-settings-modal'
 import { PromptGenerator, addLineNumbers } from '../../utils/prompt-generator'
 // Removed empty line above, added one below for group separation
-import { fetchUrlsContent, onEnt, webSearch } from '../../utils/web-search'
+import { fetchUrlsContent, webSearch } from '../../utils/web-search'
 import ErrorBoundary from '../common/ErrorBoundary'
 
 import PromptInputWithActions, { ChatUserInputRef } from './chat-input/PromptInputWithActions'
@@ -222,10 +222,6 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 	}, [chatMessages])
 
 
-	useEffect(() => {
-		onEnt(`switch_tab/${tab}`)
-	}, [tab])
-
 	const handleCreateCommand = (serializedNodes: BaseSerializedNode[]) => {
 		setSelectedSerializedNodes(serializedNodes)
 		setTab('commands')
@@ -312,7 +308,6 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 			try {
 				const abortController = new AbortController()
 				activeStreamAbortControllersRef.current.push(abortController)
-				onEnt('chat-submit')
 				const { requestMessages, compiledMessages } =
 					await promptGenerator.generateRequestMessages({
 						messages: newChatHistory,

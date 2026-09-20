@@ -37,7 +37,6 @@ import {
 import { createDataviewManager, DataviewManager } from './utils/dataview'
 import { getMentionableBlockData } from './utils/obsidian'
 import './utils/path'
-import { onEnt } from './utils/web-search'
 
 type DesktopAugmented = Plugin & {
 	metadataCacheUnloadFn: (() => void) | null
@@ -149,7 +148,7 @@ export async function loadDesktop(base: Plugin) {
 		if (this.dbManager) return this.dbManager
 		if (!this.dbManagerInitPromise) {
 			this.dbManagerInitPromise = (async () => {
-				this.dbManager = await DBManager.create(this.app, this.settings.ragOptions.filesystem)
+				this.dbManager = await DBManager.create(this.app, this.settings.ragOptions.filesystem, this.manifest?.id ?? 'infio-copilot')
 				return this.dbManager
 			})()
 		}
@@ -217,7 +216,6 @@ export async function loadDesktop(base: Plugin) {
 
 	setTimeout(() => {
 		void plugin.migrateToJsonStorage().then(() => { })
-		void onEnt('loaded')
 	}, 100)
 
 	plugin.settingTab = new InfioSettingTab(plugin.app, plugin as unknown as any)

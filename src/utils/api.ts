@@ -153,6 +153,14 @@ async function fetchInfioModels(apiKey?: string): Promise<Record<string, ModelIn
 		return infioModelsCache;
 	}
 
+	if (!apiKey) {
+		// Without an API key the endpoint always answers 401; skip the request
+		// entirely and fall back to the default model info.
+		return {
+			[infioDefaultModelId]: infioDefaultModelInfo
+		};
+	}
+
 	try {
 		const headers: Record<string, string> = {
 			'Content-Type': 'application/json'

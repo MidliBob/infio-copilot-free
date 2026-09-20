@@ -6,70 +6,114 @@ import { migrations } from '../database/sql'
 
 export { }
 
-const loadPGliteResources = async (): Promise<{
+export interface PgliteAssets {
+	wasm: ArrayBuffer
+	data: ArrayBuffer
+	vector: ArrayBuffer
+}
+
+/**
+ * Mirrors of the `@electric-sql/pglite@0.2.14` dist assets, used only when the
+ * plugin folder does not ship its own copies. The plugin normally passes the
+ * assets in (see `loadLocalPgliteAssets` in database-manager.ts), so no network
+ * request is needed at start-up.
+ */
+const PGLITE_CDN_BASES = [
+	'https://cdn.jsdelivr.net/npm/@electric-sql/pglite@0.2.14/dist/',
+	'https://registry.npmmirror.com/@electric-sql/pglite/0.2.14/files/dist/',
+	'https://unpkg.com/@electric-sql/pglite@0.2.14/dist/',
+]
+
+async function fetchAssetsFromCdn(): Promise<PgliteAssets> {
+	let lastError: unknown
+	for (const base of PGLITE_CDN_BASES) {
+		try {
+			const [wasmRes, dataRes, vectorRes] = await Promise.all([
+				fetch(`${base}postgres.wasm`),
+				fetch(`${base}postgres.data`),
+				fetch(`${base}vector.tar.gz`),
+			])
+			if (!wasmRes.ok || !dataRes.ok || !vectorRes.ok) {
+				throw new Error(
+					`HTTP ${wasmRes.status}/${dataRes.status}/${vectorRes.status} from ${base}`,
+				)
+			}
+			return {
+				wasm: await wasmRes.arrayBuffer(),
+				data: await dataRes.arrayBuffer(),
+				vector: await vectorRes.arrayBuffer(),
+			}
+		} catch (error) {
+			lastError = error
+		}
+	}
+	throw new Error(
+		'Failed to obtain PGlite assets. Either place postgres.wasm, postgres.data and ' +
+			'vector.tar.gz (from @electric-sql/pglite@0.2.14 dist) into the plugin folder, ' +
+			'or check your network connection. Last error: ' +
+			(lastError instanceof Error ? lastError.message : String(lastError)),
+	)
+}
+
+const loadPGliteResources = async (
+	assets?: PgliteAssets,
+): Promise<{
 	fsBundle: Blob
 	wasmModule: WebAssembly.Module
 	vectorExtensionBundlePath: URL
 }> => {
-		const [wasmRes, dataRes, vectorRes] = await Promise.all([
-			fetch('https://infio.dev/postgres.wasm', { cache: 'no-store' }),
-			fetch('https://infio.dev/postgres.data', { cache: 'no-store' }),
-			fetch('https://infio.dev/vector.tar.gz', { cache: 'no-store' }),
-		])
+	const { wasm, data, vector } = assets ?? (await fetchAssetsFromCdn())
 
-		if (!wasmRes.ok || !dataRes.ok || !vectorRes.ok) {
-			throw new Error('Failed to download PGlite assets from infio.dev')
-		}
+	const wasmModule = await WebAssembly.compile(wasm)
 
-		const wasmBuffer = await wasmRes.arrayBuffer()
-		const wasmModule = await WebAssembly.compile(wasmBuffer)
+	const fsBundle = new Blob([data], {
+		type: 'application/octet-stream',
+	})
 
-		const dataBuffer = await dataRes.arrayBuffer()
-		const fsBundle = new Blob([dataBuffer], {
-			type: 'application/octet-stream',
-		})
+	const vectorBlob = new Blob([vector], {
+		type: 'application/gzip',
+	})
 
-		const vectorBuffer = await vectorRes.arrayBuffer()
-		const vectorBlob = new Blob([vectorBuffer], {
-			type: 'application/gzip',
-		})
-		const vectorExtensionBundlePath = URL.createObjectURL(vectorBlob)
-
-        return {
-            fsBundle,
-            wasmModule,
-            vectorExtensionBundlePath: new URL(vectorExtensionBundlePath),
-        }
+	return {
+		fsBundle,
+		wasmModule,
+		vectorExtensionBundlePath: new URL(URL.createObjectURL(vectorBlob)),
+	}
 }
 
 worker({
 	async init(options: PGliteWorkerOptions, filesystem: string) {
-    let db: PGlite;
-			const { fsBundle, wasmModule, vectorExtensionBundlePath } =
-				await loadPGliteResources()
-			if (filesystem === 'idb') {
-				db = await PGlite.create('idb://infio-db', {
-					relaxedDurability: true,
-					fsBundle: fsBundle,
-					wasmModule: wasmModule,
-					...options,
-					extensions: {
-						...options.extensions,
-						vector: vectorExtensionBundlePath,
-					},
-				})
-			} else {
-				db = await PGlite.create('opfs-ahp://infio-db', {
-					relaxedDurability: true,
-					fsBundle: fsBundle,
-					wasmModule: wasmModule,
-					...options,
-					extensions: {
-						...options.extensions,
-						vector: vectorExtensionBundlePath,
-					},
-				})
-			}
+		let db: PGlite;
+		// `pgliteAssets` is our own transport field (structured-cloned by
+		// PGliteWorker); strip it before handing options to PGlite.
+		const { pgliteAssets, ...pgOptions } = (options ?? {}) as PGliteWorkerOptions & {
+			pgliteAssets?: PgliteAssets
+		}
+		const { fsBundle, wasmModule, vectorExtensionBundlePath } =
+			await loadPGliteResources(pgliteAssets)
+		if (filesystem === 'idb') {
+			db = await PGlite.create('idb://infio-db', {
+				relaxedDurability: true,
+				fsBundle: fsBundle,
+				wasmModule: wasmModule,
+				...pgOptions,
+				extensions: {
+					...pgOptions.extensions,
+					vector: vectorExtensionBundlePath,
+				},
+			})
+		} else {
+			db = await PGlite.create('opfs-ahp://infio-db', {
+				relaxedDurability: true,
+				fsBundle: fsBundle,
+				wasmModule: wasmModule,
+				...pgOptions,
+				extensions: {
+					...pgOptions.extensions,
+					vector: vectorExtensionBundlePath,
+				},
+			})
+		}
 
 		// Execute SQL migrations
 		for (const migration of Object.values(migrations)) {

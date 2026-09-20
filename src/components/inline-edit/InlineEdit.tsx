@@ -10,7 +10,6 @@ import { GetProviderModelIds } from '../../utils/api';
 import { ApplyEditToFile } from '../../utils/apply';
 import { removeAITags } from '../../utils/content-filter';
 import { PromptGenerator } from '../../utils/prompt-generator';
-import { onEnt } from '../../utils/web-search';
 
 type InlineEditProps = {
 	source?: string;
@@ -192,7 +191,6 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 		setIsSubmitting(true);
 		try {
 			const { activeFile, editor, selection } = await getActiveContext();
-			onEnt('inline-edit-submit')
 			if (!activeFile || !editor || !selection) {
 				console.error(t("inlineEdit.noActiveContext"));
 				setIsSubmitting(false);
