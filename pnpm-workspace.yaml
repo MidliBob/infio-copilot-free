@@ -1,4 +1,5 @@
 overrides:
+  '@codemirror/language': ^6.12.3
   zod: 3.24.2
   '@langchain/core': 0.3.80
   minimatch: ^10.2.6
