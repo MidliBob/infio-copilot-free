@@ -28,7 +28,7 @@ import {
 	readTFileContent
 } from './obsidian'
 import { tokenCount } from './token'
-import { isVideoUrl, isYoutubeUrl } from './video-detector'
+import { isYoutubeUrl } from './video-detector'
 import { YoutubeTranscript } from './youtube-transcript'
 
 export function addLineNumbers(content: string, startLine: number = 1): string {
@@ -533,21 +533,8 @@ export class PromptGenerator {
 					completedFiles: completedFiles
 				})
 
-				// 如果文件不是 md 文件且 mcpHub 存在，使用 MCP 工具转换
-				const mcpHub = await this.getMcpHub?.()
-				let content: string
-				let markdownFilePath = ''
-				if (file.extension !== 'md' && mcpHub?.isBuiltInServerAvailable()) {
-					[content, markdownFilePath] = await this.callMcpToolConvertDocument(file, mcpHub)
-					// 创建Markdown文件
-					markdownFilePath = markdownFilePath || await this.createMarkdownFileForContent(
-						file.path,
-						content,
-						false
-					)
-				} else {
-					content = await this.getFileOrFolderMetadata(file)
-				}
+				const content = await this.getFileOrFolderMetadata(file)
+				const markdownFilePath = ''
 
 				completedFiles++
 				fileContents.push(`<user_mention_file path="${file.path}">\n${content}\n</user_mention_file>`)
@@ -648,8 +635,6 @@ export class PromptGenerator {
 
 			let completedUrls = 0
 
-			const mcpHub = await this.getMcpHub()
-
 			for (const { url } of urls) {
 				// 更新当前正在读取的网页
 				onQueryProgressChange?.({
@@ -659,7 +644,7 @@ export class PromptGenerator {
 					completedUrls: completedUrls
 				})
 
-				const [content, mcpContentPath] = await this.getWebsiteContent(url, mcpHub)
+				const [content, mcpContentPath] = await this.getWebsiteContent(url)
 				// 从内容中提取标题
 				const websiteTitle = this.extractTitleFromWebsiteContent(content, url)
 
@@ -707,22 +692,8 @@ export class PromptGenerator {
 				})
 			}
 
-			// 如果当前文件不是 md 文件且 mcpHub 存在，使用 MCP 工具转换
-			const mcpHub = await this.getMcpHub?.()
-			let currentMarkdownFilePath = ''
-			if (currentFile.file.extension !== 'md' && mcpHub?.isBuiltInServerAvailable()) {
-				const [mcpCurrFileContent, mcpCurrFileContentPath] = await this.callMcpToolConvertDocument(currentFile.file, mcpHub)
-				currentFileContent = mcpCurrFileContent
-				currentMarkdownFilePath = mcpCurrFileContentPath
-				// 为当前文件创建Markdown文件
-				currentMarkdownFilePath = currentMarkdownFilePath || await this.createMarkdownFileForContent(
-					currentFile.file.path,
-					currentFileContent,
-					false
-				)
-			} else {
-				currentFileContent = await this.getFileOrFolderMetadata(currentFile.file)
-			}
+			const currentMarkdownFilePath = ''
+			currentFileContent = await this.getFileOrFolderMetadata(currentFile.file)
 
 			// 添加当前文件到读取结果中
 			allFileReadResults.push({ path: currentMarkdownFilePath, content: currentFileContent })
@@ -1106,14 +1077,7 @@ When writing out new markdown blocks, remember not to include "line_number|" at 
 	 * - filter visually hidden elements
 	 * ...
 	 */
-	private async getWebsiteContent(url: string, mcpHub: McpHub | null): Promise<[string, string]> {
-
-		const mcpHubAvailable = mcpHub?.isBuiltInServerAvailable()
-
-		if (mcpHubAvailable && isVideoUrl(url)) {
-			const [md, mdPath] = await this.callMcpToolConvertVideo(url, mcpHub)
-			return [md, mdPath]
-		}
+	private async getWebsiteContent(url: string): Promise<[string, string]> {
 
 		if (isYoutubeUrl(url)) {
 			// TODO: pass language based on user preferences
@@ -1133,103 +1097,6 @@ ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
 		return [htmlToMarkdown(response.text), '']
 	}
 
-	private async callMcpToolConvertVideo(url: string, mcpHub: McpHub): Promise<[string, string]> {
-		// 首先检查缓存
-		const cachedData = await this.convertDataManager.findBySource(url)
-		if (cachedData) {
-			console.debug(`Using cached video conversion for: ${url}`)
-			return [cachedData.content, cachedData.contentPath]
-		}
-
-		// 如果没有缓存，进行转换
-		const response = await mcpHub.callTool(
-			'icf-builtin-server',
-			'CONVERT_VIDEO',
-			{ url, detect_language: 'en' }
-		)
-
-		// 处理图片内容并获取图片引用
-		// @ts-ignore
-		await this.processImagesInResponse(response.content)
-
-		const textContent = response.content.find((c) => c.type === 'text')
-		// @ts-ignore
-		const md = textContent?.text as string || ''
-
-		// 创建Markdown文件
-		const websiteTitle = this.extractTitleFromWebsiteContent(md, url)
-
-		// 为网页内容创建Markdown文件
-		const mdPath = await this.createMarkdownFileForContent(
-			url,
-			md,
-			true,
-			websiteTitle,
-		)
-
-		// 异步保存到缓存（不等待，避免阻塞）
-		this.saveConvertDataToCache(url, 'CONVERT_VIDEO', md, mdPath, url).catch(error => {
-			console.error('Failed to save video conversion to cache:', error)
-		})
-
-		return [md, mdPath]
-	}
-
-	private async callMcpToolConvertDocument(file: TFile, mcpHub: McpHub): Promise<[string, string]> {
-		// 首先检查缓存
-		const cachedData = await this.convertDataManager.findBySource(file.path)
-		if (cachedData) {
-			console.debug(`Using cached document conversion for: ${file.path}`)
-			return [cachedData.content, cachedData.contentPath]
-		}
-
-		// 如果没有缓存，进行转换
-		// 读取文件的二进制内容并转换为Base64
-		const fileBuffer = await this.app.vault.readBinary(file)
-
-		// 安全地转换为Base64，避免堆栈溢出
-		const uint8Array = new Uint8Array(fileBuffer)
-		let binaryString = ''
-		const chunkSize = 8192 // 处理块大小
-
-		for (let i = 0; i < uint8Array.length; i += chunkSize) {
-			const chunk = uint8Array.slice(i, i + chunkSize)
-			binaryString += String.fromCharCode.apply(null, Array.from(chunk))
-		}
-
-		const base64Content = btoa(binaryString)
-
-		// 提取文件扩展名（不带点）
-		const fileType = file.extension
-
-		const response = await mcpHub.callTool(
-			'icf-builtin-server',
-			'CONVERT_DOCUMENT',
-			{
-				file_content: base64Content,
-				file_type: fileType
-			}
-		)
-
-		// 处理图片内容并获取图片引用
-		// @ts-ignore
-		await this.processImagesInResponse(response.content)
-
-		// @ts-ignore
-		const textContent = response.content.find((c: { type: string; text?: string }) => c.type === 'text')
-		// @ts-ignore
-		const md = textContent?.text as string || ''
-
-		// 创建Markdown文件
-		const mdPath = await this.createMarkdownFileForContent(file.path, md, false, file.name)
-
-		// 异步保存到缓存
-		this.saveConvertDataToCache(file.path, 'CONVERT_DOCUMENT', md, mdPath, file.name).catch(error => {
-			console.error('Failed to save document conversion to cache:', error)
-		})
-
-		return [md, mdPath]
-	}
 
 	/**
 	 * 为文件内容创建Markdown文件

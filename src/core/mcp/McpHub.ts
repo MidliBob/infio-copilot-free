@@ -2,7 +2,6 @@
 import * as path from "path";
 
 // SDK / External Libraries
-import { requestUrl } from 'obsidian'
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
@@ -22,7 +21,7 @@ import { EnvironmentVariables, shellEnvSync } from 'shell-env';
 import { z } from "zod"; // Keep zod
 
 // Internal/Project imports
-import { INFIO_BASE_URL, JSON_VIEW_TYPE } from '../../constants';
+import { JSON_VIEW_TYPE } from '../../constants';
 import { t } from "../../lang/helpers";
 import InfioPlugin from "../../main";
 import { injectEnv } from "../../utils/config";
@@ -42,14 +41,6 @@ export type McpConnection = {
 	client: Client
 	transport: StdioClientTransport | SSEClientTransport
 }
-
-// 添加内置服务器连接类型
-export type BuiltInMcpConnection = {
-	server: McpServer
-	// 内置服务器不需要 client 和 transport，直接通过 HTTP API 调用
-}
-
-export type AllMcpConnection = McpConnection | BuiltInMcpConnection
 
 // Base configuration schema for common settings
 const BaseConfigSchema = z.object({
@@ -135,15 +126,6 @@ type ConfigObject = Record<string, unknown> & {
 	cwd?: string
 }
 
-// 内置服务器工具的 API 响应类型
-interface BuiltInToolResponse {
-	name: string
-	description?: string
-	inputSchema?: object
-	mcp_info?: {
-		server_name: string
-	}
-}
 
 export class McpHub {
 	private app: App
@@ -154,16 +136,11 @@ export class McpHub {
 	private configFileChangeTimeout: NodeJS.Timeout | null = null
 	private isDisposed: boolean = false
 	connections: McpConnection[] = []
-	// 添加内置服务器连接
-	builtInConnection: BuiltInMcpConnection | null = null
 	isConnecting: boolean = false
 	private refCount: number = 0 // Reference counter for active clients
 	private eventRefs: EventRef[] = []; // For managing Obsidian event listeners
 	// private providerRef: any; // TODO: Replace with actual type and initialize properly. Removed for now as it causes issues and its usage is unclear in the current scope.
 	private shellEnv: EnvironmentVariables
-
-	// 内置服务器配置
-	private readonly BUILTIN_SERVER_NAME = "icf-builtin-server"
 
 	constructor(app: App, plugin: InfioPlugin) {
 		this.app = app
@@ -181,8 +158,6 @@ export class McpHub {
 		await this.watchMcpSettingsFile();
 		// this.setupWorkspaceWatcher();
 		await this.initializeGlobalMcpServers();
-		// 初始化内置服务器
-		await this.initializeBuiltInServer();
 	}
 
 	/**
@@ -326,22 +301,12 @@ export class McpHub {
 		// Only return enabled servers
 		const standardServers = this.connections.filter((conn) => !conn.server.disabled).map((conn) => conn.server)
 
-		// 添加内置服务器（如果存在且未禁用）
-		if (this.builtInConnection && !this.builtInConnection.server.disabled) {
-			return [this.builtInConnection.server, ...standardServers]
-		}
-
 		return standardServers
 	}
 
 	getAllServers(): McpServer[] {
 		// Return all servers regardless of state
 		const standardServers = this.connections.map((conn) => conn.server)
-
-		// 添加内置服务器（如果存在）
-		if (this.builtInConnection) {
-			return [this.builtInConnection.server, ...standardServers]
-		}
 
 		return standardServers
 	}
@@ -1048,15 +1013,6 @@ export class McpHub {
 		source: "global" | "project" = "global",
 	): Promise<void> {
 		try {
-			// 检查是否为内置服务器
-			if (serverName === this.BUILTIN_SERVER_NAME) {
-				if (this.builtInConnection) {
-					this.builtInConnection.server.disabled = disabled
-					console.log(`Built-in server ${disabled ? 'disabled' : 'enabled'}`)
-				}
-				return
-			}
-
 			// Find the connection to determine if it's a global or project server
 			const connection = this.findConnection(serverName, source)
 			if (!connection) {
@@ -1354,11 +1310,6 @@ export class McpHub {
 		toolArguments?: Record<string, unknown>,
 		source: "global" | "project" = "global",
 	): Promise<McpToolCallResponse> {
-		// 检查是否为内置服务器
-		if (serverName === this.BUILTIN_SERVER_NAME) {
-			return await this.callBuiltInTool(toolName, toolArguments)
-		}
-
 		const connection = this.findConnection(serverName, source)
 		if (!connection) {
 			throw new Error(
@@ -1395,83 +1346,6 @@ export class McpHub {
 		)
 	}
 
-	// 调用内置服务器工具
-	private async callBuiltInTool(
-		toolName: string,
-		toolArguments?: Record<string, unknown>
-	): Promise<McpToolCallResponse> {
-		try {
-			if (!this.builtInConnection) {
-				throw new Error("Built-in server is not initialized")
-			}
-
-			if (this.builtInConnection.server.disabled) {
-				throw new Error("Built-in server is disabled and cannot be used")
-			}
-
-			if (this.builtInConnection.server.status !== "connected") {
-				throw new Error("Built-in server is not connected")
-			}
-
-			// 调用内置 API，设置 10 分钟超时
-			const controller = new AbortController()
-			const timeoutId = window.setTimeout(() => {
-				controller.abort()
-			}, 10 * 60 * 1000) // 10 分钟超时
-
-			try {
-				const response = await fetch(`${INFIO_BASE_URL}/mcp/tools/call`, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						// @ts-ignore
-						'Authorization': `Bearer ${this.plugin.settings.infioProvider.apiKey}`,
-					},
-					body: JSON.stringify({
-						name: toolName,
-						arguments: toolArguments || {},
-					}),
-					signal: controller.signal,
-				})
-
-				window.clearTimeout(timeoutId)
-
-				if (response.status < 200 || response.status >= 300) {
-					throw new Error(`HTTP ${response.status}`)
-				}
-
-				const result = await response.json()
-
-				// 接口已经返回了 MCP 格式的内容数组，直接使用
-				return {
-					content: Array.isArray(result) ? result : [result],
-					isError: false,
-				}
-			} catch (error) {
-				window.clearTimeout(timeoutId)
-				console.error(`Failed to call built-in tool ${toolName}:`, error)
-				// 特殊处理超时错误
-				let errorMessage: string
-				if (error instanceof Error && error.name === 'AbortError') {
-					errorMessage = `请求超时：工具 ${toolName} 执行时间超过 10 分钟`
-				} else {
-					errorMessage = `Error calling built-in tool: ${error instanceof Error ? error.message : String(error)}`
-				}
-
-				return {
-					content: [{
-						type: "text",
-						text: errorMessage
-					}],
-					isError: true,
-				}
-			}
-		} catch (error) {
-			console.error(`Failed to call built-in tool ${toolName}:`, error)
-			throw error
-		}
-	}
-
 	async toggleToolAlwaysAllow(
 		serverName: string,
 		source: "global" | "project" = "global",
@@ -1479,19 +1353,6 @@ export class McpHub {
 		shouldAllow: boolean,
 	): Promise<void> {
 		try {
-			// 检查是否为内置服务器
-			if (serverName === this.BUILTIN_SERVER_NAME) {
-				if (this.builtInConnection) {
-					// 更新内置服务器工具的 alwaysAllow 状态
-					const tool = this.builtInConnection.server.tools?.find(t => t.name === toolName)
-					if (tool) {
-						tool.alwaysAllow = shouldAllow
-						console.log(`Built-in tool ${toolName} ${shouldAllow ? 'always allowed' : 'permission required'}`)
-					}
-				}
-				return
-			}
-
 			// Find the connection with matching name and source
 			const connection = this.findConnection(serverName, source)
 
@@ -1584,117 +1445,8 @@ export class McpHub {
 		}
 		this.connections = []
 
-		// 清理内置服务器连接
-		this.builtInConnection = null
-
 		this.eventRefs.forEach((ref) => this.app.vault.offref(ref))
 		this.eventRefs = []
 	}
 
-	// 初始化内置服务器
-	private async initializeBuiltInServer(): Promise<void> {
-		try {
-			console.log("Initializing built-in server...")
-
-			// 获取工具列表
-			const tools = await this.fetchBuiltInTools()
-
-			// 创建内置服务器连接
-			this.builtInConnection = {
-				server: {
-					name: this.BUILTIN_SERVER_NAME,
-					config: JSON.stringify({ type: "builtin" }),
-					status: "connected",
-					disabled: true,
-					source: "global",
-					tools: tools,
-					resources: [], // 内置服务器暂不支持资源
-					resourceTemplates: [], // 内置服务器暂不支持资源模板
-				}
-			}
-
-			console.log(`Built-in server initialized with ${tools.length} tools`)
-		} catch (error) {
-			console.error("Failed to initialize built-in server:", error)
-			this.builtInConnection = {
-				server: {
-					name: this.BUILTIN_SERVER_NAME,
-					config: JSON.stringify({ type: "builtin" }),
-					status: "disconnected",
-					disabled: false,
-					source: "global",
-					error: error instanceof Error ? error.message : String(error),
-					tools: [],
-					resources: [],
-					resourceTemplates: [],
-				}
-			}
-		}
-	}
-
-	// 从内置 API 获取工具列表
-	private async fetchBuiltInTools(): Promise<McpTool[]> {
-		try {
-			const response = await requestUrl({
-				url: `${INFIO_BASE_URL}/mcp/tools/list`,
-				headers: {
-					'Content-Type': 'application/json',
-					// @ts-ignore
-					'Authorization': `Bearer ${this.plugin.settings.infioProvider.apiKey}`,
-				},
-			})
-			if (response.status < 200 || response.status >= 300) {
-				throw new Error(`HTTP ${response.status}`)
-			}
-
-			const tools: BuiltInToolResponse[] = await response.json()
-
-			// 转换为 McpTool 格式
-			return tools.map((tool) => ({
-				name: tool.name,
-				description: tool.description,
-				inputSchema: tool.inputSchema,
-				alwaysAllow: false, // 默认不自动允许
-			}))
-		} catch (error) {
-			console.error("Failed to fetch built-in tools:", error)
-			throw error
-		}
-	}
-
-	/**
-	 * 检查内置服务器是否可用
-	 * @returns true 如果内置服务器已连接且未被禁用，否则返回 false
-	 */
-	public isBuiltInServerAvailable(): boolean {
-		return !!(
-			this.builtInConnection &&
-			this.builtInConnection.server.status === "connected" &&
-			!this.builtInConnection.server.disabled
-		)
-	}
-
-	/**
-	 * 获取内置服务器的详细状态信息
-	 * @returns 包含内置服务器状态信息的对象，如果不存在则返回 null
-	 */
-	public getBuiltInServerStatus(): {
-		exists: boolean
-		status: "connecting" | "connected" | "disconnected"
-		disabled: boolean
-		toolsCount: number
-		error?: string
-	} | null {
-		if (!this.builtInConnection) {
-			return null
-		}
-
-		return {
-			exists: true,
-			status: this.builtInConnection.server.status,
-			disabled: this.builtInConnection.server.disabled,
-			toolsCount: this.builtInConnection.server.tools?.length || 0,
-			error: this.builtInConnection.server.error,
-		}
-	}
 }
