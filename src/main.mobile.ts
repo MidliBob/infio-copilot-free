@@ -4,52 +4,25 @@ import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 import { InfioSettings, parseInfioSettings } from './types/settings-mobile';
 
-/**
- * 清理临时目录
- */
 export class MobileSettingTab extends PluginSettingTab {
 	plugin: Plugin & { settings: InfioSettings; setSettings: (s: InfioSettings) => Promise<void> }
 
 	constructor(app: App, plugin: Plugin & { settings: InfioSettings; setSettings: (s: InfioSettings) => Promise<void> }) {
 		super(app, plugin)
 		this.plugin = plugin
- 	}
+	}
 
 	display(): void {
 		const { containerEl } = this
 		containerEl.empty()
 
-		// Title
-		new Setting(containerEl).setName('Infio Mobile').setHeading()
+		new Setting(containerEl).setName('Infio Copilot Free').setHeading()
 
- 		// Description
+		// Mobile support lands with the phase-1 release; until then the
+		// manifest declares isDesktopOnly and this tab is not reachable.
 		const descEl = containerEl.createDiv()
-		descEl.appendText('移动端需要会员才能使用，需要填入 API Key 然后点击升级Pro按钮 ')
-		descEl.createEl('a', { text: '获取 API Key', href: 'https://infio.app/keys', attr: { target: '_blank' } })
-
- 		new Setting(containerEl)
- 			.setName('Infio API Key')
- 			.setDesc('用于验证并下载移动端正式版本')
- 			.addText((text) => {
- 				text
- 					.setPlaceholder('sk-...')
- 					.setValue(this.plugin.settings?.infioProvider?.apiKey || '')
- 					.onChange(async (value) => {
- 						await this.plugin.setSettings({
- 							...this.plugin.settings,
- 							infioProvider: {
- 								...(this.plugin.settings?.infioProvider || { name: 'Infio', apiKey: '', baseUrl: '', useCustomUrl: false, models: [] }),
- 								apiKey: value,
- 							},
- 							// 兼容字段
- 							infioApiKey: value,
- 						})
- 					})
- 			})
-
-		// 升级到 Pro 按钮
-; // keep style
- 	}
+		descEl.appendText('Mobile support is coming in a future release. The plugin currently runs on desktop only.')
+	}
 }
 
 export async function loadMobile(base: Plugin) {

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { fetchUserPlan } from '../../hooks/use-infio';
 import { t } from '../../lang/helpers';
 import InfioPlugin from "../../main";
 import { ApiProvider } from '../../types/llm/model';
@@ -59,7 +58,7 @@ export const getProviderSettingKey = (provider: ApiProvider): ProviderSettingKey
 const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin, onSettingsUpdate }) => {
 	// @ts-ignore
 	const settings = plugin.settings;
-	const activeTab = settings.activeProviderTab || ApiProvider.Infio;
+	const activeTab = settings.activeProviderTab || ApiProvider.Ollama;
 
 	const handleSettingsUpdate = async (newSettings: InfioSettings) => {
 		// @ts-ignore
@@ -201,22 +200,6 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 			// 动态导入LLMManager以避免循环依赖
 			const { default: LLMManager } = await import('../../core/llm/manager');
 			const { GetDefaultModelId } = await import('../../utils/api');
-
-			// 对比 infio 使用独特的测试逻辑
-			if (provider === ApiProvider.Infio) {
-				const apiKey = settings?.infioProvider?.apiKey?.trim();
-				if (!apiKey) {
-					throw new Error('Infio API key is missing');
-				}
-
-				const userPlan = await fetchUserPlan(apiKey);
-				const plan = String(userPlan?.plan || '').toLowerCase();
-				if (plan === 'general') {
-					console.debug('✅ Infio plan is general, skipping further connection tests.');
-					return; // 直接返回成功
-				}
-			}
-
 
 			// 对于Ollama和OpenAICompatible，不支持测试API连接
 			if (provider === ApiProvider.Ollama || provider === ApiProvider.OpenAICompatible) {
@@ -546,7 +529,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 						name={t("settings.Models.insightModel")}
 						description={t("settings.Models.insightModelDescription")}
 						settings={settings}
-						provider={settings.insightModelProvider || ApiProvider.Infio}
+						provider={settings.insightModelProvider || ApiProvider.Ollama}
 						modelId={settings.insightModelId}
 						updateModel={updateInsightModelId}
 					/>
