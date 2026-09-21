@@ -21,10 +21,15 @@ Identity strings in code:
 - The settings tab id and plugin-folder lookups use the manifest id.
 - The PGlite database intentionally keeps the legacy storage name `infio-db`
   (data continuity for upgraders). Do not rename it without a migration plan.
-- `Infio*` identifiers that remain (`InfioSettings`, `infioProvider`,
-  `INFIO_BASE_URL`, `use-infio.ts`) belong to the *Infio cloud provider
-  integration*, not to the plugin brand. They may be removed later as a
-  cleanup (the provider service is effectively dead).
+- The Infio *cloud provider* integration (api.infio.app, `infioProvider`,
+  `INFIO_BASE_URL`, `use-infio.ts`, the built-in MCP server, the Pro
+  modal) was removed in phase 0.1 - the upstream service is dead. New
+  installs default to Ollama (chat/insight/apply) and LocalProvider
+  (embeddings); stored Infio selections are remapped by the 0.6 settings
+  migration.
+- `Infio*` identifiers that remain (`InfioSettings`, `parseInfioSettings`,
+  `InfioPlugin`, the `infio-db` storage name) are historical type/brand
+  names, not service references - keep them for data continuity.
 
 ## Build
 

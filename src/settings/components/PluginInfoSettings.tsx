@@ -58,7 +58,7 @@ export default function PluginInfoSettings({
 				)}
 
 				<a
-					href="https://github.com/infiolab/icf-copilot"
+					href="https://github.com/MidliBob/infio-copilot-free"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="plugin-link"
@@ -68,7 +68,7 @@ export default function PluginInfoSettings({
 				</a>
 
 				<a
-					href="https://infio.app/docs"
+					href="https://github.com/MidliBob/infio-copilot-free#readme"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="plugin-link"
@@ -78,7 +78,7 @@ export default function PluginInfoSettings({
 				</a>
 
 				<a
-					href="https://github.com/infiolab/obsidian-icf-copilot/issues"
+					href="https://github.com/MidliBob/infio-copilot-free/issues"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="plugin-link"
