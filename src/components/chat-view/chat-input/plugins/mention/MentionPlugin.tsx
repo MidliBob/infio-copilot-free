@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *

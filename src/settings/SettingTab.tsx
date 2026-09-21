@@ -1,7 +1,6 @@
 import {
 	App,
 	Modal,
-	Notice,
 	PluginSettingTab,
 	Setting,
 	TFile
@@ -346,17 +345,17 @@ export class InfioSettingTab extends PluginSettingTab {
 		const ragContainer = containerEl.createDiv("rag-settings-container");
 
 		// 创建标题元素，添加折叠控件
-		const headerEl = ragContainer.createEl("div", { cls: "icf-collapsible-heading" });
+		const headerEl = ragContainer.createDiv({ cls: "icf-collapsible-heading" });
 
 		// 添加展开/折叠指示器
-		const toggleIcon = headerEl.createEl("span", { cls: "icf-toggle-icon" });
+		const toggleIcon = headerEl.createSpan({ cls: "icf-toggle-icon" });
 		toggleIcon.textContent = "▶"; // 默认为折叠状态，使用右箭头
 
 		// 添加标题文本
-		const titleEl = headerEl.createEl("div", { cls: "icf-collapsible-title", text: t('settings.RAG.title') });
+		headerEl.createDiv({ cls: "icf-collapsible-title", text: t('settings.RAG.title') });
 
 		// 创建内容容器
-		const contentContainer = ragContainer.createEl("div", { cls: "icf-collapsible-content icf-collapsed" });
+		const contentContainer = ragContainer.createDiv({ cls: "icf-collapsible-content icf-collapsed" });
 
 		// 添加点击事件处理
 		headerEl.addEventListener("click", () => {
@@ -579,17 +578,17 @@ export class InfioSettingTab extends PluginSettingTab {
 		const autoCompleteContainer = containerEl.createDiv("auto-complete-settings-container");
 
 		// 创建标题元素，添加折叠控件
-		const headerEl = autoCompleteContainer.createEl("div", { cls: "icf-collapsible-heading" });
+		const headerEl = autoCompleteContainer.createDiv({ cls: "icf-collapsible-heading" });
 
 		// 添加展开/折叠指示器
-		const toggleIcon = headerEl.createEl("span", { cls: "icf-toggle-icon" });
+		const toggleIcon = headerEl.createSpan({ cls: "icf-toggle-icon" });
 		toggleIcon.textContent = "▶"; // 默认为折叠状态，使用右箭头
 
 		// 添加标题文本
-		const titleEl = headerEl.createEl("div", { cls: "icf-collapsible-title", text: t('settings.AutoComplete.title') });
+		headerEl.createDiv({ cls: "icf-collapsible-title", text: t('settings.AutoComplete.title') });
 
 		// 创建内容容器
-		const contentContainer = autoCompleteContainer.createEl("div", { cls: "icf-collapsible-content icf-collapsed" });
+		const contentContainer = autoCompleteContainer.createDiv({ cls: "icf-collapsible-content icf-collapsed" });
 
 		// 保存容器引用
 		this.autoCompleteContainer = contentContainer;

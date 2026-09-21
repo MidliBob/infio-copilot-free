@@ -1,4 +1,4 @@
-import { Notice, Platform, Plugin } from 'obsidian';
+import { Plugin } from 'obsidian';
 import * as React from 'react';
 
 import type { InfioSettings } from '../../types/settings';

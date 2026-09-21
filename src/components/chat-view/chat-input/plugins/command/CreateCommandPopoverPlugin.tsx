@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { $generateJSONFromSelectedNodes } from '@lexical/clipboard'
 import { BaseSerializedNode } from '@lexical/clipboard/clipboard'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'

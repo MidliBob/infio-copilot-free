@@ -8,7 +8,7 @@ type VoidFn = () => void
  */
 export function useDebounceEffect(effect: VoidFn, delay: number, deps: any[]) {
 	const callbackRef = useRef<VoidFn>(effect)
-	const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+	const timeoutRef = useRef<number | null>(null)
 
 	// Keep callbackRef current
 	useEffect(() => {
@@ -18,11 +18,11 @@ export function useDebounceEffect(effect: VoidFn, delay: number, deps: any[]) {
 	useEffect(() => {
 		// Clear any queued call
 		if (timeoutRef.current) {
-			clearTimeout(timeoutRef.current)
+			window.clearTimeout(timeoutRef.current)
 		}
 
 		// Schedule a new call
-		timeoutRef.current = setTimeout(() => {
+		timeoutRef.current = window.setTimeout(() => {
 			// always call the *latest* version of effect
 			callbackRef.current()
 		}, delay)
@@ -30,7 +30,7 @@ export function useDebounceEffect(effect: VoidFn, delay: number, deps: any[]) {
 		// Cleanup on unmount or next effect
 		return () => {
 			if (timeoutRef.current) {
-				clearTimeout(timeoutRef.current)
+				window.clearTimeout(timeoutRef.current)
 			}
 		}
 

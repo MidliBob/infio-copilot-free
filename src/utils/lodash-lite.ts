@@ -148,13 +148,13 @@ export function debounce<A extends unknown[], R>(
 	timeout = 300,
 	options: DebounceOptions = {},
 ): ((...args: A) => R | undefined) & { cancel: () => void } {
-	let timer: ReturnType<typeof setTimeout> | undefined
-	let maxTimer: ReturnType<typeof setTimeout> | undefined
+	let timer: number | undefined
+	let maxTimer: number | undefined
 	let pending: { args: A; resolve: (value: R | undefined) => void } | undefined
 
 	const invoke = (): void => {
-		if (timer !== undefined) clearTimeout(timer)
-		if (maxTimer !== undefined) clearTimeout(maxTimer)
+		if (timer !== undefined) window.clearTimeout(timer)
+		if (maxTimer !== undefined) window.clearTimeout(maxTimer)
 		timer = undefined
 		maxTimer = undefined
 		const current = pending
@@ -172,10 +172,10 @@ export function debounce<A extends unknown[], R>(
 	const debounced = (...args: A): Promise<R | undefined> => {
 		return new Promise<R | undefined>((resolve) => {
 			pending = { args, resolve }
-			if (timer !== undefined) clearTimeout(timer)
-			timer = setTimeout(invoke, timeout)
+			if (timer !== undefined) window.clearTimeout(timer)
+			timer = window.setTimeout(invoke, timeout)
 			if (options.maxWait !== undefined && maxTimer === undefined) {
-				maxTimer = setTimeout(invoke, options.maxWait)
+				maxTimer = window.setTimeout(invoke, options.maxWait)
 			}
 		})
 	}
@@ -184,8 +184,8 @@ export function debounce<A extends unknown[], R>(
 	// (the promise is implicit); keep the same contract for compatibility.
 	const wrapped = debounced as unknown as ((...args: A) => R | undefined) & { cancel: () => void }
 	wrapped.cancel = (): void => {
-		if (timer !== undefined) clearTimeout(timer)
-		if (maxTimer !== undefined) clearTimeout(maxTimer)
+		if (timer !== undefined) window.clearTimeout(timer)
+		if (maxTimer !== undefined) window.clearTimeout(maxTimer)
 		timer = undefined
 		maxTimer = undefined
 		const current = pending

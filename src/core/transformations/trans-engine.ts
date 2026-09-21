@@ -49,7 +49,7 @@ class ConcurrencyLimiter {
 					const result = await task();
 					resolve(result);
 				} catch (error) {
-					reject(error);
+					reject(error instanceof Error ? error : new Error(String(error)));
 				} finally {
 					this.currentRunning--;
 					this.processQueue();

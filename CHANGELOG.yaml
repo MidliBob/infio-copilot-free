@@ -1,4 +1,9 @@
 releases:
+  - version: "1.0.7"
+    fixes:
+      - "Catalog review polish: window-scoped timers, Obsidian DOM helpers (createDiv/createSpan/createEl), trashFile instead of vault delete/trash, requestUrl for simple GET/POST calls, popout-safe helpers, deprecated substr/JSX namespace removed, unused imports and dead locals cleaned, thrown rejections normalized to Error, switch-case lexical scopes fixed"
+    other:
+      - "Deep type-safety warnings (no-unsafe-* family), guarded Node built-in imports and the declarative settings API are deferred to the roadmap with written rationale (advisory-only categories)"
   - version: "1.0.6"
     fixes:
       - "Catalog review compliance: all floating promises are now explicitly marked with the void operator (no behavior change, fire-and-forget semantics preserved)"

@@ -2,6 +2,7 @@
 import * as path from "path";
 
 // SDK / External Libraries
+import { requestUrl } from 'obsidian'
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
@@ -1414,7 +1415,7 @@ export class McpHub {
 
 			// 调用内置 API，设置 10 分钟超时
 			const controller = new AbortController()
-			const timeoutId = setTimeout(() => {
+			const timeoutId = window.setTimeout(() => {
 				controller.abort()
 			}, 10 * 60 * 1000) // 10 分钟超时
 
@@ -1433,10 +1434,10 @@ export class McpHub {
 					signal: controller.signal,
 				})
 
-				clearTimeout(timeoutId)
+				window.clearTimeout(timeoutId)
 
-				if (!response.ok) {
-					throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+				if (response.status < 200 || response.status >= 300) {
+					throw new Error(`HTTP ${response.status}`)
 				}
 
 				const result = await response.json()
@@ -1447,7 +1448,7 @@ export class McpHub {
 					isError: false,
 				}
 			} catch (error) {
-				clearTimeout(timeoutId)
+				window.clearTimeout(timeoutId)
 				console.error(`Failed to call built-in tool ${toolName}:`, error)
 				// 特殊处理超时错误
 				let errorMessage: string
@@ -1634,15 +1635,16 @@ export class McpHub {
 	// 从内置 API 获取工具列表
 	private async fetchBuiltInTools(): Promise<McpTool[]> {
 		try {
-			const response = await fetch(`${INFIO_BASE_URL}/mcp/tools/list`, {
+			const response = await requestUrl({
+				url: `${INFIO_BASE_URL}/mcp/tools/list`,
 				headers: {
 					'Content-Type': 'application/json',
 					// @ts-ignore
 					'Authorization': `Bearer ${this.plugin.settings.infioProvider.apiKey}`,
 				},
 			})
-			if (!response.ok) {
-				throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+			if (response.status < 200 || response.status >= 300) {
+				throw new Error(`HTTP ${response.status}`)
 			}
 
 			const tools: BuiltInToolResponse[] = await response.json()

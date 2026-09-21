@@ -29,7 +29,7 @@ Example: Insert a new section heading and paragraph
   },
   {
     "start_line": 20,
-    "content": "> \"The purpose of literature is to turn blood into ink.\" - T.S. Eliot"
+    "content": "> "The purpose of literature is to turn blood into ink." - T.S. Eliot"
   },
 	{
     "start_line": 1,

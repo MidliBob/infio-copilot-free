@@ -420,18 +420,19 @@ async function processMessage(data: WorkerMessage): Promise<WorkerResponse> {
 		let result: unknown;
 
 		switch (method) {
-			case 'load':
+			case 'load': {
 				console.log('Load method called with params:', params);
 				const loadParams = params as LoadParams;
 				result = await loadModel(loadParams.model_key, loadParams.use_gpu || false);
 				break;
+			}
 
 			case 'unload':
 				console.log('Unload method called');
 				result = await unloadModel();
 				break;
 
-			case 'embed_batch':
+			case 'embed_batch': {
 				console.log('Embed batch method called');
 				if (!model) {
 					throw new Error('Model not loaded');
@@ -449,8 +450,9 @@ async function processMessage(data: WorkerMessage): Promise<WorkerResponse> {
 				result = await embedBatch(embedParams.inputs);
 				processing_message = false;
 				break;
+			}
 
-			case 'count_tokens':
+			case 'count_tokens': {
 				console.log('Count tokens method called');
 				if (!model) {
 					throw new Error('Model not loaded');
@@ -468,6 +470,7 @@ async function processMessage(data: WorkerMessage): Promise<WorkerResponse> {
 				result = await countTokens(tokenParams);
 				processing_message = false;
 				break;
+			}
 
 			default:
 				throw new Error(`Unknown method: ${method}`);

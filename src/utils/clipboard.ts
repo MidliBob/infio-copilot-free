@@ -33,7 +33,7 @@ export const copyToClipboard = async (text: string, options?: CopyOptions): Prom
  */
 export const useCopyToClipboard = (feedbackDuration = 2000) => {
 	const [showCopyFeedback, setShowCopyFeedback] = useState(false)
-	const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+	const timeoutRef = useRef<number | null>(null)
 
 	const copyWithFeedback = useCallback(
 		async (text: string, e?: React.MouseEvent) => {
@@ -41,13 +41,13 @@ export const useCopyToClipboard = (feedbackDuration = 2000) => {
 
 			// Clear any existing timeout
 			if (timeoutRef.current) {
-				clearTimeout(timeoutRef.current)
+				window.clearTimeout(timeoutRef.current)
 			}
 
 			const success = await copyToClipboard(text, {
 				onSuccess: () => {
 					setShowCopyFeedback(true)
-					timeoutRef.current = setTimeout(() => {
+					timeoutRef.current = window.setTimeout(() => {
 						setShowCopyFeedback(false)
 						timeoutRef.current = null
 					}, feedbackDuration)
@@ -63,7 +63,7 @@ export const useCopyToClipboard = (feedbackDuration = 2000) => {
 	useEffect(() => {
 		return () => {
 			if (timeoutRef.current) {
-				clearTimeout(timeoutRef.current)
+				window.clearTimeout(timeoutRef.current)
 			}
 		}
 	}, [])

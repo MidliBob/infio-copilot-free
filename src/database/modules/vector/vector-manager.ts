@@ -203,7 +203,7 @@ export class VectorManager {
 			// 强制清理一些可能的引用
 			if (typeof global !== 'undefined' && (global as any).gc) {
 				// Node.js 环境
-				setTimeout(() => {
+				window.setTimeout(() => {
 					(global as any).gc?.()
 				}, 0)
 			}
@@ -219,7 +219,7 @@ export class VectorManager {
 		if (batchCount % 10 === 0) {
 			this.forceGarbageCollection()
 			// 短暂延迟让内存清理完成
-			await new Promise(resolve => setTimeout(resolve, 100))
+			await new Promise(resolve => window.setTimeout(resolve, 100))
 		}
 	}
 
@@ -504,7 +504,7 @@ export class VectorManager {
 				await this.forceResourceCleanup()
 				
 				// 额外延迟以允许系统释放文件句柄
-				await new Promise(resolve => setTimeout(resolve, 500))
+				await new Promise(resolve => window.setTimeout(resolve, 500))
 			}
 		} catch (error) {
 			if (
@@ -823,7 +823,7 @@ export class VectorManager {
 				await this.forceResourceCleanup()
 				
 				// 额外延迟以允许系统释放文件句柄
-				await new Promise(resolve => setTimeout(resolve, 500))
+				await new Promise(resolve => window.setTimeout(resolve, 500))
 			}
 		} catch (error) {
 			if (
@@ -1216,7 +1216,7 @@ export class VectorManager {
 		if (batchCount % 3 === 0) {
 			this.forceGarbageCollection()
 			// 增加延迟让系统有时间处理和释放文件句柄
-			await new Promise(resolve => setTimeout(resolve, 1000))
+			await new Promise(resolve => window.setTimeout(resolve, 1000))
 		}
 	}
 
@@ -1225,7 +1225,7 @@ export class VectorManager {
 		// 多次垃圾回收
 		for (let i = 0; i < 5; i++) {
 			this.forceGarbageCollection()
-			await new Promise(resolve => setTimeout(resolve, 100))
+			await new Promise(resolve => window.setTimeout(resolve, 100))
 		}
 		
 		// 额外延迟让系统释放资源

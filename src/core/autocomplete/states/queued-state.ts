@@ -6,7 +6,7 @@ import State from "./state";
 
 
 class QueuedState extends State {
-  private timer: ReturnType<typeof setTimeout> | null = null;
+  private timer: number | null = null;
   private readonly prefix: string;
   private readonly suffix: string;
 
@@ -64,14 +64,14 @@ class QueuedState extends State {
 
   startTimer(): void {
     this.cancelTimer();
-    this.timer = setTimeout(() => {
+    this.timer = window.setTimeout(() => {
       this.context.transitionToPredictingState(this.prefix, this.suffix);
     }, this.context.settings.delay);
   }
 
   private cancelTimer(): void {
     if (this.timer !== null) {
-      clearTimeout(this.timer);
+      window.clearTimeout(this.timer);
       this.timer = null;
     }
   }

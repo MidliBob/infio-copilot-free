@@ -33,7 +33,7 @@ export default function PreviewViewRoot({
 				
 			} else {
 				// 如果是纯文本，创建预格式化文本元素
-				const preElement = document.createElement('pre')
+				const preElement = createEl('pre')
 				preElement.className = 'icf-raw-content'
 				preElement.textContent = state.content
 				contentRef.current.appendChild(preElement)

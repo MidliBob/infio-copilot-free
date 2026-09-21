@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronRight, FileText, Globe } from 'lucide-react'
+import { ChevronDown, ChevronRight, FileText } from 'lucide-react'
 import { TFile } from 'obsidian'
 import { useState } from 'react'
 

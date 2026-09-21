@@ -18,7 +18,7 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 	mentionables,
 	onEdit,
 }) => {
-	const [isExpanded, setIsExpanded] = useState(false)
+	const [isExpanded] = useState(false)
 
 	// 将编辑器状态转换为纯文本
 	const plainText = content ? editorStateToPlainText(content) : ''

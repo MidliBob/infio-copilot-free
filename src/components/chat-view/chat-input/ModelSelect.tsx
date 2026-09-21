@@ -526,7 +526,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 											setSearchTerm(e.target.value)
 											setSelectedIndex(0)
 											// Ensure the input is focused in the next render cycle
-											setTimeout(() => {
+											window.setTimeout(() => {
 												inputRef.current?.focus()
 											}, 0)
 										}}
@@ -602,7 +602,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 									onChange={(e) => {
 										setSearchTerm(e.target.value)
 										// ensure the input is focused in the next render cycle
-										setTimeout(() => {
+										window.setTimeout(() => {
 											inputRef.current?.focus()
 										}, 0)
 									}}

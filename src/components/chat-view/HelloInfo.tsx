@@ -1,4 +1,4 @@
-import { History, Lightbulb, NotebookPen, Search, Server, SquareSlash } from 'lucide-react';
+import { History, Lightbulb, Search } from 'lucide-react';
 import React from 'react';
 
 import { t } from '../../lang/helpers';

@@ -1,4 +1,4 @@
-import https from 'https';
+import https from 'https'
 
 import { htmlToMarkdown, requestUrl } from 'obsidian';
 
@@ -6,7 +6,7 @@ import { JINA_BASE_URL, SERPER_BASE_URL } from '../constants';
 import { RAGEngine } from '../core/rag/rag-engine';
 
 import { isVideoUrl, getVideoProvider } from './video-detector';
-import { YoutubeTranscript, isYoutubeUrl } from './youtube-transcript';
+import { YoutubeTranscript } from './youtube-transcript';
 
 
 interface SearchResult {
@@ -64,12 +64,12 @@ async function serperSearch(query: string, serperApiKey: string, serperSearchEng
 
 					// resolve(formattedResults);
 				} catch (error) {
-					reject(error);
+					reject(error instanceof Error ? error : new Error(String(error)));
 				}
 			});
 		}).on('error', (error: Error) => {
 			console.error("serper search error: ", error)
-			reject(error);
+			reject(error instanceof Error ? error : new Error(String(error)));
 		});
 	});
 }

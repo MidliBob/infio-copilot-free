@@ -30,7 +30,7 @@ export class McpServerManager {
 		}
 
 		// If initialization is in progress, wait for it
-		if (this.initializationPromise) {
+		if (this.initializationPromise != null) {
 			return this.initializationPromise
 		}
 

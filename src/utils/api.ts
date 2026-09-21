@@ -1,3 +1,4 @@
+import { requestUrl } from 'obsidian'
 import { INFIO_BASE_URL, OPENROUTER_BASE_URL } from '../constants'
 import { ApiProvider } from '../types/llm/model'
 import { InfioSettings } from '../types/settings'
@@ -171,11 +172,12 @@ async function fetchInfioModels(apiKey?: string): Promise<Record<string, ModelIn
 			headers['Authorization'] = `Bearer ${apiKey}`;
 		}
 
-		const response = await fetch(INFIO_BASE_URL + "/model_group/info", {
+		const response = await requestUrl({
+			url: INFIO_BASE_URL + "/model_group/info",
 			method: 'GET',
 			headers: headers
 		});
-		const data = await response.json();
+		const data = response.json;
 		const models: Record<string, ModelInfo> = {};
 		if (data?.data) {
 			for (const model of data.data) {
@@ -247,8 +249,8 @@ async function fetchOpenRouterModels(): Promise<Record<string, ModelInfo>> {
 	}
 
 	try {
-		const response = await fetch(OPENROUTER_BASE_URL + "/models");
-		const data = await response.json();
+		const response = await requestUrl({ url: OPENROUTER_BASE_URL + "/models" });
+		const data = response.json;
 		const models: Record<string, ModelInfo> = {};
 
 		if (data?.data) {

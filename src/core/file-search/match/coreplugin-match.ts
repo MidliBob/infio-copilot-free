@@ -36,7 +36,7 @@ export async function matchSearchUsingCorePlugin(
         // Ensure the view is fully loaded before we try to access its properties.
         const view = await searchLeaf.open(searchLeaf.view);
         const searchResultsMap = await new Promise<Map<TFile, any>>(resolve => {
-            setTimeout(() => {
+            window.setTimeout(() => {
                 // @ts-ignore
                 const results = (view as any).dom?.resultDomLookup;
                 resolve(results || new Map());

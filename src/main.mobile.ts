@@ -1,8 +1,7 @@
 // @ts-check
 
-import { App, Notice, Platform, Plugin, PluginSettingTab, Setting, requestUrl } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting, requestUrl } from 'obsidian';
 
-import { ApiKeyModal } from './components/modals/ApiKeyModal';
 import { InfioSettings, parseInfioSettings } from './types/settings-mobile';
 import { getDeviceId, getOperatingSystem } from './utils/device-id';
 
@@ -118,7 +117,7 @@ export class MobileSettingTab extends PluginSettingTab {
 		new Setting(containerEl).setName('Infio Mobile').setHeading()
 
  		// Description
-		const descEl = containerEl.createEl('div')
+		const descEl = containerEl.createDiv()
 		descEl.appendText('移动端需要会员才能使用，需要填入 API Key 然后点击升级Pro按钮 ')
 		descEl.createEl('a', { text: '获取 API Key', href: 'https://infio.app/keys', attr: { target: '_blank' } })
 

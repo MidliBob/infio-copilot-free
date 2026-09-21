@@ -15,7 +15,7 @@ function CopyButton({ message }: { message: ChatAssistantMessage }) {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(message.content)
     setCopied(true)
-    setTimeout(() => {
+    window.setTimeout(() => {
       setCopied(false)
     }, 1500)
   }

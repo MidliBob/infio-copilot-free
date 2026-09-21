@@ -147,7 +147,7 @@ export function serializeSettings(settings: Settings): PluginData {
 
 export function deserializeSettings(data: JSONObject | null | undefined): Result<Settings, Error> {
 	let settings: any;
-	if (data === null || data === undefined || !data.hasOwnProperty("settings")) {
+	if (data === null || data === undefined || !Object.prototype.hasOwnProperty.call(data, "settings")) {
 		settings = {};
 	} else {
 		settings = data.settings;

@@ -1,7 +1,6 @@
 import { Check, ChevronDown, ChevronRight, Database, Loader2, X } from 'lucide-react'
 import React, { useState } from 'react'
 
-import { t } from '../../../lang/helpers'
 import { ApplyStatus, DataviewQueryToolArgs } from "../../../types/apply"
 
 export default function MarkdownDataviewQueryBlock({

@@ -518,7 +518,7 @@ export class PromptGenerator {
 			})
 
 			// 确保UI有时间显示初始状态
-			await new Promise(resolve => setTimeout(resolve, 100))
+			await new Promise(resolve => window.setTimeout(resolve, 100))
 
 			const fileContents: string[] = []
 			const fileContentsForProgress: Array<{ path: string, content: string }> = []
@@ -562,7 +562,7 @@ export class PromptGenerator {
 			})
 
 			// 让用户看到完成状态
-			await new Promise(resolve => setTimeout(resolve, 200))
+			await new Promise(resolve => window.setTimeout(resolve, 200))
 
 			fileContentsPrompts = fileContents.join('\n')
 		}
@@ -611,7 +611,7 @@ export class PromptGenerator {
 				})
 
 				// 让用户看到完成状态
-				await new Promise(resolve => setTimeout(resolve, 200))
+				await new Promise(resolve => window.setTimeout(resolve, 200))
 			}
 
 			folderContentsPrompts = folderContents.join('\n')
@@ -644,7 +644,7 @@ export class PromptGenerator {
 			})
 
 			// 确保UI有时间显示初始状态
-			await new Promise(resolve => setTimeout(resolve, 100))
+			await new Promise(resolve => window.setTimeout(resolve, 100))
 
 			let completedUrls = 0
 
@@ -682,7 +682,7 @@ export class PromptGenerator {
 			})
 
 			// 让用户看到完成状态
-			await new Promise(resolve => setTimeout(resolve, 200))
+			await new Promise(resolve => window.setTimeout(resolve, 200))
 		}
 		const urlContentsPrompt = urlContents.length > 0
 			? urlContents
@@ -735,7 +735,7 @@ export class PromptGenerator {
 				})
 
 				// 让用户看到完成状态
-				await new Promise(resolve => setTimeout(resolve, 200))
+				await new Promise(resolve => window.setTimeout(resolve, 200))
 			}
 		}
 

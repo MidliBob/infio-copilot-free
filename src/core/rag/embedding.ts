@@ -1,5 +1,3 @@
-import https from 'https'
-import { URL } from 'url'
 
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { OpenAI } from 'openai'

@@ -1,7 +1,6 @@
 import { App } from "obsidian"
 
 import { MultiSearchReplaceDiffStrategy } from "./strategies/multi-search-replace"
-import { NewUnifiedDiffStrategy } from "./strategies/new-unified"
 import { SearchReplaceDiffStrategy } from "./strategies/search-replace"
 import { UnifiedDiffStrategy } from "./strategies/unified"
 import type { DiffStrategy } from "./types"

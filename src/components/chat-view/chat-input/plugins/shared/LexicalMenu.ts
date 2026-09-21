@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -110,7 +111,7 @@ function getFullMatchOffset(
 ): number {
   let triggerOffset = offset
   for (let i = triggerOffset; i <= entryText.length; i++) {
-    if (documentText.substr(-i) === entryText.substr(0, i)) {
+    if (documentText.slice(-i) === entryText.slice(0, i)) {
       triggerOffset = i
     }
   }
@@ -485,7 +486,7 @@ export function useMenuAnchorRef(
   shouldIncludePageYOffset__EXPERIMENTAL = true,
 ): MutableRefObject<HTMLElement> {
   const [editor] = useLexicalComposerContext()
-  const anchorElementRef = useRef<HTMLElement>(document.createElement('div'))
+  const anchorElementRef = useRef<HTMLElement>(createDiv())
   const positionMenu = useCallback(() => {
     anchorElementRef.current.style.top = anchorElementRef.current.style.bottom
     const rootElement = editor.getRootElement()

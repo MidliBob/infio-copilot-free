@@ -357,7 +357,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 									// e.currentTarget by the time the timeout fires.
 									const target = e.currentTarget as HTMLElement | null;
 									// 延迟聚焦到搜索输入框
-									setTimeout(() => {
+									window.setTimeout(() => {
 										const input = target?.querySelector('input');
 										input?.focus();
 									}, 0);

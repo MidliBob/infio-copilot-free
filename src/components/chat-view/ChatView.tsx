@@ -450,7 +450,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 										: 'User rejected changes'
 									if (newFile) {
 										if (!applied) {
-											void app.vault.delete(opFile) // delete the new file if user rejected changes
+											void app.fileManager.trashFile(opFile) // delete the new file if user rejected changes
 										} else {
 											void app.workspace.openLinkText(toolArgs.filepath, 'split', true)
 										}
@@ -972,7 +972,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 												const isFolder = fileOrFolder instanceof TFolder;
 												// 使用 trash 方法将文件/文件夹移到回收站，更安全
 												// system: true 尝试使用系统回收站，失败则使用 Obsidian 本地回收站
-												await app.vault.trash(fileOrFolder, true);
+												await app.fileManager.trashFile(fileOrFolder);
 												const itemType = isFolder ? '文件夹' : '文件';
 												results.push(`✅ 成功将${itemType}移到回收站: ${operation.path}`);
 											} catch (error) {
@@ -1456,7 +1456,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 													setEditingMessageId(message.id)
 													setFocusedMessageId(message.id)
 													// 延迟聚焦，确保组件已渲染
-													setTimeout(() => {
+													window.setTimeout(() => {
 														chatUserInputRefs.current.get(message.id)?.focus()
 													}, 0)
 												}}

@@ -256,7 +256,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 
 			// 设置超时选项
 			const abortController = new AbortController();
-			const timeoutId = setTimeout(() => abortController.abort(), 10000); // 10秒超时
+			const timeoutId = window.setTimeout(() => abortController.abort(), 10000); // 10秒超时
 
 			try {
 				// 发起API调用测试
@@ -266,7 +266,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 					{ signal: abortController.signal }
 				);
 
-				clearTimeout(timeoutId);
+				window.clearTimeout(timeoutId);
 
 				// 检查响应是否有效
 				if (response && response.choices && response.choices.length > 0) {
@@ -277,7 +277,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 					throw new Error(t("settings.ModelProvider.testConnection.invalidResponse"));
 				}
 			} catch (apiError) {
-				clearTimeout(timeoutId);
+				window.clearTimeout(timeoutId);
 				throw apiError;
 			}
 

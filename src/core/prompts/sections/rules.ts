@@ -104,7 +104,7 @@ export function getRulesSection(
 	searchTool: string,
 	supportsComputerUse: boolean,
 	diffStrategy?: DiffStrategy,
-	experiments?: Record<string, boolean> | undefined,
+	experiments?: Record<string, boolean>,
 ): string {
 	if (mode === 'research') {
 		return getDeepResearchRulesSection();

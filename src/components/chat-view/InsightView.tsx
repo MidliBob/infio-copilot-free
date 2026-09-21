@@ -243,7 +243,7 @@ const InsightView = () => {
 				})
 
 				// 3秒后自动隐藏成功消息
-				setTimeout(() => {
+				window.setTimeout(() => {
 					setInitSuccess({ show: false })
 				}, 5000)
 

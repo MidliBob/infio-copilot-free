@@ -88,7 +88,7 @@ export class GeminiProvider implements BaseLLMProvider {
 			)
 		}
 
-		const { id: modelName, thinkingConfig, maxOutputTokens, info } = this.getModel(model.modelId)
+		const { id: modelName, thinkingConfig, maxOutputTokens } = this.getModel(model.modelId)
 
 		const systemMessages = request.messages.filter((m) => m.role === 'system')
 		const systemInstruction: string | undefined =
@@ -148,7 +148,7 @@ export class GeminiProvider implements BaseLLMProvider {
 				`Gemini API key is missing. Please set it in settings menu.`,
 			)
 		}
-		const { id: modelName, thinkingConfig, maxOutputTokens, info } = this.getModel(model.modelId)
+		const { id: modelName, thinkingConfig, maxOutputTokens } = this.getModel(model.modelId)
 
 		const systemMessages = request.messages.filter((m) => m.role === 'system')
 		const systemInstruction: string | undefined =

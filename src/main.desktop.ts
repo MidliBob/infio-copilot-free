@@ -214,7 +214,7 @@ export async function loadDesktop(base: Plugin) {
 	// ==== Original onload body starts here (adapted) ====
 	await plugin.loadSettings()
 
-	setTimeout(() => {
+	window.setTimeout(() => {
 		void plugin.migrateToJsonStorage().then(() => { })
 	}, 100)
 
@@ -363,7 +363,7 @@ export async function loadDesktop(base: Plugin) {
 				console.error(error)
 				notice.setMessage(t('notifications.rebuildFailed'))
 			} finally {
-				setTimeout(() => { notice.hide() }, 1000)
+				window.setTimeout(() => { notice.hide() }, 1000)
 			}
 		},
 	})
@@ -392,7 +392,7 @@ export async function loadDesktop(base: Plugin) {
 				console.error(error)
 				notice.setMessage(t('notifications.updateFailed'))
 			} finally {
-				setTimeout(() => { notice.hide() }, 1000)
+				window.setTimeout(() => { notice.hide() }, 1000)
 			}
 		},
 	})

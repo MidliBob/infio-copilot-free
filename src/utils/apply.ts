@@ -1,4 +1,3 @@
-import { TFile } from 'obsidian';
 
 import { SearchAndReplaceToolArgs } from '../types/apply';
 

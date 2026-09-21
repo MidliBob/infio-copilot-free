@@ -13,7 +13,7 @@ export function CopyButton({ message }: { message: string }) {
 	const handleCopy = async () => {
 		await navigator.clipboard.writeText(message)
 		setCopied(true)
-		setTimeout(() => {
+		window.setTimeout(() => {
 			setCopied(false)
 		}, 1500)
 	}
@@ -58,7 +58,7 @@ export function CreateNewFileButton({ message }: { message: string }) {
 		await app.vault.create(`/${filename}.md`, message)
 		await app.workspace.openLinkText(filename, 'split', true)
 		setCreated(true)
-		setTimeout(() => {
+		window.setTimeout(() => {
 			setCreated(false)
 		}, 1500)
 	}

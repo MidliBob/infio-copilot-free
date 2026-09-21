@@ -232,10 +232,10 @@ const SearchView = () => {
 	useEffect(() => {
 		if (hasSearched && searchEditorState) {
 			// 延迟执行避免状态更新冲突
-			const timer = setTimeout(() => {
+			const timer = window.setTimeout(() => {
 				void handleSearch(searchEditorState)
 			}, 100)
-			return () => clearTimeout(timer)
+			return () => window.clearTimeout(timer)
 		}
 	}, [searchMode, handleSearch]) // 监听搜索模式变化
 
@@ -305,7 +305,7 @@ const SearchView = () => {
 			})
 
 			// 3秒后自动隐藏成功消息
-			setTimeout(() => {
+			window.setTimeout(() => {
 				setRAGInitSuccess({ show: false })
 			}, 5000)
 
