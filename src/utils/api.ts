@@ -1,5 +1,5 @@
 import { requestUrl } from 'obsidian'
-import { INFIO_BASE_URL, OPENROUTER_BASE_URL } from '../constants'
+import { OPENROUTER_BASE_URL } from '../constants'
 import { ApiProvider } from '../types/llm/model'
 import { InfioSettings } from '../types/settings'
 import { getOllamaModels } from './ollama'
@@ -131,98 +131,6 @@ export const anthropicModels = {
 		cacheReadsPrice: 0.03,
 	},
 } as const satisfies Record<string, ModelInfo> // as const assertion makes the object 
-
-// Infio
-export const infioDefaultModelId = "infio/agent-chat" // for chat
-export const infioDefaultInsightModelId = "deepseek/deepseek-v3" // for insight
-export const infioDefaultAutoCompleteModelId = "groq/llama-3.3-70b-versatile" // for auto complete
-export const infioDefaultEmbeddingModelId = "openai/text-embedding-3-small" // for embedding
-export const infioDefaultModelInfo: ModelInfo = {
-	maxTokens: 8192,
-	contextWindow: 65_536,
-	supportsImages: false,
-	supportsComputerUse: true,
-	supportsPromptCache: true,
-	inputPrice: 0.272,
-	outputPrice: 1.088,
-	cacheWritesPrice: 0.14,
-	cacheReadsPrice: 0.014,
-}
-let infioModelsCache: Record<string, ModelInfo> | null = null;
-
-async function fetchInfioModels(apiKey?: string): Promise<Record<string, ModelInfo>> {
-	if (infioModelsCache) {
-		return infioModelsCache;
-	}
-
-	if (!apiKey) {
-		// Without an API key the endpoint always answers 401; skip the request
-		// entirely and fall back to the default model info.
-		return {
-			[infioDefaultModelId]: infioDefaultModelInfo
-		};
-	}
-
-	try {
-		const headers: Record<string, string> = {
-			'Content-Type': 'application/json'
-		};
-
-		// 添加Authorization请求头，使用Bearer格式，如果有API密钥的话
-		if (apiKey) {
-			headers['Authorization'] = `Bearer ${apiKey}`;
-		}
-
-		const response = await requestUrl({
-			url: INFIO_BASE_URL + "/model_group/info",
-			method: 'GET',
-			headers: headers
-		});
-		const data = response.json;
-		const models: Record<string, ModelInfo> = {};
-		if (data?.data) {
-			for (const model of data.data) {
-				models[model.model_group] = {
-					maxTokens: model.max_output_tokens,
-					contextWindow: model.max_input_tokens,
-					supportsImages: false,
-					supportsPromptCache: false,
-					inputPrice: model.input_cost_per_token ? model.input_cost_per_token * 1000000 : 0,
-					outputPrice: model.output_cost_per_token ? model.output_cost_per_token * 1000000 : 0,
-				};
-			}
-		}
-
-		infioModelsCache = models;
-		return models;
-	} catch (error) {
-		console.error('Failed to fetch Infio models:', error);
-		// 如果出错，返回默认模型
-		return {
-			[infioDefaultModelId]: infioDefaultModelInfo
-		};
-	}
-}
-
-export const infioEmbeddingModels = {
-	"openai/text-embedding-3-small": {
-		dimensions: 1536,
-		description: "Increased performance over 2nd generation ada embedding model"
-	},
-	"gemini/gemini-embedding-exp-03-07": {
-		dimensions: 1024,
-		description: "Most capable 2nd generation embedding model, replacing 16 first generation models"
-	},
-	"deepseek/embedding-large-text": {
-		dimensions: 1024,
-		description: "Most capable embedding model for both English and non-English tasks"
-	},
-	"deepseek/embedding-text": {
-		dimensions: 512,
-		description: "Most capable embedding model for both English and non-English tasks"
-	}
-} as const satisfies Record<string, EmbeddingModelInfo>
-
 
 // OpenRouter
 // https://openrouter.ai/models?order=newest&supported_parameters=tools
@@ -1800,7 +1708,6 @@ async function fetchOllamaModels(baseUrl?: string): Promise<Record<string, Model
 // get all providers, used for the provider dropdown
 export const GetAllProviders = (): ApiProvider[] => {
 	return [
-		ApiProvider.Infio,
 		ApiProvider.OpenRouter,
 		ApiProvider.Anthropic,
 		ApiProvider.OpenAI,
@@ -1819,7 +1726,6 @@ export const GetAllProviders = (): ApiProvider[] => {
 
 export const GetEmbeddingProviders = (): ApiProvider[] => {
 	return [
-		ApiProvider.Infio,
 		ApiProvider.OpenAI,
 		ApiProvider.Google,
 		ApiProvider.AlibabaQwen,
@@ -1833,10 +1739,6 @@ export const GetEmbeddingProviders = (): ApiProvider[] => {
 // Get all models for a provider
 export const GetProviderModels = async (provider: ApiProvider, settings?: InfioSettings): Promise<Record<string, ModelInfo>> => {
 	switch (provider) {
-		case ApiProvider.Infio: {
-			const apiKey = settings?.infioProvider?.apiKey
-			return await fetchInfioModels(apiKey)
-		}
 		case ApiProvider.OpenRouter:
 			return await fetchOpenRouterModels()
 		case ApiProvider.OpenAI:
@@ -1871,10 +1773,6 @@ export const GetProviderModels = async (provider: ApiProvider, settings?: InfioS
 // Get all models for a provider with settings (needed for providers that require API keys)
 export const GetProviderModelsWithSettings = async (provider: ApiProvider, settings?: InfioSettings): Promise<Record<string, ModelInfo>> => {
 	switch (provider) {
-		case ApiProvider.Infio: {
-			const apiKey = settings?.infioProvider?.apiKey
-			return await fetchInfioModels(apiKey)
-		}
 		case ApiProvider.OpenRouter:
 			return await fetchOpenRouterModels()
 		case ApiProvider.OpenAI:
@@ -1917,8 +1815,6 @@ export const GetProviderModelIds = async (provider: ApiProvider, settings?: Infi
 // Get all embedding models for a provider
 export const GetEmbeddingProviderModels = (provider: ApiProvider): Record<string, EmbeddingModelInfo> => {
 	switch (provider) {
-		case ApiProvider.Infio:
-			return infioEmbeddingModels
 		case ApiProvider.Google:
 			return geminiEmbeddingModels
 		case ApiProvider.SiliconFlow:
@@ -1946,13 +1842,6 @@ export const GetEmbeddingModelInfo = (provider: ApiProvider, modelId: string): E
 // Get default model id for a provider
 export const GetDefaultModelId = (provider: ApiProvider): { chat: string, insight: string, autoComplete: string, embedding: string } => {
 	switch (provider) {
-		case ApiProvider.Infio:
-			return {
-				"chat": infioDefaultModelId,
-				"insight": infioDefaultInsightModelId,
-				"autoComplete": infioDefaultAutoCompleteModelId,
-				"embedding": infioDefaultEmbeddingModelId,
-			}
 		case ApiProvider.OpenRouter:
 			return {
 				"chat": openRouterDefaultModelId,
