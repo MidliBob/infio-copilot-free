@@ -364,7 +364,7 @@ const WorkspaceView = () => {
 											<button
 												onClick={() => {
 													if (confirm(String(t('workspace.deleteConfirm', { name: workspace.name })))) {
-														deleteWorkspace(workspace)
+														void deleteWorkspace(workspace)
 													}
 												}}
 												className="icf-workspace-view-action-btn danger"

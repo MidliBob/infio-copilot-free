@@ -32,7 +32,7 @@ export default abstract class BaseView extends TextFileView {
 
 		// Load file content if state contains filePath and editor is now loaded
 		if (this.state?.filePath) {
-			this.loadFileFromPath(this.state.filePath);
+			void this.loadFileFromPath(this.state.filePath);
 		}
 	}
 

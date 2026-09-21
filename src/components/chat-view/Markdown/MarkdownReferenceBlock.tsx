@@ -40,7 +40,7 @@ export default function MarkdownReferenceBlock({
       setBlockContent(content)
     }
 
-    fetchBlockContent()
+    void fetchBlockContent()
   }, [filename, startLine, endLine, app.vault])
 
   const handleClick = () => {

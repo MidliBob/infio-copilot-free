@@ -437,7 +437,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					}
 					// return a Promise, which will be resolved after user makes a choice
 					return new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
-						app.workspace.getLeaf(true).setViewState({
+						void app.workspace.getLeaf(true).setViewState({
 							type: APPLY_VIEW_TYPE,
 							active: true,
 							state: {
@@ -450,9 +450,9 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 										: 'User rejected changes'
 									if (newFile) {
 										if (!applied) {
-											app.vault.delete(opFile) // delete the new file if user rejected changes
+											void app.vault.delete(opFile) // delete the new file if user rejected changes
 										} else {
-											app.workspace.openLinkText(toolArgs.filepath, 'split', true)
+											void app.workspace.openLinkText(toolArgs.filepath, 'split', true)
 										}
 									}
 									resolve({
@@ -488,7 +488,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					}
 					// return a Promise, which will be resolved after user makes a choice
 					return new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
-						app.workspace.getLeaf(true).setViewState({
+						void app.workspace.getLeaf(true).setViewState({
 							type: APPLY_VIEW_TYPE,
 							active: true,
 							state: {
@@ -530,7 +530,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					}
 					// return a Promise, which will be resolved after user makes a choice
 					return new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
-						app.workspace.getLeaf(true).setViewState({
+						void app.workspace.getLeaf(true).setViewState({
 							type: APPLY_VIEW_TYPE,
 							active: true,
 							state: {
@@ -572,7 +572,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					}
 					// return a Promise, which will be resolved after user makes a choice
 					return new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
-						app.workspace.getLeaf(true).setViewState({
+						void app.workspace.getLeaf(true).setViewState({
 							type: APPLY_VIEW_TYPE,
 							active: true,
 							state: {
@@ -1138,14 +1138,14 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 		const updateConversationAsync = async () => {
 			try {
 				if (chatMessages.length > 0) {
-					createOrUpdateConversation(currentConversationId, chatMessages)
+					void createOrUpdateConversation(currentConversationId, chatMessages)
 				}
 			} catch (error) {
 				new Notice('Failed to save chat history')
 				console.error('Failed to save chat history', error)
 			}
 		}
-		updateConversationAsync()
+		void updateConversationAsync()
 	}, [currentConversationId, chatMessages, createOrUpdateConversation])
 
 	// 保存当前活动文件的引用，用于比较是否真的发生了变化

@@ -87,7 +87,7 @@ function MermaidToolbar({ code }: MermaidToolbarProps) {
 	const handleCopy = (e: React.MouseEvent) => {
 		e.stopPropagation()
 		// We wrap the code in a markdown block for easy pasting
-		copyWithFeedback("```mermaid\n" + code + "\n```")
+		void copyWithFeedback("```mermaid\n" + code + "\n```")
 	}
 
 	return (
@@ -252,7 +252,7 @@ function MermaidBlock({ code }: MermaidBlockProps) {
 			}
 			
 			// 创建新的预览 tab
-			app.workspace.getLeaf(true).setViewState({
+			void app.workspace.getLeaf(true).setViewState({
 				type: PREVIEW_VIEW_TYPE,
 				active: true,
 				state: {
@@ -285,7 +285,7 @@ function MermaidBlock({ code }: MermaidBlockProps) {
 								onClick={(e) => {
 									e.stopPropagation()
 									const combinedContent = `Error: ${error}\n\n\`\`\`mermaid\n${code}\n\`\`\``
-									copyWithFeedback(combinedContent, e)
+									void copyWithFeedback(combinedContent, e)
 								}}>
 								<span className={`codicon codicon-${showCopyFeedback ? "check" : "copy"}`}></span>
 							</CopyButton>

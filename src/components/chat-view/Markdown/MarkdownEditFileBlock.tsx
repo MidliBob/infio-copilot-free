@@ -70,7 +70,7 @@ export default function MarkdownEditFileBlock({
 				<div className={'icf-chat-code-block-header-button'}>
 					<button
 						onClick={() => {
-							handleCopy()
+							void handleCopy()
 						}}
 					>
 						{copied ? (

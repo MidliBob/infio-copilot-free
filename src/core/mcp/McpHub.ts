@@ -459,7 +459,7 @@ export class McpHub {
 					state: { filePath } // 重新设置状态以触发重新加载
 				});
 				this.app.workspace.setActiveLeaf(existingLeaf);
-				this.app.workspace.revealLeaf(existingLeaf);
+				void this.app.workspace.revealLeaf(existingLeaf);
 				console.log('MCP settings file is already open, reloading content and activating existing view:', filePath);
 			} else {
 				// 如果文件没有打开，创建新的 leaf
@@ -472,7 +472,7 @@ export class McpHub {
 						state: { filePath } // 传递文件路径到视图
 					});
 
-					this.app.workspace.revealLeaf(leaf);
+					void this.app.workspace.revealLeaf(leaf);
 					console.log('Successfully opened MCP settings file in JSON view:', filePath);
 				} else {
 					console.error('Failed to get workspace leaf for JSON view');

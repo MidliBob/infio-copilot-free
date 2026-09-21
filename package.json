@@ -1,6 +1,6 @@
 {
 	"name": "infio-copilot-free",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "Community-maintained Cursor-inspired AI assistant: agent chat with your vault, RAG semantic search, autocomplete and AI insights. Continuation of Infio Copilot.",
 	"main": "main.js",
 	"scripts": {

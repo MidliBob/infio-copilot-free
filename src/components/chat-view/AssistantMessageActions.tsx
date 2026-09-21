@@ -63,7 +63,7 @@ function LLMResponesInfoButton({ message }: { message: ChatAssistantMessage }) {
       setCost(calculatedCost);
     }
 
-    calculateCost();
+    void calculateCost();
   }, [message, settings]);	
 
   return (

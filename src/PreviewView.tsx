@@ -34,7 +34,7 @@ export class PreviewView extends View {
 	async setState(state: PreviewViewState) {
 		this.state = state
 		// Should render here because onOpen is called before setState
-		this.render()
+		void this.render()
 	}
 
 	async onOpen() {

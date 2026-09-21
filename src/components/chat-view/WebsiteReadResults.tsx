@@ -16,7 +16,7 @@ function WebsiteReadItem({
 		// 现在url字段实际上是markdown文件路径，直接在Obsidian中打开
 		const file = app.vault.getAbstractFileByPath(websiteResult.url)
 		if (file instanceof TFile) {
-			app.workspace.getLeaf('tab').openFile(file)
+			void app.workspace.getLeaf('tab').openFile(file)
 		}
 	}
 

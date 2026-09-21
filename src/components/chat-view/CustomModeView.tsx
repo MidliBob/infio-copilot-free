@@ -383,7 +383,7 @@ const CustomModeView = () => {
 									if (existingLeaf) {
 										app.workspace.setActiveLeaf(existingLeaf, { focus: true })
 									} else {
-										app.workspace.getLeaf(true).setViewState({
+										void app.workspace.getLeaf(true).setViewState({
 											type: PREVIEW_VIEW_TYPE,
 											active: true,
 											state: {
@@ -407,9 +407,9 @@ const CustomModeView = () => {
 					className="icf-preview-btn"
 					onClick={() => {
 						if (isNewMode) {
-							createNewMode()
+							void createNewMode()
 						} else {
-							handleUpdateMode()
+							void handleUpdateMode()
 						}
 					}}
 				>

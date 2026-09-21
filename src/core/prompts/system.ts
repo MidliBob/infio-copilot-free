@@ -39,7 +39,7 @@ export class SystemPrompt {
 	constructor(app: App) {
 		this.app = app
 		this.dataDir = normalizePath(`${ROOT_DIR}`)
-		this.ensureDirectory()
+		void this.ensureDirectory()
 	}
 
 	private async ensureDirectory(): Promise<void> {

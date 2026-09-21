@@ -233,7 +233,7 @@ const SearchView = () => {
 		if (hasSearched && searchEditorState) {
 			// 延迟执行避免状态更新冲突
 			const timer = setTimeout(() => {
-				handleSearch(searchEditorState)
+				void handleSearch(searchEditorState)
 			}, 100)
 			return () => clearTimeout(timer)
 		}
@@ -346,7 +346,7 @@ const SearchView = () => {
 
 	// 组件加载时自动获取统计信息
 	useEffect(() => {
-		loadStatistics()
+		void loadStatistics()
 	}, [loadStatistics])
 
 	// 确认初始化/更新 RAG 向量

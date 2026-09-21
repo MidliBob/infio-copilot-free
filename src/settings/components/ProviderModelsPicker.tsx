@@ -201,7 +201,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 			setModelIds(ids);
 		};
 
-		fetchModelIds();
+		void fetchModelIds();
 	}, [modelProvider, isEmbedding, settings]);
 
 	const combinedModelIds = useMemo(() => {

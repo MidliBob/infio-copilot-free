@@ -1,4 +1,7 @@
 releases:
+  - version: "1.0.6"
+    fixes:
+      - "Catalog review compliance: all floating promises are now explicitly marked with the void operator (no behavior change, fire-and-forget semantics preserved)"
   - version: "1.0.5"
     fixes:
       - "CSS review compliance: removed duplicate declarations, replaced clip-path spinner animation, scrollbar-width and multi-column props with broadly supported equivalents, removed 'all: unset'"

@@ -348,7 +348,7 @@ const ChatHistoryView = ({
 										}}
 										onKeyDown={(e) => {
 											if (e.key === 'Enter') {
-												handleSaveEdit(conversation.id)
+												void handleSaveEdit(conversation.id)
 											} else if (e.key === 'Escape') {
 												setEditingConversationId(null)
 											}
@@ -412,7 +412,7 @@ const ChatHistoryView = ({
 											<button
 												onClick={(e) => {
 													e.stopPropagation()
-													handleDeleteConversation(conversation.id)
+													void handleDeleteConversation(conversation.id)
 												}}
 												className="icf-chat-history-btn icf-chat-history-delete-btn"
 												title={String(t('chat.history.deleteConversation'))}

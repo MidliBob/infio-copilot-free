@@ -109,13 +109,13 @@ const WorkspaceSelect = () => {
 
 	// 初始化和设置变化时刷新
 	useEffect(() => {
-		refreshWorkspaces()
+		void refreshWorkspaces()
 	}, [refreshWorkspaces])
 
 	// 下拉菜单打开时刷新数据
 	const handleOpenChange = (open: boolean) => {
 		if (open && !isOpen) {
-			refreshWorkspaces()
+			void refreshWorkspaces()
 		}
 		setIsOpen(open)
 	}

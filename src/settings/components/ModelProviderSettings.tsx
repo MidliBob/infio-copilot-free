@@ -72,7 +72,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 			...settings,
 			activeProviderTab: provider
 		};
-		handleSettingsUpdate(newSettings);
+		void handleSettingsUpdate(newSettings);
 	};
 
 	const providers = GetAllProviders(); // 按照重要程度排序
@@ -151,7 +151,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 
 		// 一次性更新所有设置
 		if (hasUpdates) {
-			handleSettingsUpdate(newSettings);
+			void handleSettingsUpdate(newSettings);
 		}
 	};
 
@@ -159,7 +159,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 		const providerKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerKey];
 
-		handleSettingsUpdate({
+		void handleSettingsUpdate({
 			...settings,
 			[providerKey]: {
 				...providerSettings,
@@ -172,7 +172,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 		const providerKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerKey];
 
-		handleSettingsUpdate({
+		void handleSettingsUpdate({
 			...settings,
 			[providerKey]: {
 				...providerSettings,
@@ -185,7 +185,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 		const providerKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerKey];
 
-		handleSettingsUpdate({
+		void handleSettingsUpdate({
 			...settings,
 			[providerKey]: {
 				...providerSettings,
@@ -339,7 +339,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 			? [...currentModels, modelId]
 			: currentModels;
 
-		handleSettingsUpdate({
+		void handleSettingsUpdate({
 			...settings,
 			chatModelProvider: provider,
 			chatModelId: modelId,
@@ -361,7 +361,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 			? [...currentModels, modelId]
 			: currentModels;
 
-		handleSettingsUpdate({
+		void handleSettingsUpdate({
 			...settings,
 			applyModelProvider: provider,
 			applyModelId: modelId,
@@ -383,7 +383,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 			? [...currentModels, modelId]
 			: currentModels;
 
-		handleSettingsUpdate({
+		void handleSettingsUpdate({
 			...settings,
 			embeddingModelProvider: provider,
 			embeddingModelId: modelId,
@@ -405,7 +405,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 			? [...currentModels, modelId]
 			: currentModels;
 
-		handleSettingsUpdate({
+		void handleSettingsUpdate({
 			...settings,
 			insightModelProvider: provider,
 			insightModelId: modelId,

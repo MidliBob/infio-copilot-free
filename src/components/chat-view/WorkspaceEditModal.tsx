@@ -70,7 +70,7 @@ const WorkspaceEditModal = ({
       }
     }
 
-    loadAvailableOptions()
+    void loadAvailableOptions()
   }, [isOpen, app])
 
   // 重置表单

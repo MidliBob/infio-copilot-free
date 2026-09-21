@@ -93,11 +93,11 @@ export default function ApplyViewRoot({ state, close }: {
 			if (event.key === 'Enter') {
 				event.preventDefault();
 				event.stopPropagation();
-				handleAccept();
+				void handleAccept();
 			} else if (event.key === 'Backspace') {
 				event.preventDefault();
 				event.stopPropagation();
-				handleReject();
+				void handleReject();
 			}
 		}
 	}

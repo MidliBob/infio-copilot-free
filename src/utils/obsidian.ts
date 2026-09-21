@@ -202,7 +202,7 @@ export function openMarkdownFile(
 		console.debug('🔄 [openMarkdownFile] 创建新标签打开文件')
 		try {
 			const leaf = app.workspace.getLeaf('tab')
-			leaf.openFile(file, {
+			void leaf.openFile(file, {
 				eState: startLine ? { line: startLine - 1 } : undefined, // -1 because line is 0-indexed
 			})
 			console.debug('✅ [openMarkdownFile] 成功在新标签中打开文件')

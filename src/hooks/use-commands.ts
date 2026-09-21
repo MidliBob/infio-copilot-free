@@ -31,7 +31,7 @@ export function useCommands(): UseCommands {
 	const templateManager = useMemo(() => new CommandManager(app), [app])
 
 	const fetchCommandList = useCallback(async () => {
-		templateManager.ListCommands().then((rows) => {
+		void templateManager.ListCommands().then((rows) => {
 			setCommandList(rows.map((row) => ({
 				id: row.id,
 				name: row.name,
@@ -53,7 +53,7 @@ export function useCommands(): UseCommands {
 				name,
 				content,
 			})
-			fetchCommandList()
+			void fetchCommandList()
 		},
 		[templateManager, fetchCommandList],
 	)
@@ -61,7 +61,7 @@ export function useCommands(): UseCommands {
 	const deleteCommand = useCallback(
 		async (id: string): Promise<void> => {
 			await templateManager.deleteCommand(id)
-			fetchCommandList()
+			void fetchCommandList()
 		},
 		[templateManager, fetchCommandList],
 	)
@@ -72,7 +72,7 @@ export function useCommands(): UseCommands {
 				name,
 				content,
 			})
-			fetchCommandList()
+			void fetchCommandList()
 		},
 		[templateManager, fetchCommandList],
 	)

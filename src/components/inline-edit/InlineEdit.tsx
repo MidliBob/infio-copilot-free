@@ -89,7 +89,7 @@ const ControlArea: React.FC<ControlAreaProps> = ({
 				console.error(t("inlineEdit.fetchModelsError"), error.message);
 			}
 		};
-		fetchModels();
+		void fetchModels();
 	}, [settings]);
 
 	return (

@@ -1273,7 +1273,7 @@ ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
 			const file = await this.app.vault.create(targetPath, markdownContent)
 
 			// 在新标签页中打开文件
-			this.app.workspace.getLeaf('tab').openFile(file)
+			void this.app.workspace.getLeaf('tab').openFile(file)
 
 			return file.path
 		} catch (error) {

@@ -57,7 +57,7 @@ class ConcurrencyLimiter {
 			};
 
 			if (this.currentRunning < this.maxConcurrency) {
-				wrappedTask();
+				void wrappedTask();
 			} else {
 				this.queue.push(wrappedTask);
 			}
@@ -68,7 +68,7 @@ class ConcurrencyLimiter {
 		if (this.queue.length > 0 && this.currentRunning < this.maxConcurrency) {
 			const nextTask = this.queue.shift();
 			if (nextTask) {
-				nextTask();
+				void nextTask();
 			}
 		}
 	}
@@ -717,7 +717,7 @@ export class TransEngine {
 			// 保存转换结果到数据库（后台任务，不阻塞主流程）
 			if (saveToDatabase) {
 				// 创建后台任务，不使用 await
-				(async () => {
+				void (async () => {
 					await this.saveResultToDatabase(
 						processedResult,
 						transformationType,

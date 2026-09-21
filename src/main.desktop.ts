@@ -266,7 +266,7 @@ export async function loadDesktop(base: Plugin) {
 		if (plugin.settings.mcpEnabled && !plugin.mcpHub) {
 			void plugin.getMcpHub()
 		} else if (!plugin.settings.mcpEnabled && plugin.mcpHub) {
-			plugin.mcpHub.dispose()
+			void plugin.mcpHub.dispose()
 			plugin.mcpHub = null
 			plugin.mcpHubInitPromise = null
 		}
@@ -320,7 +320,7 @@ export async function loadDesktop(base: Plugin) {
 	plugin.registerEvent(
 		plugin.app.metadataCache.on("deleted", (file: TFile) => {
 			if (file) {
-				plugin.ragEngine?.deleteFileIndex(file);
+				void plugin.ragEngine?.deleteFileIndex(file);
 			}
 		})
 	);
@@ -335,7 +335,7 @@ export async function loadDesktop(base: Plugin) {
 		id: 'add-selection-to-chat',
 		name: t('main.addSelectionToChat'),
 		editorCallback: (editor: Editor, view: MarkdownView) => {
-			plugin.addSelectionToChat(editor, view)
+			void plugin.addSelectionToChat(editor, view)
 		},
 	})
 
@@ -441,7 +441,7 @@ export async function loadDesktop(base: Plugin) {
 		name: t('main.autocompleteToggle'),
 		callback: () => {
 			const newValue = !plugin.settings.autocompleteEnabled;
-			plugin.setSettings({
+			void plugin.setSettings({
 				...plugin.settings,
 				autocompleteEnabled: newValue,
 			})
@@ -455,7 +455,7 @@ export async function loadDesktop(base: Plugin) {
 			if (checking) {
 				return !plugin.settings.autocompleteEnabled;
 			}
-			plugin.setSettings({
+			void plugin.setSettings({
 				...plugin.settings,
 				autocompleteEnabled: true,
 			})
@@ -470,7 +470,7 @@ export async function loadDesktop(base: Plugin) {
 			if (checking) {
 				return plugin.settings.autocompleteEnabled;
 			}
-			plugin.setSettings({
+			void plugin.setSettings({
 				...plugin.settings,
 				autocompleteEnabled: false,
 			})
@@ -554,9 +554,9 @@ export function unloadDesktop(base: Plugin) {
 	plugin.ragEngine = null
 	plugin.transEngine?.cleanup()
 	plugin.transEngine = null
-	plugin.dbManager?.cleanup()
+	void plugin.dbManager?.cleanup()
 	plugin.dbManager = null
-	plugin.mcpHub?.dispose()
+	void plugin.mcpHub?.dispose()
 	plugin.mcpHub = null
 	plugin.embeddingManager?.terminate()
 	plugin.embeddingManager = null

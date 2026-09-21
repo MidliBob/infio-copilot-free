@@ -177,7 +177,7 @@ const InsightView = () => {
 
 	// 组件加载时自动获取洞察
 	useEffect(() => {
-		loadInsights()
+		void loadInsights()
 	}, [loadInsights])
 
 	// 初始化工作区洞察
@@ -829,7 +829,7 @@ const InsightView = () => {
 															className="obsidian-delete-insight-btn"
 															onClick={(e) => {
 																e.stopPropagation()
-																deleteSingleInsight(insight.id)
+																void deleteSingleInsight(insight.id)
 															}}
 															disabled={deletingInsightId === insight.id}
 															title={t('insights.tooltips.clear')}

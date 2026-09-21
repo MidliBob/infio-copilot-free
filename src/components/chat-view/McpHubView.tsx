@@ -28,7 +28,7 @@ const McpHubView = () => {
 	}
 
 	useEffect(() => {
-		fetchServers()
+		void fetchServers()
 	}, [getMcpHub])
 
 	const switchMcp = React.useCallback(() => {

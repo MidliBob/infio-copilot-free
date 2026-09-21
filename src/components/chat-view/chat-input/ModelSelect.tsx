@@ -217,7 +217,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 			}
 		}
 
-		fetchModels()
+		void fetchModels()
 	}, [modelProvider, settings])
 
 	// Sync model id & model provider based on modelType

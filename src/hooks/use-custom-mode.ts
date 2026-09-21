@@ -33,7 +33,7 @@ export function useCustomModes(): UseCustomModes {
 	const customModeManager = useMemo(() => new CustomModeManager(app), [app])
 
 	const fetchCustomModeList = useCallback(async () => {
-		customModeManager.ListCustomModes().then((rows) => {
+		void customModeManager.ListCustomModes().then((rows) => {
 			setCustomModeList(rows)
 		})
 	}, [customModeManager])
@@ -65,7 +65,7 @@ export function useCustomModes(): UseCustomModes {
 				customInstructions,
 				groups,
 			})
-			fetchCustomModeList()
+			void fetchCustomModeList()
 		},
 		[customModeManager, fetchCustomModeList],
 	)
@@ -73,7 +73,7 @@ export function useCustomModes(): UseCustomModes {
 	const deleteCustomMode = useCallback(
 		async (id: string): Promise<void> => {
 			await customModeManager.deleteCustomMode(id)
-			fetchCustomModeList()
+			void fetchCustomModeList()
 		},
 		[customModeManager, fetchCustomModeList],
 	)
@@ -86,7 +86,7 @@ export function useCustomModes(): UseCustomModes {
 				customInstructions,
 				groups,
 			})
-			fetchCustomModeList()
+			void fetchCustomModeList()
 		},
 		[customModeManager, fetchCustomModeList],
 	)

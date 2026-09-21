@@ -33,7 +33,7 @@ export class ApplyView extends View {
 	async setState(state: ApplyViewState) {
 		this.state = state
 		// Should render here because onOpen is called before setState
-		this.render()
+		void this.render()
 	}
 
 	async onOpen() {
