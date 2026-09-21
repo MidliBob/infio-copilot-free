@@ -6,5 +6,5 @@
 	"description": "Community-maintained Cursor-inspired AI assistant: agent chat with your vault, RAG semantic search, autocomplete and AI insights. Continuation of Infio Copilot.",
 	"author": "MidliBob",
 	"authorUrl": "https://github.com/MidliBob",
-	"isDesktopOnly": false
+	"isDesktopOnly": true
 }
