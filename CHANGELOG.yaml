@@ -5,6 +5,7 @@ releases:
       - "Dependency advisories: dropped unused drizzle-orm, bumped langchain/diff/MCP SDK within API-stable lines, added pnpm overrides for transitive packages (minimatch, picomatch, qs, form-data, follow-redirects, ws, nanoid, prismjs, protobufjs, dompurify and others)"
     other:
       - "Lockfile refresh deferred to maintainer machine/CI: run pnpm install and commit pnpm-lock.yaml"
+      - "Build tooling: pnpm 12 config via pnpm-workspace.yaml (overrides moved out of package.json, exotic git subdeps allowed); unused plausible-tracker analytics dependency removed; uuid moved to v11"
   - version: "1.0.4"
     fixes:
       - "Replaced deprecated/unused dependencies flagged by the catalog review: axios and js-yaml removed, lodash/lodash.debounce/lodash.isequal replaced by a small local utility module, builtin-modules replaced by node:module, deprecated eslint plugins dropped"

@@ -1,0 +1,21 @@
+overrides:
+  zod: 3.24.2
+  '@langchain/core': 0.3.80
+  minimatch: ^10.2.6
+  picomatch: ^4.0.7
+  brace-expansion: ^2.0.2
+  qs: ^6.14.1
+  form-data: ^4.0.4
+  follow-redirects: ^1.15.10
+  ws: ^8.21.3
+  nanoid: ^6.0.1
+  prismjs: ^1.30.0
+  protobufjs: ^7.5.4
+  yaml: ^2.8.1
+  lodash-es: ^4.17.21
+  mdast-util-to-hast: ^13.2.1
+  dompurify: ^3.4.15
+  axios: ^1.12.0
+  js-yaml: ^4.1.0
+  uuid: ^11.0.0
+blockExoticSubdeps: false
