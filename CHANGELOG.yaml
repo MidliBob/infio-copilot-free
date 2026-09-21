@@ -1,4 +1,17 @@
 releases:
+  - version: "1.1.0"
+    features:
+      - "Ollama is now a first-class local provider: the model picker lists models pulled from your Ollama server (/api/tags) instead of requiring manual entry"
+      - "New defaults for fresh installs: Ollama for chat/insight/apply models and the on-device LocalProvider for embeddings - no API key or cloud service required"
+    fixes:
+      - "Removed the discontinued Infio cloud provider entirely: no more calls to api.infio.app (model list, subscription/plan checks), no device-id reporting code, no dead Pro/API-key modals; the cloud-backed built-in MCP server is gone (user-configured MCP servers are unaffected)"
+      - "Reading non-Markdown files and web pages no longer depends on the dead cloud conversion service: mentions fall back to file metadata, YouTube transcripts and HTML-to-Markdown"
+      - "manifest.json now honestly declares isDesktopOnly until real mobile support lands (the mobile build previously only showed a settings tab for the discontinued service)"
+      - "About-panel and zh-CN README links pointed at dead or upstream-only pages; they now point to this repository and its issue tracker"
+    other:
+      - "Settings schema 0.6 with automatic migration: stored Infio selections are remapped to Ollama (chat/insight/apply) and to LocalProvider with the local TaylorAI/bge-micro-v2 embedding model, stale Infio model ids are cleared, collected-model lists are filtered instead of discarded, and Infio credentials are deleted from plugin data"
+      - "Dependency diet: unused @huggingface/transformers removed (53 fewer installed packages); dead checkGeneral/device-id code removed"
+      - "Contributor docs match CI again (pnpm 12); public roadmap added as ROADMAP.md"
   - version: "1.0.7"
     fixes:
       - "Catalog review polish: window-scoped timers, Obsidian DOM helpers (createDiv/createSpan/createEl), trashFile instead of vault delete/trash, requestUrl for simple GET/POST calls, popout-safe helpers, deprecated substr/JSX namespace removed, unused imports and dead locals cleaned, thrown rejections normalized to Error, switch-case lexical scopes fixed"
