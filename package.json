@@ -1,6 +1,6 @@
 {
 	"name": "infio-copilot-free",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Community-maintained Cursor-inspired AI assistant: agent chat with your vault, RAG semantic search, autocomplete and AI insights. Continuation of Infio Copilot.",
 	"main": "main.js",
 	"scripts": {
@@ -70,7 +70,7 @@
 		"@lexical/react": "^0.17.1",
 		"@lexical/rich-text": "^0.27.2",
 		"@lexical/utils": "^0.27.2",
-		"@modelcontextprotocol/sdk": "^1.12.1",
+		"@modelcontextprotocol/sdk": "^1.30.0",
 		"@radix-ui/react-dialog": "^1.1.2",
 		"@radix-ui/react-dropdown-menu": "^2.1.2",
 		"@radix-ui/react-popover": "^1.1.2",
@@ -83,9 +83,8 @@
 		"clsx": "^2.1.1",
 		"codemirror": "^6.0.1",
 		"delay": "^6.0.0",
-		"diff": "^7.0.0",
+		"diff": "^9.0.0",
 		"diff-match-patch": "^1.0.5",
-		"drizzle-orm": "^0.35.2",
 		"esbuild-plugin-inline-worker": "^0.1.1",
 		"exponential-backoff": "^3.1.1",
 		"fast-deep-equal": "^3.1.3",
@@ -96,7 +95,7 @@
 		"handlebars": "^4.7.7",
 		"js-tiktoken": "^1.0.15",
 		"json5": "^2.2.3",
-		"langchain": "^0.3.15",
+		"langchain": "^0.3.37",
 		"lexical": "^0.17.1",
 		"lru-cache": "^10.1.0",
 		"lucide-react": "^0.447.0",
@@ -132,7 +131,24 @@
 	"pnpm": {
 		"overrides": {
 			"zod": "3.24.2",
-			"@langchain/core": "0.3.40"
+			"@langchain/core": "0.3.80",
+			"minimatch": "^10.2.6",
+			"picomatch": "^4.0.7",
+			"brace-expansion": "^2.0.2",
+			"qs": "^6.14.1",
+			"form-data": "^4.0.4",
+			"follow-redirects": "^1.15.10",
+			"ws": "^8.21.3",
+			"nanoid": "^6.0.1",
+			"prismjs": "^1.30.0",
+			"protobufjs": "^7.5.4",
+			"yaml": "^2.8.1",
+			"lodash-es": "^4.17.21",
+			"mdast-util-to-hast": "^13.2.1",
+			"dompurify": "^3.4.15",
+			"axios": "^1.12.0",
+			"js-yaml": "^4.1.0",
+			"uuid": "^10.0.0"
 		}
 	}
 }

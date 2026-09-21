@@ -34,8 +34,8 @@
   position: absolute;
   inset: 0px;
   border-radius: 50%;
-  border: 2px solid #1976d2;
-  animation: icf-autocomplete-prix-clip-fix 2s linear infinite;
+  border: 2px solid transparent;
+  border-top-color: #1976d2;
 }
 
 @keyframes icf-autocomplete-rotate {
@@ -44,23 +44,6 @@
   }
 }
 
-@keyframes icf-autocomplete-prix-clip-fix {
-  0% {
-    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
-  }
-  25% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
-  }
-  50% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
-  }
-  75% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
-  }
-  100% {
-    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
-  }
-}
 
 /*
  * Chat
@@ -599,8 +582,6 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
   background: var(--background-modifier-form-field);
   color: var(--text-normal);
   font-family: inherit;
-  padding: 0;
-  font-size: var(--font-ui-medium);
   outline: none;
   min-height: 80px;
   max-height: 800px;
@@ -866,8 +847,6 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
 }
 
 .icf-popover ul {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
   padding: var(--size-4-1) 0;
 }
 
@@ -888,8 +867,6 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
   z-index: 1000;
   max-height: 300px;
   overflow-y: auto;
-  background-color: var(--background-primary);
-  border: 1px solid var(--background-modifier-border);
   margin: 0 8px 0 8px;
   padding: var(--size-2-3) var(--size-4-2);
   color: var(--text-normal);
@@ -904,7 +881,6 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
   border-radius: 8px;
   border: 0;
   min-height: 20px;
-  align-items: center;
   gap: var(--size-4-1);
   align-items: start;
 }
@@ -1546,10 +1522,6 @@ input[type='text'].icf-chat-list-dropdown-item-title-input {
 .icf-chat-lexical-content-editable-root .mention {
   background-color: var(--tag-background);
   color: var(--tag-color);
-  padding: var(--size-2-1) calc(var(--size-2-1));
-  border-radius: var(--radius-s);
-  background-color: var(--tag-background);
-  color: var(--tag-color);
   padding: 0 calc(var(--size-2-1));
   border-radius: var(--radius-s);
   word-break: break-all;
@@ -1977,8 +1949,7 @@ input[type='text'].icf-chat-list-dropdown-item-title-input {
 .icf-llm-info-tokens-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: var(--size-4-5);
-  row-gap: var(--size-4-2);
+  gap: var(--size-4-2) var(--size-4-5);
   font-size: var(--font-ui-small);
 }
 
@@ -2470,7 +2441,7 @@ input[type='text'].icf-chat-list-dropdown-item-title-input {
 }
 
 .icf-ai-block-model-select {
-  all: unset;
+  font: inherit;
   border: none;
   &:hover {
     border: none;
@@ -3261,7 +3232,6 @@ button.icf-chat-input-model-select {
 .icf-icon-selector-button {
   display: flex;
   align-items: center;
-	justify-content: center;
 	background-color: transparent !important;
 	border: none !important;
 	box-shadow: none !important;

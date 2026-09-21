@@ -1,4 +1,10 @@
 releases:
+  - version: "1.0.5"
+    fixes:
+      - "CSS review compliance: removed duplicate declarations, replaced clip-path spinner animation, scrollbar-width and multi-column props with broadly supported equivalents, removed 'all: unset'"
+      - "Dependency advisories: dropped unused drizzle-orm, bumped langchain/diff/MCP SDK within API-stable lines, added pnpm overrides for transitive packages (minimatch, picomatch, qs, form-data, follow-redirects, ws, nanoid, prismjs, protobufjs, dompurify and others)"
+    other:
+      - "Lockfile refresh deferred to maintainer machine/CI: run pnpm install and commit pnpm-lock.yaml"
   - version: "1.0.4"
     fixes:
       - "Replaced deprecated/unused dependencies flagged by the catalog review: axios and js-yaml removed, lodash/lodash.debounce/lodash.isequal replaced by a small local utility module, builtin-modules replaced by node:module, deprecated eslint plugins dropped"
