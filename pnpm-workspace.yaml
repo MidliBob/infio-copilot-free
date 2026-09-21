@@ -1,3 +1,4 @@
+cat > pnpm-workspace.yaml <<'EOF'
 overrides:
   '@codemirror/language': ^6.12.3
   zod: 3.24.2
@@ -25,3 +26,4 @@ onlyBuiltDependencies:
   - protobufjs
   - sharp
 blockExoticSubdeps: false
+EOF
