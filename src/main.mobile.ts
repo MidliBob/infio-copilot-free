@@ -16,7 +16,7 @@ export class MobileSettingTab extends PluginSettingTab {
 		const { containerEl } = this
 		containerEl.empty()
 
-		new Setting(containerEl).setName('Infio Copilot Free').setHeading()
+		new Setting(containerEl).setName('Mobile').setHeading()
 
 		// Mobile support lands with the phase-1 release; until then the
 		// manifest declares isDesktopOnly and this tab is not reachable.
