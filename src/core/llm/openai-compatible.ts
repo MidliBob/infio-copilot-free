@@ -1,6 +1,6 @@
 import OpenAI from 'openai'
 
-import { ALIBABA_QWEN_BASE_URL, INFIO_BASE_URL, MOONSHOT_BASE_URL } from '../../constants'
+import { ALIBABA_QWEN_BASE_URL, MOONSHOT_BASE_URL } from '../../constants'
 import { LLMModel } from '../../types/llm/model'
 import {
   LLMOptions,
@@ -52,21 +52,14 @@ export class OpenAICompatibleProvider implements BaseLLMProvider {
     return this.baseURL === ALIBABA_QWEN_BASE_URL || 
            this.baseURL?.includes('dashscope.aliyuncs.com')
 	}
-	
-	private isGemini(modelName: string): boolean {
-		return this.baseURL === INFIO_BASE_URL && modelName.includes('gemini')
-	}
 
   // 获取提供商特定的额外参数
-  private getExtraParams(isStreaming: boolean, modelName: string): Record<string, unknown> {
+  private getExtraParams(isStreaming: boolean): Record<string, unknown> {
     const extraParams: Record<string, unknown> = {}
     
     // 阿里云Qwen API需要在非流式调用中设置 enable_thinking: false
     if (this.isAlibabaQwen() && !isStreaming) {
       extraParams.enable_thinking = false
-		}
-		if (this.isGemini(modelName)) {
-			extraParams.reasoning_effort = 'low';
 		}
     
     return extraParams
@@ -83,7 +76,7 @@ export class OpenAICompatibleProvider implements BaseLLMProvider {
       )
     }
 
-    const extraParams = this.getExtraParams(false, model.modelId) // 非流式调用
+    const extraParams = this.getExtraParams(false) // 非流式调用
     return this.adapter.generateResponse(this.client as OpenAI, request, options, extraParams)
   }
 
@@ -98,7 +91,7 @@ export class OpenAICompatibleProvider implements BaseLLMProvider {
       )
     }
 
-    const extraParams = this.getExtraParams(true, model.modelId) // 流式调用
+    const extraParams = this.getExtraParams(true) // 流式调用
     return this.adapter.streamResponse(this.client as OpenAI, request, options, extraParams)
   }
 }

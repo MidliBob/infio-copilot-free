@@ -1,4 +1,4 @@
-import { ALIBABA_QWEN_BASE_URL, DEEPSEEK_BASE_URL, GROK_BASE_URL, INFIO_BASE_URL, MOONSHOT_BASE_URL, OPENROUTER_BASE_URL, SILICONFLOW_BASE_URL } from '../../constants'
+import { ALIBABA_QWEN_BASE_URL, DEEPSEEK_BASE_URL, GROK_BASE_URL, MOONSHOT_BASE_URL, OPENROUTER_BASE_URL, SILICONFLOW_BASE_URL } from '../../constants'
 import { ApiProvider, LLMModel } from '../../types/llm/model'
 import {
 	LLMOptions,
@@ -40,19 +40,13 @@ class LLMManager implements LLMManagerInterface {
 	private groqProvider: GroqProvider
 	private grokProvider: OpenAICompatibleProvider
 	private moonshotProvider: OpenAICompatibleProvider
-	private infioProvider: OpenAICompatibleProvider
 	private openrouterProvider: OpenAICompatibleProvider
 	private siliconflowProvider: OpenAICompatibleProvider
 	private alibabaQwenProvider: OpenAICompatibleProvider
 	private ollamaProvider: OllamaProvider
 	private openaiCompatibleProvider: OpenAICompatibleProvider
-	private isInfioEnabled: boolean
 
 	constructor(settings: InfioSettings) {
-		this.infioProvider = new OpenAICompatibleProvider(
-			settings.infioProvider.apiKey,
-			INFIO_BASE_URL
-		)
 		this.openrouterProvider = new OpenAICompatibleProvider(
 			settings.openrouterProvider.apiKey,
 			settings.openrouterProvider.baseUrl && settings.openrouterProvider.useCustomUrl ?
@@ -94,7 +88,6 @@ class LLMManager implements LLMManagerInterface {
 		)
 		this.ollamaProvider = new OllamaProvider(settings.ollamaProvider.baseUrl)
 		this.openaiCompatibleProvider = new OpenAICompatibleProvider(settings.openaicompatibleProvider.apiKey, settings.openaicompatibleProvider.baseUrl)
-		this.isInfioEnabled = !!settings.infioProvider.apiKey
 	}
 
 	async generateResponse(
@@ -103,12 +96,6 @@ class LLMManager implements LLMManagerInterface {
 		options?: LLMOptions,
 	): Promise<LLMResponseNonStreaming> {
 		switch (model.provider) {
-			case ApiProvider.Infio:
-				return await this.infioProvider.generateResponse(
-					model,
-					request,
-					options,
-				)
 			case ApiProvider.OpenRouter:
 				return await this.openrouterProvider.generateResponse(
 					model,
@@ -184,8 +171,6 @@ class LLMManager implements LLMManagerInterface {
 		options?: LLMOptions,
 	): Promise<AsyncIterable<LLMResponseStreaming>> {
 		switch (model.provider) {
-			case ApiProvider.Infio:
-				return await this.infioProvider.streamResponse(model, request, options)
 			case ApiProvider.OpenRouter:
 				return await this.openrouterProvider.streamResponse(model, request, options)
 			case ApiProvider.SiliconFlow:

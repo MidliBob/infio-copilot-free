@@ -2,7 +2,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { OpenAI } from 'openai'
 
-import { ALIBABA_QWEN_BASE_URL, INFIO_BASE_URL, OPENAI_BASE_URL, SILICONFLOW_BASE_URL } from "../../constants"
+import { ALIBABA_QWEN_BASE_URL, OPENAI_BASE_URL, SILICONFLOW_BASE_URL } from "../../constants"
 import { EmbeddingModel } from '../../types/embedding'
 import { ApiProvider } from '../../types/llm/model'
 import { InfioSettings } from '../../types/settings'
@@ -70,70 +70,6 @@ export const getEmbeddingModel = (
 					} catch (error) {
 						console.error('LocalProvider batch embedding error:', error)
 						throw new Error(`LocalProvider batch embedding failed: ${error.message}`)
-					}
-				},
-			}
-		}
-		case ApiProvider.Infio: {
-			const openai = new OpenAI({
-				apiKey: settings.infioProvider.apiKey,
-				baseURL: INFIO_BASE_URL,
-				dangerouslyAllowBrowser: true,
-			})
-			const modelInfo = GetEmbeddingModelInfo(settings.embeddingModelProvider, settings.embeddingModelId)
-			if (!modelInfo) {
-				throw new Error(`Embedding model ${settings.embeddingModelId} not found for provider ${settings.embeddingModelProvider}`)
-			}
-			return {
-				id: settings.embeddingModelId,
-				dimension: modelInfo.dimensions,
-				supportsBatch: true,
-				getEmbedding: async (text: string) => {
-					try {
-						if (!openai.apiKey) {
-							throw new LLMAPIKeyNotSetException(
-								'OpenAI API key is missing. Please set it in settings menu.',
-							)
-						}
-						const embedding = await openai.embeddings.create({
-							model: settings.embeddingModelId,
-							input: text,
-						})
-						return embedding.data[0].embedding
-					} catch (error) {
-						if (
-							error.status === 429 &&
-							error.message.toLowerCase().includes('rate limit')
-						) {
-							throw new LLMRateLimitExceededException(
-								'OpenAI API rate limit exceeded. Please try again later.',
-							)
-						}
-						throw error
-					}
-				},
-				getBatchEmbeddings: async (texts: string[]) => {
-					try {
-						if (!openai.apiKey) {
-							throw new LLMAPIKeyNotSetException(
-								'OpenAI API key is missing. Please set it in settings menu.',
-							)
-						}
-						const embedding = await openai.embeddings.create({
-							model: settings.embeddingModelId,
-							input: texts,
-						})
-						return embedding.data.map(item => item.embedding)
-					} catch (error) {
-						if (
-							error.status === 429 &&
-							error.message.toLowerCase().includes('rate limit')
-						) {
-							throw new LLMRateLimitExceededException(
-								'OpenAI API rate limit exceeded. Please try again later.',
-							)
-						}
-						throw error
 					}
 				},
 			}
