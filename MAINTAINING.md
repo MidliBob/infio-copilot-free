@@ -28,7 +28,8 @@ Identity strings in code:
 
 ## Build
 
-Requirements: Node 20 (`.nvmrc`), pnpm 9.
+Requirements: Node 20 (`.nvmrc`), pnpm 12 (matches CI and the release
+workflow; `pnpm-workspace.yaml` carries the pnpm 12 settings).
 
 ```bash
 pnpm install

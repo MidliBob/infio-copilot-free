@@ -91,7 +91,7 @@ until then use the two options above.
 
 ## Build from source
 
-Requirements: Node 20, pnpm 9.
+Requirements: Node 20, pnpm 12.
 
 ```bash
 pnpm install

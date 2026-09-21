@@ -13,7 +13,7 @@ documentation improvements.
    cd /path/to/vault/.obsidian/plugins/infio-copilot-free
    ```
 
-2. Install dependencies and build (Node 20, pnpm 9):
+2. Install dependencies and build (Node 20, pnpm 12):
 
    ```bash
    pnpm install
