@@ -1,4 +1,7 @@
 releases:
+  - version: "1.1.1"
+    fixes:
+      - "Catalog submission compliance: the settings heading in the mobile placeholder tab no longer includes the plugin name (checker rule 'Avoid including the plugin name in settings headings')"
   - version: "1.1.0"
     features:
       - "Ollama is now a first-class local provider: the model picker lists models pulled from your Ollama server (/api/tags) instead of requiring manual entry"
