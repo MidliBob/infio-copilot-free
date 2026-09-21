@@ -1378,6 +1378,7 @@ export class McpHub {
 			timeout = 60 * 1000
 		}
 
+		// @ts-expect-error - MCP SDK response union is narrower than McpToolCallResponse (resource_link payloads lack audio data fields)
 		return await connection.client.request(
 			{
 				method: "tools/call",

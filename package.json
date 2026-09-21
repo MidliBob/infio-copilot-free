@@ -48,7 +48,7 @@
 		"stylelint": "^16.12.0",
 		"ts-jest": "^29.2.5",
 		"tslib": "2.4.0",
-		"typescript": "^4.9.0"
+		"typescript": "^5.9.0"
 	},
 	"dependencies": {
 		"@anthropic-ai/sdk": "^0.27.3",

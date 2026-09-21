@@ -6,7 +6,7 @@ settings:
 
 overrides:
   '@codemirror/language': ^6.12.3
-  zod: 3.24.2
+  zod: 3.25.76
   '@langchain/core': 0.3.80
   minimatch: ^10.2.6
   picomatch: ^4.0.7
@@ -65,7 +65,7 @@ importers:
         version: 0.2.14
       '@google/genai':
         specifier: ^1.2.0
-        version: 1.8.0(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(supports-color@8.1.1)(zod@3.24.2))(supports-color@8.1.1)
+        version: 1.8.0(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(supports-color@8.1.1)(zod@3.25.76))(supports-color@8.1.1)
       '@google/generative-ai':
         specifier: ^0.21.0
         version: 0.21.0
@@ -74,7 +74,7 @@ importers:
         version: 3.6.1
       '@langchain/core':
         specifier: 0.3.80
-        version: 0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2))
+        version: 0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76))
       '@lexical/clipboard':
         specifier: ^0.17.1
         version: 0.17.1
@@ -89,7 +89,7 @@ importers:
         version: 0.27.2
       '@modelcontextprotocol/sdk':
         specifier: ^1.30.0
-        version: 1.30.0(@cfworker/json-schema@4.1.1)(supports-color@8.1.1)(zod@3.24.2)
+        version: 1.30.0(@cfworker/json-schema@4.1.1)(supports-color@8.1.1)(zod@3.25.76)
       '@radix-ui/react-dialog':
         specifier: ^1.1.2
         version: 1.1.14(@types/react-dom@18.3.7(@types/react@18.3.23))(@types/react@18.3.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -164,7 +164,7 @@ importers:
         version: 2.2.3
       langchain:
         specifier: ^0.3.37
-        version: 0.3.37(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2)))(handlebars@4.7.8)(openai@4.104.0(ws@8.21.3)(zod@3.24.2))(ws@8.21.3)
+        version: 0.3.37(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(handlebars@4.7.8)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(ws@8.21.3)
       lexical:
         specifier: ^0.17.1
         version: 0.17.1
@@ -188,7 +188,7 @@ importers:
         version: 6.2.2
       openai:
         specifier: ^4.73.0
-        version: 4.104.0(ws@8.21.3)(zod@3.24.2)
+        version: 4.104.0(ws@8.21.3)(zod@3.25.76)
       p-limit:
         specifier: ^6.1.0
         version: 6.2.0
@@ -253,8 +253,8 @@ importers:
         specifier: ^11.0.0
         version: 11.1.0
       zod:
-        specifier: 3.24.2
-        version: 3.24.2
+        specifier: 3.25.76
+        version: 3.25.76
     devDependencies:
       '@types/diff':
         specifier: ^5.2.3
@@ -285,10 +285,10 @@ importers:
         version: 10.0.0
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.21.0
-        version: 6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5))(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
+        version: 6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
       '@typescript-eslint/parser':
         specifier: ^6.21.0
-        version: 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
+        version: 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
       drizzle-kit:
         specifier: ^0.26.2
         version: 0.26.2(supports-color@8.1.1)
@@ -309,7 +309,7 @@ importers:
         version: 2.12.0(eslint@8.57.1(supports-color@8.1.1))
       eslint-plugin-neverthrow:
         specifier: ^1.1.4
-        version: 1.1.4(@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5))(eslint@8.57.1(supports-color@8.1.1))(typescript@4.9.5)
+        version: 1.1.4(@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint@8.57.1(supports-color@8.1.1))(typescript@5.9.3)
       eslint-plugin-no-inline-styles:
         specifier: ^1.0.5
         version: 1.0.5
@@ -339,16 +339,16 @@ importers:
         version: 3.6.2
       stylelint:
         specifier: ^16.12.0
-        version: 16.21.1(supports-color@8.1.1)(typescript@4.9.5)
+        version: 16.21.1(supports-color@8.1.1)(typescript@5.9.3)
       ts-jest:
         specifier: ^29.2.5
-        version: 29.4.0(@babel/core@7.28.0(supports-color@8.1.1))(@jest/transform@29.7.0(supports-color@8.1.1))(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.0(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.17.3)(jest-util@29.7.0)(jest@29.7.0(@types/node@16.18.126)(supports-color@8.1.1))(typescript@4.9.5)
+        version: 29.4.0(@babel/core@7.28.0(supports-color@8.1.1))(@jest/transform@29.7.0(supports-color@8.1.1))(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.0(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.17.3)(jest-util@29.7.0)(jest@29.7.0(@types/node@16.18.126)(supports-color@8.1.1))(typescript@5.9.3)
       tslib:
         specifier: 2.4.0
         version: 2.4.0
       typescript:
-        specifier: ^4.9.0
-        version: 4.9.5
+        specifier: ^5.9.0
+        version: 5.9.3
 
 packages:
 
@@ -1689,7 +1689,7 @@ packages:
     engines: {node: '>=18'}
     peerDependencies:
       '@cfworker/json-schema': ^4.1.1
-      zod: 3.24.2
+      zod: 3.25.76
     peerDependenciesMeta:
       '@cfworker/json-schema':
         optional: true
@@ -5165,7 +5165,7 @@ packages:
     hasBin: true
     peerDependencies:
       ws: ^8.21.3
-      zod: 3.24.2
+      zod: 3.25.76
     peerDependenciesMeta:
       ws:
         optional: true
@@ -5177,7 +5177,7 @@ packages:
     hasBin: true
     peerDependencies:
       ws: ^8.21.3
-      zod: 3.24.2
+      zod: 3.25.76
     peerDependenciesMeta:
       ws:
         optional: true
@@ -6035,9 +6035,9 @@ packages:
     resolution: {integrity: sha512-faYHw0anBbc/kWF3zFTEnxSFOAGUX9GFbOBthvDdLsIlEoWOFOtS0zgCiQYwIskL9iGXZL3kAXD8OoZ4GmMATA==}
     engines: {node: '>= 18'}
 
-  typescript@4.9.5:
-    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
-    engines: {node: '>=4.2.0'}
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
     hasBin: true
 
   ufo@1.6.1:
@@ -6297,15 +6297,15 @@ packages:
   zod-to-json-schema@3.24.6:
     resolution: {integrity: sha512-h/z3PKvcTcTetyjl1fkj79MHNEjm+HpD6NXheWjzOekY7kV+lwDYnHw+ivHkijnCSMz1yJaWBD9vu/Fcmk+vEg==}
     peerDependencies:
-      zod: 3.24.2
+      zod: 3.25.76
 
   zod-to-json-schema@3.25.2:
     resolution: {integrity: sha512-O/PgfnpT1xKSDeQYSCfRI5Gy3hPf91mKVDuYLUHZJMiDFptvP41MSnWofm8dnCm0256ZNfZIM7DSzuSMAFnjHA==}
     peerDependencies:
-      zod: 3.24.2
+      zod: 3.25.76
 
-  zod@3.24.2:
-    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+  zod@3.25.76:
+    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -7061,14 +7061,14 @@ snapshots:
 
   '@floating-ui/utils@0.2.10': {}
 
-  '@google/genai@1.8.0(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(supports-color@8.1.1)(zod@3.24.2))(supports-color@8.1.1)':
+  '@google/genai@1.8.0(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(supports-color@8.1.1)(zod@3.25.76))(supports-color@8.1.1)':
     dependencies:
       google-auth-library: 9.15.1(supports-color@8.1.1)
       ws: 8.21.3
-      zod: 3.24.2
-      zod-to-json-schema: 3.24.6(zod@3.24.2)
+      zod: 3.25.76
+      zod-to-json-schema: 3.24.6(zod@3.25.76)
     optionalDependencies:
-      '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)(supports-color@8.1.1)(zod@3.24.2)
+      '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)(supports-color@8.1.1)(zod@3.25.76)
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -7402,38 +7402,38 @@ snapshots:
 
   '@kwsites/promise-deferred@1.1.1': {}
 
-  '@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2))':
+  '@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       ansi-styles: 5.2.0
       camelcase: 6.3.0
       decamelize: 1.2.0
       js-tiktoken: 1.0.20
-      langsmith: 0.3.87(openai@4.104.0(ws@8.21.3)(zod@3.24.2))
+      langsmith: 0.3.87(openai@4.104.0(ws@8.21.3)(zod@3.25.76))
       mustache: 4.2.0
       p-queue: 6.6.2
       p-retry: 4.6.2
       uuid: 11.1.0
-      zod: 3.24.2
-      zod-to-json-schema: 3.24.6(zod@3.24.2)
+      zod: 3.25.76
+      zod-to-json-schema: 3.24.6(zod@3.25.76)
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'
       - '@opentelemetry/sdk-trace-base'
       - openai
 
-  '@langchain/openai@0.5.18(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2)))(ws@8.21.3)':
+  '@langchain/openai@0.5.18(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(ws@8.21.3)':
     dependencies:
-      '@langchain/core': 0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2))
+      '@langchain/core': 0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76))
       js-tiktoken: 1.0.20
-      openai: 5.8.2(ws@8.21.3)(zod@3.24.2)
-      zod: 3.24.2
+      openai: 5.8.2(ws@8.21.3)(zod@3.25.76)
+      zod: 3.25.76
     transitivePeerDependencies:
       - ws
 
-  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2)))':
+  '@langchain/textsplitters@0.1.0(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))':
     dependencies:
-      '@langchain/core': 0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2))
+      '@langchain/core': 0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76))
       js-tiktoken: 1.0.20
 
   '@lexical/clipboard@0.17.1':
@@ -7673,7 +7673,7 @@ snapshots:
     dependencies:
       langium: 3.3.1
 
-  '@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(supports-color@8.1.1)(zod@3.24.2)':
+  '@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(supports-color@8.1.1)(zod@3.25.76)':
     dependencies:
       '@hono/node-server': 2.1.1(hono@4.13.8)
       ajv: 8.17.1
@@ -7690,8 +7690,8 @@ snapshots:
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.0
       raw-body: 3.0.0
-      zod: 3.24.2
-      zod-to-json-schema: 3.25.2(zod@3.24.2)
+      zod: 3.25.76
+      zod-to-json-schema: 3.25.2(zod@3.25.76)
     optionalDependencies:
       '@cfworker/json-schema': 4.1.1
     transitivePeerDependencies:
@@ -8765,13 +8765,13 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5))(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)':
+  '@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
+      '@typescript-eslint/parser': 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 6.21.0
-      '@typescript-eslint/type-utils': 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
-      '@typescript-eslint/utils': 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
+      '@typescript-eslint/type-utils': 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
+      '@typescript-eslint/utils': 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
       '@typescript-eslint/visitor-keys': 6.21.0
       debug: 4.4.1(supports-color@8.1.1)
       eslint: 8.57.1(supports-color@8.1.1)
@@ -8779,22 +8779,22 @@ snapshots:
       ignore: 5.3.2
       natural-compare: 1.4.0
       semver: 7.7.2
-      ts-api-utils: 1.4.3(typescript@4.9.5)
+      ts-api-utils: 1.4.3(typescript@5.9.3)
     optionalDependencies:
-      typescript: 4.9.5
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)':
+  '@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/scope-manager': 6.21.0
       '@typescript-eslint/types': 6.21.0
-      '@typescript-eslint/typescript-estree': 6.21.0(supports-color@8.1.1)(typescript@4.9.5)
+      '@typescript-eslint/typescript-estree': 6.21.0(supports-color@8.1.1)(typescript@5.9.3)
       '@typescript-eslint/visitor-keys': 6.21.0
       debug: 4.4.1(supports-color@8.1.1)
       eslint: 8.57.1(supports-color@8.1.1)
     optionalDependencies:
-      typescript: 4.9.5
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
@@ -8803,21 +8803,21 @@ snapshots:
       '@typescript-eslint/types': 6.21.0
       '@typescript-eslint/visitor-keys': 6.21.0
 
-  '@typescript-eslint/type-utils@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)':
+  '@typescript-eslint/type-utils@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/typescript-estree': 6.21.0(supports-color@8.1.1)(typescript@4.9.5)
-      '@typescript-eslint/utils': 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
+      '@typescript-eslint/typescript-estree': 6.21.0(supports-color@8.1.1)(typescript@5.9.3)
+      '@typescript-eslint/utils': 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
       debug: 4.4.1(supports-color@8.1.1)
       eslint: 8.57.1(supports-color@8.1.1)
-      ts-api-utils: 1.4.3(typescript@4.9.5)
+      ts-api-utils: 1.4.3(typescript@5.9.3)
     optionalDependencies:
-      typescript: 4.9.5
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
   '@typescript-eslint/types@6.21.0': {}
 
-  '@typescript-eslint/typescript-estree@6.21.0(supports-color@8.1.1)(typescript@4.9.5)':
+  '@typescript-eslint/typescript-estree@6.21.0(supports-color@8.1.1)(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/types': 6.21.0
       '@typescript-eslint/visitor-keys': 6.21.0
@@ -8826,20 +8826,20 @@ snapshots:
       is-glob: 4.0.3
       minimatch: 10.2.6
       semver: 7.7.2
-      ts-api-utils: 1.4.3(typescript@4.9.5)
+      ts-api-utils: 1.4.3(typescript@5.9.3)
     optionalDependencies:
-      typescript: 4.9.5
+      typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)':
+  '@typescript-eslint/utils@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)':
     dependencies:
       '@eslint-community/eslint-utils': 4.7.0(eslint@8.57.1(supports-color@8.1.1))
       '@types/json-schema': 7.0.15
       '@types/semver': 7.7.0
       '@typescript-eslint/scope-manager': 6.21.0
       '@typescript-eslint/types': 6.21.0
-      '@typescript-eslint/typescript-estree': 6.21.0(supports-color@8.1.1)(typescript@4.9.5)
+      '@typescript-eslint/typescript-estree': 6.21.0(supports-color@8.1.1)(typescript@5.9.3)
       eslint: 8.57.1(supports-color@8.1.1)
       semver: 7.7.2
     transitivePeerDependencies:
@@ -9268,14 +9268,14 @@ snapshots:
     dependencies:
       layout-base: 2.0.1
 
-  cosmiconfig@9.0.0(typescript@4.9.5):
+  cosmiconfig@9.0.0(typescript@5.9.3):
     dependencies:
       env-paths: 2.2.1
       import-fresh: 3.3.1
       js-yaml: 4.1.0
       parse-json: 5.2.0
     optionalDependencies:
-      typescript: 4.9.5
+      typescript: 5.9.3
 
   create-jest@29.7.0(@types/node@16.18.126)(supports-color@8.1.1):
     dependencies:
@@ -9828,13 +9828,13 @@ snapshots:
       gonzales-pe: 4.3.0
       lodash: 4.17.21
 
-  eslint-plugin-neverthrow@1.1.4(@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5))(eslint@8.57.1(supports-color@8.1.1))(typescript@4.9.5):
+  eslint-plugin-neverthrow@1.1.4(@typescript-eslint/parser@6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3))(eslint@8.57.1(supports-color@8.1.1))(typescript@5.9.3):
     dependencies:
       '@types/eslint-utils': 3.0.5
-      '@typescript-eslint/parser': 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
+      '@typescript-eslint/parser': 6.21.0(eslint@8.57.1(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
       eslint: 8.57.1(supports-color@8.1.1)
       eslint-utils: 3.0.0(eslint@8.57.1(supports-color@8.1.1))
-      tsutils: 3.21.0(typescript@4.9.5)
+      tsutils: 3.21.0(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
@@ -11059,20 +11059,20 @@ snapshots:
 
   kolorist@1.8.0: {}
 
-  langchain@0.3.37(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2)))(handlebars@4.7.8)(openai@4.104.0(ws@8.21.3)(zod@3.24.2))(ws@8.21.3):
+  langchain@0.3.37(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(handlebars@4.7.8)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(ws@8.21.3):
     dependencies:
-      '@langchain/core': 0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2))
-      '@langchain/openai': 0.5.18(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2)))(ws@8.21.3)
-      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.24.2)))
+      '@langchain/core': 0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76))
+      '@langchain/openai': 0.5.18(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(ws@8.21.3)
+      '@langchain/textsplitters': 0.1.0(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))
       js-tiktoken: 1.0.20
       js-yaml: 4.1.0
       jsonpointer: 5.0.1
-      langsmith: 0.3.87(openai@4.104.0(ws@8.21.3)(zod@3.24.2))
+      langsmith: 0.3.87(openai@4.104.0(ws@8.21.3)(zod@3.25.76))
       openapi-types: 12.1.3
       p-retry: 4.6.2
       uuid: 11.1.0
       yaml: 2.9.1
-      zod: 3.24.2
+      zod: 3.25.76
     optionalDependencies:
       handlebars: 4.7.8
     transitivePeerDependencies:
@@ -11090,7 +11090,7 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.0.8
 
-  langsmith@0.3.87(openai@4.104.0(ws@8.21.3)(zod@3.24.2)):
+  langsmith@0.3.87(openai@4.104.0(ws@8.21.3)(zod@3.25.76)):
     dependencies:
       '@types/uuid': 10.0.0
       chalk: 4.1.2
@@ -11099,7 +11099,7 @@ snapshots:
       semver: 7.7.2
       uuid: 11.1.0
     optionalDependencies:
-      openai: 4.104.0(ws@8.21.3)(zod@3.24.2)
+      openai: 4.104.0(ws@8.21.3)(zod@3.25.76)
 
   layout-base@1.0.2: {}
 
@@ -11788,7 +11788,7 @@ snapshots:
       is-docker: 2.2.1
       is-wsl: 2.2.0
 
-  openai@4.104.0(ws@8.21.3)(zod@3.24.2):
+  openai@4.104.0(ws@8.21.3)(zod@3.25.76):
     dependencies:
       '@types/node': 18.19.115
       '@types/node-fetch': 2.6.12
@@ -11799,14 +11799,14 @@ snapshots:
       node-fetch: 2.7.0
     optionalDependencies:
       ws: 8.21.3
-      zod: 3.24.2
+      zod: 3.25.76
     transitivePeerDependencies:
       - encoding
 
-  openai@5.8.2(ws@8.21.3)(zod@3.24.2):
+  openai@5.8.2(ws@8.21.3)(zod@3.25.76):
     optionalDependencies:
       ws: 8.21.3
-      zod: 3.24.2
+      zod: 3.25.76
 
   openapi-types@12.1.3: {}
 
@@ -12636,7 +12636,7 @@ snapshots:
       stylis: 4.3.2
       tslib: 2.6.2
 
-  stylelint@16.21.1(supports-color@8.1.1)(typescript@4.9.5):
+  stylelint@16.21.1(supports-color@8.1.1)(typescript@5.9.3):
     dependencies:
       '@csstools/css-parser-algorithms': 3.0.5(@csstools/css-tokenizer@3.0.4)
       '@csstools/css-tokenizer': 3.0.4
@@ -12645,7 +12645,7 @@ snapshots:
       '@dual-bundle/import-meta-resolve': 4.1.0
       balanced-match: 2.0.0
       colord: 2.9.3
-      cosmiconfig: 9.0.0(typescript@4.9.5)
+      cosmiconfig: 9.0.0(typescript@5.9.3)
       css-functions-list: 3.2.3
       css-tree: 3.1.0
       debug: 4.4.1(supports-color@8.1.1)
@@ -12792,13 +12792,13 @@ snapshots:
 
   trough@2.2.0: {}
 
-  ts-api-utils@1.4.3(typescript@4.9.5):
+  ts-api-utils@1.4.3(typescript@5.9.3):
     dependencies:
-      typescript: 4.9.5
+      typescript: 5.9.3
 
   ts-dedent@2.2.0: {}
 
-  ts-jest@29.4.0(@babel/core@7.28.0(supports-color@8.1.1))(@jest/transform@29.7.0(supports-color@8.1.1))(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.0(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.17.3)(jest-util@29.7.0)(jest@29.7.0(@types/node@16.18.126)(supports-color@8.1.1))(typescript@4.9.5):
+  ts-jest@29.4.0(@babel/core@7.28.0(supports-color@8.1.1))(@jest/transform@29.7.0(supports-color@8.1.1))(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.0(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.17.3)(jest-util@29.7.0)(jest@29.7.0(@types/node@16.18.126)(supports-color@8.1.1))(typescript@5.9.3):
     dependencies:
       bs-logger: 0.2.6
       ejs: 3.1.10
@@ -12809,7 +12809,7 @@ snapshots:
       make-error: 1.3.6
       semver: 7.7.2
       type-fest: 4.41.0
-      typescript: 4.9.5
+      typescript: 5.9.3
       yargs-parser: 21.1.1
     optionalDependencies:
       '@babel/core': 7.28.0(supports-color@8.1.1)
@@ -12827,10 +12827,10 @@ snapshots:
 
   tslib@2.6.2: {}
 
-  tsutils@3.21.0(typescript@4.9.5):
+  tsutils@3.21.0(typescript@5.9.3):
     dependencies:
       tslib: 1.14.1
-      typescript: 4.9.5
+      typescript: 5.9.3
 
   tunnel-agent@0.6.0:
     dependencies:
@@ -12862,7 +12862,7 @@ snapshots:
       media-typer: 1.1.0
       mime-types: 3.0.1
 
-  typescript@4.9.5: {}
+  typescript@5.9.3: {}
 
   ufo@1.6.1: {}
 
@@ -13092,14 +13092,14 @@ snapshots:
 
   yocto-queue@1.2.1: {}
 
-  zod-to-json-schema@3.24.6(zod@3.24.2):
+  zod-to-json-schema@3.24.6(zod@3.25.76):
     dependencies:
-      zod: 3.24.2
+      zod: 3.25.76
 
-  zod-to-json-schema@3.25.2(zod@3.24.2):
+  zod-to-json-schema@3.25.2(zod@3.25.76):
     dependencies:
-      zod: 3.24.2
+      zod: 3.25.76
 
-  zod@3.24.2: {}
+  zod@3.25.76: {}
 
   zwitch@2.0.4: {}

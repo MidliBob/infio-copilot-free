@@ -1,6 +1,8 @@
+packages:
+  - '.'
 overrides:
   '@codemirror/language': ^6.12.3
-  zod: 3.24.2
+  zod: 3.25.76
   '@langchain/core': 0.3.80
   minimatch: ^10.2.6
   picomatch: ^4.0.7
@@ -24,4 +26,9 @@ onlyBuiltDependencies:
   - onnxruntime-node
   - protobufjs
   - sharp
+allowBuilds:
+  esbuild: true
+  onnxruntime-node: true
+  protobufjs: true
+  sharp: true
 blockExoticSubdeps: false
