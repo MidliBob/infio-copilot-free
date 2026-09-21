@@ -19,7 +19,6 @@ type CustomProviderSettingsProps = {
 }
 
 type ProviderSettingKey =
-	| 'infioProvider'
 	| 'openrouterProvider'
 	| 'openaiProvider'
 	| 'siliconflowProvider'
@@ -35,7 +34,6 @@ type ProviderSettingKey =
 	| 'localproviderProvider';
 
 const keyMap: Record<ApiProvider, ProviderSettingKey> = {
-	'Infio': 'infioProvider',
 	'OpenRouter': 'openrouterProvider',
 	'OpenAI': 'openaiProvider',
 	'SiliconFlow': 'siliconflowProvider',

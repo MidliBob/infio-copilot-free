@@ -2,7 +2,6 @@ import { ApiProvider } from '../types/llm/model';
 
 // Provider API Key获取地址映射
 export const providerApiUrls: Record<ApiProvider, string> = {
-	[ApiProvider.Infio]: 'https://platform.infio.app/api-keys',
 	[ApiProvider.OpenRouter]: 'https://openrouter.ai/settings/keys',
 	[ApiProvider.SiliconFlow]: 'https://cloud.siliconflow.cn/account/ak',
 	[ApiProvider.AlibabaQwen]: 'https://help.aliyun.com/zh/dashscope/developer-reference/activate-dashscope-and-create-an-api-key',

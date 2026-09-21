@@ -1,5 +1,4 @@
 export enum ApiProvider {
-	Infio = "Infio",
 	OpenRouter = "OpenRouter",
 	SiliconFlow = "SiliconFlow",
 	AlibabaQwen = "AlibabaQwen",
