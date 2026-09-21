@@ -2,6 +2,7 @@ import { requestUrl } from 'obsidian'
 import { INFIO_BASE_URL, OPENROUTER_BASE_URL } from '../constants'
 import { ApiProvider } from '../types/llm/model'
 import { InfioSettings } from '../types/settings'
+import { getOllamaModels } from './ollama'
 
 export interface ModelInfo {
 	maxTokens?: number
@@ -1766,6 +1767,35 @@ export const localProviderEmbeddingModels = {
 	'nomic-ai/nomic-embed-text-v1': { dimensions: 768, description: 'Nomic-embed-text (本地，2048令牌，768维)' }
 } as const satisfies Record<string, EmbeddingModelInfo>
 
+// Ollama
+// The local server exposes its model list at /api/tags (no API key needed).
+// An empty base URL keeps the picker in free-text mode - chat requests
+// require an explicit address anyway (see LLMBaseUrlNotSetException).
+let ollamaModelsCache: { url: string; models: Record<string, ModelInfo> } | null = null;
+async function fetchOllamaModels(baseUrl?: string): Promise<Record<string, ModelInfo>> {
+	const url = (baseUrl ?? '').trim().replace(/\/+$/, '');
+	if (!url) {
+		return {};
+	}
+	if (ollamaModelsCache && ollamaModelsCache.url === url) {
+		return ollamaModelsCache.models;
+	}
+
+	// getOllamaModels() swallows request errors and resolves to []
+	const names = await getOllamaModels(url);
+	const models: Record<string, ModelInfo> = {};
+	for (const name of names) {
+		models[name] = {
+			supportsPromptCache: false,
+		};
+	}
+	if (names.length > 0) {
+		// only cache successful responses so a stopped server is retried later
+		ollamaModelsCache = { url, models };
+	}
+	return models;
+}
+
 /// helper functions
 // get all providers, used for the provider dropdown
 export const GetAllProviders = (): ApiProvider[] => {
@@ -1828,7 +1858,7 @@ export const GetProviderModels = async (provider: ApiProvider, settings?: InfioS
 		case ApiProvider.Moonshot:
 			return moonshotModels
 		case ApiProvider.Ollama:
-			return {}
+			return await fetchOllamaModels(settings?.ollamaProvider.baseUrl)
 		case ApiProvider.OpenAICompatible:
 			return {}
 		case ApiProvider.LocalProvider:
@@ -1866,7 +1896,7 @@ export const GetProviderModelsWithSettings = async (provider: ApiProvider, setti
 		case ApiProvider.Moonshot:
 			return moonshotModels
 		case ApiProvider.Ollama:
-			return {}
+			return await fetchOllamaModels(settings?.ollamaProvider.baseUrl)
 		case ApiProvider.OpenAICompatible:
 			return {}
 		case ApiProvider.LocalProvider:
