@@ -19,4 +19,9 @@ overrides:
   axios: ^1.12.0
   js-yaml: ^4.1.0
   uuid: ^11.0.0
+onlyBuiltDependencies:
+  - esbuild
+  - onnxruntime-node
+  - protobufjs
+  - sharp
 blockExoticSubdeps: false
