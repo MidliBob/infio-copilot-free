@@ -141,21 +141,7 @@ export function isValidIgnorePattern(value: string): boolean {
 
 	return stack.length === 0;
 }
-export const SETTINGS_SCHEMA_VERSION = 0.5
-
-const InfioProviderSchema = z.object({
-	name: z.literal('Infio'),
-	apiKey: z.string().catch(''),
-	baseUrl: z.string().catch(''),
-	useCustomUrl: z.boolean().catch(false),
-	models: z.array(z.string()).catch([])
-}).catch({
-	name: 'Infio',
-	apiKey: '',
-	baseUrl: '',
-	useCustomUrl: false,
-	models: []
-})
+export const SETTINGS_SCHEMA_VERSION = 0.6
 
 const OpenRouterProviderSchema = z.object({
 	name: z.literal('OpenRouter'),
@@ -400,8 +386,7 @@ export const InfioSettingsSchema = z.object({
 	version: z.literal(SETTINGS_SCHEMA_VERSION).catch(SETTINGS_SCHEMA_VERSION),
 
 	// Provider
-	defaultProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.Infio),
-	infioProvider: InfioProviderSchema,
+	defaultProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.Ollama),
 	openrouterProvider: OpenRouterProviderSchema,
 	siliconflowProvider: SiliconFlowProviderSchema,
 	alibabaQwenProvider: AlibabaQwenProviderSchema,
@@ -444,22 +429,22 @@ export const InfioSettingsSchema = z.object({
 	})).catch([]),
 
 	// Active Provider Tab (for UI state)
-	activeProviderTab: z.nativeEnum(ApiProvider).catch(ApiProvider.Infio),
+	activeProviderTab: z.nativeEnum(ApiProvider).catch(ApiProvider.Ollama),
 
 	// Chat Model 
-	chatModelProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.Infio),
+	chatModelProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.Ollama),
 	chatModelId: z.string().catch(''),
 
 	// Insight Model
-	insightModelProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.Infio),
+	insightModelProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.Ollama),
 	insightModelId: z.string().catch(''),
 
 	// Apply Model
-	applyModelProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.Infio),
+	applyModelProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.Ollama),
 	applyModelId: z.string().catch(''),
 
 	// Embedding Model
-	embeddingModelProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.Infio),
+	embeddingModelProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.LocalProvider),
 	embeddingModelId: z.string().catch(''),
 
 	// fuzzyMatchThreshold
@@ -500,7 +485,6 @@ export const InfioSettingsSchema = z.object({
 		})
 	).catch(DEFAULT_MODELS),
 	// API Keys [compatible]
-	infioApiKey: z.string().catch(''),
 	openAIApiKey: z.string().catch(''),
 	anthropicApiKey: z.string().catch(''),
 	geminiApiKey: z.string().catch(''),
@@ -610,7 +594,7 @@ const MIGRATIONS: Migration[] = [
 		toVersion: 0.5,
 		migrate: (data) => {
 			const newData = { ...data }
-			newData.version = SETTINGS_SCHEMA_VERSION
+			newData.version = 0.5
 			
 			// Handle max_tokens minimum value increase from 800 to 4096
 			if (newData.modelOptions && typeof newData.modelOptions === 'object') {
@@ -624,15 +608,67 @@ const MIGRATIONS: Migration[] = [
 			return newData
 		},
 	},
+	{
+		fromVersion: 0.5,
+		toVersion: 0.6,
+		migrate: (data) => {
+			const newData = { ...data }
+			newData.version = 0.6
+
+			// The Infio cloud service was discontinued and the provider removed.
+			// Remap selections to the new defaults and drop the stale model ids
+			// that only existed on the Infio service.
+			if (newData.chatModelProvider === 'Infio') {
+				newData.chatModelProvider = 'Ollama'
+				newData.chatModelId = ''
+			}
+			if (newData.insightModelProvider === 'Infio') {
+				newData.insightModelProvider = 'Ollama'
+				newData.insightModelId = ''
+			}
+			if (newData.applyModelProvider === 'Infio') {
+				newData.applyModelProvider = 'Ollama'
+				newData.applyModelId = ''
+			}
+			if (newData.embeddingModelProvider === 'Infio') {
+				newData.embeddingModelProvider = 'LocalProvider'
+				// same value as localProviderDefaultEmbeddingModelId in utils/api.ts;
+				// hardcoded because migrations must not depend on live code
+				newData.embeddingModelId = 'TaylorAI/bge-micro-v2'
+			}
+			if (newData.defaultProvider === 'Infio') {
+				newData.defaultProvider = 'Ollama'
+			}
+			if (newData.activeProviderTab === 'Infio') {
+				newData.activeProviderTab = 'Ollama'
+			}
+
+			// zod would discard the WHOLE array if a single entry referenced the
+			// removed provider, so filter the collected model lists here
+			for (const key of ['collectedChatModels', 'collectedInsightModels', 'collectedApplyModels', 'collectedEmbeddingModels']) {
+				const list = newData[key]
+				if (Array.isArray(list)) {
+					newData[key] = list.filter((m) => !(m && typeof m === 'object' && 'provider' in m && m.provider === 'Infio'))
+				}
+			}
+
+			// credentials/config of the removed provider
+			delete newData.infioProvider
+			delete newData.infioApiKey
+
+			return newData
+		},
+	},
 ]
 
 function migrateSettings(
 	data: Record<string, unknown>,
 ): Record<string, unknown> {
 	let currentData = { ...data }
-	const currentVersion = (currentData.version as number) ?? 0
 
 	for (const migration of MIGRATIONS) {
+		// re-read after every step so migrations chain (0.4 -> 0.5 -> 0.6)
+		const currentVersion = (currentData.version as number) ?? 0
 		if (
 			currentVersion >= migration.fromVersion &&
 			currentVersion < migration.toVersion &&
