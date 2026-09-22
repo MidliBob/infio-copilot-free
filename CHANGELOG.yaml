@@ -1,4 +1,13 @@
 releases:
+  - version: "1.2.0"
+    features:
+      - "The UI now fully speaks English, Russian and Simplified Chinese: every user-visible string (command palette entries, insight progress stages and errors, chat file-operation results, Dataview/Mermaid/workspace labels, tooltips, notifications) goes through the translation layer - ~120 strings, 99 new keys, guarded by a CI test that enforces identical key sets and placeholders across the three locales"
+    fixes:
+      - "Chinese UI no longer shows raw i18n keys in the MCP panel (the zh-cn mcpHub keys were nested under the wrong group)"
+      - "No more console error spam for unsupported interface languages - the English fallback is silent and by design"
+    other:
+      - "Locale policy: only en/ru/zh-cn ship; the 21 other locale files inherited from upstream turned out to be empty stubs, so no working translation is lost - other interface languages fall back to English"
+      - "READMEs unified: canonical English plus full Russian (new) and Simplified Chinese (rewritten from the stale upstream legacy) translations with identical structure and language-switch links"
   - version: "1.1.5"
     fixes:
       - "Settings: the Ollama embedding-model dropdown now shows the capability-filtered server list. It appeared unfiltered because the per-provider 'custom models' array - shared by all Ollama slots and accumulated from manually typed entries of earlier versions - was merged on top of the fetched list. Free-text entry is unchanged, and custom entries still appear when the Ollama server is unreachable; chat/insight/autocomplete pickers and other providers keep their existing behavior"
