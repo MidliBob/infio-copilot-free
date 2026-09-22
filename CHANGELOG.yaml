@@ -1,4 +1,13 @@
 releases:
+  - version: "1.1.4"
+    features:
+      - "Ollama: Test connection button in Settings with two-stage diagnostics - it tells 'server is not running' apart from 'OLLAMA_ORIGINS blocks the Obsidian origin' (both look like the same opaque network error in browsers) and shows the detected server version on success"
+      - "Ollama: the embedding model dropdown now lists embedding-capable models from your server (/api/tags capabilities, with a full-list fallback for older Ollama versions) instead of manual entry only"
+    fixes:
+      - "Ollama chat/autocomplete/embedding network errors no longer surface as a bare 'Failed to fetch': messages now explain the likely cause (server down, OLLAMA_ORIGINS policy, wrong /v1 base URL) and point to Test connection and the README guide; mid-stream failures are covered too"
+    other:
+      - "README: new 'Ollama (local models)' guide - setup, Test connection verdict table, OLLAMA_ORIGINS recipes for Windows/macOS/Linux; stale 'model lists are not fetched' wording removed"
+      - "20 new unit tests for the Ollama diagnostics and model listing (58 total)"
   - version: "1.1.3"
     fixes:
       - "Catalog compliance: removed the two eslint-disable directives for '@typescript-eslint/no-explicit-any' in the local text splitter (disabling that rule is not allowed); the splitter metadata is now properly typed (SplitterMetadata) with no 'any' usage - no behavior change, the golden splitter tests recorded from langchain pass unchanged"
