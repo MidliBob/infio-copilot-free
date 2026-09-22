@@ -214,9 +214,19 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 			return modelIds;
 		}
 		const additionalModels = providerModels.filter((model): model is string => typeof model === 'string');
+		// For Ollama embeddings the fetched list is capability-filtered, while
+		// the per-provider custom list is shared with the chat pickers (and
+		// holds entries saved before filtering existed). Merging it back would
+		// defeat the filter, so the live server list wins when available.
+		// Free-text entry still works, and custom entries remain listed when
+		// the server list is unavailable (e.g. Ollama stopped).
+		if (isEmbedding && modelProvider === ApiProvider.Ollama && modelIds.length > 0) {
+			console.debug(`📋 Using only embedding-capable models (${modelIds.length}):`, modelIds);
+			return modelIds;
+		}
 		console.debug(`📋 Combined models: ${modelIds.length} official + ${additionalModels.length} custom`);
 		return [...modelIds, ...additionalModels];
-	}, [modelIds, settings, modelProvider]);
+	}, [modelIds, settings, modelProvider, isEmbedding]);
 
 	const searchableItems = useMemo(() => {
 		return combinedModelIds.map((id): SearchableItem => ({
