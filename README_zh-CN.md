@@ -1,132 +1,150 @@
-> **公告（2026-09）**：本项目已作为独立插件 **Infio Copilot Free**（`infio-copilot-free`）继续维护，
-> 原文档对应旧版 0.8.x 界面；最新安装与使用说明见英文 README 与 MAINTAINING.md。
+# Infio Copilot Free
 
-<h1 align="center">Obsidian-Infio-Copilot</h1>
+**语言：** [English](README.md) | [Русский](README_ru.md) | 简体中文
 
-**让你的 Obsidian 秒变个人 AI 工作站！**
+一款受 Cursor 启发的 Obsidian AI 助手：能够读取并编辑你的仓库的智能体聊天、
+基于 RAG 的语义搜索、行内自动补全和 AI 洞察 —— 数据完全本地存储，无任何
+遥测。
 
-Infio Copilot 是一款可高度个人定制化的 Obsidian AI 插件，旨在帮助用户在本地工作流中轻松使用各类强大的 AI 大模型，为知识库提供交互式对话、内联编辑、智能补全、全库检索问答等功能。
+**Infio Copilot Free** 是 [Infio Copilot](https://github.com/infiolab/infio-copilot)
+（0.8.x，自 2025 年起停止维护并已从 Obsidian 插件目录下架）的独立社区延续
+版本，而 Infio Copilot 本身源自 [Smart Composer](https://github.com/glm454/smart-composer)。
+原始设计与代码的功劳归于其作者；本项目修复了遗留的致命问题（失效的资源
+主机、遥测、界面崩溃），并让插件持续演进。
 
-<a href="README.md" target="_blank"><b>English</b></a>  |  <a href="README_zh-CN.md" target="_blank"><b>中文</b></a>
+## 功能特性
 
-[Chat with me on Twitter](https://x.com/buyiyouxi)
+- **与仓库对话的智能体聊天** —— 助手可以读取笔记、进行搜索（语义 / BM25 /
+  正则）、抓取网页、通过可审阅的 diff 创建和编辑文件，并支持 MCP 工具。
+- **RAG 语义搜索** —— 笔记的向量索引完全存储在本地（PGlite，即编译为
+  WebAssembly 的 PostgreSQL，运行于 OPFS 存储）。
+- **AI 洞察** —— 详细/简明摘要、关键洞察、论文分析等多种笔记转换。
+- **自动补全** —— 使用你选择的模型进行行内代码/文本补全。
+- **支持任意提供商** —— OpenAI、Anthropic、Google、OpenRouter、DeepSeek、
+  Groq、xAI、Moonshot、SiliconFlow、阿里云百炼（Qwen）、OpenAI 兼容端点、
+  Ollama 及其他本地服务器，另内置本地嵌入模型（嵌入无需 API Key）。
+- **工作区、自定义模式、快捷命令、MCP 服务器。**
+- **本地化界面** —— 英语、俄语和简体中文跟随 Obsidian 的界面语言；其他
+  语言将回退为英语。
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/felixduan)
+## 安装
 
-# Pro Version
+### 从发行版安装（手动）
 
+1. 从 [Releases](../../releases/latest) 下载
+   `obsidian-infio-copilot-free-<version>.zip`，解压到
+   `<vault>/.obsidian/plugins/infio-copilot-free/`。
+   文件夹中必须包含 `main.js`、`manifest.json`、`styles.css` 以及三个
+   PGlite 运行时文件：`postgres.wasm`、`postgres.data`、`vector.tar.gz`。
+2. 重启 Obsidian，并在 设置 → 第三方插件 中启用 **Infio Copilot Free**。
 
-# 🚀 新版本发布：引入工作区、洞察与本地模型！
+如果缺少这三个 PGlite 文件，插件仍可启动：它们会从 npm CDN 镜像
+（jsDelivr → npmmirror → unpkg）一次性下载。
 
-我们很高兴地宣布一个重要更新，它将彻底改变您的知识管理体验。此版本引入了强大的新功能，如工作区、洞察、以及开箱即用的本地嵌入模型，让您更深入地与笔记互动。
+### BRAT
 
----
-*   **🧠 内置本地嵌入模型**：现在默认包含 `LocalProdver(bge-micro-v2)` 模型。无需任何额外配置，即可享受强大的本地语义搜索和分析功能。
+将本仓库添加到 [BRAT](https://github.com/TfTHacker/obsidian42-brat)，
+即可自动获取发行版构建。
 
-*   **🗂️ 工作区 (Workspaces)**：引入全新的工作区功能，帮助您更好地组织和隔离不同的项目和知识领域，让您的工作流更加清晰。
+### 社区插件目录
 
-*   **💡 洞察 (Insights)**：我们增加了强大的“洞察”功能。您可以从笔记中提取关键摘要、进行反思或生成内容大纲，从您的知识库中发现深层联系。
+尚未上架 —— 已向 `obsidianmd/obsidian-releases` 计划提交申请；在此之前
+请使用上述两种方式。
 
-*   **🔍 多维度查询与对话**：像与人交谈一样与您的笔记互动。现在您可以根据时间、任务状态等多种维度进行查询，轻松找到所需信息。
+## 快速上手
 
-*   **✍️ 全新 `write` 模式**：一个专为写作而生的新模式，提供更专注、更流畅的创作体验，帮助您将想法转化为结构清晰的文档。
+1. 从侧边栏（魔棒图标）或命令面板（“Open Infio Copilot Free”）打开聊天。
+2. 在 设置 → Infio Copilot Free 中选择一个提供商并粘贴 API Key —— 或将
+   Ollama 槽位指向 `http://localhost:11434`：模型下拉列表会直接从你的
+   Ollama 服务器拉取，**Test connection（测试连接）** 按钮还能诊断连通性
+   与 CORS/origin 问题（见下文「Ollama（本地模型）」章节）。
+3. 配置四个模型槽位（聊天 / apply / 洞察 / 嵌入）—— 每个槽位单独设置。
+   嵌入可以使用内置的本地模型。
+4. 可选：在「Semantic Index」面板构建语义索引，并在设置页底部启用自动补全。
 
-## 功能特点
+## Ollama（本地模型）
 
-| 功能 | 描述 |
-|------|------|
-| 💬 对话与编辑 | 获取即时 AI 协助，一键应用建议的改进 |
-| 📝 智能补全 | 在输入时获取上下文感知的写作建议 |
-| ✏️ 内联编辑 | 直接在当前文件中编辑笔记 |
-| 🔍 全库对话 | 使用 AI 与整个 Obsidian vault 交互 |
-| 语义搜索 |   |
-| ⌨️ 快捷命令 | 创建和管理自定义快捷命令，实现快速操作 |
-| 🎯 自定义Mode | 定义具有特定行为的个性化 AI 模式 |
-| 🔌 MCP | 管理模型上下文协议集成 |
-| 🗂️ 工作空间 | 组织项目、研究和个人笔记，无缝切换上下文 |
-| 💡 深度洞察 | 综合信息、发现连接、获得更深层次的理解 |
-| 🔍 多维查询 | 基于时间、任务和元数据执行复杂查询 |
-| ✍️ 新写作模式 | 重构的写作体验，提供直观、强大且无干扰的界面 |
+Infio Copilot Free 开箱即用地支持 [Ollama](https://ollama.com)：
 
-### 🖋️ 内联编辑
+1. 安装 Ollama 并拉取模型，例如 `ollama pull qwen2.5:3b`。
+2. 确保服务器在运行（`ollama serve`；桌面应用会自动启动）。默认地址：
+   `http://localhost:11434`。
+3. 在 设置 → Infio Copilot Free → **Ollama** 中填写基础 URL。聊天/洞察/
+   自动补全的模型下拉列表会自动从服务器的 `/api/tags` 拉取；嵌入下拉
+   列表则显示服务器中支持嵌入的模型（Ollama 会上报模型 capabilities；
+   旧版服务器则显示完整列表）。其他模型名仍可手动输入。
+4. 点击基础 URL 下方的 **Test connection（测试连接）**，按结论操作
+   （见下表）。
 
-选中文本 → 直接与 AI 讨论 → 一键应用到原段落
+聊天与嵌入请求使用 Ollama 的 OpenAI 兼容 API（`/v1`，要求 Ollama ≥
+0.1.14）。模型列表通过 Obsidian 的原生 HTTP 层获取，不受浏览器 CORS 限制。
 
-![inline-edit](asserts/edit-inline.gif)
+### 测试连接结果解读
 
-### 💬 对话式改写
+| 结果 | 含义 | 怎么办 |
+|---|---|---|
+| **OK**（显示服务器版本） | 服务器可达且接受 Obsidian 的请求 | 无需操作 |
+| **Cannot reach Ollama** | 原生请求失败 | Ollama 是否运行（`ollama serve`）？基础 URL/端口是否正确？防火墙/代理是否拦截？ |
+| **Reachable, but rejects browser requests** | 服务器能响应原生请求，但拒绝渲染进程的 `fetch` —— 这是 `OLLAMA_ORIGINS` 策略 | 见下方配置方法 |
+| **Set the base URL first** | 未配置地址 | 填写 Ollama 基础 URL |
 
-与单个笔记进行智能对话，轻松修改或重写原文内容
+### 为什么需要 OLLAMA_ORIGINS（以及如何设置）
 
-![chat-with-select](asserts/chat-with-select.gif)
+聊天/嵌入请求经由渲染进程的 `fetch` 发出，Ollama 会将其视为来自
+`app://obsidian.md` 的跨源调用。默认情况下 Ollama 只允许 localhost 来源，
+其他一律返回 `403` —— 而浏览器会把它隐藏成不透明的 “Failed to fetch”
+（与服务器未启动时的报错相同；测试连接按钮可以区分两者）。
 
-### 📝 智能自动补全
+允许 Obsidian 的来源（或用 `*` 允许全部），然后**重启 Ollama**：
 
-输入时获取上下文感知的写作建议
+- **Windows**（PowerShell，然后重启 Ollama 应用）：
+  `setx OLLAMA_ORIGINS "app://obsidian.md"` —— 或通过
+  *系统 → 环境变量* 设置。
+- **macOS**（终端，然后退出并重开 Ollama 应用）：
+  `launchctl setenv OLLAMA_ORIGINS "app://obsidian.md"`
+- **Linux**（systemd 服务）：`sudo systemctl edit ollama` 并添加
+  ```ini
+  [Service]
+  Environment="OLLAMA_ORIGINS=app://obsidian.md"
+  ```
+  然后 `sudo systemctl daemon-reload && sudo systemctl restart ollama`。
 
-![autocomplte](asserts/autocomplete.gif)
+一个实用的判断技巧：如果模型下拉列表**能列出模型**，但聊天仍然报网络
+错误，那几乎可以肯定是 origins 策略（列表走原生 HTTP，聊天走 `fetch`）。
 
-### 🔍 全库问答 (RAG)
+## 隐私
 
-针对整个 Vault 提问，跨笔记检索并整合答案
+- 无遥测、无统计分析、无自更新代码（上游插件被下架的原因均已移除）。
+- 除你配置的 LLM 提供商调用外，任何数据都不会离开你的设备。
+- 聊天记录、向量索引与设置均存储在本地（vault 配置目录内）。
 
-![rag](asserts/rag.gif)
+## 从 Infio Copilot 升级的注意事项
 
-🖼️ **图片识别**
+- 插件 id 已改为 `infio-copilot-free`，可与旧插件并存安装。设置不会自动
+  迁移 —— 如需保留，请在两个插件目录之间复制 `data.json`，然后卸载旧
+  插件。
+- 聊天/向量数据库保留原存储名（`infio-db`）以保证数据延续。**切勿**同时
+  运行两个插件：它们会共享该数据库。
+- 针对 `.infio-*` 类名的自定义 CSS 片段需改用新的 `icf-*` 前缀。
 
-支持 Vault 内或本地图片上传→AI 智能识别并分析（v0.1.7+）
+## 从源码构建
 
-## 开始使用
+环境要求：Node 20、pnpm 12。
 
-> **⚠️ 重要提示：安装程序版本要求**
-> Infio-Copilot 需要较新版本的 Obsidian 安装程序。如果您遇到插件无法正常加载的问题：
->
-> 1. 首先，尝试在 `设置 > 通用 > 检查更新` 中正常更新 Obsidian。
-> 2. 如果问题仍然存在，手动更新您的 Obsidian 安装程序：
->
->    - 从 [Obsidian 下载页面](https://obsidian.md/download) 下载最新安装程序
->    - 完全关闭 Obsidian
->    - 运行新的安装程序
+```bash
+pnpm install
+pnpm build               # type-check + esbuild production bundle -> main.js
+pnpm copy-pglite-assets  # PGlite runtime files -> pglite-assets/
+pnpm test
+```
 
-1. 打开 Obsidian 设置
-2. 导航至"社区插件"并点击"浏览"
-3. 搜索 "Infio Copilot" 并点击安装
-4. 在社区插件中启用该插件
-5. 在插件设置中配置您的 API 密钥
-   - SiliconFlow : [SiliconFlow API Keys](https://cloud.siliconflow.cn/account/ak)
-   - OpenRouter : [OpenRouter API Keys](https://openrouter.ai/settings/keys)
-	 - Alibaba Bailian : [Bailian API Keys](https://help.aliyun.com/zh/dashscope/developer-reference/activate-dashscope-and-create-an-api-key)
-   - DeepSeek：[DeepSeek API Keys](https://platform.deepseek.com/api_keys/)
-   - OpenAI：[ChatGPT API Keys](https://platform.openai.com/api-keys)
-   - Anthropic：[Claude API Keys](https://console.anthropic.com/settings/keys)
-   - Gemini：[Gemini API Keys](https://aistudio.google.com/apikey)
-   - Groq：[Groq API Keys](https://console.groq.com/keys)
-6. 设置快捷键以快速访问：
-   - 转到 设置 > 快捷键
-   - 搜索 "Infio Copilot"
-   - 推荐的快捷键绑定：
-     * Infio Copilot: Infio add selection to chat -> cmd + shift + L
-     * Infio Copilot: Infio Inline Edit -> cmd + shift + K
-![autocomplte](asserts/doc-set-hotkey.png)
+将 `main.js`、`manifest.json`、`styles.css` 和 `pglite-assets/*` 的三个文件
+复制到仓库的插件目录，然后重载 Obsidian（Ctrl/Cmd+R）。
 
-## 反馈与支持
-我们重视您的意见，并希望确保您能轻松分享想法和报告问题：
+发布流程、CI 说明与路线图见 [MAINTAINING.md](MAINTAINING.md)。
 
-- **错误报告**：如果您遇到任何错误或意外行为，请在我们的 [GitHub Issues](https://github.com/MidliBob/infio-copilot-free/issues) 页面提交问题。请确保包含尽可能多的细节，以帮助我们重现和解决问题。
-- **功能请求**：对于新功能想法或改进建议，请使用我们的 [GitHub Issues](https://github.com/MidliBob/infio-copilot-free/issues) 页面。创建新的讨论来分享您的建议。
+## 致谢与许可
 
-## 交流
-![wx- group](https://github.com/user-attachments/assets/b6b8f982-bca2-4819-8b43-572fefcacf2e)
-
-## 致谢
-
-本项目站在巨人的肩膀上。我们要向以下开源项目表示感谢：
-
-- [obsidian-copilot-auto-completion](https://github.com/j0rd1smit/obsidian-copilot-auto-completion) - 提供自动补全实现和 TypeScript 架构灵感
-- [obsidian-smart-composer](https://github.com/glowingjade/obsidian-smart-composer) - 提供聊天/应用 UI 模式和 PgLite 集成示例
-- [continue](https://github.com/continuedev/continue) & [cline](https://github.com/cline/cline) - 提供提示工程和 LLM 交互模式
-- [pglite](https://github.com/electric-sql/pglite) - 提供对话/向量数据存储和示例代码
-
-## 许可证
-
-本项目采用 [MIT 许可证](LICENSE) 授权。
+MIT —— 见 [LICENSE](LICENSE)。
+基于 Infio Copilot © Felix.D 与 Smart Composer © Heesu Suh；
+延续版本 © 2026 MidliBob 及贡献者。

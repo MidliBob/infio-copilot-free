@@ -1,5 +1,7 @@
 # Infio Copilot Free
 
+**Languages:** English | [Русский](README_ru.md) | [简体中文](README_zh-CN.md)
+
 A Cursor-inspired AI assistant for Obsidian: an agent chat that can read and
 edit your vault, RAG-powered semantic search, inline autocomplete and AI
 insights — with fully local storage and no telemetry.
@@ -27,8 +29,8 @@ plugin alive and evolving.
   Ollama and other local servers, plus built-in local embedding models
   (no API key needed for embeddings).
 - **Workspaces, custom modes, quick commands, MCP servers.**
-- **Localized UI** — English, Russian and Chinese follow Obsidian's interface
-  language; more locales are easy to add.
+- **Localized UI** — English, Russian and Simplified Chinese follow
+  Obsidian's interface language; any other language falls back to English.
 
 ## Install
 
