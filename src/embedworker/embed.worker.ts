@@ -1,5 +1,36 @@
 console.log('Embedding worker loaded');
 
+// --- Electron `process` shim neutralization -----------------------------
+// Obsidian desktop runs inside Electron, which exposes a `process` shim
+// (including `versions.node`) even inside blob workers. The wasm loader
+// module that onnxruntime-web fetches from the CDN at RUNTIME
+// (ort-wasm-simd-threaded.jsep.mjs) never passes through our esbuild
+// `process` define, and its Node detection
+//   typeof globalThis.process?.versions?.node == 'string'
+// is fooled by that shim: it then executes `await import('worker_threads')`,
+// which cannot resolve in a browser worker and kills the whole wasm backend
+// init ("no available backend found ... Failed to resolve module specifier
+// 'worker_threads'"). Removing the shim makes every runtime-loaded module
+// take its browser code path. Modules inside THIS bundle are unaffected:
+// esbuild already replaced their bare `process` references via define.
+(function neutralizeElectronProcessShim() {
+	const probe: { process?: unknown } = globalThis;
+	const shimPresent = probe.process !== undefined;
+	if (shimPresent) {
+		try {
+			Object.defineProperty(globalThis, 'process', {
+				value: undefined,
+				configurable: true,
+				writable: true,
+			});
+		} catch (error) {
+			console.warn('[worker] Failed to neutralize the Electron process shim:', error);
+		}
+	}
+	const after: { process?: unknown } = globalThis;
+	console.log(`[worker] Electron process shim: present=${shimPresent} neutralized=${after.process === undefined}`);
+})();
+
 interface EmbedInput {
 	embed_input: string;
 }
@@ -38,29 +69,6 @@ interface WorkerResponse {
 }
 
 // 定义 Transformers.js 相关类型
-interface TransformersEnv {
-	allowLocalModels: boolean;
-	allowRemoteModels: boolean;
-	backends: {
-		onnx: {
-			wasm: {
-				numThreads: number;
-				simd: boolean;
-			};
-		};
-	};
-	useFS: boolean;
-	useBrowserCache: boolean;
-	remoteHost?: string;
-}
-
-interface PipelineOptions {
-	quantized?: boolean;
-	progress_callback?: (progress: unknown) => void;
-	device?: string;
-	dtype?: string;
-}
-
 interface ModelInfo {
 	loaded: boolean;
 	model_key: string;
@@ -73,15 +81,10 @@ interface TokenizerResult {
 	};
 }
 
-interface GlobalTransformers {
-	pipelineFactory: (task: string, model: string, options?: PipelineOptions) => Promise<unknown>;
-	AutoTokenizer: {
-		from_pretrained: (model: string) => Promise<unknown>;
-	};
-	env: TransformersEnv;
-}
-
 // 全局变量
+// The v3 module is kept in module-level state with its native types
+// (the old globalThis indirection from the v2 era is gone).
+let transformersModule: typeof import('@huggingface/transformers') | null = null;
 let model: ModelInfo | null = null;
 let pipeline: unknown = null;
 let tokenizer: unknown = null;
@@ -124,25 +127,21 @@ async function testEndpoint(url: string, timeout = 3000): Promise<boolean> {
 }
 
 /**
- * 初始化 Hugging Face 端点，如果默认的不可用，则自动切换到备用镜像。
+ * 选择 Hugging Face 端点：默认不可达时切换到备用镜像。
+ * 返回 null 表示使用默认端点。
  */
-async function initializeEndpoint(): Promise<void> {
+async function pickRemoteHost(): Promise<string | null> {
 	const defaultEndpoint = 'https://huggingface.co';
-	const fallbackEndpoint = 'https://hf-mirror.com';
+	const fallbackEndpoint = 'https://hf-mirror.com/';
 
 	const isDefaultReachable = await testEndpoint(defaultEndpoint);
 
-	const globalTransformers = globalThis as unknown as { transformers?: GlobalTransformers };
-	
 	if (!isDefaultReachable) {
 		console.log(`默认端点不可达，将切换到备用镜像: ${fallbackEndpoint}`);
-		// 这是关键步骤：在代码中设置 endpoint
-		if (globalTransformers.transformers?.env) {
-			globalTransformers.transformers.env.remoteHost = fallbackEndpoint;
-		}
-	} else {
-		console.log(`将使用默认端点: ${defaultEndpoint}`);
+		return fallbackEndpoint;
 	}
+	console.log(`将使用默认端点: ${defaultEndpoint}`);
+	return null;
 }
 
 // 动态导入 Transformers.js
@@ -152,11 +151,16 @@ async function loadTransformers(): Promise<void> {
 	try {
 		console.log('Loading Transformers.js...');
 
-		// 首先初始化端点
-		await initializeEndpoint();
+		// Transformers.js v3 (@huggingface/transformers) - maintained successor of
+		// the deprecated @xenova/transformers v2, with real WebGPU support
+		const transformers = await import('@huggingface/transformers');
+		const env = transformers.env;
 
-		// 尝试使用旧版本的 Transformers.js，它在 Worker 中更稳定
-		const { pipeline: pipelineFactory, env, AutoTokenizer } = await import('@xenova/transformers');
+		// 端点选择：默认 HF 不可达时切换备用镜像（必须在加载模型前设置）
+		const fallbackHost = await pickRemoteHost();
+		if (fallbackHost) {
+			env.remoteHost = fallbackHost;
+		}
 
 		// 配置环境以适应浏览器 Worker
 		env.allowLocalModels = false;
@@ -166,17 +170,9 @@ async function loadTransformers(): Promise<void> {
 		env.backends.onnx.wasm.numThreads = 1; // 在 Worker 中使用单线程，避免竞态条件
 		env.backends.onnx.wasm.simd = true;
 
-		// 禁用 Node.js 特定功能
-		env.useFS = false;
 		env.useBrowserCache = true;
 
-		const globalTransformers = globalThis as unknown as { transformers?: GlobalTransformers };
-		globalTransformers.transformers = {
-			pipelineFactory,
-			AutoTokenizer,
-			env: env as unknown as TransformersEnv
-		};
-
+		transformersModule = transformers;
 		transformersLoaded = true;
 		console.log('Transformers.js loaded successfully');
 	} catch (error) {
@@ -192,57 +188,41 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 		// 确保 Transformers.js 已加载
 		await loadTransformers();
 
-		const globalTransformers = globalThis as unknown as { transformers?: GlobalTransformers };
-		const transformers = globalTransformers.transformers;
-		
-		if (!transformers) {
+		if (!transformersModule) {
 			throw new Error('Transformers.js not loaded');
 		}
 
-		const { pipelineFactory, AutoTokenizer } = transformers;
+		const { pipeline: pipelineFactory, AutoTokenizer } = transformersModule;
 
-		// 配置管道选项
-		const pipelineOpts: PipelineOptions = {
-			quantized: true,
-			// 修复进度回调，添加错误处理
-			progress_callback: (progress: unknown) => {
-				try {
-					if (progress && typeof progress === 'object') {
-						// console.log('Model loading progress:', progress);
-					}
-				} catch (error) {
-					// 忽略进度回调错误，避免中断模型加载
-					console.warn('Progress callback error (ignored):', error);
+		// v3: dtype 取代 v2 的 quantized；q8 加载与旧版 quantized:true
+		// 相同的 model_quantized.onnx，嵌入向量保持一致。
+		// 修复进度回调，添加错误处理
+		const progress_callback = (progress: unknown) => {
+			try {
+				if (progress && typeof progress === 'object') {
+					// console.log('Model loading progress:', progress);
 				}
+			} catch (error) {
+				// 忽略进度回调错误，避免中断模型加载
+				console.warn('Progress callback error (ignored):', error);
 			}
 		};
 
-		// GPU 配置更加谨慎
+		// Backend pinned to WASM (q8) - the backend v2 effectively used, so
+		// embedding vectors stay consistent with existing indexes. WebGPU is
+		// NOT attempted: ORT's webgpu EP crashes during session creation in
+		// this inline blob worker, and because navigator.gpu exists in
+		// Obsidian desktop, v3's 'auto' device would keep selecting webgpu
+		// and keep failing the load. device:'wasm' (plus env.device above)
+		// makes the choice explicit. Phase 1 revisits WebGPU bundling.
 		if (useGpu) {
-			try {
-				// 检查 WebGPU 支持
-				console.log("useGpu", useGpu);
-				if (typeof navigator !== 'undefined' && 'gpu' in navigator) {
-					const gpu = (navigator as { gpu?: { requestAdapter?: () => unknown } }).gpu;
-					if (gpu && typeof gpu.requestAdapter === 'function') {
-						console.log('[Transformers] Attempting to use GPU');
-						pipelineOpts.device = 'webgpu';
-						pipelineOpts.dtype = 'fp32';
-					} else {
-						console.log('[Transformers] WebGPU not fully supported, using CPU');
-					}
-				} else {
-					console.log('[Transformers] WebGPU not available, using CPU');
-				}
-			} catch (error) {
-				console.warn('[Transformers] Error checking GPU support, falling back to CPU:', error);
-			}
-		} else {
-			console.log('[Transformers] Using CPU');
+			console.log('[Transformers] GPU requested; staying on WASM CPU (q8) until phase-1 WebGPU work');
 		}
-
-		// 创建嵌入管道
-		pipeline = await pipelineFactory('feature-extraction', modelKey, pipelineOpts);
+		pipeline = await pipelineFactory('feature-extraction', modelKey, {
+			device: 'wasm',
+			dtype: 'q8',
+			progress_callback,
+		});
 
 		// 创建分词器
 		tokenizer = await AutoTokenizer.from_pretrained(modelKey);
