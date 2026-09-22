@@ -1,4 +1,7 @@
 releases:
+  - version: "1.2.3"
+    fixes:
+      - "Embeddings via Ollama (and any OpenAI-compatible provider) failed with 'No table definition found for model: ...': these providers don't have a static dimension catalog and reported dimension 0, which has no vector table. The real dimension is now probed once at first use with a tiny embedding call, memoized, and validated against the supported set (384/512/768/1024/1536) with a clear error otherwise; indexing and semantic search now work with Ollama embedding models such as nomic-embed-text or bge-m3"
   - version: "1.2.2"
     fixes:
       - "Plugin failed to start with 'ReferenceError: logger is not defined': the 1.2.1 logger sweep left main.desktop.ts calling logger.* without importing logger (esbuild compiled the unknown identifier as a runtime global; a tsc build catches this as TS2304, so always deploy through pnpm build). Import fixed; a repo-wide audit confirms no other file uses logger/showConfirm/showMessage/setDebugEnabled/t without importing it"
