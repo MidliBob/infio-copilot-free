@@ -11,6 +11,7 @@ import { InfioSettings } from '../../types/settings'
 import { getFilesWithTag } from '../../utils/glob-utils'
 
 import { getEmbeddingModel } from './embedding'
+import { resolveEmbeddingDimension } from './embedding-dimension'
 import { logger } from '../../utils/logger'
 
 // EmbeddingManager 类型定义
@@ -74,7 +75,7 @@ export class RAGEngine {
 	async initializeDimension(): Promise<void> {
 		if (this.embeddingModel.dimension === 0 &&
 			(this.settings.embeddingModelProvider === ApiProvider.Ollama || this.settings.embeddingModelProvider === ApiProvider.OpenAICompatible)) {
-			this.embeddingModel.dimension = (await this.embeddingModel.getEmbedding("hello world")).length
+			await resolveEmbeddingDimension(this.embeddingModel)
 		}
 	}
 

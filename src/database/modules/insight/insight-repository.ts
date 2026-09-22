@@ -1,6 +1,8 @@
 import { PGliteInterface } from '@electric-sql/pglite'
 import { App } from 'obsidian'
 
+import { SUPPORT_EMBEDDING_SIMENTION } from '../../../constants'
+import { resolveEmbeddingDimension } from '../../../core/rag/embedding-dimension'
 import { EmbeddingModel } from '../../../types/embedding'
 import { DatabaseNotInitializedException } from '../../exception'
 import { InsertSourceInsight, SelectSourceInsight, sourceInsightTables } from '../../schema'
@@ -14,10 +16,11 @@ export class InsightRepository {
     this.db = pgClient
   }
 
-  private getTableName(embeddingModel: EmbeddingModel): string {
+  private async getTableName(embeddingModel: EmbeddingModel): Promise<string> {
+    await resolveEmbeddingDimension(embeddingModel)
     const tableDefinition = sourceInsightTables[embeddingModel.dimension]
     if (!tableDefinition) {
-      throw new Error(`No source insight table definition found for model: ${embeddingModel.id}`)
+      throw new Error(`No source insight table definition found for model: ${embeddingModel.id} (dimension ${embeddingModel.dimension}; supported: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')})`)
     }
     return tableDefinition.name
   }
@@ -26,7 +29,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
     const result = await this.db.query<SelectSourceInsight>(
       `SELECT * FROM "${tableName}" ORDER BY created_at DESC`
 		)
@@ -40,7 +43,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
     const result = await this.db.query<SelectSourceInsight>(
       `SELECT * FROM "${tableName}" WHERE source_path = $1 ORDER BY created_at DESC`,
       [sourcePath]
@@ -55,7 +58,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
     const result = await this.db.query<SelectSourceInsight>(
       `SELECT * FROM "${tableName}" WHERE insight_type = $1 ORDER BY created_at DESC`,
       [insightType]
@@ -70,7 +73,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
     const result = await this.db.query<SelectSourceInsight>(
       `SELECT * FROM "${tableName}" WHERE source_type = $1 ORDER BY created_at DESC`,
       [sourceType]
@@ -85,7 +88,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
     await this.db.query(
       `DELETE FROM "${tableName}" WHERE source_path = $1`,
       [sourcePath]
@@ -99,7 +102,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
     await this.db.query(
       `DELETE FROM "${tableName}" WHERE source_path = ANY($1)`,
       [sourcePaths]
@@ -113,7 +116,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
     await this.db.query(
       `DELETE FROM "${tableName}" WHERE insight_type = $1`,
       [insightType]
@@ -124,7 +127,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
     await this.db.query(`DELETE FROM "${tableName}"`)
   }
 
@@ -135,7 +138,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
     await this.db.query(
       `DELETE FROM "${tableName}" WHERE id = $1`,
       [id]
@@ -149,7 +152,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
 
     // 构建批量插入的 SQL
     const values = data.map((insight, index) => {
@@ -182,7 +185,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
 
     const fields: string[] = []
     const params: unknown[] = []
@@ -254,7 +257,7 @@ export class InsightRepository {
     if (!this.db) {
       throw new DatabaseNotInitializedException()
     }
-    const tableName = this.getTableName(embeddingModel)
+    const tableName = await this.getTableName(embeddingModel)
 
     const whereConditions: string[] = ['1 - (embedding <=> $1::vector) > $2']
     const params: unknown[] = [`[${queryVector.join(',')}]`, options.minSimilarity, options.limit]
