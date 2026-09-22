@@ -1,4 +1,12 @@
 releases:
+  - version: "1.1.2"
+    fixes:
+      - "Local (built-in) embedding models load reliably again on desktop: the embedding worker no longer lets Electron's process shim trick the ONNX Runtime loader into a Node-only code path ('Failed to resolve module specifier worker_threads' / 'no available backend found'), and the WASM backend is now selected explicitly - embedding vectors are unchanged, existing indexes stay valid"
+      - "Hugging Face mirror failover (hf-mirror.com) now actually applies when huggingface.co is unreachable - the previous fallback code set the mirror before the library was imported and silently did nothing"
+    other:
+      - "Dependency diet part 1: the langchain tree (~35 packages: langchain, @langchain/core, langsmith, js-tiktoken, ...) is gone - replaced by a local port of RecursiveCharacterTextSplitter verified byte-identical against langchain 0.3.37 with a 98-case differential matrix and golden tests; note chunking is unchanged, so no reindexing is needed"
+      - "Dependency diet part 2: embedding engine migrated from the deprecated @xenova/transformers v2 to @huggingface/transformers v3 (onnxruntime-web 1.14 -> 1.22); the unused smart-embed-model dependency is removed"
+      - "WebGPU acceleration for embeddings intentionally deferred to the on-device/mobile phase (roadmap 1) - the ORT webgpu backend needs bundling investigation first; the worker stays on WASM q8, the same backend v2 effectively used"
   - version: "1.1.1"
     fixes:
       - "Catalog submission compliance: the settings heading in the mobile placeholder tab no longer includes the plugin name (checker rule 'Avoid including the plugin name in settings headings')"
