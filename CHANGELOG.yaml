@@ -1,4 +1,11 @@
 releases:
+  - version: "1.2.1"
+    features:
+      - "The Debug mode setting now does what it says: with it ON, detailed [icf]-prefixed diagnostics appear in the developer console even in release builds; with it OFF, debug logging is silent"
+    fixes:
+      - "Native confirm()/alert() popups - forbidden by the Obsidian plugin guidelines and app-blocking - replaced with proper Obsidian modals everywhere: workspace deletion, MCP server deletion, chat-history cleanup and batch delete, workspace-edit validation, connection-test failures and the one-click configuration notice"
+    other:
+      - "~380 console.* call sites replaced by a gated logger (log/debug only in Debug mode, warn/error always); embedding/PGlite worker bundles keep their own console logging"
   - version: "1.2.0"
     features:
       - "The UI now fully speaks English, Russian and Simplified Chinese: every user-visible string (command palette entries, insight progress stages and errors, chat file-operation results, Dataview/Mermaid/workspace labels, tooltips, notifications) goes through the translation layer - ~120 strings, 99 new keys, guarded by a CI test that enforces identical key sets and placeholders across the three locales"
