@@ -14,16 +14,19 @@
  * differential tests (see text-splitter.test.ts golden expectations).
  */
 
-export type SplitDocument = {
-	pageContent: string
-	metadata: {
-		loc?: {
-			lines: {
-				from: number
-				to: number
-			}
+export type SplitterMetadata = {
+	loc?: {
+		lines?: {
+			from?: number
+			to?: number
 		}
 	}
+	[key: string]: unknown
+}
+
+export type SplitDocument = {
+	pageContent: string
+	metadata: SplitterMetadata
 }
 
 export type ChunkHeaderOptions = {
@@ -134,13 +137,11 @@ export class TextSplitter {
 
 	async createDocuments(
 		texts: string[],
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors the ported langchain signature
-		metadatas: Record<string, any>[] = [],
+		metadatas: SplitterMetadata[] = [],
 		chunkHeaderOptions: ChunkHeaderOptions = {}
 	): Promise<SplitDocument[]> {
 		// if no metadata is provided, we create an empty one for each text
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors the ported langchain typing; .loc is read dynamically below
-		const _metadatas: Record<string, any>[] =
+		const _metadatas: SplitterMetadata[] =
 			metadatas.length > 0
 				? metadatas
 				: [...Array<string>(texts.length)].map(() => ({}))
@@ -189,15 +190,14 @@ export class TextSplitter {
 					}
 				}
 				const newLinesCount = this.numberOfNewLines(chunk)
-				const loc =
-					_metadatas[i].loc && typeof _metadatas[i].loc === "object"
-						? { ..._metadatas[i].loc }
-						: {}
+				const prevLoc = _metadatas[i].loc
+				const loc: { lines?: { from?: number; to?: number } } =
+					prevLoc && typeof prevLoc === "object" ? { ...prevLoc } : {}
 				loc.lines = {
 					from: lineCounterIndex,
 					to: lineCounterIndex + newLinesCount,
 				}
-				const metadataWithLinesNumber = {
+				const metadataWithLinesNumber: SplitterMetadata = {
 					..._metadatas[i],
 					loc,
 				}
