@@ -1,79 +1,35 @@
-//Solution copied from obsidian-kanban: https://github.com/mgmeyers/obsidian-kanban/blob/44118e25661bff9ebfe54f71ae33805dc88ffa53/src/lang/helpers.ts
+// Solution copied from obsidian-kanban: https://github.com/mgmeyers/obsidian-kanban/blob/44118e25661bff9ebfe54f71ae33805dc88ffa53/src/lang/helpers.ts
 
 import { moment } from "obsidian";
 
-import ar from "./locale/ar";
-import cz from "./locale/cz";
-import da from "./locale/da";
-import de from "./locale/de";
 import en from "./locale/en";
-import enGB from "./locale/en-gb";
-import es from "./locale/es";
-import fr from "./locale/fr";
-import hi from "./locale/hi";
-import hu from "./locale/hu";
-import id from "./locale/id";
-import it from "./locale/it";
-import ja from "./locale/ja";
-import ko from "./locale/ko";
-import nl from "./locale/nl";
-import no from "./locale/no";
-import pl from "./locale/pl";
-import pt from "./locale/pt";
-import ptBR from "./locale/pt-br";
-import ro from "./locale/ro";
 import ru from "./locale/ru";
-import tr from "./locale/tr";
 import zhCN from "./locale/zh-cn";
-import zhTW from "./locale/zh-tw";
 
+// Supported UI languages (roadmap phase 0.4 policy): English, Russian and
+// Simplified Chinese. Every other Obsidian language falls back to English
+// silently - by design, not an error. Keep the three locale files in sync:
+// src/lang/locale-completeness.test.ts enforces identical key sets and
+// interpolation placeholders.
 const localeMap: { [k: string]: Partial<typeof en> } = {
 	en,
-	ar,
-	cs: cz,
-	da,
-	de,
-	"en-gb": enGB,
-	es,
-	fr,
-	hi,
-	id,
-	it,
-	ja,
-	ko,
-	nl,
-	nn: no,
-	pl,
-	pt,
-	"pt-br": ptBR,
-	ro,
 	ru,
-	tr,
 	"zh-cn": zhCN,
-	"zh-tw": zhTW,
-	hu,
 };
+
+// top-level lookup used as the per-segment fallback for partial translations
+const enFlat: Record<string, unknown> = en;
 
 export function t(str: string, params?: Record<string, any>): any {
 	// 动态获取当前语言
 	const currentLocale = moment.locale();
-	const locale = localeMap[currentLocale];
-
-	if (!locale) {
-		console.error({
-			plugin: "infio-copilot-free",
-			fn: t,
-			where: "src/lang/helpers.ts",
-			message: "Error: locale not found",
-			data: currentLocale,
-		});
-	}
+	const locale = localeMap[currentLocale] ?? en;
 
 	const path = str.split('.');
-	let result: any = locale || en;
+	let result: any = locale;
 
 	for (const key of path) {
-		result = result[key] || (en && en[key]);
+		result = result?.[key] ?? enFlat[key];
 		if (result === undefined) return str;
 	}
 

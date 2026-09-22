@@ -34,11 +34,18 @@ documentation improvements.
 
 ## Translations
 
+The plugin ships three UI languages: English (`en`), Russian (`ru`) and
+Simplified Chinese (`zh-cn`) — this is the supported set (roadmap phase 0.4
+policy). Any other Obsidian interface language falls back to English
+silently.
+
 UI strings live in `src/lang/locale/<lang>.ts`; `en.ts` defines the full key
-set. To fix a translation, edit the values (keep `{param}` / `{{param}}`
-placeholders verbatim). To add a language, create the locale file and register
-it in the `localeMap` in `src/lang/helpers.ts` — the plugin follows Obsidian's
-interface language automatically.
+set. To fix a translation, edit the values (keep `{param}` placeholders
+verbatim). To add a key, add it to **all three** locale files:
+`src/lang/locale-completeness.test.ts` runs in CI and fails on any key-set,
+empty-value or placeholder mismatch. Adding a whole new language is a
+maintainer decision — it means committing to keep every key in sync across
+releases.
 
 ## Pull requests
 
