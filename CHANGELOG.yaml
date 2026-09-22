@@ -1,4 +1,9 @@
 releases:
+  - version: "1.2.4"
+    fixes:
+      - "Insight caching never worked with Ollama / OpenAI-compatible embedding models: startup insight loading and every insight cache check failed with 'No source insight table definition found for model: ...' because the insight tables looked up the embedding dimension before the 1.2.3 runtime probe had run on that subsystem's model instance. The probe is now shared by all subsystems (RAG search, vector tables, insight tables) and memoized per model for the session, so one tiny probe request unlocks indexing, semantic search and insight caching alike; failed probes (e.g. Ollama not running yet) are retried on the next operation instead of being cached"
+    other:
+      - "The ad-hoc dimension probes in VectorManager and RAGEngine were unified into a single cached resolver with unit tests"
   - version: "1.2.3"
     fixes:
       - "Embeddings via Ollama (and any OpenAI-compatible provider) failed with 'No table definition found for model: ...': these providers don't have a static dimension catalog and reported dimension 0, which has no vector table. The real dimension is now probed once at first use with a tiny embedding call, memoized, and validated against the supported set (384/512/768/1024/1536) with a clear error otherwise; indexing and semantic search now work with Ollama embedding models such as nomic-embed-text or bge-m3"
