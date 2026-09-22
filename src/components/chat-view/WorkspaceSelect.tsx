@@ -1,3 +1,4 @@
+import { t } from '../../lang/helpers'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { Check, ChevronDown, ChevronUp } from 'lucide-react'
 import { Notice } from 'obsidian'
@@ -103,7 +104,7 @@ const WorkspaceSelect = () => {
 			await refreshWorkspaces()
 		} catch (error) {
 			console.error('切换工作区失败:', error)
-			new Notice('切换工作区失败')
+			new Notice(t('workspace.switchFailed'))
 		}
 	}
 

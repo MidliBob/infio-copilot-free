@@ -1,5 +1,18 @@
 export default {
 	chat: {
+		editMessage: 'Edit message',
+		cancelEdit: 'Cancel edit',
+		dataview: {
+			queryFailedShort: 'Query failed',
+			jsQueryFailedShort: 'JS query failed',
+			unknownError: 'Unknown error',
+			emptyResult: 'Query result is empty',
+			objectResult: 'Object result (not serializable): {repr}',
+			notInitialized: 'DataviewManager is not initialized',
+			notInstalled: 'Dataview plugin is not installed or enabled. Please install and enable the Dataview plugin first',
+			querySuccess: '[dataview_query] Query succeeded:\n{data}',
+			queryFailed: '[dataview_query] Query failed:\n{error}',
+		},
 		stop: "Stop",
 		welcome: {
 			title: "Welcome to Infio Copilot Free",
@@ -213,6 +226,8 @@ export default {
 		"errorNameRequired": "Please enter a name for your template"
 	},
 	main: {
+		testDataview: 'Test Dataview (simple query)',
+		testLocalEmbeddings: 'Test local embedding model',
 		openNewChat: "Open new chat",
 		openInfioCopilot: 'Open Infio Copilot Free',
 		addSelectionToChat: 'Add selection to chat',
@@ -226,6 +241,17 @@ export default {
 		inlineEditCommand: 'Inline edit',
 	},
 	notifications: {
+		dataviewNotInitialized: 'DataviewManager is not initialized',
+		dataviewNotInstalled: 'Dataview plugin is not installed or not enabled',
+		dataviewQuerySuccess: 'Dataview query succeeded! Results printed to the console',
+		dataviewQueryFailed: 'Query failed: {error}',
+		dataviewQueryError: 'An error occurred while running the test query',
+		embeddingNotInitialized: 'EmbeddingManager is not initialized',
+		embeddingTestTitle: 'Local embedding test result',
+		embeddingTestResult: 'Embedding test completed!\nText: "{text}"\nTokens: {tokens}\nVector dimensions: {dims}\nFirst 4 values: [{values}...]',
+		embeddingTestFailed: 'Embedding test failed: {error}',
+		indexSkippedFiles: 'Skipped {count} problematic file(s)',
+		indexSkippedFile: 'Skipped file {name}: {error}',
 		rebuildingIndex: 'Rebuilding vault index...',
 		indexingChunks: 'Indexing chunks: {completedChunks} / {totalChunks}',
 		rebuildComplete: 'Rebuilding vault index complete',
@@ -251,6 +277,10 @@ export default {
 		close: 'Close',
 	},
 	settings: {
+		Mobile: {
+			heading: 'Mobile',
+			comingSoon: 'Mobile support is coming in a future release. The plugin currently runs on desktop only.',
+		},
 		// Models Section
 		ApiProvider: {
 			label: 'Api provider:',
@@ -599,6 +629,12 @@ export default {
 		}
 	},
 	insights: {
+		summaryNote: {
+			fileFailed: '### 📄 {name}\n*Processing failed: {error}*',
+			fileError: '### 📄 {name}\n*Processing error: {error}*',
+			folderFailed: '### 📂 {name}/\n*Processing failed: {error}*',
+			folderError: '### 📂 {name}/\n*Processing error: {error}*',
+		},
 		title: "AI Insights",
 		initializeInsights: "Initialize Insights",
 		updateInsights: "Update Insights",
@@ -610,6 +646,19 @@ export default {
 		initializingWorkspace: "Initializing workspace insights...",
 		initializingDescription: "This may take a few minutes, please be patient",
 		stage: {
+			analyzingWorkspace: 'Analyzing workspace content',
+			deepScanning: 'Deep-scanning files and folders...',
+			analyzingDone: 'Analysis complete',
+			scanComplete: 'Scan complete: {files} files, {folders} folders',
+			processingFiles: 'Processing files',
+			processingFolders: 'Processing folders',
+			generatingInsights: 'Generating workspace insights',
+			summarizingWorkspace: 'Summarizing workspace content...',
+			usingCachedInsight: 'Using cached insights',
+			cachedInsightFound: 'Cached workspace insight found',
+			savingToDatabase: 'Saving to database...',
+			stageComplete: 'Complete',
+			workspaceInitComplete: 'Workspace insights initialized',
 			preparing: "Preparing to initialize workspace insights",
 			completing: "Completing initialization",
 			savingResults: "Saving results"
@@ -675,6 +724,26 @@ export default {
 			insightDeleted: 'Insight ID {id} successfully deleted'
 		},
 		error: {
+			deleteInsightFailed: 'Failed to delete insight: {error}',
+			workspaceNoContent: 'No content found in workspace "{name}"',
+			contentValidationFailed: 'Workspace content validation failed: {error}',
+			initWorkspaceFailed: 'Failed to initialize workspace insights: {error}',
+			emptyContent: 'Content cannot be empty',
+			minContentLength: 'Content must be at least {min} characters long',
+			fileMissing: 'File does not exist: {path}',
+			readFailed: 'Failed to read file: {error}',
+			unsupportedContentType: 'Unsupported content type: {type}',
+			unsupportedTransformation: 'Unsupported transformation type: {type}',
+			llmCallFailed: 'LLM call failed: {error}',
+			transformationFailed: 'Error during transformation: {error}',
+			folderMissing: 'Folder does not exist: {path}',
+			folderEmpty: 'Folder is empty: {path}',
+			folderReadFailed: 'Failed to read folder contents: {error}',
+			missingComponents: 'Missing required components: embedding model or insight manager',
+			deleteWorkspaceFailed: 'Failed to delete workspace transformations: {error}',
+			summaryFailed: 'Failed to generate summary: {error}',
+			hierarchicalSummaryFailed: 'Failed to generate hierarchical summary: {error}',
+			incompleteAnalysisNote: '*Note: some analysis sections may be incomplete. Consider re-processing or checking the original content.*',
 			initializationFailed: "Workspace insight initialization failed:",
 			deletionFailed: "Failed to delete workspace insights:",
 			singleDeletionFailed: "Failed to delete insight:",
@@ -690,6 +759,16 @@ export default {
 		}
 	},
 	workspace: {
+		switchFailed: 'Failed to switch workspace',
+		timeUnknown: 'Unknown',
+		timeJustNow: 'just now',
+		timeMinutesAgo: '{n} minutes ago',
+		timeHoursAgo: '{n} hours ago',
+		timeDaysAgo: '{n} days ago',
+		switchToTooltip: 'Switch to this workspace',
+		itemTypeFolder: 'folder',
+		itemTypeTag: 'tag',
+		untitledChat: 'Chat {id}',
 		title: "Workspace Management",
 		shortTitle: "Workspace",
 		description: "Manage and switch between different workspaces (note vaults)",
@@ -747,5 +826,38 @@ export default {
 			saveFailed: "Save failed, please try again",
 			defaultName: "Workspace {date}"
 		}
+	},
+	mermaid: {
+		previewTitle: 'Mermaid diagram preview',
+		clickToEnlarge: 'Click to view full image',
+	},
+	fileOps: {
+		header: 'File management operations ({count})',
+		btnPrepare: 'Preparing',
+		btnExecuting: 'Executing',
+		btnExecute: 'Execute operations',
+		btnDone: 'Done',
+		btnFailed: 'Failed',
+		typeFile: 'file',
+		typeFolder: 'folder',
+		opCreateFolder: 'Create folder: {path}',
+		opMove: 'Move file: {source} → {destination}',
+		opDelete: 'Delete: {path}',
+		opCopy: 'Copy: {source} → {destination}',
+		opRename: 'Rename: {path} → {newName}',
+		opUnknown: 'Unknown operation',
+		opUnsupported: 'Unsupported operation type: {action}',
+		resultHeader: '[manage_files] File management results:\n{results}',
+		resultFailed: '[manage_files] File management failed: {error}',
+		createFolderOk: '✅ Created folder: {path}',
+		folderExists: '⚠️ Folder already exists: {path}',
+		moveOk: '✅ Moved {type}: {source} → {destination}',
+		sourceMissing: '❌ Source file or folder does not exist: {path}',
+		trashOk: '✅ Moved {type} to trash: {path}',
+		deleteFailed: '❌ Delete failed: {path} - {error}',
+		notFound: '❌ File or folder does not exist: {path}',
+		copyOk: '✅ Copied file: {source} → {destination}',
+		copyFolderUnsupported: '❌ Folder copying is not implemented yet: {path}',
+		renameOk: '✅ Renamed {type}: {path} → {newPath}',
 	}
 }

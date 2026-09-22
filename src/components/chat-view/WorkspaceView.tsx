@@ -242,7 +242,7 @@ const WorkspaceView = () => {
 
 	// 格式化时间
 	const formatLastOpened = (timestamp?: number) => {
-		if (!timestamp) return '未知'
+		if (!timestamp) return t('workspace.timeUnknown')
 		
 		const now = Date.now()
 		const diff = now - timestamp
@@ -250,10 +250,10 @@ const WorkspaceView = () => {
 		const hours = Math.floor(diff / 3600000)
 		const days = Math.floor(diff / 86400000)
 		
-		if (minutes < 1) return '刚刚'
-		if (minutes < 60) return `${minutes} 分钟前`
-		if (hours < 24) return `${hours} 小时前`
-		if (days < 7) return `${days} 天前`
+		if (minutes < 1) return t('workspace.timeJustNow')
+		if (minutes < 60) return t('workspace.timeMinutesAgo', { n: minutes })
+		if (hours < 24) return t('workspace.timeHoursAgo', { n: hours })
+		if (days < 7) return t('workspace.timeDaysAgo', { n: days })
 		
 		return new Date(timestamp).toLocaleDateString('zh-CN', {
 			year: 'numeric',
@@ -346,7 +346,7 @@ const WorkspaceView = () => {
 											<button
 												onClick={() => switchToWorkspace(workspace)}
 												className="icf-workspace-view-action-btn switch-btn"
-												title="切换到此工作区"
+												title={t('workspace.switchToTooltip')}
 											>
 												<ArrowRight size={16} />
 											</button>
@@ -411,7 +411,7 @@ const WorkspaceView = () => {
 															{item.content}
 														</span>
 														<span className="icf-workspace-view-content-type">
-															{item.type === 'folder' ? '文件夹' : '标签'}
+															{item.type === 'folder' ? t('workspace.itemTypeFolder') : t('workspace.itemTypeTag')}
 														</span>
 													</div>
 												))}
@@ -447,7 +447,7 @@ const WorkspaceView = () => {
 													<div key={chatIndex} className="icf-workspace-view-chat-item">
 														<MessageSquare size={14} />
 														<span className="icf-workspace-view-chat-title">
-															{chat.title || `对话 ${chat.id.slice(0, 8)}`}
+															{chat.title || t('workspace.untitledChat', { id: chat.id.slice(0, 8) })}
 														</span>
 													</div>
 												))}

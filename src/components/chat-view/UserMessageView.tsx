@@ -1,3 +1,4 @@
+import { t } from '../../lang/helpers'
 import { SerializedEditorState } from 'lexical'
 import { Pencil } from 'lucide-react'
 import React, { useState } from 'react'
@@ -101,7 +102,7 @@ const UserMessageView: React.FC<UserMessageViewProps> = ({
 			<button
 				className="icf-user-message-edit-btn"
 				onClick={onEdit}
-				title="编辑消息"
+				title={t('chat.editMessage')}
 			>
 				<Pencil size={14} />
 			</button>

@@ -5,6 +5,19 @@
 
 export default {
 	"chat": {
+		"editMessage": "Редактировать сообщение",
+		"cancelEdit": "Отменить редактирование",
+		"dataview": {
+			"queryFailedShort": "Ошибка запроса",
+			"jsQueryFailedShort": "Ошибка JS-запроса",
+			"unknownError": "Неизвестная ошибка",
+			"emptyResult": "Результат запроса пуст",
+			"objectResult": "Объектный результат (не сериализуется): {repr}",
+			"notInitialized": "DataviewManager не инициализирован",
+			"notInstalled": "Плагин Dataview не установлен или не включён. Сначала установите и включите плагин Dataview",
+			"querySuccess": "[dataview_query] Запрос выполнен:\n{data}",
+			"queryFailed": "[dataview_query] Ошибка запроса:\n{error}",
+		},
 		"stop": "Стоп",
 		"welcome": {
 			"title": "Добро пожаловать в Infio Copilot Free",
@@ -162,6 +175,12 @@ export default {
 		}
 	},
 	"insights": {
+		"summaryNote": {
+			"fileFailed": "### 📄 {name}\n*Обработка не удалась: {error}*",
+			"fileError": "### 📄 {name}\n*Ошибка обработки: {error}*",
+			"folderFailed": "### 📂 {name}/\n*Обработка не удалась: {error}*",
+			"folderError": "### 📂 {name}/\n*Ошибка обработки: {error}*",
+		},
 		"title": "AI-инсайты",
 		"initializeInsights": "Инициализировать инсайты",
 		"updateInsights": "Обновить инсайты",
@@ -173,6 +192,19 @@ export default {
 		"initializingWorkspace": "Инициализация инсайтов рабочего пространства...",
 		"initializingDescription": "Это может занять несколько минут, пожалуйста, подождите",
 		"stage": {
+			"analyzingWorkspace": "Анализ содержимого рабочей области",
+			"deepScanning": "Глубокое сканирование файлов и папок...",
+			"analyzingDone": "Анализ завершён",
+			"scanComplete": "Сканирование завершено: файлов {files}, папок {folders}",
+			"processingFiles": "Обработка файлов",
+			"processingFolders": "Обработка папок",
+			"generatingInsights": "Генерация инсайтов рабочей области",
+			"summarizingWorkspace": "Сводный анализ содержимого рабочей области...",
+			"usingCachedInsight": "Использование кэшированных инсайтов",
+			"cachedInsightFound": "Найден кэш инсайтов рабочей области",
+			"savingToDatabase": "Сохранение в базу данных...",
+			"stageComplete": "Готово",
+			"workspaceInitComplete": "Инициализация инсайтов рабочей области завершена",
 			"preparing": "Подготовка к инициализации инсайтов",
 			"completing": "Завершение инициализации",
 			"savingResults": "Сохранение результатов"
@@ -238,6 +270,26 @@ export default {
 			"insightDeleted": "Инсайт с ID {id} успешно удалён"
 		},
 		"error": {
+			"deleteInsightFailed": "Не удалось удалить инсайт: {error}",
+			"workspaceNoContent": "В рабочей области \"{name}\" не найдено содержимого",
+			"contentValidationFailed": "Проверка содержимого рабочей области не прошла: {error}",
+			"initWorkspaceFailed": "Не удалось инициализировать инсайты рабочей области: {error}",
+			"emptyContent": "Содержимое не может быть пустым",
+			"minContentLength": "Содержимое должно быть не короче {min} символов",
+			"fileMissing": "Файл не существует: {path}",
+			"readFailed": "Не удалось прочитать файл: {error}",
+			"unsupportedContentType": "Неподдерживаемый тип содержимого: {type}",
+			"unsupportedTransformation": "Неподдерживаемый тип преобразования: {type}",
+			"llmCallFailed": "Ошибка вызова LLM: {error}",
+			"transformationFailed": "Ошибка при выполнении преобразования: {error}",
+			"folderMissing": "Папка не существует: {path}",
+			"folderEmpty": "Папка пуста: {path}",
+			"folderReadFailed": "Не удалось получить содержимое папки: {error}",
+			"missingComponents": "Отсутствуют необходимые компоненты: эмбеддинг-модель или менеджер инсайтов",
+			"deleteWorkspaceFailed": "Не удалось удалить преобразования рабочей области: {error}",
+			"summaryFailed": "Не удалось создать краткое изложение: {error}",
+			"hierarchicalSummaryFailed": "Не удалось создать иерархическое краткое изложение: {error}",
+			"incompleteAnalysisNote": "*Примечание: некоторые разделы анализа могут быть неполными; рекомендуется повторить обработку или проверить исходное содержимое.*",
 			"initializationFailed": "Ошибка инициализации инсайтов пространства:",
 			"deletionFailed": "Не удалось удалить инсайты пространства:",
 			"singleDeletionFailed": "Не удалось удалить инсайт:",
@@ -253,6 +305,16 @@ export default {
 		}
 	},
 	"workspace": {
+		"switchFailed": "Не удалось переключить рабочую область",
+		"timeUnknown": "Неизвестно",
+		"timeJustNow": "только что",
+		"timeMinutesAgo": "{n} мин. назад",
+		"timeHoursAgo": "{n} ч. назад",
+		"timeDaysAgo": "{n} дн. назад",
+		"switchToTooltip": "Переключиться на эту рабочую область",
+		"itemTypeFolder": "папка",
+		"itemTypeTag": "тег",
+		"untitledChat": "Диалог {id}",
 		"title": "Управление рабочими пространствами",
 		"shortTitle": "Пространство",
 		"description": "Управление и переключение между рабочими пространствами (хранилищами заметок)",
@@ -410,6 +472,8 @@ export default {
 		}
 	},
 	"main": {
+		"testDataview": "Тест Dataview (простой запрос)",
+		"testLocalEmbeddings": "Тест локальной эмбеддинг-модели",
 		"openNewChat": "Открыть новый чат",
 		"openInfioCopilot": "Открыть Infio Copilot Free",
 		"addSelectionToChat": "Добавить выделенное в чат",
@@ -423,6 +487,17 @@ export default {
 		"inlineEditCommand": "Inline-редактирование"
 	},
 	"notifications": {
+		"dataviewNotInitialized": "DataviewManager не инициализирован",
+		"dataviewNotInstalled": "Плагин Dataview не установлен или не включён",
+		"dataviewQuerySuccess": "Запрос Dataview выполнен! Результат выведен в консоль",
+		"dataviewQueryFailed": "Ошибка запроса: {error}",
+		"dataviewQueryError": "При выполнении тестового запроса произошла ошибка",
+		"embeddingNotInitialized": "EmbeddingManager не инициализирован",
+		"embeddingTestTitle": "Результат теста локальной эмбеддинг-модели",
+		"embeddingTestResult": "Тест эмбеддингов завершён!\nТекст: \"{text}\"\nТокенов: {tokens}\nРазмерность вектора: {dims}\nПервые 4 значения: [{values}...]",
+		"embeddingTestFailed": "Тест эмбеддингов не удался: {error}",
+		"indexSkippedFiles": "Пропущено проблемных файлов: {count}",
+		"indexSkippedFile": "Пропущен файл {name}: {error}",
 		"rebuildingIndex": "Перестроение индекса хранилища...",
 		"indexingChunks": "Индексация чанков: {completedChunks} / {totalChunks}",
 		"rebuildComplete": "Перестроение индекса хранилища завершено",
@@ -503,6 +578,10 @@ export default {
 		"errorNameRequired": "Введите название шаблона"
 	},
 	"settings": {
+		"Mobile": {
+			"heading": "Мобильная версия",
+			"comingSoon": "Поддержка мобильных устройств появится в одном из следующих релизов. Сейчас плагин работает только на десктопе.",
+		},
 		"ApiProvider": {
 			"label": "Провайдер API:",
 			"labelDescription": "Выберите провайдера LLM. Можно настроить несколько провайдеров; ключи API хранятся локально в безопасности",
@@ -719,5 +798,38 @@ export default {
 				"fewShotExamplesDescription": "На этих примерах модель учится ожидаемому формату ответа. Все примеры не отправляются одновременно: отправляются только релевантные текущему положению курсора. Например, примеры CodeBlock отправляются только внутри блока кода; если особый контекст не обнаружен — примеры Text. По умолчанию 2 примера на контекст; можно добавлять и удалять примеры, оставляя хотя бы один на контекст. Больше примеров — выше стоимость инференса."
 			}
 		}
+	},
+	"mermaid": {
+		"previewTitle": "Предпросмотр диаграммы Mermaid",
+		"clickToEnlarge": "Нажмите, чтобы увеличить",
+	},
+	"fileOps": {
+		"header": "Операции с файлами ({count})",
+		"btnPrepare": "Подготовка",
+		"btnExecuting": "Выполнение",
+		"btnExecute": "Выполнить операции",
+		"btnDone": "Готово",
+		"btnFailed": "Ошибка",
+		"typeFile": "файл",
+		"typeFolder": "папка",
+		"opCreateFolder": "Создать папку: {path}",
+		"opMove": "Переместить файл: {source} → {destination}",
+		"opDelete": "Удалить: {path}",
+		"opCopy": "Копировать: {source} → {destination}",
+		"opRename": "Переименовать: {path} → {newName}",
+		"opUnknown": "Неизвестная операция",
+		"opUnsupported": "Неподдерживаемый тип операции: {action}",
+		"resultHeader": "[manage_files] Результаты операций с файлами:\n{results}",
+		"resultFailed": "[manage_files] Операции с файлами не удались: {error}",
+		"createFolderOk": "✅ Папка создана: {path}",
+		"folderExists": "⚠️ Папка уже существует: {path}",
+		"moveOk": "✅ Перемещено ({type}): {source} → {destination}",
+		"sourceMissing": "❌ Исходный файл или папка не существует: {path}",
+		"trashOk": "✅ Перемещено в корзину ({type}): {path}",
+		"deleteFailed": "❌ Не удалось удалить: {path} - {error}",
+		"notFound": "❌ Файл или папка не существует: {path}",
+		"copyOk": "✅ Файл скопирован: {source} → {destination}",
+		"copyFolderUnsupported": "❌ Копирование папок пока не реализовано: {path}",
+		"renameOk": "✅ Переименовано ({type}): {path} → {newPath}",
 	}
-};
+}

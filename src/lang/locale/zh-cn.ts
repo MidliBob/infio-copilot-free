@@ -1,6 +1,19 @@
 // 简体中文
 export default {
 	chat: {
+		editMessage: '编辑消息',
+		cancelEdit: '取消编辑',
+		dataview: {
+			queryFailedShort: '查询失败',
+			jsQueryFailedShort: 'JS 查询失败',
+			unknownError: '未知错误',
+			emptyResult: '查询结果为空',
+			objectResult: '对象结果（无法序列化）：{repr}',
+			notInitialized: 'DataviewManager 未初始化',
+			notInstalled: 'Dataview 插件未安装或未启用，请先安装并启用 Dataview 插件',
+			querySuccess: '[dataview_query] 查询成功：\n{data}',
+			queryFailed: '[dataview_query] 查询失败：\n{error}',
+		},
 		stop: "停止",
 		welcome: {
 			title: "欢迎使用 Infio Copilot",
@@ -214,6 +227,8 @@ export default {
 		"errorNameRequired": "请输入模板名称"
 	},
 	main: {
+		testDataview: '测试 Dataview（简单查询）',
+		testLocalEmbeddings: '测试本地嵌入模型',
 		openNewChat: "打开新聊天",
 		openInfioCopilot: '打开 Infio Copilot',
 		addSelectionToChat: '将选定内容添加到聊天',
@@ -227,6 +242,17 @@ export default {
 		inlineEditCommand: '文本内编辑',
 	},
 	notifications: {
+		dataviewNotInitialized: 'DataviewManager 未初始化',
+		dataviewNotInstalled: 'Dataview 插件未安装或未启用',
+		dataviewQuerySuccess: 'Dataview 查询成功！结果已在控制台输出',
+		dataviewQueryFailed: '查询失败：{error}',
+		dataviewQueryError: '执行测试查询时发生错误',
+		embeddingNotInitialized: 'EmbeddingManager 未初始化',
+		embeddingTestTitle: '本地嵌入测试结果',
+		embeddingTestResult: '嵌入测试完成！\n文本："{text}"\nToken 数量：{tokens}\n向量维度：{dims}\n向量前4个值：[{values}...]',
+		embeddingTestFailed: '嵌入测试失败：{error}',
+		indexSkippedFiles: '跳过了 {count} 个有问题的文件',
+		indexSkippedFile: '跳过文件 {name}：{error}',
 		rebuildingIndex: '正在重建 Vault 索引...',
 		indexingChunks: '正在索引块：{completedChunks} / {totalChunks}',
 		rebuildComplete: 'Vault 索引重建完成',
@@ -252,6 +278,10 @@ export default {
 		close: '关闭预览',
 	},
 	settings: {
+		Mobile: {
+			heading: '移动端',
+			comingSoon: '移动端支持将在后续版本中提供。当前插件仅在桌面端运行。',
+		},
 		// 模型设置部分
 		ApiProvider: {
 			label: 'LLM 提供商：',
@@ -556,6 +586,12 @@ export default {
 		}
 	},
 	insights: {
+		summaryNote: {
+			fileFailed: '### 📄 {name}\n*处理失败: {error}*',
+			fileError: '### 📄 {name}\n*处理异常: {error}*',
+			folderFailed: '### 📂 {name}/\n*处理失败: {error}*',
+			folderError: '### 📂 {name}/\n*处理异常: {error}*',
+		},
 		title: "AI 洞察",
 		initializeInsights: "初始化洞察",
 		updateInsights: "更新洞察",
@@ -567,6 +603,19 @@ export default {
 		initializingWorkspace: "正在初始化工作区洞察...",
 		initializingDescription: "这可能需要几分钟时间，请耐心等待",
 		stage: {
+			analyzingWorkspace: '分析工作区内容',
+			deepScanning: '深度扫描文件和文件夹...',
+			analyzingDone: '分析完成',
+			scanComplete: '深度扫描完成：{files} 个文件，{folders} 个文件夹',
+			processingFiles: '处理文件',
+			processingFolders: '处理文件夹',
+			generatingInsights: '生成工作区洞察',
+			summarizingWorkspace: '汇总分析工作区内容...',
+			usingCachedInsight: '使用缓存洞察',
+			cachedInsightFound: '已找到缓存的工作区洞察',
+			savingToDatabase: '保存到数据库...',
+			stageComplete: '完成',
+			workspaceInitComplete: '工作区洞察初始化完成',
 			preparing: "准备初始化工作区洞察",
 			completing: "正在完成初始化",
 			savingResults: "保存结果"
@@ -632,6 +681,26 @@ export default {
 			insightDeleted: '洞察 ID {id} 已成功删除'
 		},
 		error: {
+			deleteInsightFailed: '删除单个洞察失败：{error}',
+			workspaceNoContent: '工作区 "{name}" 没有找到任何内容',
+			contentValidationFailed: '工作区内容验证失败：{error}',
+			initWorkspaceFailed: '初始化工作区洞察失败：{error}',
+			emptyContent: '内容不能为空',
+			minContentLength: '内容长度至少需要 {min} 个字符',
+			fileMissing: '文件不存在：{path}',
+			readFailed: '读取文件失败：{error}',
+			unsupportedContentType: '不支持的内容类型：{type}',
+			unsupportedTransformation: '不支持的转换类型：{type}',
+			llmCallFailed: 'LLM 调用失败：{error}',
+			transformationFailed: '转换过程中出现错误：{error}',
+			folderMissing: '文件夹不存在：{path}',
+			folderEmpty: '文件夹为空：{path}',
+			folderReadFailed: '获取文件夹内容失败：{error}',
+			missingComponents: '缺少必要的组件：嵌入模型或洞察管理器',
+			deleteWorkspaceFailed: '删除工作区转换失败：{error}',
+			summaryFailed: '生成摘要失败：{error}',
+			hierarchicalSummaryFailed: '生成分层摘要失败：{error}',
+			incompleteAnalysisNote: '*注意：某些分析部分可能不完整，建议重新处理或检查原始内容。*',
 			initializationFailed: "工作区洞察初始化失败:",
 			deletionFailed: "删除工作区洞察失败:",
 			singleDeletionFailed: "删除洞察失败:",
@@ -647,6 +716,16 @@ export default {
 		}
 	},
 	workspace: {
+		switchFailed: '切换工作区失败',
+		timeUnknown: '未知',
+		timeJustNow: '刚刚',
+		timeMinutesAgo: '{n} 分钟前',
+		timeHoursAgo: '{n} 小时前',
+		timeDaysAgo: '{n} 天前',
+		switchToTooltip: '切换到此工作区',
+		itemTypeFolder: '文件夹',
+		itemTypeTag: '标签',
+		untitledChat: '对话 {id}',
 		title: "工作区管理",
 		shortTitle: "工作区",
 		description: "管理和切换不同的工作区（笔记库）",
@@ -748,5 +827,38 @@ export default {
 	configFileNotFound: "配置文件未找到",
 	failedToOpenConfig: "打开配置文件失败",
 	openedWithSystemApp: "配置文件已使用系统默认应用程序打开",
+	},
+	mermaid: {
+		previewTitle: 'Mermaid 图表预览',
+		clickToEnlarge: '点击查看大图',
+	},
+	fileOps: {
+		header: '文件管理操作（{count} 个操作）',
+		btnPrepare: '准备执行',
+		btnExecuting: '执行中',
+		btnExecute: '执行操作',
+		btnDone: '已完成',
+		btnFailed: '执行失败',
+		typeFile: '文件',
+		typeFolder: '文件夹',
+		opCreateFolder: '创建文件夹：{path}',
+		opMove: '移动文件：{source} → {destination}',
+		opDelete: '删除：{path}',
+		opCopy: '复制：{source} → {destination}',
+		opRename: '重命名：{path} → {newName}',
+		opUnknown: '未知操作',
+		opUnsupported: '不支持的操作类型：{action}',
+		resultHeader: '[manage_files] 文件管理操作结果：\n{results}',
+		resultFailed: '[manage_files] 文件管理操作失败：{error}',
+		createFolderOk: '✅ 成功创建文件夹：{path}',
+		folderExists: '⚠️ 文件夹已存在：{path}',
+		moveOk: '✅ 成功移动{type}：{source} → {destination}',
+		sourceMissing: '❌ 源文件或文件夹不存在：{path}',
+		trashOk: '✅ 成功将{type}移到回收站：{path}',
+		deleteFailed: '❌ 删除失败：{path} - {error}',
+		notFound: '❌ 文件或文件夹不存在：{path}',
+		copyOk: '✅ 成功复制文件：{source} → {destination}',
+		copyFolderUnsupported: '❌ 文件夹复制功能暂未实现：{path}',
+		renameOk: '✅ 成功重命名{type}：{path} → {newPath}',
 	}
-};
+}

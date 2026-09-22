@@ -1,6 +1,7 @@
 import { Check, Copy, FileIcon, FolderPlus, Loader2, Move, Trash2, X } from 'lucide-react'
 import React, { useState } from 'react'
 
+import { t } from '../../../lang/helpers'
 import { ApplyStatus, ManageFilesToolArgs } from "../../../types/apply"
 
 interface ManageFilesOperation {
@@ -44,17 +45,17 @@ export default function MarkdownManageFilesBlock({
 	const getOperationDescription = (operation: ManageFilesOperation) => {
 		switch (operation.action) {
 			case 'create_folder':
-				return `创建文件夹：${operation.path}`
+				return t('fileOps.opCreateFolder', { path: operation.path })
 			case 'move':
-				return `移动文件：${operation.source_path} → ${operation.destination_path}`
+				return t('fileOps.opMove', { source: operation.source_path, destination: operation.destination_path })
 			case 'delete':
-				return `删除：${operation.path}`
+				return t('fileOps.opDelete', { path: operation.path })
 			case 'copy':
-				return `复制：${operation.source_path} → ${operation.destination_path}`
+				return t('fileOps.opCopy', { source: operation.source_path, destination: operation.destination_path })
 			case 'rename':
-				return `重命名：${operation.path} → ${operation.new_name}`
+				return t('fileOps.opRename', { path: operation.path, newName: operation.new_name })
 			default:
-				return `未知操作`
+				return t('fileOps.opUnknown')
 		}
 	}
 
@@ -74,7 +75,7 @@ export default function MarkdownManageFilesBlock({
 			<div className={'icf-chat-code-block-header'}>
 				<div className={'icf-chat-code-block-header-filename'}>
 					<FolderPlus size={14} className="icf-chat-code-block-header-icon" />
-					文件管理操作 ({operations.length} 个操作)
+					{t('fileOps.header', { count: operations.length })}
 				</div>
 				<div className={'icf-chat-code-block-header-button'}>
 					<button
@@ -85,23 +86,23 @@ export default function MarkdownManageFilesBlock({
 						{
 							!finish ? (
 								<>
-									<Loader2 className="spinner" size={14} /> 准备执行
+									<Loader2 className="spinner" size={14} /> {t('fileOps.btnPrepare')}
 								</>
 							) : applyStatus === ApplyStatus.Idle ? (
 								applying ? (
 									<>
-										<Loader2 className="spinner" size={14} /> 执行中
+										<Loader2 className="spinner" size={14} /> {t('fileOps.btnExecuting')}
 									</>
 								) : (
-									'执行操作'
+									t('fileOps.btnExecute')
 								)
 							) : applyStatus === ApplyStatus.Applied ? (
 								<>
-									<Check size={14} /> 已完成
+									<Check size={14} /> {t('fileOps.btnDone')}
 								</>
 							) : (
 								<>
-									<X size={14} /> 执行失败
+									<X size={14} /> {t('fileOps.btnFailed')}
 								</>
 							)}
 					</button>

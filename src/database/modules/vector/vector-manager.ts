@@ -5,6 +5,7 @@ import pLimit from 'p-limit';
 import removeMarkdown from 'remove-markdown';
 
 import { IndexProgress } from '../../../components/chat-view/QueryProgress';
+import { t } from '../../../lang/helpers';
 import {
 	LLMAPIKeyInvalidException,
 	LLMAPIKeyNotSetException,
@@ -526,7 +527,7 @@ export class VectorManager {
 
 		if (skippedFiles.length > 0) {
 			console.warn(`跳过了 ${skippedFiles.length} 个有问题的文件:`, skippedFiles)
-			new Notice(`跳过了 ${skippedFiles.length} 个有问题的文件`)
+			new Notice(t('notifications.indexSkippedFiles', { count: skippedFiles.length }))
 		}
 	}
 
@@ -845,7 +846,7 @@ export class VectorManager {
 
 		if (skippedFiles.length > 0) {
 			console.warn(`跳过了 ${skippedFiles.length} 个有问题的文件:`, skippedFiles)
-			new Notice(`跳过了 ${skippedFiles.length} 个有问题的文件`)
+			new Notice(t('notifications.indexSkippedFiles', { count: skippedFiles.length }))
 		}
 	}
 
@@ -1053,7 +1054,7 @@ export class VectorManager {
 			}
 		} catch (error) {
 			console.warn(`跳过文件 ${file.path}:`, error.message)
-			new Notice(`跳过文件 ${file.name}: ${error.message}`)
+			new Notice(t('notifications.indexSkippedFile', { name: file.name, error: error.message }))
 		}
 	}
 

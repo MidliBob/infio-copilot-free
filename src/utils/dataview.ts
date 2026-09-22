@@ -1,3 +1,4 @@
+import { t } from '../lang/helpers'
 import { App } from "obsidian";
 import { DataviewApi, getAPI } from "obsidian-dataview";
 
@@ -43,7 +44,7 @@ export class DataviewManager {
 		if (!api) {
 			return {
 				success: false,
-				error: "Dataview 插件未安装或未启用"
+				error: t('notifications.dataviewNotInstalled')
 			};
 		}
 
@@ -61,7 +62,7 @@ export class DataviewManager {
 				} else {
 					return {
 						success: false,
-						error: String(result.error || '查询失败')
+						error: String(result.error || t('chat.dataview.queryFailedShort'))
 					};
 				}
 			}
@@ -76,7 +77,7 @@ export class DataviewManager {
 			console.error('Dataview 查询执行失败:', error);
 			return {
 				success: false,
-				error: error instanceof Error ? error.message : '未知错误'
+				error: error instanceof Error ? error.message : t('chat.dataview.unknownError')
 			};
 		}
 	}
@@ -89,7 +90,7 @@ export class DataviewManager {
 		if (!api) {
 			return {
 				success: false,
-				error: "Dataview 插件未安装或未启用"
+				error: t('notifications.dataviewNotInstalled')
 			};
 		}
 
@@ -103,14 +104,14 @@ export class DataviewManager {
 			} else {
 				return {
 					success: false,
-					error: String(result.error || 'JS 查询失败')
+					error: String(result.error || t('chat.dataview.jsQueryFailedShort'))
 				};
 			}
 		} catch (error) {
 			console.error('Dataview JS 执行失败:', error);
 			return {
 				success: false,
-				error: error instanceof Error ? error.message : '未知错误'
+				error: error instanceof Error ? error.message : t('chat.dataview.unknownError')
 			};
 		}
 	}
@@ -120,7 +121,7 @@ export class DataviewManager {
 	 */
 	private formatQueryResult(result: unknown): string {
 		if (result === null || result === undefined) {
-			return '查询结果为空';
+			return t('chat.dataview.emptyResult');
 		}
 
 		// 如果是字符串，直接返回
@@ -133,7 +134,7 @@ export class DataviewManager {
 			try {
 				return JSON.stringify(result, null, 2);
 			} catch (e) {
-				return `对象结果（无法序列化）: ${Object.prototype.toString.call(result)}`;
+				return t('chat.dataview.objectResult', { repr: Object.prototype.toString.call(result) });
 			}
 		}
 

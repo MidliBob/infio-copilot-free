@@ -242,7 +242,7 @@ function MermaidBlock({ code }: MermaidBlockProps) {
 				.getLeavesOfType(PREVIEW_VIEW_TYPE)
 				.find(
 					(leaf) =>
-						leaf.view instanceof PreviewView && leaf.view.state?.title === 'Mermaid 图表预览'
+						leaf.view instanceof PreviewView && leaf.view.state?.title === t('mermaid.previewTitle')
 				)
 			
 			if (existingLeaf) {
@@ -257,7 +257,7 @@ function MermaidBlock({ code }: MermaidBlockProps) {
 				active: true,
 				state: {
 					content: svgHTML,
-					title: 'Mermaid 图表预览',
+					title: t('mermaid.previewTitle'),
 				} satisfies PreviewViewState,
 			})
 		} catch (err) {
@@ -482,7 +482,7 @@ const SvgContainer = styled.div<SvgContainerProps>`
 
 	/* Click hint overlay */
 	&:hover::after {
-		content: '点击查看大图';
+		content: t('mermaid.clickToEnlarge');
 		position: absolute;
 		bottom: 8px;
 		right: 8px;

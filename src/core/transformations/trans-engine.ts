@@ -6,6 +6,7 @@ import { InsightManager } from '../../database/modules/insight/insight-manager';
 import { EmbeddingModel } from '../../types/embedding';
 import { LLMModel } from '../../types/llm/model';
 import { RequestMessage } from '../../types/llm/request';
+import { t } from '../../lang/helpers';
 import { InfioSettings } from '../../types/settings';
 import { readTFileContentPdf } from '../../utils/obsidian';
 import { getFullLanguageName } from '../../utils/prompt-generator';
@@ -307,11 +308,11 @@ class DocumentProcessor {
 	 */
 	static validateContent(content: string): Result<void, Error> {
 		if (!content || content.trim().length === 0) {
-			return err(new Error('内容不能为空'));
+			return err(new Error(t('insights.error.emptyContent')));
 		}
 
 		if (content.length < this.MIN_CONTENT_LENGTH) {
-			return err(new Error(`内容长度至少需要 ${this.MIN_CONTENT_LENGTH} 个字符`));
+			return err(new Error(t('insights.error.minContentLength', { min: this.MIN_CONTENT_LENGTH })));
 		}
 
 		return ok(undefined);
@@ -395,7 +396,7 @@ export class TransEngine {
 		if (!targetFile) {
 			return {
 				success: false,
-				error: `文件不存在: ${filePath}`
+				error: t('insights.error.fileMissing', { path: filePath })
 			};
 		}
 
@@ -496,7 +497,7 @@ export class TransEngine {
 		if (!targetFile) {
 			return {
 				success: false,
-				error: `文件不存在: ${filePath}`
+				error: t('insights.error.fileMissing', { path: filePath })
 			};
 		}
 
@@ -509,7 +510,7 @@ export class TransEngine {
 		} catch (error) {
 			return {
 				success: false,
-				error: `读取文件失败: ${error instanceof Error ? error.message : String(error)}`
+				error: t('insights.error.readFailed', { error: error instanceof Error ? error.message : String(error) })
 			};
 		}
 	}
@@ -651,7 +652,7 @@ export class TransEngine {
 				default:
 					return {
 						success: false,
-						error: `不支持的内容类型: ${contentType}`
+						error: t('insights.error.unsupportedContentType', { type: contentType })
 					};
 			}
 
@@ -669,7 +670,7 @@ export class TransEngine {
 			if (!transformationConfig) {
 				return {
 					success: false,
-					error: `不支持的转换类型: ${transformationType}`
+					error: t('insights.error.unsupportedTransformation', { type: transformationType })
 				};
 			}
 
@@ -704,7 +705,7 @@ export class TransEngine {
 			if (result.isErr()) {
 				return {
 					success: false,
-					error: `LLM 调用失败: ${result.error.message}`,
+					error: t('insights.error.llmCallFailed', { error: result.error.message }),
 					truncated: processedDocument.truncated,
 					originalTokens: processedDocument.originalTokens,
 					processedTokens: processedDocument.processedTokens
@@ -739,7 +740,7 @@ export class TransEngine {
 		} catch (error) {
 			return {
 				success: false,
-				error: `转换过程中出现错误: ${error instanceof Error ? error.message : String(error)}`
+				error: t('insights.error.transformationFailed', { error: error instanceof Error ? error.message : String(error) })
 			};
 		}
 	}
@@ -757,7 +758,7 @@ export class TransEngine {
 			if (!folder || !(folder instanceof TFolder)) {
 				return {
 					success: false,
-					error: `文件夹不存在: ${folderPath}`
+					error: t('insights.error.folderMissing', { path: folderPath })
 				};
 			}
 
@@ -772,7 +773,7 @@ export class TransEngine {
 			if (directFiles.length === 0 && directSubfolders.length === 0) {
 				return {
 					success: false,
-					error: `文件夹为空: ${folderPath}`
+					error: t('insights.error.folderEmpty', { path: folderPath })
 				};
 			}
 
@@ -837,7 +838,7 @@ export class TransEngine {
 		} catch (error) {
 			return {
 				success: false,
-				error: `获取文件夹内容失败: ${error instanceof Error ? error.message : String(error)}`
+				error: t('insights.error.folderReadFailed', { error: error instanceof Error ? error.message : String(error) })
 			};
 		}
 	}
@@ -876,7 +877,7 @@ export class TransEngine {
 
 				if (!hasAllSections) {
 					// 如果缺少某些部分，添加提示
-					processed += '\n\n*注意：某些分析部分可能不完整，建议重新处理或检查原始内容。*';
+					processed += '\n\n' + t('insights.error.incompleteAnalysisNote');
 				}
 				break;
 			}
@@ -1215,7 +1216,7 @@ export class TransEngine {
 
 		const result = await client.queryChatModel(messages)
 		if (result.isErr()) {
-			throw new Error(`生成摘要失败: ${result.error.message}`)
+			throw new Error(t('insights.error.summaryFailed', { error: result.error.message }))
 		}
 
 		return this.postProcessResult(result.value, TransformationType.DENSE_SUMMARY)
@@ -1243,7 +1244,7 @@ export class TransEngine {
 
 		const result = await client.queryChatModel(messages)
 		if (result.isErr()) {
-			throw new Error(`生成分层摘要失败: ${result.error.message}`)
+			throw new Error(t('insights.error.hierarchicalSummaryFailed', { error: result.error.message }))
 		}
 
 		return this.postProcessResult(result.value, TransformationType.HIERARCHICAL_SUMMARY)
@@ -1303,7 +1304,7 @@ export class TransEngine {
 			return {
 				success: false,
 				deletedCount: 0,
-				error: '缺少必要的组件：嵌入模型或洞察管理器'
+				error: t('insights.error.missingComponents')
 			}
 		}
 
@@ -1419,7 +1420,7 @@ export class TransEngine {
 			return {
 				success: false,
 				deletedCount: 0,
-				error: `删除工作区转换失败: ${error instanceof Error ? error.message : String(error)}`
+				error: t('insights.error.deleteWorkspaceFailed', { error: error instanceof Error ? error.message : String(error) })
 			}
 		}
 	}
@@ -1439,7 +1440,7 @@ export class TransEngine {
 			return {
 				success: false,
 				deletedCount: 0,
-				error: '缺少必要的组件：嵌入模型或洞察管理器'
+				error: t('insights.error.missingComponents')
 			}
 		}
 
@@ -1468,7 +1469,7 @@ export class TransEngine {
 			return {
 				success: false,
 				deletedCount: 0,
-				error: `删除工作区转换失败: ${error instanceof Error ? error.message : String(error)}`
+				error: t('insights.error.deleteWorkspaceFailed', { error: error instanceof Error ? error.message : String(error) })
 			}
 		}
 	}
@@ -1486,7 +1487,7 @@ export class TransEngine {
 		if (!this.embeddingModel || !this.insightManager) {
 			return {
 				success: false,
-				error: '缺少必要的组件：嵌入模型或洞察管理器'
+				error: t('insights.error.missingComponents')
 			}
 		}
 
@@ -1504,7 +1505,7 @@ export class TransEngine {
 			console.error('删除单个洞察失败:', error)
 			return {
 				success: false,
-				error: `删除单个洞察失败: ${error instanceof Error ? error.message : String(error)}`
+				error: t('insights.error.deleteInsightFailed', { error: error instanceof Error ? error.message : String(error) })
 			}
 		}
 	}
@@ -1523,10 +1524,10 @@ export class TransEngine {
 		try {
 			// 1. 深度分析工作区内容，统计所有需要处理的项目
 			onProgress?.({
-				stage: '分析工作区内容',
+				stage: t('insights.stage.analyzingWorkspace'),
 				current: 0,
 				total: 1,
-				currentItem: '深度扫描文件和文件夹...',
+				currentItem: t('insights.stage.deepScanning'),
 				percentage: 0
 			});
 
@@ -1597,7 +1598,7 @@ export class TransEngine {
 			if (allItems.length === 0) {
 				return {
 					success: false,
-					error: `工作区 "${workspace.name}" 没有找到任何内容`,
+					error: t('insights.error.workspaceNoContent', { name: workspace.name }),
 					processedFiles: 0,
 					processedFolders: 0,
 					totalItems: 0,
@@ -1611,10 +1612,10 @@ export class TransEngine {
 			const totalItems = allItems.length;
 
 			onProgress?.({
-				stage: '分析完成',
+				stage: t('insights.stage.analyzingDone'),
 				current: 1,
 				total: 1,
-				currentItem: `深度扫描完成：${files.length} 个文件，${folders.length} 个文件夹`,
+				currentItem: t('insights.stage.scanComplete', { files: files.length, folders: folders.length }),
 				percentage: 5
 			});
 
@@ -1627,7 +1628,7 @@ export class TransEngine {
 				currentProgress++;
 
 				onProgress?.({
-					stage: '处理文件',
+					stage: t('insights.stage.processingFiles'),
 					current: currentProgress,
 					total: totalItems,
 					currentItem: `📄 ${file.name}`,
@@ -1654,7 +1655,7 @@ export class TransEngine {
 						console.warn(`处理文件失败: ${file.path}`, fileResult.error);
 						const isTopLevelFile = topLevelFiles.some(f => f.path === file.path);
 						if (isTopLevelFile) {
-							topLevelSummaries.push(`### 📄 ${file.name}\n*处理失败: ${fileResult.error}*`);
+							topLevelSummaries.push(t('insights.summaryNote.fileFailed', { name: file.name, error: fileResult.error }));
 						}
 						skippedItems++;
 					}
@@ -1662,7 +1663,7 @@ export class TransEngine {
 					console.error(`文件处理异常: ${file.path}`, error);
 					const isTopLevelFile = topLevelFiles.some(f => f.path === file.path);
 					if (isTopLevelFile) {
-						topLevelSummaries.push(`### 📄 ${file.name}\n*处理异常: ${error instanceof Error ? error.message : String(error)}*`);
+						topLevelSummaries.push(t('insights.summaryNote.fileError', { name: file.name, error: error instanceof Error ? error.message : String(error) }));
 					}
 					skippedItems++;
 				}
@@ -1679,7 +1680,7 @@ export class TransEngine {
 				currentProgress++;
 
 				onProgress?.({
-					stage: '处理文件夹',
+					stage: t('insights.stage.processingFolders'),
 					current: currentProgress,
 					total: totalItems,
 					currentItem: `📂 ${folder.name}`,
@@ -1706,7 +1707,7 @@ export class TransEngine {
 						console.warn(`处理文件夹失败: ${folder.path}`, folderResult.error);
 						const isTopLevelFolder = topLevelFolders.some(f => f.path === folder.path);
 						if (isTopLevelFolder) {
-							topLevelSummaries.push(`### 📂 ${folder.name}/\n*处理失败: ${folderResult.error}*`);
+							topLevelSummaries.push(t('insights.summaryNote.folderFailed', { name: folder.name, error: folderResult.error }));
 						}
 						skippedItems++;
 					}
@@ -1714,7 +1715,7 @@ export class TransEngine {
 					console.error(`文件夹处理异常: ${folder.path}`, error);
 					const isTopLevelFolder = topLevelFolders.some(f => f.path === folder.path);
 					if (isTopLevelFolder) {
-						topLevelSummaries.push(`### 📂 ${folder.name}/\n*处理异常: ${error instanceof Error ? error.message : String(error)}*`);
+						topLevelSummaries.push(t('insights.summaryNote.folderError', { name: folder.name, error: error instanceof Error ? error.message : String(error) }));
 					}
 					skippedItems++;
 				}
@@ -1722,10 +1723,10 @@ export class TransEngine {
 
 			// 4. 生成工作区整体洞察
 			onProgress?.({
-				stage: '生成工作区洞察',
+				stage: t('insights.stage.generatingInsights'),
 				current: 1,
 				total: 1,
-				currentItem: '汇总分析工作区内容...',
+				currentItem: t('insights.stage.summarizingWorkspace'),
 				percentage: 95
 			});
 
@@ -1759,7 +1760,7 @@ export class TransEngine {
 			if (contentValidation.isErr()) {
 				return {
 					success: false,
-					error: `工作区内容验证失败: ${contentValidation.error.message}`,
+					error: t('insights.error.contentValidationFailed', { error: contentValidation.error.message }),
 					processedFiles,
 					processedFolders,
 					totalItems,
@@ -1782,10 +1783,10 @@ export class TransEngine {
 				console.log(`使用缓存的工作区洞察: ${workspace.name}`);
 
 				onProgress?.({
-					stage: '使用缓存洞察',
+					stage: t('insights.stage.usingCachedInsight'),
 					current: 1,
 					total: 1,
-					currentItem: '已找到缓存的工作区洞察',
+					currentItem: t('insights.stage.cachedInsightFound'),
 					percentage: 100
 				});
 
@@ -1838,7 +1839,7 @@ export class TransEngine {
 			if (result.isErr()) {
 				return {
 					success: false,
-					error: `LLM 调用失败: ${result.error.message}`,
+					error: t('insights.error.llmCallFailed', { error: result.error.message }),
 					processedFiles,
 					processedFolders,
 					totalItems,
@@ -1851,10 +1852,10 @@ export class TransEngine {
 
 			// 6. 保存工作区洞察到数据库
 			onProgress?.({
-				stage: '保存洞察结果',
+				stage: t('insights.stage.savingResults'),
 				current: 1,
 				total: 1,
-				currentItem: '保存到数据库...',
+				currentItem: t('insights.stage.savingToDatabase'),
 				percentage: 98
 			});
 
@@ -1885,10 +1886,10 @@ export class TransEngine {
 
 			// 7. 完成
 			onProgress?.({
-				stage: '完成',
+				stage: t('insights.stage.stageComplete'),
 				current: 1,
 				total: 1,
-				currentItem: '工作区洞察初始化完成',
+				currentItem: t('insights.stage.workspaceInitComplete'),
 				percentage: 100
 			});
 
@@ -1904,7 +1905,7 @@ export class TransEngine {
 		} catch (error) {
 			return {
 				success: false,
-				error: `初始化工作区洞察失败: ${error instanceof Error ? error.message : String(error)}`,
+				error: t('insights.error.initWorkspaceFailed', { error: error instanceof Error ? error.message : String(error) }),
 				processedFiles,
 				processedFolders,
 				totalItems: processedFiles + processedFolders + skippedItems,

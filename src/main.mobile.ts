@@ -2,6 +2,7 @@
 
 import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
+import { t } from './lang/helpers';
 import { InfioSettings, parseInfioSettings } from './types/settings-mobile';
 
 export class MobileSettingTab extends PluginSettingTab {
@@ -16,12 +17,12 @@ export class MobileSettingTab extends PluginSettingTab {
 		const { containerEl } = this
 		containerEl.empty()
 
-		new Setting(containerEl).setName('Mobile').setHeading()
+		new Setting(containerEl).setName(t('settings.Mobile.heading')).setHeading()
 
 		// Mobile support lands with the phase-1 release; until then the
 		// manifest declares isDesktopOnly and this tab is not reachable.
 		const descEl = containerEl.createDiv()
-		descEl.appendText('Mobile support is coming in a future release. The plugin currently runs on desktop only.')
+		descEl.appendText(String(t('settings.Mobile.comingSoon')))
 	}
 }
 

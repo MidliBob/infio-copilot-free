@@ -828,11 +828,11 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					}
 				} else if (toolArgs.type === 'dataview_query') {
 					if (!dataviewManager) {
-						throw new Error('DataviewManager 未初始化')
+						throw new Error(t('chat.dataview.notInitialized'))
 					}
 
 					if (!dataviewManager.isDataviewAvailable()) {
-						throw new Error('Dataview 插件未安装或未启用，请先安装并启用 Dataview 插件')
+						throw new Error(t('chat.dataview.notInstalled'))
 					}
 
 					// 执行 Dataview 查询
@@ -840,9 +840,9 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 
 					let formattedContent: string;
 					if (result.success) {
-						formattedContent = `[dataview_query] 查询成功:\n${result.data}`;
+						formattedContent = t('chat.dataview.querySuccess', { data: result.data });
 					} else {
-						formattedContent = `[dataview_query] 查询失败:\n${result.error}`;
+						formattedContent = t('chat.dataview.queryFailed', { error: result.error });
 					}
 
 					return {
@@ -934,9 +934,9 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 										const folderExists = await app.vault.adapter.exists(operation.path);
 										if (!folderExists) {
 											await app.vault.adapter.mkdir(operation.path);
-											results.push(`✅ 成功创建文件夹: ${operation.path}`);
+											results.push(t('fileOps.createFolderOk', { path: operation.path }));
 										} else {
-											results.push(`⚠️ 文件夹已存在: ${operation.path}`);
+											results.push(t('fileOps.folderExists', { path: operation.path }));
 										}
 									}
 									break;
@@ -955,10 +955,10 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 												}
 											}
 											await app.vault.rename(sourceFile, operation.destination_path);
-											const itemType = sourceFile instanceof TFile ? '文件' : '文件夹';
-											results.push(`✅ 成功移动${itemType}: ${operation.source_path} → ${operation.destination_path}`);
+											const itemType = sourceFile instanceof TFile ? t('fileOps.typeFile') : t('fileOps.typeFolder');
+											results.push(t('fileOps.moveOk', { type: itemType, source: operation.source_path, destination: operation.destination_path }));
 										} else {
-											results.push(`❌ 源文件或文件夹不存在: ${operation.source_path}`);
+											results.push(t('fileOps.sourceMissing', { path: operation.source_path }));
 										}
 									}
 									break;
@@ -973,14 +973,14 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 												// 使用 trash 方法将文件/文件夹移到回收站，更安全
 												// system: true 尝试使用系统回收站，失败则使用 Obsidian 本地回收站
 												await app.fileManager.trashFile(fileOrFolder);
-												const itemType = isFolder ? '文件夹' : '文件';
-												results.push(`✅ 成功将${itemType}移到回收站: ${operation.path}`);
+												const itemType = isFolder ? t('fileOps.typeFolder') : t('fileOps.typeFile');
+												results.push(t('fileOps.trashOk', { type: itemType, path: operation.path }));
 											} catch (error) {
 												console.error('删除失败:', error);
-												results.push(`❌ 删除失败: ${operation.path} - ${error.message}`);
+												results.push(t('fileOps.deleteFailed', { path: operation.path, error: error.message }));
 											}
 										} else {
-											results.push(`❌ 文件或文件夹不存在: ${operation.path}`);
+											results.push(t('fileOps.notFound', { path: operation.path }));
 										}
 									}
 									break;
@@ -1001,13 +1001,13 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 												}
 												const content = await app.vault.read(sourceFile);
 												await app.vault.create(operation.destination_path, content);
-												results.push(`✅ 成功复制文件: ${operation.source_path} → ${operation.destination_path}`);
+												results.push(t('fileOps.copyOk', { source: operation.source_path, destination: operation.destination_path }));
 											} else if (sourceFile instanceof TFolder) {
 												// 文件夹复制需要递归处理
-												results.push(`❌ 文件夹复制功能暂未实现: ${operation.source_path}`);
+												results.push(t('fileOps.copyFolderUnsupported', { path: operation.source_path }));
 											}
 										} else {
-											results.push(`❌ 源文件或文件夹不存在: ${operation.source_path}`);
+											results.push(t('fileOps.sourceMissing', { path: operation.source_path }));
 										}
 									}
 									break;
@@ -1019,20 +1019,20 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 										if (file) {
 											const newPath = path.join(path.dirname(operation.path), operation.new_name);
 											await app.vault.rename(file, newPath);
-											const itemType = file instanceof TFile ? '文件' : '文件夹';
-											results.push(`✅ 成功重命名${itemType}: ${operation.path} → ${newPath}`);
+											const itemType = file instanceof TFile ? t('fileOps.typeFile') : t('fileOps.typeFolder');
+											results.push(t('fileOps.renameOk', { type: itemType, path: operation.path, newPath }));
 										} else {
-											results.push(`❌ 文件或文件夹不存在: ${operation.path}`);
+											results.push(t('fileOps.notFound', { path: operation.path }));
 										}
 									}
 									break;
 
 								default:
-									results.push(`❌ 不支持的操作类型: ${String(operation.action)}`);
+									results.push(t('fileOps.opUnsupported', { action: String(operation.action) }));
 							}
 						}
 
-						const formattedContent = `[manage_files] 文件管理操作结果:\n${results.join('\n')}`;
+						const formattedContent = t('fileOps.resultHeader', { results: results.join('\n') });
 
 						return {
 							type: 'manage_files',
@@ -1057,7 +1057,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 								role: 'user',
 								applyStatus: ApplyStatus.Idle,
 								content: null,
-								promptContent: `[manage_files] 文件管理操作失败: ${error instanceof Error ? error.message : String(error)}`,
+								promptContent: t('fileOps.resultFailed', { error: error instanceof Error ? error.message : String(error) }),
 								id: uuidv4(),
 								mentionables: [],
 							}
@@ -1405,7 +1405,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 													chatUserInputRefs.current.get(inputMessage.id)?.focus()
 												}}
 												className="icf-chat-edit-cancel-button"
-												title="取消编辑"
+												title={t('chat.cancelEdit')}
 											>
 												<Undo size={16} />
 											</button>
