@@ -61,15 +61,67 @@ until then use the two options above.
 1. Open the chat from the ribbon (wand icon) or the command palette
    (“Open Infio Copilot Free”).
 2. In Settings → Infio Copilot Free pick a provider and paste an API key —
-   or point an Ollama slot at `http://localhost:11434` and type the model name
-   manually (model lists are not fetched from Ollama yet).
-   Local Ollama users: Obsidian sends requests from origin
-   `app://obsidian.md`, so start Ollama with
-   `OLLAMA_ORIGINS=app://obsidian.md` (or `*`).
+   or point an Ollama slot at `http://localhost:11434`: the model dropdowns
+   then list models straight from your Ollama server, and the **Test
+   connection** button diagnoses both reachability and CORS/origin issues
+   (see [Ollama (local models)](#ollama-local-models)).
 3. Configure the four model slots (chat / apply / insights / embeddings) —
    each is set separately. Embeddings can use the built-in local models.
 4. Optional: build the semantic index from the “Semantic Index” panel, and
    enable autocomplete at the bottom of the settings tab.
+
+## Ollama (local models)
+
+Infio Copilot Free works with [Ollama](https://ollama.com) out of the box:
+
+1. Install Ollama and pull a model, e.g. `ollama pull qwen2.5:3b`.
+2. Make sure the server runs (`ollama serve`; the desktop apps start it
+   automatically). Default address: `http://localhost:11434`.
+3. In Settings → Infio Copilot Free → **Ollama**: set the base URL. The
+   chat/insight/autocomplete model dropdowns populate from the server's
+   `/api/tags` list automatically; any other model name can still be typed
+   in manually.
+4. Press **Test connection** under the base URL field and follow the
+   verdict (see below).
+
+Chat and embedding requests use Ollama's OpenAI-compatible API under
+`/v1` (Ollama ≥ 0.1.14). The model list is fetched through Obsidian's
+native HTTP layer, which is not subject to browser CORS.
+
+### Reading the Test connection results
+
+| Result | Meaning | What to do |
+|---|---|---|
+| **OK** (shows the server version) | Reachable and accepts Obsidian's requests | Nothing — you are set |
+| **Cannot reach Ollama** | The native request failed | Is Ollama running (`ollama serve`)? Is the base URL/port correct? Firewall/proxy in the way? |
+| **Reachable, but rejects browser requests** | The server answers Obsidian's native requests but blocks the renderer's `fetch` — this is the `OLLAMA_ORIGINS` policy | See the recipe below |
+| **Set the base URL first** | No address configured | Fill in the Ollama base URL |
+
+### Why OLLAMA_ORIGINS is needed (and how to set it)
+
+Chat/embedding requests run through the renderer's `fetch`, so Ollama sees
+them as cross-origin calls from `app://obsidian.md`. By default Ollama only
+allows localhost web origins and answers everything else with `403` — which
+browsers hide as an opaque "Failed to fetch" (the same message you get when
+the server is down; the Test connection button tells the two apart).
+
+Allow Obsidian's origin (or all origins with `*`) and **restart Ollama**:
+
+- **Windows** (PowerShell, then restart the Ollama app):
+  `setx OLLAMA_ORIGINS "app://obsidian.md"` — or set it via
+  *System → Environment Variables*.
+- **macOS** (terminal, then quit and reopen the Ollama app):
+  `launchctl setenv OLLAMA_ORIGINS "app://obsidian.md"`
+- **Linux** (systemd service): `sudo systemctl edit ollama` and add
+  ```ini
+  [Service]
+  Environment="OLLAMA_ORIGINS=app://obsidian.md"
+  ```
+  then `sudo systemctl daemon-reload && sudo systemctl restart ollama`.
+
+A handy diagnostic: if the model dropdown **lists your models** but chat
+still fails with a network error, it is almost certainly the origins policy
+(the list uses native HTTP, chat uses `fetch`).
 
 ## Privacy
 
