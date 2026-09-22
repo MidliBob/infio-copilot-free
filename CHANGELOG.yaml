@@ -1,4 +1,7 @@
 releases:
+  - version: "1.1.3"
+    fixes:
+      - "Catalog compliance: removed the two eslint-disable directives for '@typescript-eslint/no-explicit-any' in the local text splitter (disabling that rule is not allowed); the splitter metadata is now properly typed (SplitterMetadata) with no 'any' usage - no behavior change, the golden splitter tests recorded from langchain pass unchanged"
   - version: "1.1.2"
     fixes:
       - "Local (built-in) embedding models load reliably again on desktop: the embedding worker no longer lets Electron's process shim trick the ONNX Runtime loader into a Node-only code path ('Failed to resolve module specifier worker_threads' / 'no available backend found'), and the WASM backend is now selected explicitly - embedding vectors are unchanged, existing indexes stay valid"
