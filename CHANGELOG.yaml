@@ -1,4 +1,7 @@
 releases:
+  - version: "1.1.5"
+    fixes:
+      - "Settings: the Ollama embedding-model dropdown now shows the capability-filtered server list. It appeared unfiltered because the per-provider 'custom models' array - shared by all Ollama slots and accumulated from manually typed entries of earlier versions - was merged on top of the fetched list. Free-text entry is unchanged, and custom entries still appear when the Ollama server is unreachable; chat/insight/autocomplete pickers and other providers keep their existing behavior"
   - version: "1.1.4"
     features:
       - "Ollama: Test connection button in Settings with two-stage diagnostics - it tells 'server is not running' apart from 'OLLAMA_ORIGINS blocks the Obsidian origin' (both look like the same opaque network error in browsers) and shows the detected server version on success"
