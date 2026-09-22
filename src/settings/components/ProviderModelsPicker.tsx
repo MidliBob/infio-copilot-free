@@ -6,7 +6,7 @@ import { t } from "../../lang/helpers";
 import { ApiProvider } from "../../types/llm/model";
 import { InfioSettings } from "../../types/settings";
 // import { PROVIDERS } from '../constants';
-import { GetAllProviders, GetEmbeddingProviderModelIds, GetEmbeddingProviders, GetProviderModelIds } from "../../utils/api";
+import { GetAllProviders, GetEmbeddingProviderModelIdsAsync, GetEmbeddingProviders, GetProviderModelIds } from "../../utils/api";
 
 import { getProviderSettingKey } from "./ModelProviderSettings";
 
@@ -195,7 +195,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 	useEffect(() => {
 		const fetchModelIds = async () => {
 			const ids = isEmbedding
-				? GetEmbeddingProviderModelIds(modelProvider)
+				? await GetEmbeddingProviderModelIdsAsync(modelProvider, settings)
 				: await GetProviderModelIds(modelProvider, settings);
 			console.debug(`📝 Fetched ${ids.length} official models for ${modelProvider}:`, ids);
 			setModelIds(ids);

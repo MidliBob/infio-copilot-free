@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSettings } from '../../../contexts/SettingsContext'
 import { t } from '../../../lang/helpers'
 import { ApiProvider } from '../../../types/llm/model'
-import { GetAllProviders, GetEmbeddingProviders, GetEmbeddingProviderModelIds, GetProviderModelsWithSettings } from "../../../utils/api"
+import { GetAllProviders, GetEmbeddingProviderModelIdsAsync, GetEmbeddingProviders, GetProviderModelsWithSettings } from "../../../utils/api"
 
 // 优化模型名称显示的函数
 const getOptimizedModelName = (modelId: string): string => {
@@ -203,7 +203,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 			setIsLoading(true)
 			try {
 				if (modelType === 'embedding') {
-					const models = GetEmbeddingProviderModelIds(modelProvider)
+					const models = await GetEmbeddingProviderModelIdsAsync(modelProvider, settings)
 					setModelIds(models)
 				} else {
 					const models = await GetProviderModelsWithSettings(modelProvider, settings)

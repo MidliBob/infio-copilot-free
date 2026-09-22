@@ -2,7 +2,7 @@ import { requestUrl } from 'obsidian'
 import { OPENROUTER_BASE_URL } from '../constants'
 import { ApiProvider } from '../types/llm/model'
 import { InfioSettings } from '../types/settings'
-import { getOllamaModels } from './ollama'
+import { getOllamaEmbeddingModels, getOllamaModels } from './ollama'
 
 export interface ModelInfo {
 	maxTokens?: number
@@ -1704,6 +1704,26 @@ async function fetchOllamaModels(baseUrl?: string): Promise<Record<string, Model
 	return models;
 }
 
+// Ollama embedding models: modern servers report `capabilities` in
+// /api/tags, so the embedding pickers can list embedding-capable models
+// (older servers fall back to the full list - see getOllamaEmbeddingModels).
+let ollamaEmbeddingModelsCache: { url: string; ids: string[] } | null = null;
+async function fetchOllamaEmbeddingModelIds(baseUrl?: string): Promise<string[]> {
+	const url = (baseUrl ?? '').trim().replace(/\/+$/, '');
+	if (!url) {
+		return [];
+	}
+	if (ollamaEmbeddingModelsCache && ollamaEmbeddingModelsCache.url === url) {
+		return ollamaEmbeddingModelsCache.ids;
+	}
+	const ids = await getOllamaEmbeddingModels(url);
+	if (ids.length > 0) {
+		// only cache successful responses so a stopped server is retried later
+		ollamaEmbeddingModelsCache = { url, ids };
+	}
+	return ids;
+}
+
 /// helper functions
 // get all providers, used for the provider dropdown
 export const GetAllProviders = (): ApiProvider[] => {
@@ -1832,6 +1852,19 @@ export const GetEmbeddingProviderModels = (provider: ApiProvider): Record<string
 // Get all embedding model ids for a provider
 export const GetEmbeddingProviderModelIds = (provider: ApiProvider): string[] => {
 	return Object.keys(GetEmbeddingProviderModels(provider))
+}
+
+// Embedding model ids including server-side catalogs: Ollama's list lives
+// on the user's machine, so it is fetched like the chat pickers do; other
+// providers keep their static maps.
+export const GetEmbeddingProviderModelIdsAsync = async (
+	provider: ApiProvider,
+	settings?: InfioSettings
+): Promise<string[]> => {
+	if (provider === ApiProvider.Ollama) {
+		return await fetchOllamaEmbeddingModelIds(settings?.ollamaProvider.baseUrl)
+	}
+	return GetEmbeddingProviderModelIds(provider)
 }
 // Get embedding model info for a provider and model id
 export const GetEmbeddingModelInfo = (provider: ApiProvider, modelId: string): EmbeddingModelInfo | undefined => {

@@ -79,8 +79,10 @@ Infio Copilot Free works with [Ollama](https://ollama.com) out of the box:
    automatically). Default address: `http://localhost:11434`.
 3. In Settings → Infio Copilot Free → **Ollama**: set the base URL. The
    chat/insight/autocomplete model dropdowns populate from the server's
-   `/api/tags` list automatically; any other model name can still be typed
-   in manually.
+   `/api/tags` list automatically, and the embedding dropdown lists the
+   server's embedding-capable models (Ollama reports model capabilities;
+   on older servers the full list is shown). Any other model name can
+   still be typed in manually.
 4. Press **Test connection** under the base URL field and follow the
    verdict (see below).
 

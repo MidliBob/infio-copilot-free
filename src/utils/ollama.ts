@@ -1,16 +1,45 @@
 import { requestUrl } from 'obsidian'
 
-type OllamaTagsResponse = {
-	models: { name: string }[]
+type OllamaTagModel = {
+	name: string
+	capabilities?: string[]
 }
 
-export async function getOllamaModels(ollamaUrl: string) {
+type OllamaTagsResponse = {
+	models: OllamaTagModel[]
+}
+
+async function fetchOllamaTags(ollamaUrl: string): Promise<OllamaTagModel[]> {
 	try {
-		const response: OllamaTagsResponse = await requestUrl(`${ollamaUrl}/api/tags`).json
-		return response.models.map((model) => model.name)
+		const response = await requestUrl(`${ollamaUrl}/api/tags`)
+		const data: OllamaTagsResponse = response.json
+		if (data && Array.isArray(data.models)) {
+			return data.models
+		}
+		return []
 	} catch (error) {
 		return []
 	}
+}
+
+export async function getOllamaModels(ollamaUrl: string): Promise<string[]> {
+	const tags = await fetchOllamaTags(ollamaUrl)
+	return tags.map((model) => model.name)
+}
+
+/**
+ * Models the server reports as embedding-capable via the /api/tags
+ * `capabilities` field. Older Ollama builds do not report capabilities -
+ * then the full list is returned so users can still pick; a chat-only
+ * model fails at request time with Ollama's own clear error message.
+ */
+export async function getOllamaEmbeddingModels(ollamaUrl: string): Promise<string[]> {
+	const tags = await fetchOllamaTags(ollamaUrl)
+	const embeddingCapable = tags.filter(
+		(model) => Array.isArray(model.capabilities) && model.capabilities.includes('embedding')
+	)
+	const source = embeddingCapable.length > 0 ? embeddingCapable : tags
+	return source.map((model) => model.name)
 }
 
 export function normalizeOllamaBaseUrl(rawBaseUrl: string): string {

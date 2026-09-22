@@ -1,9 +1,15 @@
 import type { RequestUrlResponse } from 'obsidian'
 import { requestUrl } from 'obsidian'
 
+import { DEFAULT_SETTINGS } from '../settings/versions/v1/v1'
+import { ApiProvider } from '../types/llm/model'
+import { parseInfioSettings } from '../types/settings'
+import { GetEmbeddingProviderModelIdsAsync } from './api'
 import {
 	checkOllamaHealth,
 	describeOllamaNetworkError,
+	getOllamaEmbeddingModels,
+	getOllamaModels,
 	normalizeOllamaBaseUrl,
 } from './ollama'
 
@@ -132,5 +138,110 @@ describe('describeOllamaNetworkError', () => {
 	it('handles a missing base URL gracefully', () => {
 		const described = describeOllamaNetworkError(new TypeError('Failed to fetch'), '')
 		expect(described).toContain('(no address set)')
+	})
+})
+
+function settingsWithOllamaUrl(baseUrl: string) {
+	return parseInfioSettings({
+		ollamaProvider: { name: 'Ollama', apiKey: 'ollama', baseUrl, useCustomUrl: false, models: [] },
+		autocompleteEnabled: true,
+		advancedMode: false,
+		apiProvider: 'openai',
+		triggers: DEFAULT_SETTINGS.triggers,
+		delay: 500,
+		modelOptions: {
+			temperature: 1,
+			top_p: 0.1,
+			frequency_penalty: 0.25,
+			presence_penalty: 0,
+			max_tokens: 4096,
+		},
+		systemMessage: DEFAULT_SETTINGS.systemMessage,
+		fewShotExamples: DEFAULT_SETTINGS.fewShotExamples,
+		userMessageTemplate: '{{prefix}}<mask/>{{suffix}}',
+		chainOfThoughRemovalRegex: '(.|\\n)*ANSWER:',
+		dontIncludeDataviews: true,
+		maxPrefixCharLimit: 4000,
+		maxSuffixCharLimit: 4000,
+		removeDuplicateMathBlockIndicator: true,
+		removeDuplicateCodeBlockIndicator: true,
+		ignoredFilePatterns: '',
+		ignoredTags: '',
+		cacheSuggestions: true,
+		debugMode: false,
+	})
+}
+
+describe('getOllamaModels / getOllamaEmbeddingModels', () => {
+	it('lists all model names from /api/tags', async () => {
+		requestUrlMock.mockResolvedValue(
+			nativeResponse(200, { models: [{ name: 'qwen2.5:3b' }, { name: 'nomic-embed-text' }] })
+		)
+		await expect(getOllamaModels('http://localhost:11434')).resolves.toEqual([
+			'qwen2.5:3b',
+			'nomic-embed-text',
+		])
+	})
+
+	it('keeps only embedding-capable models when capabilities are reported', async () => {
+		requestUrlMock.mockResolvedValue(
+			nativeResponse(200, {
+				models: [
+					{ name: 'qwen2.5:3b', capabilities: ['completion', 'tools'] },
+					{ name: 'nomic-embed-text', capabilities: ['embedding'] },
+					{ name: 'bge-m3', capabilities: ['embedding'] },
+				],
+			})
+		)
+		await expect(getOllamaEmbeddingModels('http://localhost:11434')).resolves.toEqual([
+			'nomic-embed-text',
+			'bge-m3',
+		])
+	})
+
+	it('falls back to all models when the server does not report capabilities', async () => {
+		requestUrlMock.mockResolvedValue(
+			nativeResponse(200, { models: [{ name: 'a' }, { name: 'b' }] })
+		)
+		await expect(getOllamaEmbeddingModels('http://localhost:11434')).resolves.toEqual(['a', 'b'])
+	})
+
+	it('returns [] on unreachable servers and malformed payloads', async () => {
+		requestUrlMock.mockRejectedValue(new Error('ECONNREFUSED'))
+		await expect(getOllamaEmbeddingModels('http://localhost:11434')).resolves.toEqual([])
+		requestUrlMock.mockResolvedValue(nativeResponse(200, null))
+		await expect(getOllamaModels('http://localhost:11434')).resolves.toEqual([])
+		requestUrlMock.mockResolvedValue(nativeResponse(200, { unexpected: true }))
+		await expect(getOllamaModels('http://localhost:11434')).resolves.toEqual([])
+	})
+})
+
+describe('GetEmbeddingProviderModelIdsAsync', () => {
+	it('returns static catalogs for non-Ollama providers without network calls', async () => {
+		const ids = await GetEmbeddingProviderModelIdsAsync(ApiProvider.LocalProvider)
+		expect(ids).toContain('TaylorAI/bge-micro-v2')
+		expect(requestUrlMock).not.toHaveBeenCalled()
+	})
+
+	it('returns [] for Ollama when no base URL is configured', async () => {
+		await expect(GetEmbeddingProviderModelIdsAsync(ApiProvider.Ollama)).resolves.toEqual([])
+		expect(requestUrlMock).not.toHaveBeenCalled()
+	})
+
+	it('fetches embedding-capable models for a configured Ollama server', async () => {
+		requestUrlMock.mockResolvedValue(
+			nativeResponse(200, {
+				models: [
+					{ name: 'qwen2.5:3b', capabilities: ['completion'] },
+					{ name: 'nomic-embed-text', capabilities: ['embedding'] },
+				],
+			})
+		)
+		const ids = await GetEmbeddingProviderModelIdsAsync(
+			ApiProvider.Ollama,
+			settingsWithOllamaUrl('http://localhost:11434/')
+		)
+		expect(ids).toEqual(['nomic-embed-text'])
+		expect(requestUrlMock).toHaveBeenCalledWith('http://localhost:11434/api/tags')
 	})
 })
