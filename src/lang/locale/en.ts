@@ -310,6 +310,10 @@ export default {
 				serverError: 'Internal server error',
 				noDefaultModel: 'No default model available for {provider}',
 				invalidResponse: 'Invalid response format',
+				ollamaOk: 'Connection OK - Ollama{versionInfo} is reachable and accepts requests from Obsidian.',
+				ollamaUnreachable: 'Cannot reach Ollama at {url}. Is it running (try "ollama serve")? Is the base URL correct?',
+				ollamaOriginsBlocked: 'Ollama{versionInfo} answers natively but rejects browser requests from Obsidian (CORS). Set OLLAMA_ORIGINS=app://obsidian.md (or *) and restart Ollama, then test again - see the README guide "Ollama troubleshooting".',
+				ollamaEmptyUrl: 'Set the Ollama base URL first, for example http://localhost:11434.',
 				// UI text
 				showApiKey: 'Show API Key',
 				hideApiKey: 'Hide API Key',

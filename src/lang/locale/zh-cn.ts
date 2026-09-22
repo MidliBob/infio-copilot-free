@@ -311,6 +311,10 @@ export default {
 				serverError: '服务器内部错误',
 				noDefaultModel: '{provider} 没有可用的默认模型',
 				invalidResponse: '响应格式无效',
+				ollamaOk: '连接正常：Ollama{versionInfo} 可达，并接受来自 Obsidian 的请求。',
+				ollamaUnreachable: '无法连接到 {url} 上的 Ollama。它已启动吗（试试 ollama serve）？地址是否正确？',
+				ollamaOriginsBlocked: 'Ollama{versionInfo} 原生请求正常，但拒绝来自 Obsidian 的浏览器请求（CORS）。请设置 OLLAMA_ORIGINS=app://obsidian.md（或 *）并重启 Ollama，然后重试 — 参见 README 的 Ollama troubleshooting 章节。',
+				ollamaEmptyUrl: '请先设置 Ollama 基础 URL，例如 http://localhost:11434。',
 				// UI 文本
 				showApiKey: '显示 API Key',
 				hideApiKey: '隐藏 API Key',

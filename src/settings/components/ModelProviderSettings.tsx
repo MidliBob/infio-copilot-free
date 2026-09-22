@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { t } from '../../lang/helpers';
 import InfioPlugin from "../../main";
@@ -8,6 +8,7 @@ import {
 	GetAllProviders, GetDefaultModelId,
 	localProviderDefaultEmbeddingModelId
 } from '../../utils/api';
+import { OllamaHealthResult, checkOllamaHealth } from '../../utils/ollama';
 import { getProviderApiUrl } from '../../utils/provider-urls';
 
 import { ApiKeyComponent, CustomUrlComponent } from './FormComponents';
@@ -51,6 +52,126 @@ const keyMap: Record<ApiProvider, ProviderSettingKey> = {
 
 export const getProviderSettingKey = (provider: ApiProvider): ProviderSettingKey => {
 	return keyMap[provider];
+};
+
+type OllamaConnectionTestProps = {
+	baseUrl: string;
+}
+
+// Dedicated Ollama diagnostics: the ApiKeyComponent (with its Test button)
+// is not rendered for Ollama, and a plain chat-style test cannot tell
+// "server down" from "OLLAMA_ORIGINS blocks the Obsidian origin" - the
+// two-stage checkOllamaHealth() can. See utils/ollama.ts.
+const OllamaConnectionTest: React.FC<OllamaConnectionTestProps> = ({ baseUrl }) => {
+	const [testing, setTesting] = useState(false);
+	const [result, setResult] = useState<OllamaHealthResult | null>(null);
+
+	const runTest = async () => {
+		setTesting(true);
+		setResult(null);
+		try {
+			setResult(await checkOllamaHealth(baseUrl));
+		} catch (error) {
+			setResult({
+				status: 'unreachable',
+				detail: error instanceof Error ? error.message : String(error),
+			});
+		} finally {
+			setTesting(false);
+		}
+	};
+
+	const versionInfo = result?.version ? ` (v${result.version})` : '';
+	let message = '';
+	if (result) {
+		switch (result.status) {
+			case 'ok':
+				message = String(t('settings.ModelProvider.testConnection.ollamaOk', { versionInfo }));
+				break;
+			case 'empty-url':
+				message = String(t('settings.ModelProvider.testConnection.ollamaEmptyUrl'));
+				break;
+			case 'origins-blocked':
+				message = String(t('settings.ModelProvider.testConnection.ollamaOriginsBlocked', { versionInfo }));
+				break;
+			default:
+				message =
+					String(t('settings.ModelProvider.testConnection.ollamaUnreachable', { url: baseUrl })) +
+					(result.detail ? ` (${result.detail})` : '');
+				break;
+		}
+	}
+	const stateClass = result ? (result.status === 'ok' ? 'success' : 'error') : '';
+
+	return (
+		<div className="icf-ollama-health">
+			<button
+				type="button"
+				className={`icf-ollama-health-button ${testing ? 'testing' : ''} ${stateClass}`}
+				onClick={() => void runTest()}
+				disabled={testing}
+				title={t('settings.ModelProvider.testConnection.testConnectionTooltip')}
+			>
+				{testing ? (
+					<>
+						<div className="loading-spinner"></div>
+						<span>{t('settings.ModelProvider.testConnection.testing')}</span>
+					</>
+				) : (
+					<span>{t('settings.ModelProvider.testConnection.test')}</span>
+				)}
+			</button>
+			{message && (
+				<div className={`icf-ollama-health-message ${result?.status === 'ok' ? 'ok' : 'error'}`}>
+					{message}
+				</div>
+			)}
+			<style>{`
+				.icf-ollama-health {
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					gap: var(--size-4-2);
+					margin-top: var(--size-4-2);
+				}
+				.icf-ollama-health-button {
+					display: inline-flex;
+					align-items: center;
+					gap: 6px;
+					padding: 4px 12px;
+					border-radius: var(--radius-s);
+					border: 1px solid var(--background-modifier-border);
+					background: var(--background-secondary);
+					color: var(--text-normal);
+					cursor: pointer;
+					font-size: var(--font-ui-small);
+				}
+				.icf-ollama-health-button:hover:not(:disabled) {
+					background: var(--background-modifier-hover);
+				}
+				.icf-ollama-health-button:disabled {
+					opacity: 0.6;
+					cursor: default;
+				}
+				.icf-ollama-health-button.success {
+					color: var(--text-success);
+					border-color: var(--text-success);
+				}
+				.icf-ollama-health-button.error {
+					color: var(--text-error);
+					border-color: var(--text-error);
+				}
+				.icf-ollama-health-message {
+					font-size: var(--font-ui-small);
+					color: var(--text-muted);
+					white-space: pre-wrap;
+				}
+				.icf-ollama-health-message.error {
+					color: var(--text-error);
+				}
+			`}</style>
+		</div>
+	);
 };
 
 const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin, onSettingsUpdate }) => {
@@ -469,6 +590,10 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 							onToggleCustomUrl={(value) => updateProviderUseCustomUrl(provider, value)}
 							onChangeBaseUrl={(value) => updateProviderBaseUrl(provider, value)}
 						/>
+
+						{provider === ApiProvider.Ollama && (
+							<OllamaConnectionTest baseUrl={providerSetting.baseUrl || ''} />
+						)}
 					</>
 				)}
 			</div>
