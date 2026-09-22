@@ -1,6 +1,7 @@
 import { PGliteInterface } from '@electric-sql/pglite'
 import { App } from 'obsidian'
 
+import { SUPPORT_EMBEDDING_SIMENTION } from '../../../constants'
 import { EmbeddingModel } from '../../../types/embedding'
 import { DatabaseNotInitializedException } from '../../exception'
 import { InsertVector, SelectVector, vectorTables } from '../../schema'
@@ -52,7 +53,7 @@ export class VectorRepository {
 	private getTableName(embeddingModel: EmbeddingModel): string {
 		const tableDefinition = vectorTables[embeddingModel.dimension]
 		if (!tableDefinition) {
-			throw new Error(`No table definition found for model: ${embeddingModel.id}`)
+			throw new Error(`No table definition found for model: ${embeddingModel.id} (dimension ${embeddingModel.dimension}; supported: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')})`)
 		}
 		return tableDefinition.name
 	}

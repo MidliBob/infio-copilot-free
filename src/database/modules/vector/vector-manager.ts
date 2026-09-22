@@ -19,6 +19,7 @@ import { openSettingsModalWithError } from '../../../utils/open-settings-modal';
 import { RecursiveCharacterTextSplitter } from '../../../utils/text-splitter';
 import { DBManager } from '../../database-manager';
 import { Workspace } from '../../json/workspace/types';
+import { SUPPORT_EMBEDDING_SIMENTION } from '../../../constants';
 import { vectorTables } from '../../schema';
 
 import { VectorRepository } from './vector-repository';
@@ -116,6 +117,7 @@ export class VectorManager {
 			similarity: number
 		})[]
 	> {
+		await this.ensureEmbeddingDimension(embeddingModel)
 		return await this.repository.performSimilaritySearch(
 			queryVector,
 			embeddingModel,
@@ -139,6 +141,7 @@ export class VectorManager {
 			rank: number
 		})[]
 	> {
+		await this.ensureEmbeddingDimension(embeddingModel)
 		return await this.repository.performFulltextSearch(
 			searchQuery,
 			embeddingModel,
@@ -153,6 +156,7 @@ export class VectorManager {
 		totalFiles: number
 		totalChunks: number
 	}> {
+		await this.ensureEmbeddingDimension(embeddingModel)
 		// 构建工作区范围
 		let scope: { files: string[], folders: string[] } | undefined
 		if (workspace) {
@@ -187,6 +191,7 @@ export class VectorManager {
 		totalFiles: number
 		totalChunks: number
 	}> {
+		await this.ensureEmbeddingDimension(embeddingModel)
 		return await this.repository.getVaultStatistics(embeddingModel)
 	}
 
@@ -236,6 +241,7 @@ export class VectorManager {
 		},
 		updateProgress?: (indexProgress: IndexProgress) => void,
 	): Promise<void> {
+		await this.ensureEmbeddingDimension(embeddingModel)
 		let filesToIndex: TFile[]
 		if (options.reindexAll) {
 			logger.debug("updateVaultIndex reindexAll")
@@ -544,6 +550,7 @@ export class VectorManager {
 		},
 		updateProgress?: (indexProgress: IndexProgress) => void,
 	): Promise<void> {
+		await this.ensureEmbeddingDimension(embeddingModel)
 		let filesToIndex: TFile[]
 		if (options.reindexAll) {
 			logger.debug("updateWorkspaceIndex reindexAll")
@@ -857,6 +864,7 @@ export class VectorManager {
 		batchSize: number,
 		file: TFile
 	) {
+		await this.ensureEmbeddingDimension(embeddingModel)
 		try {
 			// Delete existing vectors for the files
 			await this.repository.deleteVectorsForSingleFile(
@@ -1063,12 +1071,14 @@ export class VectorManager {
 		embeddingModel: EmbeddingModel,
 		file: TFile
 	) {
+		await this.ensureEmbeddingDimension(embeddingModel)
 		await this.repository.deleteVectorsForSingleFile(file.path, embeddingModel)
 	}
 
 	private async cleanVectorsForDeletedFiles(
 		embeddingModel: EmbeddingModel,
 	) {
+		await this.ensureEmbeddingDimension(embeddingModel)
 		const indexedFilePaths = await this.repository.getAllIndexedFilePaths(embeddingModel)
 		const needToDelete = indexedFilePaths.filter(filePath => !this.app.vault.getAbstractFileByPath(filePath))
 		if (needToDelete.length > 0) {
@@ -1267,11 +1277,40 @@ export class VectorManager {
 		await db.exec(sql)
 	}
 
+	/**
+	 * Resolve the real embedding dimension for providers that do not declare
+	 * one statically (dimension === 0, e.g. Ollama or OpenAI-Compatible).
+	 * The dimension is probed once with a single tiny embedding call and
+	 * memoized on the model object, so subsequent operations are free.
+	 */
+	private async ensureEmbeddingDimension(embeddingModel: EmbeddingModel): Promise<void> {
+		if (embeddingModel.dimension > 0) return
+		let vec: number[]
+		try {
+			vec = await embeddingModel.getEmbedding('Infio Copilot dimension probe')
+		} catch (error) {
+			throw new Error(
+				`Failed to detect the embedding dimension of model "${embeddingModel.id}": ${error instanceof Error ? error.message : String(error)}`
+			)
+		}
+		const dimension = vec?.length ?? 0
+		if (dimension <= 0) {
+			throw new Error(`Model "${embeddingModel.id}" returned an empty embedding; cannot determine its dimension.`)
+		}
+		if (!vectorTables[dimension]) {
+			throw new Error(
+				`Embedding dimension ${dimension} of model "${embeddingModel.id}" is not supported. Supported dimensions: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')}. Please choose an embedding model with one of these dimensions.`
+			)
+		}
+		embeddingModel.dimension = dimension
+		logger.info(`Detected embedding dimension ${dimension} for model "${embeddingModel.id}"`)
+	}
+
 	// 获取表名的辅助方法
 	private getTableName(embeddingModel: EmbeddingModel): string {
 		const tableDefinition = vectorTables[embeddingModel.dimension]
 		if (!tableDefinition) {
-			throw new Error(`No table definition found for model: ${embeddingModel.id}`)
+			throw new Error(`No table definition found for model: ${embeddingModel.id} (dimension ${embeddingModel.dimension}; supported: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')})`)
 		}
 		return tableDefinition.name
 	}
