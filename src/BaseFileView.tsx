@@ -3,6 +3,7 @@ import { EditorView, ViewUpdate } from "@codemirror/view";
 import { TFile, TextFileView, WorkspaceLeaf } from "obsidian";
 
 import InfioPlugin from './main';
+import { logger } from './utils/logger'
 
 export default abstract class BaseView extends TextFileView {
 	public plugin: InfioPlugin;
@@ -61,7 +62,7 @@ export default abstract class BaseView extends TextFileView {
 			await this.onLoadFile(file);
 		} else {
 			// File not in vault (hidden directory), read directly from filesystem
-			console.log('File not in vault, reading directly from filesystem');
+			logger.debug('File not in vault, reading directly from filesystem');
 			await this.loadFileFromFilesystem(filePath);
 		}
 	}
@@ -72,7 +73,7 @@ export default abstract class BaseView extends TextFileView {
 			const content = await this.app.vault.adapter.read(filePath);
 			this.setViewData(content, true);
 		} catch (error) {
-			console.error('Failed to load file from filesystem:', error);
+			logger.error('Failed to load file from filesystem:', error);
 			// If file doesn't exist, create it with empty content
 			this.setViewData('{}', true);
 		}
@@ -83,7 +84,7 @@ export default abstract class BaseView extends TextFileView {
 			const content = await this.app.vault.cachedRead(file);
 			this.setViewData(content, true);
 		} catch (error) {
-			console.error('Failed to load file content:', error);
+			logger.error('Failed to load file content:', error);
 		}
 	}
 
@@ -106,7 +107,7 @@ export default abstract class BaseView extends TextFileView {
 	async save(clear?: boolean): Promise<void> {
 		// Prevent saving if the view is closing
 		if (this.isClosing) {
-			console.log("save() called during close, skipping to prevent data loss");
+			logger.debug("save() called during close, skipping to prevent data loss");
 			return;
 		}
 
@@ -114,7 +115,7 @@ export default abstract class BaseView extends TextFileView {
 		
 		// Additional safety check: don't save if content is empty and we had content before
 		if (!content.trim() && this.currentFilePath) {
-			console.log("Refusing to save empty content, potential data loss prevented");
+			logger.debug("Refusing to save empty content, potential data loss prevented");
 			return;
 		}
 		

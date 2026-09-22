@@ -10,6 +10,7 @@ import { GetProviderModelIds } from '../../utils/api';
 import { ApplyEditToFile } from '../../utils/apply';
 import { removeAITags } from '../../utils/content-filter';
 import { PromptGenerator } from '../../utils/prompt-generator';
+import { logger } from '../../utils/logger'
 
 type InlineEditProps = {
 	source?: string;
@@ -86,7 +87,7 @@ const ControlArea: React.FC<ControlAreaProps> = ({
 				setProviderModels(models);
 			} catch (err) {
 				const error = err as Error;
-				console.error(t("inlineEdit.fetchModelsError"), error.message);
+				logger.error(t("inlineEdit.fetchModelsError"), error.message);
 			}
 		};
 		void fetchModels();
@@ -155,19 +156,19 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 	const getActiveContext = async () => {
 		const activeFile = plugin.app.workspace.getActiveFile();
 		if (!activeFile) {
-			console.error(t("inlineEdit.noActiveFile"));
+			logger.error(t("inlineEdit.noActiveFile"));
 			return {};
 		}
 
 		const editor = plugin.app.workspace.getActiveViewOfType(MarkdownView)?.editor;
 		if (!editor) {
-			console.error(t("inlineEdit.noActiveEditor"));
+			logger.error(t("inlineEdit.noActiveEditor"));
 			return { activeFile };
 		}
 
 		const selection = editor.getSelection();
 		if (!selection) {
-			console.error(t("inlineEdit.noTextSelected"));
+			logger.error(t("inlineEdit.noTextSelected"));
 			return { activeFile, editor };
 		}
 
@@ -192,7 +193,7 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 		try {
 			const { activeFile, editor, selection } = await getActiveContext();
 			if (!activeFile || !editor || !selection) {
-				console.error(t("inlineEdit.noActiveContext"));
+				logger.error(t("inlineEdit.noActiveContext"));
 				setIsSubmitting(false);
 				return;
 			}
@@ -260,7 +261,7 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 				fileContent = fileContent.replace(/\0/g, '');
 			} catch (err) {
 				const error = err as Error;
-				console.error(t("inlineEdit.readFileError"), error.message);
+				logger.error(t("inlineEdit.readFileError"), error.message);
 				setIsSubmitting(false);
 				return;
 			}
@@ -273,7 +274,7 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 			);
 
 			if (!updatedContent) {
-				console.error(t("inlineEdit.applyChangesError"));
+				logger.error(t("inlineEdit.applyChangesError"));
 				setIsSubmitting(false);
 				return;
 			}
@@ -292,7 +293,7 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 			});
 		} catch (err) {
 			const error = err as Error;
-			console.error(t("inlineEdit.inlineEditError"), error.message);
+			logger.error(t("inlineEdit.inlineEditError"), error.message);
 		} finally {
 			setIsSubmitting(false);
 		}

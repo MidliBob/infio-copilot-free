@@ -5,6 +5,7 @@
  *
  * Does not mutate original object
  */
+import { logger } from './logger'
 export async function injectEnv<C extends string | Record<PropertyKey, any>>(config: C, notFoundValue: any = "") {
 	// Use simple regex replace for now, will see if object traversal and recursion is needed here (e.g: for non-serializable objects)
 
@@ -15,7 +16,7 @@ export async function injectEnv<C extends string | Record<PropertyKey, any>>(con
 		// Check if null or undefined
 		// intentionally using == to match null | undefined
 		if (process.env[name] == null) {
-			console.warn(`[injectEnv] env variable ${name} referenced but not found in process.env`)
+			logger.warn(`[injectEnv] env variable ${name} referenced but not found in process.env`)
 		}
 
 		return process.env[name] ?? notFoundValue

@@ -8,6 +8,7 @@ import { CommandManager } from './modules/command/command-manager'
 import { ConversationManager } from './modules/conversation/conversation-manager'
 import { InsightManager } from './modules/insight/insight-manager'
 import { VectorManager } from './modules/vector/vector-manager'
+import { logger } from '../utils/logger'
 
 /**
  * Loads the PGlite runtime assets (postgres.wasm / postgres.data /
@@ -37,7 +38,7 @@ async function loadLocalPgliteAssets(
 		])
 		return { wasm, data, vector }
 	} catch (error) {
-		console.warn(
+		logger.warn(
 			'[icf-copilot] could not read local PGlite assets, falling back to CDN',
 			error,
 		)

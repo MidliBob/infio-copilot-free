@@ -21,6 +21,7 @@ import { ALWAYS_AVAILABLE_TOOLS, TOOL_GROUPS } from "./tool-groups"
 import { ToolArgs } from "./types"
 import { getUseMcpToolDescription } from "./use-mcp-tool"
 import { getWriteToFileDescription } from "./write-to-file"
+import { logger } from '../../../utils/logger'
 
 // Map of tool names to their description functions
 const toolDescriptionMap: Record<string, (args: ToolArgs) => string | undefined> = {
@@ -56,9 +57,9 @@ export function getToolDescriptionsForMode(
 	customModes?: ModeConfig[],
 	experiments?: Record<string, boolean>,
 ): string {
-	// console.log("getToolDescriptionsForMode", mode, customModes)
+	// logger.debug("getToolDescriptionsForMode", mode, customModes)
 	const config = getModeConfig(mode, customModes)
-	// console.log("config", config)
+	// logger.debug("config", config)
 	const args: ToolArgs = {
 		cwd,
 		searchSettings,
@@ -75,7 +76,7 @@ export function getToolDescriptionsForMode(
 	config.groups.forEach((groupEntry) => {
 		const groupName = getGroupName(groupEntry)
 		const toolGroup = TOOL_GROUPS[groupName]
-		console.log("toolGroup", toolGroup)
+		logger.debug("toolGroup", toolGroup)
 		if (toolGroup) {
 			toolGroup.tools.forEach((tool) => {
 				if (isToolAllowedForMode(tool, mode, customModes ?? [], experiments ?? {})) {
@@ -87,11 +88,11 @@ export function getToolDescriptionsForMode(
 
 	// Add always available tools
 	ALWAYS_AVAILABLE_TOOLS.forEach((tool) => tools.add(tool))
-	// console.log("tools", tools)
+	// logger.debug("tools", tools)
 	// Map tool descriptions for allowed tools
 	const descriptions = Array.from(tools).map((toolName) => {
 		const descriptionFn = toolDescriptionMap[toolName]
-		// console.log("descriptionFn", descriptionFn)
+		// logger.debug("descriptionFn", descriptionFn)
 		if (!descriptionFn) {
 			return undefined
 		}

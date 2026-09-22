@@ -21,6 +21,7 @@ import { WorkspaceManager } from '../../database/json/workspace/WorkspaceManager
 import { t } from '../../lang/helpers'
 
 import WorkspaceEditModal from './WorkspaceEditModal'
+import { logger } from '../../utils/logger'
 
 interface WorkspaceInfo extends Workspace {
 	isCurrent: boolean
@@ -73,7 +74,7 @@ const WorkspaceView = () => {
 			
 			return workspaceList
 		} catch (error) {
-			console.error('获取工作区列表失败:', error)
+			logger.error('获取工作区列表失败:', error)
 			return []
 		}
 	}, [workspaceManager, settings.workspace])
@@ -85,7 +86,7 @@ const WorkspaceView = () => {
 			const workspaceList = await getWorkspaces()
 			setWorkspaces(workspaceList)
 		} catch (error) {
-			console.error('刷新工作区列表失败:', error)
+			logger.error('刷新工作区列表失败:', error)
 			new Notice(String(t('workspace.notices.refreshFailed')))
 		} finally {
 			setIsLoading(false)
@@ -109,7 +110,7 @@ const WorkspaceView = () => {
 			// 刷新工作区列表以更新状态
 			await refreshWorkspaces()
 		} catch (error) {
-			console.error('切换工作区失败:', error)
+			logger.error('切换工作区失败:', error)
 			new Notice(String(t('workspace.notices.switchFailed')))
 		}
 	}
@@ -137,7 +138,7 @@ const WorkspaceView = () => {
 				new Notice(String(t('workspace.notices.deleteFailed')))
 			}
 		} catch (error) {
-			console.error('删除工作区失败:', error)
+			logger.error('删除工作区失败:', error)
 			new Notice(String(t('workspace.notices.deleteFailed')))
 		}
 	}
@@ -169,7 +170,7 @@ const WorkspaceView = () => {
 			await refreshWorkspaces()
 			closeCreateModal()
 		} catch (error) {
-			console.error('创建工作区失败:', error)
+			logger.error('创建工作区失败:', error)
 			throw error
 		}
 	}
@@ -195,7 +196,7 @@ const WorkspaceView = () => {
 			new Notice(String(t('workspace.notices.updated', { name: updates.name || editingWorkspace.name })))
 			await refreshWorkspaces()
 		} catch (error) {
-			console.error('更新工作区失败:', error)
+			logger.error('更新工作区失败:', error)
 			throw error
 		}
 	}
@@ -265,7 +266,7 @@ const WorkspaceView = () => {
 	// 组件初始化
 	useEffect(() => {
 		refreshWorkspaces().catch((error) => {
-			console.error('初始化工作区列表失败:', error)
+			logger.error('初始化工作区列表失败:', error)
 		})
 	}, [refreshWorkspaces])
 

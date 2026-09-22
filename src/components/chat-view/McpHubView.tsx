@@ -6,6 +6,7 @@ import { useMcpHub } from '../../contexts/McpHubContext'
 import { useSettings } from '../../contexts/SettingsContext'
 import { McpErrorEntry, McpResource, McpResourceTemplate, McpServer, McpTool } from '../../core/mcp/type'
 import { t } from '../../lang/helpers'
+import { logger } from '../../utils/logger'
 
 const McpHubView = () => {
 	const { settings, setSettings } = useSettings()
@@ -114,7 +115,7 @@ const McpHubView = () => {
 			try {
 				await hub.openMcpSettingsFile();
 			} catch (error) {
-				console.error('Failed to open config file:', error)
+				logger.error('Failed to open config file:', error)
 			}
 		}
 	}

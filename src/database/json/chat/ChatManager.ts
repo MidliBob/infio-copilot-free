@@ -13,6 +13,7 @@ import {
 	CHAT_SCHEMA_VERSION,
 	ChatConversation
 } from './types'
+import { logger } from '../../../utils/logger'
 
 export class ChatManager extends AbstractJsonRepository<
 	ChatConversation,
@@ -73,7 +74,7 @@ export class ChatManager extends AbstractJsonRepository<
 				workspace: workspaceId === 'vault' ? undefined : workspaceId,
 			}
 		} catch (error) {
-			console.warn('Failed to unsanitize filename:', fileName, error)
+			logger.warn('Failed to unsanitize filename:', fileName, error)
 			return null
 		}
 	}
@@ -107,7 +108,7 @@ export class ChatManager extends AbstractJsonRepository<
 				workspace: workspaceId === 'vault' ? undefined : workspaceId,
 			}
 		} catch (error) {
-			console.warn('Failed to decode v1 filename:', fileName, error)
+			logger.warn('Failed to decode v1 filename:', fileName, error)
 			return null
 		}
 	}
@@ -141,7 +142,7 @@ export class ChatManager extends AbstractJsonRepository<
 					newChat.title
 				)
 			} catch (error) {
-				console.error('Failed to add chat to workspace:', error)
+				logger.error('Failed to add chat to workspace:', error)
 			}
 		}
 
@@ -193,7 +194,7 @@ export class ChatManager extends AbstractJsonRepository<
 						updatedChat.title
 					)
 				} catch (error) {
-					console.error('Failed to update chat in workspace:', error)
+					logger.error('Failed to update chat in workspace:', error)
 				}
 			}
 		}
@@ -219,7 +220,7 @@ export class ChatManager extends AbstractJsonRepository<
 			try {
 				await this.workspaceManager.removeChatFromWorkspace(workspaceId, id)
 			} catch (error) {
-				console.error('Failed to remove chat from workspace:', error)
+				logger.error('Failed to remove chat from workspace:', error)
 			}
 		}
 
@@ -264,7 +265,7 @@ export class ChatManager extends AbstractJsonRepository<
 	}
 
 	public async listChats(workspaceFilter?: string): Promise<ChatConversationMeta[]> {
-		console.log('listChats', workspaceFilter)
+		logger.debug('listChats', workspaceFilter)
 		const metadata = await this.listMetadata()
 
 		// Use a Map to store the latest version of each chat by ID.

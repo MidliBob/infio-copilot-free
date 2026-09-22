@@ -13,6 +13,7 @@ import { getFilesWithTag } from '../../utils/glob-utils'
 import { openMarkdownFile } from '../../utils/obsidian'
 
 import { ModelSelect } from './chat-input/ModelSelect'
+import { logger } from '../../utils/logger'
 
 // 洞察源分组结果接口
 interface InsightFileGroup {
@@ -168,7 +169,7 @@ const InsightView = () => {
 			setInsightResults(insightsWithDisplayTime)
 
 		} catch (error) {
-			console.error('加载洞察失败:', error)
+			logger.error('加载洞察失败:', error)
 			setInsightResults([])
 		} finally {
 			setIsLoading(false)
@@ -222,18 +223,18 @@ const InsightView = () => {
 				await loadInsights()
 
 				// 显示成功消息和统计信息
-				console.log(t('insights.success.workspaceInitialized', { name: currentWorkspace.name }))
-				console.log(`✅ 深度处理完成统计:`)
-				console.log(`📁 文件: ${result.processedFiles} 个处理成功`)
-				console.log(`📂 文件夹: ${result.processedFolders} 个处理成功`)
-				console.log(`📊 总计: ${result.totalItems} 个项目（包含所有子项目）`)
+				logger.debug(t('insights.success.workspaceInitialized', { name: currentWorkspace.name }))
+				logger.debug(`✅ 深度处理完成统计:`)
+				logger.debug(`📁 文件: ${result.processedFiles} 个处理成功`)
+				logger.debug(`📂 文件夹: ${result.processedFolders} 个处理成功`)
+				logger.debug(`📊 总计: ${result.totalItems} 个项目（包含所有子项目）`)
 				if (result.skippedItems > 0) {
-					console.log(`⚠️  跳过: ${result.skippedItems} 个项目`)
+					logger.debug(`⚠️  跳过: ${result.skippedItems} 个项目`)
 				}
 				if (result.insightId) {
-					console.log(`🔍 洞察ID: ${result.insightId}`)
+					logger.debug(`🔍 洞察ID: ${result.insightId}`)
 				}
-				console.log(`💡 工作区摘要仅使用顶层配置项目，避免内容重叠`)
+				logger.debug(`💡 工作区摘要仅使用顶层配置项目，避免内容重叠`)
 
 				// 显示成功状态
 				setInitSuccess({
@@ -248,12 +249,12 @@ const InsightView = () => {
 				}, 5000)
 
 			} else {
-				console.error(t('insights.error.initializationFailed'), result.error)
+				logger.error(t('insights.error.initializationFailed'), result.error)
 				throw new Error(String(result.error || t('insights.error.initializationFailed')))
 			}
 
 		} catch (error) {
-			console.error(t('insights.error.initializationFailed'), error)
+			logger.error(t('insights.error.initializationFailed'), error)
 			setInsightResults([])
 			setInitSuccess({ show: false }) // 清理成功状态
 		} finally {
@@ -287,19 +288,19 @@ const InsightView = () => {
 
 			if (result.success) {
 				const workspaceName = currentWorkspace?.name || 'vault'
-				console.log(t('insights.success.workspaceDeleted', { name: workspaceName, count: result.deletedCount }))
+				logger.debug(t('insights.success.workspaceDeleted', { name: workspaceName, count: result.deletedCount }))
 
 				// 刷新洞察列表
 				await loadInsights()
 
 				// 可以在这里添加用户通知，比如显示删除成功的消息
 			} else {
-				console.error(t('insights.error.deletionFailed'), result.error)
+				logger.error(t('insights.error.deletionFailed'), result.error)
 				// 可以在这里添加错误提示
 			}
 
 		} catch (error) {
-			console.error(t('insights.error.deletionFailed'), error)
+			logger.error(t('insights.error.deletionFailed'), error)
 			// 可以在这里添加错误提示
 		} finally {
 			setIsDeleting(false)
@@ -339,17 +340,17 @@ const InsightView = () => {
 			const result = await transEngine.deleteSingleInsight(insightId)
 
 			if (result.success) {
-				console.log(t('insights.success.insightDeleted', { id: insightId }))
+				logger.debug(t('insights.success.insightDeleted', { id: insightId }))
 
 				// 刷新洞察列表
 				await loadInsights()
 			} else {
-				console.error(t('insights.error.singleDeletionFailed'), result.error)
+				logger.error(t('insights.error.singleDeletionFailed'), result.error)
 				// 可以在这里添加错误提示
 			}
 
 		} catch (error) {
-			console.error(t('insights.error.singleDeletionFailed'), error)
+			logger.error(t('insights.error.singleDeletionFailed'), error)
 			// 可以在这里添加错误提示
 		} finally {
 			setDeletingInsightId(null)
@@ -363,7 +364,7 @@ const InsightView = () => {
 			return
 		}
 
-		console.debug('🔍 [InsightView] 点击洞察结果:', {
+		logger.debug('🔍 [InsightView] 点击洞察结果:', {
 			id: insight.id,
 			path: insight.source_path,
 			type: insight.insight_type,
@@ -373,7 +374,7 @@ const InsightView = () => {
 
 		// 检查路径是否存在
 		if (!insight.source_path) {
-			console.error(t('insights.error.fileNotFound') + ' ' + insight.source_path)
+			logger.error(t('insights.error.fileNotFound') + ' ' + insight.source_path)
 			return
 		}
 
@@ -381,12 +382,12 @@ const InsightView = () => {
 		if (insight.source_path.startsWith('workspace:')) {
 			// 工作区洞察 - 显示详细信息或切换工作区
 			const workspaceName = insight.source_path.replace('workspace:', '')
-			console.debug('🌐 [InsightView] 点击工作区洞察:', workspaceName)
+			logger.debug('🌐 [InsightView] 点击工作区洞察:', workspaceName)
 			// TODO: 可以实现切换到该工作区或显示工作区详情
 			return
 		} else if (insight.source_type === 'folder') {
 			// 文件夹洞察 - 在文件管理器中显示文件夹
-			console.debug('📁 [InsightView] 点击文件夹洞察:', insight.source_path)
+			logger.debug('📁 [InsightView] 点击文件夹洞察:', insight.source_path)
 
 			// 尝试在 Obsidian 文件管理器中显示文件夹
 			const folder = app.vault.getAbstractFileByPath(insight.source_path)
@@ -397,28 +398,28 @@ const InsightView = () => {
 					// @ts-expect-error 使用 Obsidian 内部 API
 					fileExplorer.view.revealInFolder(folder)
 				}
-				console.debug('✅ [InsightView] 在文件管理器中显示文件夹')
+				logger.debug('✅ [InsightView] 在文件管理器中显示文件夹')
 			} else {
-				console.warn(t('insights.error.folderNotFound'), insight.source_path)
+				logger.warn(t('insights.error.folderNotFound'), insight.source_path)
 			}
 			return
 		} else {
 			// 文件洞察 - 正常打开文件
 			const file = app.vault.getFileByPath(insight.source_path)
 			if (!file) {
-				console.error(t('insights.error.fileNotFound'), insight.source_path)
+				logger.error(t('insights.error.fileNotFound'), insight.source_path)
 				return
 			}
 
-			console.debug('✅ [InsightView] 文件存在，准备打开:', {
+			logger.debug('✅ [InsightView] 文件存在，准备打开:', {
 				file: file.path
 			})
 
 			try {
 				openMarkdownFile(app, insight.source_path)
-				console.debug('✅ [InsightView] 成功调用openMarkdownFile')
+				logger.debug('✅ [InsightView] 成功调用openMarkdownFile')
 			} catch (error) {
-				console.error('❌ [InsightView] 调用openMarkdownFile失败:', error)
+				logger.error('❌ [InsightView] 调用openMarkdownFile失败:', error)
 			}
 		}
 	}

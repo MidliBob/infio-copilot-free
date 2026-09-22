@@ -20,6 +20,7 @@ import { TransProvider } from './contexts/TransContext'
 import InfioPlugin from './main'
 import { MentionableBlockData } from './types/mentionable'
 import { InfioSettings } from './types/settings'
+import { logger } from './utils/logger'
 
 export class ChatView extends ItemView {
 	private root: Root | null = null
@@ -65,7 +66,7 @@ export class ChatView extends ItemView {
 		// 确保容器元素存在
 		const containerElement = this.containerEl.children[1]
 		if (!containerElement || !(containerElement instanceof HTMLElement)) {
-			console.error('ChatView: Container element not found or invalid')
+			logger.error('ChatView: Container element not found or invalid')
 			return
 		}
 

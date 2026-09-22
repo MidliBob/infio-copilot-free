@@ -1,14 +1,15 @@
 // @ts-nocheck
 import { Platform, Plugin } from 'obsidian'
+import { logger } from './utils/logger'
 
 export default class InfioPlugin extends Plugin {
 	async onload() {
 		if (Platform.isMobile) {
-			console.log('Infio Copilot: Mobile platform detected, skipping desktop-only features.')
+			logger.debug('Infio Copilot: Mobile platform detected, skipping desktop-only features.')
 			const mod = await import('./main.mobile')
 			await mod.loadMobile(this)
 		} else {
-			console.log('Infio Copilot: Desktop platform detected, loading desktop features.')
+			logger.debug('Infio Copilot: Desktop platform detected, loading desktop features.')
 			const mod = await import('./main.desktop')
 			await mod.loadDesktop(this)
 		}

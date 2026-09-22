@@ -6,6 +6,7 @@ import { t } from '../../../lang/helpers'
 import { ApplyStatus, ToolArgs } from "../../../types/apply"
 
 import { MemoizedSyntaxHighlighterWrapper } from "./SyntaxHighlighterWrapper"
+import { logger } from '../../../utils/logger'
 
 export default function MarkdownEditFileBlock({
 	mode,
@@ -39,7 +40,7 @@ export default function MarkdownEditFileBlock({
 			setCopied(true)
 			window.setTimeout(() => setCopied(false), 2000)
 		} catch (err) {
-			console.error('Failed to copy text: ', err)
+			logger.error('Failed to copy text: ', err)
 		}
 	}
 

@@ -3,6 +3,7 @@ import { OPENROUTER_BASE_URL } from '../constants'
 import { ApiProvider } from '../types/llm/model'
 import { InfioSettings } from '../types/settings'
 import { getOllamaEmbeddingModels, getOllamaModels } from './ollama'
+import { logger } from './logger'
 
 export interface ModelInfo {
 	maxTokens?: number
@@ -179,7 +180,7 @@ async function fetchOpenRouterModels(): Promise<Record<string, ModelInfo>> {
 		openRouterModelsCache = models;
 		return models;
 	} catch (error) {
-		console.error('Failed to fetch OpenRouter models:', error);
+		logger.error('Failed to fetch OpenRouter models:', error);
 		return {
 			[openRouterDefaultModelId]: openRouterDefaultModelInfo
 		};

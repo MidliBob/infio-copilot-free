@@ -3,6 +3,7 @@
 import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 import { t } from './lang/helpers';
+import { setDebugEnabled } from './utils/logger';
 import { InfioSettings, parseInfioSettings } from './types/settings-mobile';
 
 export class MobileSettingTab extends PluginSettingTab {
@@ -35,6 +36,7 @@ export async function loadMobile(base: Plugin) {
 
  	plugin.loadSettings = async function () {
  		this.settings = parseInfioSettings(await this.loadData())
+ 		setDebugEnabled(this.settings.debugMode)
  		await this.saveData(this.settings)
  	}
 

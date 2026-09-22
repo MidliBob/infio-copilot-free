@@ -6,6 +6,7 @@ import {
     SearchResult,
     formatResults,
 } from '../search-common';
+import { logger } from '../../../utils/logger'
 
 /**
  * Searches using Obsidian's core search plugin and builds context for each match.
@@ -44,7 +45,7 @@ export async function matchSearchUsingCorePlugin(
         });
 
         if (!searchResultsMap || searchResultsMap.size === 0) {
-			console.error("No results found or search results map is not available.");
+			logger.error("No results found or search results map is not available.");
 			return "No results found."
         }
 
@@ -87,7 +88,7 @@ export async function matchSearchUsingCorePlugin(
 
         return formatResults(results, ".\\");
     } catch (error) {
-		console.error("Error during core plugin processing:", error);
+		logger.error("Error during core plugin processing:", error);
 		return "An error occurred during the search.";
 	}
 }

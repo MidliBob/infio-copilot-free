@@ -1,6 +1,7 @@
 import { t } from '../lang/helpers'
 import { App } from "obsidian";
 import { DataviewApi, getAPI } from "obsidian-dataview";
+import { logger } from './logger'
 
 export interface DataviewQueryResult {
 	success: boolean;
@@ -23,7 +24,7 @@ export class DataviewManager {
 			const api = getAPI(this.app) as DataviewApi | null;
 			return api;
 		} catch (error) {
-			console.error('获取 Dataview API 失败:', error);
+			logger.error('获取 Dataview API 失败:', error);
 			return null;
 		}
 	}
@@ -74,7 +75,7 @@ export class DataviewManager {
 			};
 
 		} catch (error) {
-			console.error('Dataview 查询执行失败:', error);
+			logger.error('Dataview 查询执行失败:', error);
 			return {
 				success: false,
 				error: error instanceof Error ? error.message : t('chat.dataview.unknownError')
@@ -108,7 +109,7 @@ export class DataviewManager {
 				};
 			}
 		} catch (error) {
-			console.error('Dataview JS 执行失败:', error);
+			logger.error('Dataview JS 执行失败:', error);
 			return {
 				success: false,
 				error: error instanceof Error ? error.message : t('chat.dataview.unknownError')

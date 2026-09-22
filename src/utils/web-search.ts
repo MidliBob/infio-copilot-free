@@ -7,6 +7,7 @@ import { RAGEngine } from '../core/rag/rag-engine';
 
 import { isVideoUrl, getVideoProvider } from './video-detector';
 import { YoutubeTranscript } from './youtube-transcript';
+import { logger } from './logger'
 
 
 interface SearchResult {
@@ -68,7 +69,7 @@ async function serperSearch(query: string, serperApiKey: string, serperSearchEng
 				}
 			});
 		}).on('error', (error: Error) => {
-			console.error("serper search error: ", error)
+			logger.error("serper search error: ", error)
 			reject(error instanceof Error ? error : new Error(String(error)));
 		});
 	});
@@ -123,7 +124,7 @@ async function fetchByLocalTool(url: string): Promise<string> {
 Video Transcript:
 ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`
 			} catch (error) {
-				console.warn('Failed to extract YouTube transcript:', error)
+				logger.warn('Failed to extract YouTube transcript:', error)
 				// 如果转录失败，返回视频信息提示
 				return `Video Content Detected: ${url}
 Platform: YouTube
@@ -168,7 +169,7 @@ async function fetchByJina(url: string, apiKey: string): Promise<string> {
 					// check if there is an error response
 					const response = JSON.parse(data);
 					if (response.code && response.message) {
-						console.error(`JINA API error: ${response.message}`);
+						logger.error(`JINA API error: ${response.message}`);
 						resolve(`fetch jina content error: ${response.message}`);
 						return;
 					}
@@ -181,7 +182,7 @@ async function fetchByJina(url: string, apiKey: string): Promise<string> {
 		});
 
 		req.on('error', (e) => {
-			console.error(`Error: ${e.message}`);
+			logger.error(`Error: ${e.message}`);
 			resolve(`fetch jina error: ${e.message}`);
 		});
 
@@ -201,7 +202,7 @@ export async function fetchUrlContent(url: string, apiKey: string): Promise<stri
 			try {
 				content = await fetchByJina(url, apiKey);
 			} catch (error) {
-				console.error(`Failed to fetch URL by jina: ${url}`, error);
+				logger.error(`Failed to fetch URL by jina: ${url}`, error);
 				content = await fetchByLocalTool(url);
 			}
 		} else {
@@ -209,7 +210,7 @@ export async function fetchUrlContent(url: string, apiKey: string): Promise<stri
 		}
 		return content.replaceAll(/\n{2,}/g, '\n');
 	} catch (error) {
-		console.error(`Failed to fetch URL content: ${url}`, error);
+		logger.error(`Failed to fetch URL content: ${url}`, error);
 		return null;
 	}
 }
@@ -233,7 +234,7 @@ export async function webSearch(
 		}));
 		return filteredResultsWithContent.join('\n\n');
 	} catch (error) {
-		console.error(`Failed to web search: ${query}`, error);
+		logger.error(`Failed to web search: ${query}`, error);
 		return "web search error";
 	}
 }
@@ -245,7 +246,7 @@ export async function fetchUrlsContent(urls: string[], apiKey: string): Promise<
 				const content = await fetchUrlContent(url, apiKey);
 				return `<url_content url="${url}">\n${content}\n</url_content>`;
 			} catch (error) {
-				console.error(`Failed to fetch URL content: ${url}`, error);
+				logger.error(`Failed to fetch URL content: ${url}`, error);
 				return `<url_content url="${url}">\n fetch content error: ${error}\n</url_content>`;
 			}
 		});
@@ -253,7 +254,7 @@ export async function fetchUrlsContent(urls: string[], apiKey: string): Promise<
 		Promise.all(results).then((texts) => {
 			resolve(texts.join('\n\n'));
 		}).catch((error) => {
-			console.error('fetch urls content error', error);
+			logger.error('fetch urls content error', error);
 			resolve('fetch urls content error'); // even if error, return some content
 		});
 	});

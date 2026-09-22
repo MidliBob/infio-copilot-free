@@ -3,6 +3,7 @@
 import { App } from "obsidian"
 
 import { McpHub } from "./McpHub"
+import { logger } from '../../utils/logger'
 
 /**
  * Singleton manager for MCP server instances.
@@ -67,7 +68,7 @@ export class McpServerManager {
 	// static notifyProviders(message: any): void {
 	// 	this.providers.forEach((provider) => {
 	// 		provider.postMessageToWebview(message).catch((error) => {
-	// 			console.error("Failed to notify provider:", error)
+	// 			logger.error("Failed to notify provider:", error)
 	// 		})
 	// 	})
 	// }

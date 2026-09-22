@@ -30,6 +30,7 @@ import {
 import { tokenCount } from './token'
 import { isYoutubeUrl } from './video-detector'
 import { YoutubeTranscript } from './youtube-transcript'
+import { logger } from './logger'
 
 export function addLineNumbers(content: string, startLine: number = 1): string {
 	const lines = content.split("\n")
@@ -756,7 +757,7 @@ export class PromptGenerator {
 			}
 		}
 		if (isOverThreshold) {
-			console.debug("isOverThreshold", isOverThreshold)
+			logger.debug("isOverThreshold", isOverThreshold)
 			fileContentsPrompts = files.map((file) => {
 				return `<user_mention_file path="${file.path}">\n(Content omitted due to token limit.\n</user_mention_file>`
 			}).join('\n')
@@ -1144,7 +1145,7 @@ ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
 
 			return file.path
 		} catch (error) {
-			console.error('Failed to create markdown file:', error)
+			logger.error('Failed to create markdown file:', error)
 			return ""
 		}
 	}
@@ -1218,7 +1219,7 @@ ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
 					const imagePath = await this.saveImageFromBase64(item.data, item.filename, item.mimeType)
 					savedImagePaths.push(imagePath)
 				} catch (error) {
-					console.error('Failed to save image:', error)
+					logger.error('Failed to save image:', error)
 				}
 			}
 		}
@@ -1281,9 +1282,9 @@ ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
 				content,
 			})
 
-			console.debug(`Saved conversion data to cache: ${source}`)
+			logger.debug(`Saved conversion data to cache: ${source}`)
 		} catch (error) {
-			console.error('Failed to save conversion data to cache:', error)
+			logger.error('Failed to save conversion data to cache:', error)
 			throw error
 		}
 	}
@@ -1313,10 +1314,10 @@ ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
 			// 创建图片文件
 			await this.app.vault.createBinary(targetPath, bytes.buffer)
 
-			console.debug(`Image saved: ${targetPath}`)
+			logger.debug(`Image saved: ${targetPath}`)
 			return targetPath
 		} catch (error) {
-			console.error(`Failed to save image to ${targetPath}:`, error)
+			logger.error(`Failed to save image to ${targetPath}:`, error)
 			throw error
 		}
 	}

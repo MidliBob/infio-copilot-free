@@ -10,6 +10,7 @@ import { t } from '../../../lang/helpers'
 import { PreviewView, PreviewViewState } from "../../../PreviewView"
 import { useCopyToClipboard } from "../../../utils/clipboard"
 import { useDebounceEffect } from "../../../utils/useDebounceEffect"
+import { logger } from '../../../utils/logger'
 
 // Obsidian 暗色主题配置
 const OBSIDIAN_DARK_THEME = {
@@ -200,7 +201,7 @@ function MermaidBlock({ code }: MermaidBlockProps) {
 					}
 				})
 				.catch((err: Error) => {
-					console.warn("Mermaid parse/render failed:", err)
+					logger.warn("Mermaid parse/render failed:", err)
 					setError(err.message || "Failed to render Mermaid diagram")
 				})
 				.finally(() => {
@@ -261,7 +262,7 @@ function MermaidBlock({ code }: MermaidBlockProps) {
 				} satisfies PreviewViewState,
 			})
 		} catch (err) {
-			console.error("Error opening Mermaid preview:", err)
+			logger.error("Error opening Mermaid preview:", err)
 		}
 	}
 

@@ -18,6 +18,7 @@ import { openMarkdownFile } from '../../utils/obsidian'
 import { ModelSelect } from './chat-input/ModelSelect'
 import SearchInputWithActions, { SearchInputRef } from './chat-input/SearchInputWithActions'
 import { editorStateToPlainText } from './chat-input/utils/editor-state-to-plain-text'
+import { logger } from '../../utils/logger'
 
 // 文件分组结果接口
 interface FileGroup {
@@ -148,7 +149,7 @@ const SearchView = () => {
 			} else {
 				scopeDescription = '整个 Vault'
 			}
-			console.debug('搜索范围:', scopeDescription)
+			logger.debug('搜索范围:', scopeDescription)
 
 			// 构建搜索范围
 			let scope: { files: string[], folders: string[] } | undefined
@@ -220,7 +221,7 @@ const SearchView = () => {
 				setInsightResults(insightsResults)
 			}
 		} catch (error) {
-			console.error('搜索失败:', error)
+			logger.error('搜索失败:', error)
 			setSearchResults([])
 			setInsightResults([])
 		} finally {
@@ -255,7 +256,7 @@ const SearchView = () => {
 			setStatisticsInfo(stats)
 
 		} catch (error) {
-			console.error('加载统计信息失败:', error)
+			logger.error('加载统计信息失败:', error)
 			setStatisticsInfo({ totalFiles: 0, totalChunks: 0 })
 		} finally {
 			setIsLoadingStats(false)
@@ -294,7 +295,7 @@ const SearchView = () => {
 			await loadStatistics()
 
 			// 显示成功消息
-			console.log(`✅ 工作区 RAG 向量初始化完成: ${currentWorkspace.name}`)
+			logger.debug(`✅ 工作区 RAG 向量初始化完成: ${currentWorkspace.name}`)
 
 			// 显示成功状态
 			setRAGInitSuccess({
@@ -310,7 +311,7 @@ const SearchView = () => {
 			}, 5000)
 
 		} catch (error) {
-			console.error('工作区 RAG 向量初始化失败:', error)
+			logger.error('工作区 RAG 向量初始化失败:', error)
 			setRAGInitSuccess({ show: false })
 		} finally {
 			setIsInitializingRAG(false)
@@ -335,10 +336,10 @@ const SearchView = () => {
 			// 刷新统计信息
 			await loadStatistics()
 
-			console.log('✅ 工作区索引清除完成')
+			logger.debug('✅ 工作区索引清除完成')
 
 		} catch (error) {
-			console.error('清除工作区索引失败:', error)
+			logger.error('清除工作区索引失败:', error)
 		} finally {
 			setIsDeleting(false)
 		}
@@ -383,7 +384,7 @@ const SearchView = () => {
 			return
 		}
 
-		console.debug('🔍 [SearchView] 点击搜索结果:', {
+		logger.debug('🔍 [SearchView] 点击搜索结果:', {
 			id: result.id,
 			path: result.path,
 			startLine: result.metadata?.startLine,
@@ -394,27 +395,27 @@ const SearchView = () => {
 
 		// 检查路径是否存在
 		if (!result.path) {
-			console.error('❌ [SearchView] 文件路径为空')
+			logger.error('❌ [SearchView] 文件路径为空')
 			return
 		}
 
 		// 检查文件是否存在于vault中
 		const file = app.vault.getFileByPath(result.path)
 		if (!file) {
-			console.error('❌ [SearchView] 在vault中找不到文件:', result.path)
+			logger.error('❌ [SearchView] 在vault中找不到文件:', result.path)
 			return
 		}
 
-		console.debug('✅ [SearchView] 文件存在，准备打开:', {
+		logger.debug('✅ [SearchView] 文件存在，准备打开:', {
 			file: file.path,
 			startLine: result.metadata?.startLine
 		})
 
 		try {
 			openMarkdownFile(app, result.path, result.metadata.startLine)
-			console.debug('✅ [SearchView] 成功调用openMarkdownFile')
+			logger.debug('✅ [SearchView] 成功调用openMarkdownFile')
 		} catch (error) {
-			console.error('❌ [SearchView] 调用openMarkdownFile失败:', error)
+			logger.error('❌ [SearchView] 调用openMarkdownFile失败:', error)
 		}
 	}
 

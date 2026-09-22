@@ -8,6 +8,7 @@ import { useApp } from '../../contexts/AppContext'
 import { useSettings } from '../../contexts/SettingsContext'
 import { Workspace } from '../../database/json/workspace/types'
 import { WorkspaceManager } from '../../database/json/workspace/WorkspaceManager'
+import { logger } from '../../utils/logger'
 
 interface WorkspaceInfo extends Workspace {
 	isCurrent: boolean
@@ -65,7 +66,7 @@ const WorkspaceSelect = () => {
 
 			return workspaceList
 		} catch (error) {
-			console.error('获取工作区列表失败:', error)
+			logger.error('获取工作区列表失败:', error)
 			return []
 		}
 	}, [workspaceManager, settings.workspace])
@@ -77,7 +78,7 @@ const WorkspaceSelect = () => {
 			const workspaceList = await getWorkspaces()
 			setWorkspaces(workspaceList)
 		} catch (error) {
-			console.error('刷新工作区列表失败:', error)
+			logger.error('刷新工作区列表失败:', error)
 		} finally {
 			setIsLoading(false)
 		}
@@ -103,7 +104,7 @@ const WorkspaceSelect = () => {
 			// 刷新工作区列表以更新状态
 			await refreshWorkspaces()
 		} catch (error) {
-			console.error('切换工作区失败:', error)
+			logger.error('切换工作区失败:', error)
 			new Notice(t('workspace.switchFailed'))
 		}
 	}

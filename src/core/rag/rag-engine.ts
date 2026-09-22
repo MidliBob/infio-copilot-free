@@ -11,6 +11,7 @@ import { InfioSettings } from '../../types/settings'
 import { getFilesWithTag } from '../../utils/glob-utils'
 
 import { getEmbeddingModel } from './embedding'
+import { logger } from '../../utils/logger'
 
 // EmbeddingManager 类型定义
 type EmbeddingManager = {
@@ -43,7 +44,7 @@ export class RAGEngine {
 			try {
 				this.embeddingModel = getEmbeddingModel(settings, embeddingManager)
 			} catch (error) {
-				console.warn('Failed to initialize embedding model:', error)
+				logger.warn('Failed to initialize embedding model:', error)
 				this.embeddingModel = null
 			}
 		} else {
@@ -62,7 +63,7 @@ export class RAGEngine {
 			try {
 				this.embeddingModel = getEmbeddingModel(settings, this.embeddingManager)
 			} catch (error) {
-				console.warn('Failed to initialize embedding model:', error)
+				logger.warn('Failed to initialize embedding model:', error)
 				this.embeddingModel = null
 			}
 		} else {
@@ -188,7 +189,7 @@ export class RAGEngine {
 		await this.initializeDimension()
 
 		// if (!this.initialized) {
-		// 	console.log("need to updateVaultIndex")
+		// 	logger.debug("need to updateVaultIndex")
 		// 	await this.updateVaultIndex({ reindexAll: false }, onQueryProgressChange)
 		// }
 		const queryEmbedding = await this.getEmbedding(query)

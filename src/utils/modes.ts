@@ -3,6 +3,7 @@ import { App } from "obsidian"
 import { addCustomInstructions } from "../core/prompts/sections/custom-instructions"
 
 import { ALWAYS_AVAILABLE_TOOLS, TOOL_GROUPS, ToolGroup } from "./tool-groups"
+import { logger } from './logger'
 
 // Mode types
 export type Mode = string
@@ -56,7 +57,7 @@ export function doesFileMatchRegex(filePath: string, pattern: string): boolean {
 		const regex = new RegExp(pattern)
 		return regex.test(filePath)
 	} catch (error) {
-		console.error(`Invalid regex pattern: ${pattern}`, error)
+		logger.error(`Invalid regex pattern: ${pattern}`, error)
 		return false
 	}
 }
@@ -72,7 +73,7 @@ export function getToolsForMode(groups: readonly GroupEntry[]): string[] {
 		if (groupConfig) {
 			groupConfig.tools.forEach((tool: string) => tools.add(tool))
 		} else {
-			console.warn(`Tool group '${groupName}' not found in TOOL_GROUPS`)
+			logger.warn(`Tool group '${groupName}' not found in TOOL_GROUPS`)
 		}
 	})
 
@@ -223,7 +224,7 @@ export function isToolAllowedForMode(
 
 		// If the group config doesn't exist, skip this group
 		if (!groupConfig) {
-			console.warn(`Tool group '${groupName}' not found in TOOL_GROUPS`)
+			logger.warn(`Tool group '${groupName}' not found in TOOL_GROUPS`)
 			continue
 		}
 
@@ -327,7 +328,7 @@ export async function getFullModeDetails(
 export function getRoleDefinition(modeSlug: string, customModes?: ModeConfig[]): string {
 	const mode = getModeBySlug(modeSlug, customModes)
 	if (!mode) {
-		console.warn(`No mode found for slug: ${modeSlug}`)
+		logger.warn(`No mode found for slug: ${modeSlug}`)
 		return ""
 	}
 	return mode.roleDefinition
@@ -337,7 +338,7 @@ export function getRoleDefinition(modeSlug: string, customModes?: ModeConfig[]):
 export function getCustomInstructions(modeSlug: string, customModes?: ModeConfig[]): string {
 	const mode = getModeBySlug(modeSlug, customModes)
 	if (!mode) {
-		console.warn(`No mode found for slug: ${modeSlug}`)
+		logger.warn(`No mode found for slug: ${modeSlug}`)
 		return ""
 	}
 	return mode.customInstructions ?? ""

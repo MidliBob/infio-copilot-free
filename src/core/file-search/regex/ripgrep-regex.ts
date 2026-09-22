@@ -9,6 +9,7 @@ import {
 	SearchResult,
 	formatResults
 } from '../search-common'
+import { logger } from '../../../utils/logger'
 
 const isWindows = /^win/.test(process.platform)
 const binName = isWindows ? "rg.exe" : "rg"
@@ -95,7 +96,7 @@ export async function regexSearchUsingRipgrep(
 	try {
 		output = await execRipgrep(rgPath, args)
 	} catch (error) {
-		console.error("Error executing ripgrep:", error)
+		logger.error("Error executing ripgrep:", error)
 		return "No results found."
 	}
 	const results: SearchResult[] = []
@@ -134,7 +135,7 @@ export async function regexSearchUsingRipgrep(
 					}
 				}
 			} catch (error) {
-				console.error("Error parsing ripgrep output:", error)
+				logger.error("Error parsing ripgrep output:", error)
 			}
 		}
 	})

@@ -6,6 +6,7 @@ import { useSettings } from '../../contexts/SettingsContext'
 import { useChatHistory } from '../../hooks/use-chat-history'
 import { t } from '../../lang/helpers'
 import { ChatConversationMeta } from '../../types/chat'
+import { logger } from '../../utils/logger'
 
 export interface ChatHistoryViewProps {
 	currentConversationId?: string
@@ -63,7 +64,7 @@ const ChatHistoryView = ({
 			}
 		} catch (error) {
 			new Notice(String(t('chat.history.cleanupFailed')))
-			console.error('Failed to cleanup outdated chats', error)
+			logger.error('Failed to cleanup outdated chats', error)
 		}
 	}
 
@@ -138,7 +139,7 @@ const ChatHistoryView = ({
 			onDelete?.(id)
 		} catch (error) {
 			new Notice(String(t('chat.errors.failedToDeleteConversation')))
-			console.error('Failed to delete conversation', error)
+			logger.error('Failed to delete conversation', error)
 		}
 	}
 
@@ -166,7 +167,7 @@ const ChatHistoryView = ({
 				onDelete?.(id)
 			} catch (error) {
 				errors.push(id)
-				console.error('Failed to delete conversation', id, error)
+				logger.error('Failed to delete conversation', id, error)
 			}
 		}
 
@@ -201,7 +202,7 @@ const ChatHistoryView = ({
 			setEditingConversationId(null)
 		} catch (error) {
 			new Notice(String(t('chat.errors.failedToUpdateTitle')))
-			console.error('Failed to update conversation title', error)
+			logger.error('Failed to update conversation title', error)
 		}
 	}
 

@@ -81,6 +81,7 @@ import UserMessageView from './UserMessageView'
 import WebsiteReadResults from './WebsiteReadResults'
 import WorkspaceSelect from './WorkspaceSelect'
 import WorkspaceView from './WorkspaceView'
+import { logger } from '../../utils/logger'
 
 // Add an empty line here
 const getNewInputMessage = (app: App, defaultMention: string): ChatUserMessage => {
@@ -261,7 +262,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 			})
 		} catch (error) {
 			new Notice(String(t('chat.errors.failedToLoadConversation')))
-			console.error(String(t('chat.errors.failedToLoadConversation')), error)
+			logger.error(String(t('chat.errors.failedToLoadConversation')), error)
 		}
 	}
 
@@ -393,7 +394,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 				openSettingsModalWithError(app, error.message)
 			} else {
 				new Notice(error.message)
-				console.error('Failed to generate response', error)
+				logger.error('Failed to generate response', error)
 			}
 		},
 	})
@@ -861,7 +862,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 				} else if (toolArgs.type === 'call_transformations') {
 					// Handling for the unified transformations tool
 					try {
-						console.log("call_transformations", toolArgs)
+						logger.debug("call_transformations", toolArgs)
 						// Validate that the transformation type is a valid enum member
 						const validTransformationTypes = Object.values(TransformationType) as string[]
 						if (!validTransformationTypes.includes(toolArgs.transformation)) {
@@ -907,7 +908,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 							}
 						};
 					} catch (error) {
-						console.error(`Transformation failed (${toolArgs.transformation}):`, error);
+						logger.error(`Transformation failed (${toolArgs.transformation}):`, error);
 						return {
 							type: toolArgs.type,
 							applyMsgId,
@@ -976,7 +977,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 												const itemType = isFolder ? t('fileOps.typeFolder') : t('fileOps.typeFile');
 												results.push(t('fileOps.trashOk', { type: itemType, path: operation.path }));
 											} catch (error) {
-												console.error('删除失败:', error);
+												logger.error('删除失败:', error);
 												results.push(t('fileOps.deleteFailed', { path: operation.path, error: error.message }));
 											}
 										} else {
@@ -1048,7 +1049,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 							}
 						};
 					} catch (error) {
-						console.error('文件管理操作失败:', error);
+						logger.error('文件管理操作失败:', error);
 						return {
 							type: 'manage_files',
 							applyMsgId,
@@ -1068,7 +1069,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					throw new Error(`Unsupported tool type: ${(toolArgs as any).type || 'unknown'}`);
 				}
 			} catch (error) {
-				console.error('Failed to apply changes', error)
+				logger.error('Failed to apply changes', error)
 				throw error
 			}
 		},
@@ -1115,7 +1116,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 				openSettingsModalWithError(app, error.message)
 			} else {
 				new Notice(error.message)
-				console.error('Failed to apply changes', error)
+				logger.error('Failed to apply changes', error)
 			}
 		},
 	})
@@ -1142,7 +1143,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 				}
 			} catch (error) {
 				new Notice('Failed to save chat history')
-				console.error('Failed to save chat history', error)
+				logger.error('Failed to save chat history', error)
 			}
 		}
 		void updateConversationAsync()

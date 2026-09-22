@@ -14,6 +14,7 @@ import { PreviewView, PreviewViewState } from '../../PreviewView';
 import { defaultModes as buildinModes } from '../../utils/modes';
 import { openOrCreateMarkdownFile } from '../../utils/obsidian';
 import { PromptGenerator, getFullLanguageName } from '../../utils/prompt-generator';
+import { logger } from '../../utils/logger'
 
 const CustomModeView = () => {
 	const app = useApp()
@@ -99,7 +100,7 @@ const CustomModeView = () => {
 				setCustomInstructions(customMode.customInstructions || '');
 				setSelectedTools(customMode.groups);
 			} else {
-				console.error("custom mode not found")
+				logger.error("custom mode not found")
 			}
 		}
 	}, [selectedMode, customModeList]);

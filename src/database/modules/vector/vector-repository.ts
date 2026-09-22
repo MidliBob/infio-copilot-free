@@ -4,6 +4,7 @@ import { App } from 'obsidian'
 import { EmbeddingModel } from '../../../types/embedding'
 import { DatabaseNotInitializedException } from '../../exception'
 import { InsertVector, SelectVector, vectorTables } from '../../schema'
+import { logger } from '../../../utils/logger'
 
 export class VectorRepository {
 	private app: App
@@ -220,7 +221,7 @@ export class VectorRepository {
 
 		type SearchResult = Omit<SelectVector, 'embedding'> & { similarity: number }
 		const result = await this.db.query<SearchResult>(query, params)
-		console.log("performSimilaritySearch result", result.rows)
+		logger.debug("performSimilaritySearch result", result.rows)
 		return result.rows
 	}
 
@@ -293,10 +294,10 @@ export class VectorRepository {
       ORDER BY rank DESC
       LIMIT $2
     `
-		console.log("performFulltextSearch query", query)
+		logger.debug("performFulltextSearch query", query)
 		type SearchResult = Omit<SelectVector, 'embedding'> & { rank: number }
 		const result = await this.db.query<SearchResult>(query, params)
-		console.log("performFulltextSearch result", result.rows)
+		logger.debug("performFulltextSearch result", result.rows)
 		return result.rows
 	}
 
@@ -319,7 +320,7 @@ export class VectorRepository {
                 .replace(/\s+/g, ' ')
                 .trim()
     } catch (error) {
-      console.warn('Failed to segment text for TSVECTOR:', error)
+      logger.warn('Failed to segment text for TSVECTOR:', error)
       return text
     }
   }
@@ -348,7 +349,7 @@ export class VectorRepository {
 							return word.length > 0
 						})
 				} catch (segmentError) {
-					console.warn('Intl.Segmenter failed, falling back to simple splitting:', segmentError)
+					logger.warn('Intl.Segmenter failed, falling back to simple splitting:', segmentError)
 				}
 			}
 
@@ -375,11 +376,11 @@ export class VectorRepository {
 			// Join keywords with & for PostgreSQL full-text search
 			const ftsQueryString = keywords.join(' | ')
 
-			console.log(`Original query: "${query}" -> Processed query: "${ftsQueryString}"`)
+			logger.debug(`Original query: "${query}" -> Processed query: "${ftsQueryString}"`)
 			return ftsQueryString
 		} catch (error) {
 			// If all processing fails, return original query
-			console.warn('Failed to process FTS query:', error)
+			logger.warn('Failed to process FTS query:', error)
 			return query
 		}
 	}

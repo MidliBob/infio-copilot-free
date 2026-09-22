@@ -29,6 +29,7 @@ import OnEnterPlugin from './plugins/on-enter/OnEnterPlugin'
 import OnMutationPlugin, {
 	NodeMutations,
 } from './plugins/on-mutation/OnMutationPlugin'
+import { logger } from '../../../utils/logger'
 
 export type LexicalContentEditableProps = {
 	rootTheme?: string
@@ -76,7 +77,7 @@ export default function LexicalContentEditable({
 		nodes: [MentionNode],
 		editorState: initialEditorState,
 		onError: (error) => {
-			console.error(error)
+			logger.error(error)
 		},
 	}
 

@@ -6,6 +6,7 @@ import { TRANSFORMATIONS, TransEngine } from '../core/transformations/trans-engi
 import { Workspace } from '../database/json/workspace/types'
 
 import { addLineNumbers } from './prompt-generator'
+import { logger } from './logger'
 
 export const findFilesMatchingPatterns = async (
 	patterns: string[],
@@ -288,7 +289,7 @@ export const semanticSearchFiles = async (
 			resultSections.push(ragSnippets)
 		}
 	} catch (error) {
-		console.warn('RAG 搜索失败:', error)
+		logger.warn('RAG 搜索失败:', error)
 		resultSections.push('## 📝 原始笔记内容\n⚠️ 原始笔记搜索失败')
 	}
 
@@ -330,7 +331,7 @@ export const semanticSearchFiles = async (
 				}
 			}
 		} catch (error) {
-			console.warn('TransEngine 搜索失败:', error)
+			logger.warn('TransEngine 搜索失败:', error)
 			resultSections.push('\n## 🧠 AI 抽象洞察\n⚠️ 洞察搜索失败: ' + (error instanceof Error ? error.message : String(error)))
 		}
 	}

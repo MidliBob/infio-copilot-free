@@ -13,6 +13,7 @@ import { getProviderApiUrl } from '../../utils/provider-urls';
 
 import { ApiKeyComponent, CustomUrlComponent } from './FormComponents';
 import { ComboBoxComponent } from './ProviderModelsPicker';
+import { logger } from '../../utils/logger'
 
 type CustomProviderSettingsProps = {
 	plugin: InfioPlugin;
@@ -233,19 +234,19 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 				newSettings.chatModelProvider = selectedProvider;
 				newSettings.chatModelId = defaultModels.chat;
 				hasUpdates = true;
-				console.debug(t("settings.ModelProvider.chatModelConfigured", { provider: selectedProvider, model: defaultModels.chat }));
+				logger.debug(t("settings.ModelProvider.chatModelConfigured", { provider: selectedProvider, model: defaultModels.chat }));
 			}
 			if (defaultModels.insight) {
 				newSettings.insightModelProvider = selectedProvider;
 				newSettings.insightModelId = defaultModels.insight;
 				hasUpdates = true;
-				console.debug(t("settings.ModelProvider.insightModelConfigured", { provider: selectedProvider, model: defaultModels.insight }));
+				logger.debug(t("settings.ModelProvider.insightModelConfigured", { provider: selectedProvider, model: defaultModels.insight }));
 			}
 			if (defaultModels.autoComplete) {
 				newSettings.applyModelProvider = selectedProvider;
 				newSettings.applyModelId = defaultModels.autoComplete;
 				hasUpdates = true;
-				console.debug(t("settings.ModelProvider.autocompleteModelConfigured", { provider: selectedProvider, model: defaultModels.autoComplete }));
+				logger.debug(t("settings.ModelProvider.autocompleteModelConfigured", { provider: selectedProvider, model: defaultModels.autoComplete }));
 			}
 		}
 
@@ -258,13 +259,13 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 				newSettings.embeddingModelProvider = embeddingProvider;
 				newSettings.embeddingModelId = embeddingDefaultModels.embedding;
 				hasUpdates = true;
-				console.debug(t("settings.ModelProvider.embeddingModelConfigured", { provider: embeddingProvider, model: embeddingDefaultModels.embedding }));
+				logger.debug(t("settings.ModelProvider.embeddingModelConfigured", { provider: embeddingProvider, model: embeddingDefaultModels.embedding }));
 			}
 		} else { // use local provider
 			newSettings.embeddingModelProvider = ApiProvider.LocalProvider;
 			newSettings.embeddingModelId = localProviderDefaultEmbeddingModelId;
 			hasUpdates = true;
-			console.debug(t("settings.ModelProvider.embeddingModelConfigured", { provider: ApiProvider.LocalProvider, model: localProviderDefaultEmbeddingModelId }));
+			logger.debug(t("settings.ModelProvider.embeddingModelConfigured", { provider: ApiProvider.LocalProvider, model: localProviderDefaultEmbeddingModelId }));
 		}
 
 		// 一次性更新所有设置
@@ -313,7 +314,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	};
 
 	const testApiConnection = async (provider: ApiProvider, modelId?: string) => {
-		console.debug(`Testing connection for ${provider}...`);
+		logger.debug(`Testing connection for ${provider}...`);
 
 		try {
 			// 动态导入LLMManager以避免循环依赖
@@ -372,7 +373,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 
 				// 检查响应是否有效
 				if (response && response.choices && response.choices.length > 0) {
-					console.debug(`✅ ${provider} connection test successful:`, response.choices[0]?.message?.content);
+					logger.debug(`✅ ${provider} connection test successful:`, response.choices[0]?.message?.content);
 					// ApiKeyComponent expects no return value on success, just no thrown error
 					return;
 				} else {
@@ -384,7 +385,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 			}
 
 		} catch (error) {
-			console.error(`❌ ${provider} connection test failed:`, error);
+			logger.error(`❌ ${provider} connection test failed:`, error);
 
 			// 根据错误类型提供更具体的错误信息
 			let errorMessage = t("settings.ModelProvider.testConnection.connectionFailed");
@@ -431,7 +432,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 		modelId: string,
 		isCustom: boolean = false
 	) => {
-		console.debug(`updateChatModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
+		logger.debug(`updateChatModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
 		const providerSettingKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerSettingKey] || {};
 		const currentModels = providerSettings.models || [];
@@ -453,7 +454,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	};
 
 	const updateApplyModelId = (provider: ApiProvider, modelId: string, isCustom: boolean = false) => {
-		console.debug(`updateApplyModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
+		logger.debug(`updateApplyModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
 		const providerSettingKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerSettingKey] || {};
 		const currentModels = providerSettings.models || [];
@@ -475,7 +476,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	};
 
 	const updateEmbeddingModelId = (provider: ApiProvider, modelId: string, isCustom: boolean = false) => {
-		console.debug(`updateEmbeddingModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
+		logger.debug(`updateEmbeddingModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
 		const providerSettingKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerSettingKey] || {};
 		const currentModels = providerSettings.models || [];
@@ -497,7 +498,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	};
 
 	const updateInsightModelId = (provider: ApiProvider, modelId: string, isCustom: boolean = false) => {
-		console.debug(`updateInsightModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
+		logger.debug(`updateInsightModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
 		const providerSettingKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerSettingKey] || {};
 		const currentModels = providerSettings.models || [];

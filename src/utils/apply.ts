@@ -1,5 +1,6 @@
 
 import { SearchAndReplaceToolArgs } from '../types/apply';
+import { logger } from './logger'
 
 /**
  * Applies changes to a file by replacing content within specified line range
@@ -43,7 +44,7 @@ export const ApplyEditToFile = async (
 			...lines.slice(effectiveEndLine)
 		].join('\n')
 	} catch (error) {
-		console.error('Error applying changes:', error instanceof Error ? error.message : 'Unknown error')
+		logger.error('Error applying changes:', error instanceof Error ? error.message : 'Unknown error')
 		return null
 	}
 }

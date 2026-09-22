@@ -1,6 +1,7 @@
 // @ts-nocheck
 import JSON5 from 'json5'
 import { parseFragment } from 'parse5'
+import { logger } from './logger'
 
 export type ParsedMsgBlock =
 	| {
@@ -454,7 +455,7 @@ export function parseMsgBlocks(
 								content = operation.content || ''
 							}
 						} catch (error) {
-							console.error('Failed to parse operations JSON', error)
+							logger.error('Failed to parse operations JSON', error)
 						}
 					}
 				}
@@ -493,7 +494,7 @@ export function parseMsgBlocks(
 							content = childNode.childNodes[0].value
 							operations = JSON5.parse(content as string)
 						} catch (error) {
-							console.error('Failed to parse operations JSON', error)
+							logger.error('Failed to parse operations JSON', error)
 						}
 					}
 				}
@@ -671,7 +672,7 @@ export function parseMsgBlocks(
 								urls = parsedUrls
 							}
 						} catch (error) {
-							// console.error('Failed to parse URLs JSON', error)
+							// logger.error('Failed to parse URLs JSON', error)
 						}
 					}
 				}
@@ -715,7 +716,7 @@ export function parseMsgBlocks(
 							const parametersJson = childNode.childNodes[0].value
 							parameters = JSON5.parse(parametersJson as string)
 						} catch (error) {
-							console.debug('Failed to parse parameters JSON', error)
+							logger.debug('Failed to parse parameters JSON', error)
 						}
 					}
 				}
@@ -864,7 +865,7 @@ export function parseMsgBlocks(
 								}
 							}
 						} catch (error) {
-							console.error('Failed to parse operations JSON', error)
+							logger.error('Failed to parse operations JSON', error)
 						}
 						break
 					}
@@ -886,7 +887,7 @@ export function parseMsgBlocks(
 								}
 							}
 						} catch (error) {
-							console.error('Failed to parse manage_files JSON', error)
+							logger.error('Failed to parse manage_files JSON', error)
 						}
 					}
 				}
@@ -909,7 +910,7 @@ export function parseMsgBlocks(
 		}
 		return parsedResult
 	} catch (error) {
-		console.error('Failed to parse infio block', error)
+		logger.error('Failed to parse infio block', error)
 		throw error
 	}
 }

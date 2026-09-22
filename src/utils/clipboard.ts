@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
+import { logger } from './logger'
 
 /**
  * Options for copying text to clipboard
@@ -23,7 +24,7 @@ export const copyToClipboard = async (text: string, options?: CopyOptions): Prom
 	} catch (error) {
 		const err = error instanceof Error ? error : new Error("Failed to copy to clipboard")
 		options?.onError?.(err)
-		console.error("Failed to copy to clipboard:", err)
+		logger.error("Failed to copy to clipboard:", err)
 		return false
 	}
 }

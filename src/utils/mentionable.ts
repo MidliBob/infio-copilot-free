@@ -1,6 +1,7 @@
 import { App } from 'obsidian'
 
 import { Mentionable, SerializedMentionable } from '../types/mentionable'
+import { logger } from './logger'
 
 export const serializeMentionable = (
 	mentionable: Mentionable,
@@ -120,7 +121,7 @@ export const deserializeMentionable = (
 			}
 		}
 	} catch (e) {
-		console.error('Error deserializing mentionable', e)
+		logger.error('Error deserializing mentionable', e)
 		return null
 	}
 }

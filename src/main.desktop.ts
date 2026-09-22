@@ -18,6 +18,7 @@ import { EmbeddingManager } from './embedworker/EmbeddingManager'
 import EventListener from "./event-listener"
 import JsonView from './JsonFileView'
 import { t } from './lang/helpers'
+import { setDebugEnabled } from './utils/logger'
 import { PreviewView } from './PreviewView'
 import CompletionKeyWatcher from "./render-plugin/completion-key-watcher"
 import DocumentChangesListener, {
@@ -97,10 +98,12 @@ export async function loadDesktop(base: Plugin) {
 	// attach methods migrated from original class
 	plugin.loadSettings = async function () {
 		this.settings = parseInfioSettings(await this.loadData())
+		setDebugEnabled(this.settings.debugMode)
 		await this.saveData(this.settings)
 	}
 	plugin.setSettings = async function (newSettings: InfioSettings) {
 		this.settings = newSettings
+		setDebugEnabled(newSettings.debugMode)
 		await this.saveData(newSettings)
 		this.ragEngine?.setSettings(newSettings)
 		this.transEngine?.setSettings(newSettings)
@@ -196,10 +199,10 @@ export async function loadDesktop(base: Plugin) {
 			const dbManager = await this.getDbManager()
 			await migrateToJsonDatabase(this.app, dbManager, async () => {
 				await this.reloadChatView()
-				console.log('Migration to JSON storage completed successfully')
+				logger.debug('Migration to JSON storage completed successfully')
 			})
 		} catch (error) {
-			console.error('Failed to migrate to JSON storage:', error)
+			logger.error('Failed to migrate to JSON storage:', error)
 			new Notice(t('notifications.migrationFailed'))
 		}
 	}
@@ -224,7 +227,7 @@ export async function loadDesktop(base: Plugin) {
 	plugin.dataviewManager = createDataviewManager(plugin.app)
 
 	plugin.embeddingManager = new EmbeddingManager()
-	console.log('EmbeddingManager initialized')
+	logger.debug('EmbeddingManager initialized')
 
 	plugin.addRibbonIcon('wand-sparkles', t('main.openInfioCopilot'), () => plugin.openChatView())
 
@@ -360,7 +363,7 @@ export async function loadDesktop(base: Plugin) {
 				)
 				notice.setMessage(t('notifications.rebuildComplete'))
 			} catch (error) {
-				console.error(error)
+				logger.error(error)
 				notice.setMessage(t('notifications.rebuildFailed'))
 			} finally {
 				window.setTimeout(() => { notice.hide() }, 1000)
@@ -389,7 +392,7 @@ export async function loadDesktop(base: Plugin) {
 				)
 				notice.setMessage(t('notifications.updateComplete'))
 			} catch (error) {
-				console.error(error)
+				logger.error(error)
 				notice.setMessage(t('notifications.updateFailed'))
 			} finally {
 				window.setTimeout(() => { notice.hide() }, 1000)
@@ -498,24 +501,24 @@ export async function loadDesktop(base: Plugin) {
 		id: 'test-dataview-simple',
 		name: t('main.testDataview'),
 		callback: async () => {
-			console.log('开始测试 Dataview...');
+			logger.debug('开始测试 Dataview...');
 			if (!plugin.dataviewManager) { new Notice(t('notifications.dataviewNotInitialized')); return; }
 			if (!plugin.dataviewManager.isDataviewAvailable()) {
 				new Notice(t('notifications.dataviewNotInstalled'));
-				console.log('Dataview API 不可用');
+				logger.debug('Dataview API 不可用');
 				return;
 			}
-			console.log('Dataview API 可用，执行简单查询...');
+			logger.debug('Dataview API 可用，执行简单查询...');
 			try {
 				const result = await plugin.dataviewManager.executeQuery('LIST FROM ""');
 				if (result.success) {
 					new Notice(t('notifications.dataviewQuerySuccess'));
 				} else {
 					new Notice(t('notifications.dataviewQueryFailed', { error: result.error }));
-					console.error('查询错误:', result.error);
+					logger.error('查询错误:', result.error);
 				}
 			} catch (error) {
-				console.error('执行测试查询失败:', error);
+				logger.error('执行测试查询失败:', error);
 				new Notice(t('notifications.dataviewQueryError'));
 			}
 		},
@@ -536,13 +539,13 @@ export async function loadDesktop(base: Plugin) {
 					dims: result.vec.length,
 					values: result.vec.slice(0, 4).map(v => v.toFixed(4)).join(', '),
 				});
-				console.log('本地嵌入测试结果:', result);
+				logger.debug('本地嵌入测试结果:', result);
 				const modal = new Modal(plugin.app);
 				modal.titleEl.setText(t('notifications.embeddingTestTitle'));
 				modal.contentEl.createEl('pre', { text: resultMessage });
 				modal.open();
 			} catch (error) {
-				console.error('嵌入测试失败:', error);
+				logger.error('嵌入测试失败:', error);
 				new Notice(t('notifications.embeddingTestFailed', { error: error.message }), 5000);
 			}
 		},

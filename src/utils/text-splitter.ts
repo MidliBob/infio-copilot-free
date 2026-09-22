@@ -14,6 +14,7 @@
  * differential tests (see text-splitter.test.ts golden expectations).
  */
 
+import { logger } from './logger'
 export type SplitterMetadata = {
 	loc?: {
 		lines?: {
@@ -102,7 +103,7 @@ export class TextSplitter {
 				this.chunkSize
 			) {
 				if (total > this.chunkSize) {
-					console.warn(
+					logger.warn(
 						`Created a chunk of size ${total}, +\nwhich is longer than the specified ${this.chunkSize}`
 					)
 				}

@@ -6,6 +6,7 @@ import {
 	SearchResult,
 	formatResults,
 } from '../search-common';
+import { logger } from '../../../utils/logger'
 
 type SearchMatchApi = {
 	match: string;
@@ -62,7 +63,7 @@ export async function matchSearchUsingOmnisearch(
 		// The `query` will be treated as a keyword/fuzzy search by the plugin.
 		const apiResults = await window.omnisearch.search(query);
 		if (!apiResults || apiResults.length === 0) {
-			console.error("No results found.");
+			logger.error("No results found.");
 			return "No results found."
 		}
 
@@ -106,7 +107,7 @@ export async function matchSearchUsingOmnisearch(
 
 		return formatResults(results, ".\\");
 	} catch (error) {
-		console.error("Error during Omnisearch processing:", error);
+		logger.error("Error during Omnisearch processing:", error);
 		return "An error occurred during the search.";
 	}
 }

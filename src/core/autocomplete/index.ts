@@ -22,6 +22,7 @@ import {
 	UserMessageFormatter,
 	UserMessageFormattingInputs
 } from "./types";
+import { logger } from '../../utils/logger'
 
 class LLMClient {
 	private llm: LLMManager;
@@ -184,12 +185,12 @@ class AutoComplete implements AutocompleteService {
 		];
 
 		if (this.debugMode) {
-			console.log("Copilot messages send:\n", messages);
+			logger.debug("Copilot messages send:\n", messages);
 		}
 
 		let result = await this.client.queryChatModel(messages);
 		if (this.debugMode && result.isOk()) {
-			console.log("Copilot response:\n", result.value);
+			logger.debug("Copilot response:\n", result.value);
 		}
 
 		result = this.extractAnswerFromChainOfThoughts(result);

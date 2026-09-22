@@ -13,6 +13,7 @@ import {
 import { DEFAULT_SETTINGS } from "../settings/versions/v1/v1";
 import { ApiProvider } from '../types/llm/model';
 import { isRegexValid, isValidIgnorePattern } from '../utils/auto-complete';
+import { logger } from '../utils/logger'
 
 export const SETTINGS_SCHEMA_VERSION = 0.6
 
@@ -473,7 +474,7 @@ const MIGRATIONS: Migration[] = [
 			if (newData.modelOptions && typeof newData.modelOptions === 'object') {
 				const modelOptions = newData.modelOptions as Record<string, any>
 				if (typeof modelOptions.max_tokens === 'number' && modelOptions.max_tokens < MIN_MAX_TOKENS) {
-					console.log(`Updating max_tokens from ${modelOptions.max_tokens} to ${MIN_MAX_TOKENS} due to minimum value change`)
+					logger.debug(`Updating max_tokens from ${modelOptions.max_tokens} to ${MIN_MAX_TOKENS} due to minimum value change`)
 					modelOptions.max_tokens = MIN_MAX_TOKENS
 				}
 			}
@@ -547,7 +548,7 @@ function migrateSettings(
 			currentVersion < migration.toVersion &&
 			migration.toVersion <= SETTINGS_SCHEMA_VERSION
 		) {
-			console.debug(
+			logger.debug(
 				`Migrating settings from ${migration.fromVersion} to ${migration.toVersion}`,
 			)
 			currentData = migration.migrate(currentData)
@@ -562,7 +563,7 @@ export function parseInfioSettings(data: unknown): InfioSettings {
 		const migratedData = migrateSettings(data as Record<string, unknown>)
 		return InfioSettingsSchema.parse(migratedData)
 	} catch (error) {
-		console.error("Failed to parse settings with migrated data, using default settings instead: ", error);
+		logger.error("Failed to parse settings with migrated data, using default settings instead: ", error);
 		return InfioSettingsSchema.parse({ ...DEFAULT_SETTINGS })
 	}
 }

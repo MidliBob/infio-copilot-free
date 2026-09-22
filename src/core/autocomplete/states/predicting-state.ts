@@ -5,6 +5,7 @@ import { DocumentChanges } from "../../../render-plugin/document-changes-listene
 import Context from "../context-detection";
 
 import State from "./state";
+import { logger } from '../../../utils/logger'
 
 class PredictingState extends State {
 	private predictionPromise: Promise<void> | null = null;
@@ -71,7 +72,7 @@ class PredictingState extends State {
 			new Notice(
 				`Copilot: Something went wrong cannot make a prediction. Full error is available in the dev console. Please check your settings. `
 			);
-			console.error(result.error);
+			logger.error(result.error);
 			this.context.transitionToIdleState();
 		}
 

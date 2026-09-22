@@ -14,6 +14,7 @@ import {
 	LLMRateLimitExceededException,
 } from '../llm/exception'
 import { NoStainlessOpenAI } from '../llm/ollama'
+import { logger } from '../../utils/logger'
 
 // EmbeddingManager 类型定义
 type EmbeddingManager = {
@@ -47,14 +48,14 @@ export const getEmbeddingModel = (
 					try {
 						// 确保模型已加载
 						if (!embeddingManager.modelLoaded || embeddingManager.currentModel !== settings.embeddingModelId) {
-							console.log(`Loading model: ${settings.embeddingModelId}`)
+							logger.debug(`Loading model: ${settings.embeddingModelId}`)
 							await embeddingManager.loadModel(settings.embeddingModelId, true)
 						}
 						
 						const result = await embeddingManager.embed(text)
 						return result.vec
 					} catch (error) {
-						console.error('LocalProvider embedding error:', error)
+						logger.error('LocalProvider embedding error:', error)
 						throw new Error(`LocalProvider embedding failed: ${error.message}`)
 					}
 				},
@@ -62,14 +63,14 @@ export const getEmbeddingModel = (
 					try {
 						// 确保模型已加载
 						if (!embeddingManager.modelLoaded || embeddingManager.currentModel !== settings.embeddingModelId) {
-							console.log(`Loading model: ${settings.embeddingModelId}`)
+							logger.debug(`Loading model: ${settings.embeddingModelId}`)
 							await embeddingManager.loadModel(settings.embeddingModelId, true)
 						}
 						
 						const results = await embeddingManager.embedBatch(texts)
 						return results.map(result => result.vec)
 					} catch (error) {
-						console.error('LocalProvider batch embedding error:', error)
+						logger.error('LocalProvider batch embedding error:', error)
 						throw new Error(`LocalProvider batch embedding failed: ${error.message}`)
 					}
 				},

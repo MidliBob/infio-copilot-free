@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Workspace, WorkspaceContent } from '../../database/json/workspace/types'
 import { t } from '../../lang/helpers'
+import { logger } from '../../utils/logger'
 
 interface WorkspaceEditModalProps {
   workspace?: Workspace
@@ -65,7 +66,7 @@ const WorkspaceEditModal = ({
         const tags = Object.keys(tagsObject).sort()
         setAvailableTags(tags)
       } catch (error) {
-        console.error('获取标签失败:', error)
+        logger.error('获取标签失败:', error)
         setAvailableTags([])
       }
     }
@@ -259,7 +260,7 @@ const WorkspaceEditModal = ({
       })
       onClose()
     } catch (error) {
-      console.error('保存工作区失败:', error)
+      logger.error('保存工作区失败:', error)
       alert(t('workspace.editModal.saveFailed'))
     } finally {
       setIsLoading(false)

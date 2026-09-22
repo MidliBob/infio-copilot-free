@@ -8,6 +8,7 @@ import { ChatManager } from './chat/ChatManager'
 import { CommandManager } from './command/CommandManager'
 import { INITIAL_MIGRATION_MARKER, ROOT_DIR } from './constants'
 import { serializeChatMessage } from './utils'
+import { logger } from '../../utils/logger'
 
 async function hasMigrationCompleted(app: App): Promise<boolean> {
 	const markerPath = normalizePath(`${ROOT_DIR}/${INITIAL_MIGRATION_MARKER}`)
@@ -55,11 +56,11 @@ async function transferChatHistory(app: App, dbManager: DBManager): Promise<void
 
 			await oldChatManager.deleteConversation(chatMeta.id)
 		} catch (error) {
-			console.error(`Error migrating chat ${chatMeta.id}:`, error)
+			logger.error(`Error migrating chat ${chatMeta.id}:`, error)
 		}
 	}
 
-	console.log('Chat history migration to JSON database completed')
+	logger.debug('Chat history migration to JSON database completed')
 }
 
 async function transferCommands(
@@ -92,14 +93,14 @@ async function transferCommands(
 			await commandManager.deleteCommand(command.id)
 		} catch (error) {
 			if (error instanceof DuplicateCommandException) {
-				console.log(`Duplicate command found: ${command.name}. Skipping...`)
+				logger.debug(`Duplicate command found: ${command.name}. Skipping...`)
 			} else {
-				console.error(`Error migrating command ${command.name}:`, error)
+				logger.error(`Error migrating command ${command.name}:`, error)
 			}
 		}
 	}
 
-	console.log('Commands migration to JSON database completed')
+	logger.debug('Commands migration to JSON database completed')
 }
 
 export async function migrateToJsonDatabase(

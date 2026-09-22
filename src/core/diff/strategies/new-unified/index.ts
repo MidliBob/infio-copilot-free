@@ -5,6 +5,7 @@ import { DiffResult, DiffStrategy } from "../../types"
 import { applyEdit } from "./edit-strategies"
 import { findBestMatch, prepareSearchString } from "./search-strategies"
 import { Change, Diff, Hunk } from "./types"
+import { logger } from '../../../../utils/logger'
 
 // 中文引号转英文引号
 export function convertQuotes(str: string) {
@@ -268,7 +269,7 @@ Your diff here
 				strategy,
 			} = findBestMatch(contextStr, result, 0, this.confidenceThreshold)
 			if (confidence < this.confidenceThreshold) {
-				console.warn("Full hunk application failed, trying sub-hunks strategy")
+				logger.warn("Full hunk application failed, trying sub-hunks strategy")
 				// Try splitting the hunk into smaller hunks
 				const subHunks = this.splitHunk(hunk)
 				let subHunkSuccess = true

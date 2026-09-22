@@ -35,6 +35,7 @@ import {
 	McpTool,
 	McpToolCallResponse,
 } from "./type";
+import { logger } from '../../utils/logger'
 
 export type McpConnection = {
 	server: McpServer
@@ -256,7 +257,7 @@ export class McpHub {
 	 * @param error The error object
 	 */
 	private showErrorMessage(message: string, error: unknown): void {
-		console.error(`${message}:`, error)
+		logger.error(`${message}:`, error)
 		new Notice(`${message}: ${error instanceof Error ? error.message : String(error)}`);
 	}
 
@@ -337,43 +338,43 @@ export class McpHub {
 			// 情况1：只有老配置文件存在，需要迁移
 			try {
 				const oldConfigContent = await this.app.vault.adapter.read(oldMcpSettingsFilePath)
-				console.log("Found old MCP configuration file, migrating to new location...")
+				logger.debug("Found old MCP configuration file, migrating to new location...")
 				
 				// 创建新配置文件，使用老配置的内容
 				await this.app.vault.create(newMcpSettingsFilePath, oldConfigContent)
 				
 				// 删除老配置文件
 				await this.app.vault.adapter.remove(oldMcpSettingsFilePath)
-				console.log("Successfully migrated MCP configuration and removed old file")
+				logger.debug("Successfully migrated MCP configuration and removed old file")
 				
 				// 尝试删除老的配置目录（如果为空）
 				try {
 					const oldFolderContents = await this.app.vault.adapter.list(normalizePath(oldMcpFolderPath))
 					if (oldFolderContents.files.length === 0 && oldFolderContents.folders.length === 0) {
 						await this.app.vault.adapter.rmdir(normalizePath(oldMcpFolderPath), false)
-						console.log("Removed empty old MCP configuration directory")
+						logger.debug("Removed empty old MCP configuration directory")
 					}
 				} catch (error) {
-					console.warn("Could not remove old MCP configuration directory:", error)
+					logger.warn("Could not remove old MCP configuration directory:", error)
 				}
 			} catch (error) {
-				console.error("Failed to migrate old MCP configuration file:", error)
+				logger.error("Failed to migrate old MCP configuration file:", error)
 				// 迁移失败时创建默认配置
 				const defaultConfig = JSON.stringify({ mcpServers: {} }, null, 2)
 				await this.app.vault.create(newMcpSettingsFilePath, defaultConfig)
 			}
 		} else if (oldFileExists && newFileExists) {
 			// 情况2：两个配置文件都存在，优先保留新配置，删除老配置
-			console.log("Both old and new MCP configuration files exist. Keeping new file and removing old file.")
+			logger.debug("Both old and new MCP configuration files exist. Keeping new file and removing old file.")
 			try {
 				await this.app.vault.adapter.remove(oldMcpSettingsFilePath)
-				console.log("Removed old MCP configuration file")
+				logger.debug("Removed old MCP configuration file")
 			} catch (error) {
-				console.error("Failed to remove old MCP configuration file:", error)
+				logger.error("Failed to remove old MCP configuration file:", error)
 			}
 		} else if (!newFileExists) {
 			// 情况3：新配置文件不存在，老配置文件也不存在，创建默认配置
-			console.log("No MCP configuration file found, creating default configuration...")
+			logger.debug("No MCP configuration file found, creating default configuration...")
 			const defaultConfig = JSON.stringify({ mcpServers: {} }, null, 2)
 			await this.app.vault.create(newMcpSettingsFilePath, defaultConfig)
 		}
@@ -400,7 +401,7 @@ export class McpHub {
 			await this.ensureMcpFileExists();
 			const filePath = this.mcpSettingsFilePath;
 
-			console.log('Attempting to open MCP settings file:', filePath);
+			logger.debug('Attempting to open MCP settings file:', filePath);
 
 			// 检查文件是否已经打开
 			let existingLeaf: any = null;
@@ -426,7 +427,7 @@ export class McpHub {
 				});
 				this.app.workspace.setActiveLeaf(existingLeaf);
 				void this.app.workspace.revealLeaf(existingLeaf);
-				console.log('MCP settings file is already open, reloading content and activating existing view:', filePath);
+				logger.debug('MCP settings file is already open, reloading content and activating existing view:', filePath);
 			} else {
 				// 如果文件没有打开，创建新的 leaf
 				const leaf = this.app.workspace.getLeaf(true);
@@ -439,13 +440,13 @@ export class McpHub {
 					});
 
 					void this.app.workspace.revealLeaf(leaf);
-					console.log('Successfully opened MCP settings file in JSON view:', filePath);
+					logger.debug('Successfully opened MCP settings file in JSON view:', filePath);
 				} else {
-					console.error('Failed to get workspace leaf for JSON view');
+					logger.error('Failed to get workspace leaf for JSON view');
 				}
 			}
 		} catch (error) {
-			console.error('Failed to open MCP settings file:', error);
+			logger.error('Failed to open MCP settings file:', error);
 		}
 	}
 
@@ -457,7 +458,7 @@ export class McpHub {
 				// which should create it, then something is wrong.
 				// However, getMcpSettingsFilePath should handle creation.
 				// This check is more of a safeguard.
-				// console.log("MCP config file does not exist, skipping initialization.");
+				// logger.debug("MCP config file does not exist, skipping initialization.");
 				return;
 			}
 
@@ -471,7 +472,7 @@ export class McpHub {
 				const errorMessages = result.error.errors
 					.map((err) => `${err.path.join(".")}: ${err.message}`)
 					.join("\n");
-				console.error(`Invalid MCP settings format:`, errorMessages);
+				logger.error(`Invalid MCP settings format:`, errorMessages);
 				new Notice(String(t("common:errors.invalid_mcp_settings_validation")) + ": " + errorMessages);
 				// Still try to connect with the raw config for global, but show warnings
 				try {
@@ -495,7 +496,7 @@ export class McpHub {
 		} catch (error) {
 			if (error instanceof SyntaxError) {
 				const errorMessage = t("common:errors.invalid_mcp_settings_syntax");
-				console.error(errorMessage, error);
+				logger.error(errorMessage, error);
 				new Notice(String(errorMessage));
 			} else {
 				this.showErrorMessage(`Failed to initialize MCP servers`, error);
@@ -536,11 +537,11 @@ export class McpHub {
 				if (validatedInjectedConfig.success) {
 					configInjected = validatedInjectedConfig.data;
 				} else {
-					console.warn("Failed to validate server config after injecting env vars. Using original config.", validatedInjectedConfig.error);
+					logger.warn("Failed to validate server config after injecting env vars. Using original config.", validatedInjectedConfig.error);
 					configInjected = config; // Fallback to original, already validated config
 				}
 			} catch (e) {
-				console.warn("Error injecting env vars. Using original config.", e);
+				logger.warn("Error injecting env vars. Using original config.", e);
 				configInjected = config; // Fallback to original config
 			}
 
@@ -567,7 +568,7 @@ export class McpHub {
 
 				// Set up stdio specific error handling
 				transport.onerror = async (error) => {
-					console.error(`Transport error for "${name}":`, error)
+					logger.error(`Transport error for "${name}":`, error)
 					const connection = this.findConnection(name)
 					if (connection) {
 						connection.server.status = "disconnected"
@@ -596,10 +597,10 @@ export class McpHub {
 
 						if (isInfoLog) {
 							// Log normal informational messages
-							console.log(`Server "${name}" info:`, output)
+							logger.debug(`Server "${name}" info:`, output)
 						} else {
 							// Treat as error log
-							console.error(`Server "${name}" stderr:`, output)
+							logger.error(`Server "${name}" stderr:`, output)
 							const connection = this.findConnection(name)
 							if (connection) {
 								this.appendErrorMessage(connection, output)
@@ -610,7 +611,7 @@ export class McpHub {
 						}
 					})
 				} else {
-					console.error(`No stderr stream for ${name}`)
+					logger.error(`No stderr stream for ${name}`)
 				}
 				transport.start = async () => { } // No-op now, .connect() won't fail
 			} else {
@@ -633,7 +634,7 @@ export class McpHub {
 
 				// Set up SSE specific error handling
 				transport.onerror = async (error) => {
-					console.error(`Transport error for "${name}":`, error)
+					logger.error(`Transport error for "${name}":`, error)
 					const connection = this.findConnection(name, source)
 					if (connection) {
 						connection.server.status = "disconnected"
@@ -765,7 +766,7 @@ export class McpHub {
 					alwaysAllowConfig = config.mcpServers?.[serverName]?.alwaysAllow || []
 				}
 			} catch (error) {
-				console.error(`Failed to read alwaysAllow config for ${serverName}:`, error)
+				logger.error(`Failed to read alwaysAllow config for ${serverName}:`, error)
 				// Continue with empty alwaysAllowConfig
 			}
 
@@ -777,7 +778,7 @@ export class McpHub {
 
 			return tools
 		} catch (error) {
-			console.error(`Failed to fetch tools for ${serverName}:`, error)
+			logger.error(`Failed to fetch tools for ${serverName}:`, error)
 			return []
 		}
 	}
@@ -791,7 +792,7 @@ export class McpHub {
 			const response = await connection.client.request({ method: "resources/list" }, ListResourcesResultSchema)
 			return response?.resources || []
 		} catch (error) {
-			// console.error(`Failed to fetch resources for ${serverName}:`, error)
+			// logger.error(`Failed to fetch resources for ${serverName}:`, error)
 			return []
 		}
 	}
@@ -811,7 +812,7 @@ export class McpHub {
 			)
 			return response?.resourceTemplates || []
 		} catch (error) {
-			// console.error(`Failed to fetch resource templates for ${serverName}:`, error)
+			// logger.error(`Failed to fetch resource templates for ${serverName}:`, error)
 			return []
 		}
 	}
@@ -827,7 +828,7 @@ export class McpHub {
 				await connection.transport.close()
 				await connection.client.close()
 			} catch (error) {
-				console.error(`Failed to close transport for ${name}:`, error)
+				logger.error(`Failed to close transport for ${name}:`, error)
 			}
 			this.connections = this.connections.filter((conn) => conn.server.name !== name)
 		}
@@ -925,7 +926,7 @@ export class McpHub {
 						// Pass the source from the config to restartConnection
 						await this.restartConnection(name, source)
 					} catch (error) {
-						console.error(`Failed to restart server ${name} after change in ${changedPath}:`, error)
+						logger.error(`Failed to restart server ${name} after change in ${changedPath}:`, error)
 					}
 				})
 
@@ -947,7 +948,7 @@ export class McpHub {
 						// Pass the source from the config to restartConnection
 						await this.restartConnection(name, source)
 					} catch (error) {
-						console.error(`Failed to restart server ${name} after change in ${filePath}:`, error)
+						logger.error(`Failed to restart server ${name} after change in ${filePath}:`, error)
 					}
 				})
 
@@ -1038,7 +1039,7 @@ export class McpHub {
 						)
 					}
 				} catch (error) {
-					console.error(`Failed to refresh capabilities for ${serverName}:`, error)
+					logger.error(`Failed to refresh capabilities for ${serverName}:`, error)
 				}
 			}
 		} catch (error) {
@@ -1278,7 +1279,7 @@ export class McpHub {
 			}
 			await this.updateServerConnections(servers, source)
 
-			console.log(`Successfully created and connected to MCP server: ${name}`)
+			logger.debug(`Successfully created and connected to MCP server: ${name}`)
 		} catch (error) {
 			this.showErrorMessage(`Failed to create MCP server "${name}"`, error)
 			throw error
@@ -1325,7 +1326,7 @@ export class McpHub {
 			const parsedConfig = ServerConfigSchema.parse(JSON.parse(connection.server.config))
 			timeout = (parsedConfig.timeout ?? 60) * 1000
 		} catch (error) {
-			console.error("Failed to parse server config for timeout:", error)
+			logger.error("Failed to parse server config for timeout:", error)
 			// Default to 60 seconds if parsing fails
 			timeout = 60 * 1000
 		}
@@ -1430,17 +1431,17 @@ export class McpHub {
 	async dispose(): Promise<void> {
 		// Prevent multiple disposals
 		if (this.isDisposed) {
-			console.log("McpHub: Already disposed.")
+			logger.debug("McpHub: Already disposed.")
 			return
 		}
-		console.log("McpHub: Disposing...")
+		logger.debug("McpHub: Disposing...")
 		this.isDisposed = true
 		this.removeAllFileWatchers()
 		for (const connection of this.connections) {
 			try {
 				await this.deleteConnection(connection.server.name, connection.server.source)
 			} catch (error) {
-				console.error(`Failed to close connection for ${connection.server.name}:`, error)
+				logger.error(`Failed to close connection for ${connection.server.name}:`, error)
 			}
 		}
 		this.connections = []

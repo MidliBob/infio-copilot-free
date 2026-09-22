@@ -9,6 +9,7 @@ import { InfioSettings } from "../../types/settings";
 import { GetAllProviders, GetEmbeddingProviderModelIdsAsync, GetEmbeddingProviders, GetProviderModelIds } from "../../utils/api";
 
 import { getProviderSettingKey } from "./ModelProviderSettings";
+import { logger } from '../../utils/logger'
 
 type TextSegment = {
 	text: string;
@@ -183,7 +184,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 
 	// 统一处理模型选择和保存
 	const handleModelSelect = (provider: ApiProvider, modelId: string, isCustom?: boolean) => {
-		console.debug(`handleModelSelect: ${provider} -> ${modelId}`)
+		logger.debug(`handleModelSelect: ${provider} -> ${modelId}`)
 
 		// 检查是否是自定义模型（不在官方模型列表中）
 		// const isCustomModel = !modelIds.includes(modelId);
@@ -197,7 +198,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 			const ids = isEmbedding
 				? await GetEmbeddingProviderModelIdsAsync(modelProvider, settings)
 				: await GetProviderModelIds(modelProvider, settings);
-			console.debug(`📝 Fetched ${ids.length} official models for ${modelProvider}:`, ids);
+			logger.debug(`📝 Fetched ${ids.length} official models for ${modelProvider}:`, ids);
 			setModelIds(ids);
 		};
 
@@ -207,10 +208,10 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 	const combinedModelIds = useMemo(() => {
 		const providerKey = getProviderSettingKey(modelProvider);
 		const providerModels = settings?.[providerKey]?.models;
-		console.debug(`🔍 Custom models in settings for ${modelProvider}:`, providerModels || 'none')
+		logger.debug(`🔍 Custom models in settings for ${modelProvider}:`, providerModels || 'none')
 		// Ensure providerModels is an array of strings
 		if (!providerModels || !Array.isArray(providerModels)) {
-			console.debug(`📋 Using only official models (${modelIds.length}):`, modelIds);
+			logger.debug(`📋 Using only official models (${modelIds.length}):`, modelIds);
 			return modelIds;
 		}
 		const additionalModels = providerModels.filter((model): model is string => typeof model === 'string');
@@ -221,10 +222,10 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 		// Free-text entry still works, and custom entries remain listed when
 		// the server list is unavailable (e.g. Ollama stopped).
 		if (isEmbedding && modelProvider === ApiProvider.Ollama && modelIds.length > 0) {
-			console.debug(`📋 Using only embedding-capable models (${modelIds.length}):`, modelIds);
+			logger.debug(`📋 Using only embedding-capable models (${modelIds.length}):`, modelIds);
 			return modelIds;
 		}
-		console.debug(`📋 Combined models: ${modelIds.length} official + ${additionalModels.length} custom`);
+		logger.debug(`📋 Combined models: ${modelIds.length} official + ${additionalModels.length} custom`);
 		return [...modelIds, ...additionalModels];
 	}, [modelIds, settings, modelProvider, isEmbedding]);
 

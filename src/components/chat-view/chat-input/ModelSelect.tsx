@@ -7,6 +7,7 @@ import { useSettings } from '../../../contexts/SettingsContext'
 import { t } from '../../../lang/helpers'
 import { ApiProvider } from '../../../types/llm/model'
 import { GetAllProviders, GetEmbeddingProviderModelIdsAsync, GetEmbeddingProviders, GetProviderModelsWithSettings } from "../../../utils/api"
+import { logger } from '../../../utils/logger'
 
 // 优化模型名称显示的函数
 const getOptimizedModelName = (modelId: string): string => {
@@ -210,7 +211,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 					setModelIds(Object.keys(models))
 				}
 			} catch (error) {
-				console.error('Failed to fetch provider models:', error)
+				logger.error('Failed to fetch provider models:', error)
 				setModelIds([])
 			} finally {
 				setIsLoading(false)
