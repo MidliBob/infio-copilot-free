@@ -1,5 +1,4 @@
 import { backOff } from 'exponential-backoff';
-import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { minimatch } from 'minimatch';
 import { App, Notice, TFile } from 'obsidian';
 import pLimit from 'p-limit';
@@ -16,6 +15,7 @@ import { InsertVector, SelectVector } from '../../../database/schema';
 import { EmbeddingModel } from '../../../types/embedding';
 import { getFilesWithTag } from '../../../utils/glob-utils';
 import { openSettingsModalWithError } from '../../../utils/open-settings-modal';
+import { RecursiveCharacterTextSplitter } from '../../../utils/text-splitter';
 import { DBManager } from '../../database-manager';
 import { Workspace } from '../../json/workspace/types';
 import { vectorTables } from '../../schema';
