@@ -18,7 +18,7 @@ import { EmbeddingManager } from './embedworker/EmbeddingManager'
 import EventListener from "./event-listener"
 import JsonView from './JsonFileView'
 import { t } from './lang/helpers'
-import { setDebugEnabled } from './utils/logger'
+import { logger, setDebugEnabled } from './utils/logger'
 import { PreviewView } from './PreviewView'
 import CompletionKeyWatcher from "./render-plugin/completion-key-watcher"
 import DocumentChangesListener, {
