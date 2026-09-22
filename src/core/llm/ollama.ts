@@ -18,6 +18,8 @@ import {
 	LLMResponseStreaming,
 } from '../../types/llm/response'
 
+import { describeOllamaNetworkError } from '../../utils/ollama'
+
 import { BaseLLMProvider } from './base'
 import { LLMBaseUrlNotSetException } from './exception'
 import { OpenAIMessageAdapter } from './openai-message-adapter'
@@ -74,7 +76,13 @@ export class OllamaProvider implements BaseLLMProvider {
 			apiKey: 'ollama',
 			dangerouslyAllowBrowser: true,
 		})
-		return this.adapter.generateResponse(client, request, options)
+		try {
+			return await this.adapter.generateResponse(client, request, options)
+		} catch (error) {
+			// turn "Failed to fetch" / 403 into an actionable OLLAMA_ORIGINS hint
+			const described = describeOllamaNetworkError(error, this.baseUrl)
+			throw described ? new Error(described) : error
+		}
 	}
 
 	async streamResponse(
@@ -93,6 +101,25 @@ export class OllamaProvider implements BaseLLMProvider {
 			apiKey: 'ollama',
 			dangerouslyAllowBrowser: true,
 		})
-		return this.adapter.streamResponse(client, request, options)
+		try {
+			const stream = await this.adapter.streamResponse(client, request, options)
+			return this.withOllamaHints(stream)
+		} catch (error) {
+			const described = describeOllamaNetworkError(error, this.baseUrl)
+			throw described ? new Error(described) : error
+		}
+	}
+
+	// The streaming fetch fires on first read, so mid-stream failures
+	// (the common "Failed to fetch" case) get the same treatment.
+	async *withOllamaHints(stream) {
+		try {
+			for await (const chunk of stream) {
+				yield chunk
+			}
+		} catch (error) {
+			const described = describeOllamaNetworkError(error, this.baseUrl)
+			throw described ? new Error(described) : error
+		}
 	}
 }

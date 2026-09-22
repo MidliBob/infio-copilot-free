@@ -7,6 +7,7 @@ import { EmbeddingModel } from '../../types/embedding'
 import { ApiProvider } from '../../types/llm/model'
 import { InfioSettings } from '../../types/settings'
 import { GetEmbeddingModelInfo } from '../../utils/api'
+import { describeOllamaNetworkError } from '../../utils/ollama'
 import {
 	LLMAPIKeyNotSetException,
 	LLMBaseUrlNotSetException,
@@ -335,11 +336,16 @@ export const getEmbeddingModel = (
 							'Ollama Address is missing. Please set it in settings menu.',
 						)
 					}
-					const embedding = await openai.embeddings.create({
-						model: settings.embeddingModelId,
-						input: text,
-					})
-					return embedding.data[0].embedding
+					try {
+						const embedding = await openai.embeddings.create({
+							model: settings.embeddingModelId,
+							input: text,
+						})
+						return embedding.data[0].embedding
+					} catch (error) {
+						const described = describeOllamaNetworkError(error, settings.ollamaProvider.baseUrl)
+						throw described ? new Error(described) : error
+					}
 				},
 				getBatchEmbeddings: async (texts: string[]) => {
 					if (!settings.ollamaProvider.baseUrl) {
@@ -347,11 +353,16 @@ export const getEmbeddingModel = (
 							'Ollama Address is missing. Please set it in settings menu.',
 						)
 					}
-					const embedding = await openai.embeddings.create({
-						model: settings.embeddingModelId,
-						input: texts,
-					})
-					return embedding.data.map(item => item.embedding)
+					try {
+						const embedding = await openai.embeddings.create({
+							model: settings.embeddingModelId,
+							input: texts,
+						})
+						return embedding.data.map(item => item.embedding)
+					} catch (error) {
+						const described = describeOllamaNetworkError(error, settings.ollamaProvider.baseUrl)
+						throw described ? new Error(described) : error
+					}
 				},
 			}
 		}
