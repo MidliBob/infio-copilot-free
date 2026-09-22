@@ -2,14 +2,17 @@ import { AlertTriangle, ChevronDown, ChevronRight, ExternalLink, FileText, Folde
 import { Notice } from 'obsidian'
 import React, { useEffect, useState } from 'react'
 
+import { useApp } from '../../contexts/AppContext'
 import { useMcpHub } from '../../contexts/McpHubContext'
 import { useSettings } from '../../contexts/SettingsContext'
 import { McpErrorEntry, McpResource, McpResourceTemplate, McpServer, McpTool } from '../../core/mcp/type'
 import { t } from '../../lang/helpers'
 import { logger } from '../../utils/logger'
+import { showConfirm } from '../../utils/modal-dialogs'
 
 const McpHubView = () => {
 	const { settings, setSettings } = useSettings()
+	const app = useApp()
 	const { getMcpHub } = useMcpHub()
 	const [mcpServers, setMcpServers] = useState<McpServer[]>([])
 	const [expandedServers, setExpandedServers] = useState<Record<string, boolean>>({});
@@ -64,7 +67,7 @@ const McpHubView = () => {
 	const handleDelete = async (serverName: string) => {
 		const hub = await getMcpHub();
 		if (hub) {
-			if (confirm(t('mcpHub.deleteConfirm').replace('{name}', serverName) as string)) {
+			if (await showConfirm(app, { message: String(t('mcpHub.deleteConfirm', { name: serverName })), danger: true })) {
 				await hub.deleteServer(serverName, "global")
 				const updatedServers = hub.getAllServers()
 				setMcpServers(updatedServers)

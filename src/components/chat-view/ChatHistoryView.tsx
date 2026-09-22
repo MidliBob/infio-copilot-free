@@ -2,11 +2,13 @@ import { CheckSquare, Clock, CopyPlus, Globe, MessageSquare, Pencil, Search, Spa
 import { Notice } from 'obsidian'
 import React, { useMemo, useRef, useState } from 'react'
 
+import { useApp } from '../../contexts/AppContext'
 import { useSettings } from '../../contexts/SettingsContext'
 import { useChatHistory } from '../../hooks/use-chat-history'
 import { t } from '../../lang/helpers'
 import { ChatConversationMeta } from '../../types/chat'
 import { logger } from '../../utils/logger'
+import { showConfirm } from '../../utils/modal-dialogs'
 
 export interface ChatHistoryViewProps {
 	currentConversationId?: string
@@ -47,10 +49,11 @@ const ChatHistoryView = ({
 	const [selectionMode, setSelectionMode] = useState(false)
 	const [selectedConversations, setSelectedConversations] = useState<Set<string>>(new Set())
 
+	const app = useApp()
 	const titleInputRefs = useRef<Map<string, HTMLInputElement>>(new Map())
 
 	const handleCleanup = async () => {
-		const confirmed = confirm(String(t('chat.history.cleanupConfirm')))
+		const confirmed = await showConfirm(app, { message: String(t('chat.history.cleanupConfirm')), danger: true })
 		if (!confirmed) {
 			return
 		}
@@ -151,7 +154,7 @@ const ChatHistoryView = ({
 		}
 
 		// show confirmation
-		const confirmed = confirm(String(t('chat.history.batchDeleteConfirm', { count: selectedConversations.size })))
+		const confirmed = await showConfirm(app, { message: String(t('chat.history.batchDeleteConfirm', { count: selectedConversations.size })), danger: true })
 		if (!confirmed) {
 			return
 		}

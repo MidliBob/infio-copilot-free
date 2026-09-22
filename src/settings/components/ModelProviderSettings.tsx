@@ -8,6 +8,7 @@ import {
 	GetAllProviders, GetDefaultModelId,
 	localProviderDefaultEmbeddingModelId
 } from '../../utils/api';
+import { showMessage } from '../../utils/modal-dialogs';
 import { OllamaHealthResult, checkOllamaHealth } from '../../utils/ollama';
 import { getProviderApiUrl } from '../../utils/provider-urls';
 
@@ -211,7 +212,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 
 		if (settedProviders.length === 0) {
 			// 提示用户未设置任何key
-			alert(t("settings.ModelProvider.noApiKeySet"));
+			void showMessage(plugin.app, { message: String(t("settings.ModelProvider.noApiKeySet")) });
 			return;
 		}
 
@@ -416,7 +417,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 					errorMessage = error.message;
 				}
 			}
-			alert(errorMessage);
+			void showMessage(plugin.app, { message: errorMessage });
 			// 必须抛出错误，这样ApiKeyComponent才能正确显示失败状态
 			throw new Error(errorMessage);
 		}

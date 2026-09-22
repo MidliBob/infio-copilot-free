@@ -831,6 +831,11 @@ export default {
 		previewTitle: 'Mermaid diagram preview',
 		clickToEnlarge: 'Click to view full image',
 	},
+	modals: {
+		confirm: 'Confirm',
+		cancel: 'Cancel',
+		ok: 'OK',
+	},
 	fileOps: {
 		header: 'File management operations ({count})',
 		btnPrepare: 'Preparing',

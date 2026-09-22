@@ -803,6 +803,11 @@ export default {
 		"previewTitle": "Предпросмотр диаграммы Mermaid",
 		"clickToEnlarge": "Нажмите, чтобы увеличить",
 	},
+	"modals": {
+		"confirm": "Подтвердить",
+		"cancel": "Отмена",
+		"ok": "ОК",
+	},
 	"fileOps": {
 		"header": "Операции с файлами ({count})",
 		"btnPrepare": "Подготовка",

@@ -1,4 +1,5 @@
 import { ChevronDown, FolderOpen, Plus, Tag, Trash2, X } from 'lucide-react'
+import { showMessage } from '../../utils/modal-dialogs'
 import { App, TFolder } from 'obsidian'
 import { useEffect, useRef, useState } from 'react'
 
@@ -248,7 +249,7 @@ const WorkspaceEditModal = ({
   // 保存更改
   const handleSave = async () => {
     if (!name.trim()) {
-      alert(t('workspace.editModal.nameRequired'))
+      void showMessage(app, { message: String(t('workspace.editModal.nameRequired')) })
       return
     }
 
@@ -261,7 +262,7 @@ const WorkspaceEditModal = ({
       onClose()
     } catch (error) {
       logger.error('保存工作区失败:', error)
-      alert(t('workspace.editModal.saveFailed'))
+      void showMessage(app, { message: String(t('workspace.editModal.saveFailed')) })
     } finally {
       setIsLoading(false)
     }

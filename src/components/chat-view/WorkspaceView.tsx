@@ -15,6 +15,7 @@ import { Notice } from 'obsidian'
 import { useCallback, useEffect, useState } from 'react'
 
 import { useApp } from '../../contexts/AppContext'
+import { showConfirm } from '../../utils/modal-dialogs'
 import { useSettings } from '../../contexts/SettingsContext'
 import { Workspace, WorkspaceContent } from '../../database/json/workspace/types'
 import { WorkspaceManager } from '../../database/json/workspace/WorkspaceManager'
@@ -363,8 +364,12 @@ const WorkspaceView = () => {
 										)}
 										{!workspace.isCurrent && workspace.name !== 'vault' && (
 											<button
-												onClick={() => {
-													if (confirm(String(t('workspace.deleteConfirm', { name: workspace.name })))) {
+												onClick={async () => {
+													const confirmed = await showConfirm(app, {
+														message: String(t('workspace.deleteConfirm', { name: workspace.name })),
+														danger: true,
+													})
+													if (confirmed) {
 														void deleteWorkspace(workspace)
 													}
 												}}

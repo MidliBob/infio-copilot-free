@@ -832,6 +832,11 @@ export default {
 		previewTitle: 'Mermaid 图表预览',
 		clickToEnlarge: '点击查看大图',
 	},
+	modals: {
+		confirm: '确认',
+		cancel: '取消',
+		ok: '好的',
+	},
 	fileOps: {
 		header: '文件管理操作（{count} 个操作）',
 		btnPrepare: '准备执行',
