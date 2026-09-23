@@ -1,4 +1,12 @@
 releases:
+  - version: "1.4.0"
+    features:
+      - "Web search providers replaced: Serper and Jina (unavailable in some regions) are removed; Settings -> Web search now lets you choose between Tavily (cloud search API for LLM tools, free tier of 1000 searches per month) and YaCy (self-hosted decentralized search engine that needs no API key and no third-party cloud); existing settings migrate automatically"
+    fixes:
+      - "fetch_urls_content and the page-fetching step of search_web no longer depend on the Jina reader API - pages are always fetched and converted to markdown locally through Obsidian's requestUrl, so both tools work in every region"
+      - "Web search failure modes are now explicit: a missing Tavily key, an unreachable YaCy peer or an empty result set return a descriptive message to the model instead of an empty tool result"
+    other:
+      - "webSearch() now depends on a narrow embedding interface instead of the whole RAG engine; Tavily and YaCy responses are validated with Zod schemas at the boundary; 13 new unit tests (98 total)"
   - version: "1.3.1"
     fixes:
       - "Catalog compliance: the 'no-bitwise' eslint-disable directive in the pure-TypeScript MD5 module now carries a description and a paired eslint-enable, as the Obsidian plugin source-code checker requires - no behavior change, cache hashes are byte-identical"
