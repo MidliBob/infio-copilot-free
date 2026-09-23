@@ -832,27 +832,27 @@ export const qwenModels = {
 export const qwenEmbeddingModels = {
 	"text-embedding-v4": {
 		dimensions: 1024,
-		description: "支持50+主流语种，包括中文、英语、西班牙语、法语、葡萄牙语、印尼语、日语、韩语、德语、俄罗斯语等。最大行数20，单行最大处理8,192 Token。支持可选维度：1,024（默认）、768或512。单价：0.0007元/千Token。免费额度：50万Token（有效期180天）。"
+		description: "Supports 50+ major languages including Chinese, English, Spanish, French, Portuguese, Indonesian, Japanese, Korean, German and Russian. Up to 20 rows, up to 8,192 tokens per row. Optional dimensions: 1,024 (default), 768 or 512. Pricing: 0.0007 CNY per 1k tokens; free quota: 500,000 tokens (valid for 180 days)."
 	},
 	"text-embedding-v3": {
 		dimensions: 1024,
-		description: "支持50+主流语种，包括中文、英语、西班牙语、法语、葡萄牙语、印尼语、日语、韩语、德语、俄罗斯语等。最大行数20，单行最大处理8,192 Token。支持可选维度：1,024（默认）、768或512。单价：0.0007元/千Token。免费额度：50万Token（有效期180天）。"
+		description: "Supports 50+ major languages including Chinese, English, Spanish, French, Portuguese, Indonesian, Japanese, Korean, German and Russian. Up to 20 rows, up to 8,192 tokens per row. Optional dimensions: 1,024 (default), 768 or 512. Pricing: 0.0007 CNY per 1k tokens; free quota: 500,000 tokens (valid for 180 days)."
 	},
 	"text-embedding-v2": {
 		dimensions: 1536,
-		description: "支持多种语言，包括中文、英语、西班牙语、法语、葡萄牙语、印尼语、日语、韩语、德语、俄罗斯语。最大行数25，单行最大处理2,048 Token。"
+		description: "Multilingual: Chinese, English, Spanish, French, Portuguese, Indonesian, Japanese, Korean, German and Russian. Up to 25 rows, up to 2,048 tokens per row."
 	},
 	"text-embedding-v1": {
 		dimensions: 1536,
-		description: "支持中文、英语、西班牙语、法语、葡萄牙语、印尼语。"
+		description: "Supports Chinese, English, Spanish, French, Portuguese and Indonesian."
 	},
 	"text-embedding-async-v2": {
 		dimensions: 1536,
-		description: "异步处理大规模文本。支持中文、英语、西班牙语、法语、葡萄牙语、印尼语、日语、韩语、德语、俄罗斯语。"
+		description: "Asynchronous processing for large-scale text. Supports Chinese, English, Spanish, French, Portuguese, Indonesian, Japanese, Korean, German and Russian."
 	},
 	"text-embedding-async-v1": {
 		dimensions: 1536,
-		description: "异步处理大规模文本。支持中文、英语、西班牙语、法语、葡萄牙语、印尼语。"
+		description: "Asynchronous processing for large-scale text. Supports Chinese, English, Spanish, French, Portuguese and Indonesian."
 	}
 } as const satisfies Record<string, EmbeddingModelInfo>
 
@@ -1324,23 +1324,23 @@ export const siliconFlowModels = {
 export const siliconFlowEmbeddingModels = {
 	"BAAI/bge-m3": {
 		dimensions: 1024,
-		description: "BGE-M3 是一个多功能、多语言、多粒度的文本嵌入模型。它支持三种常见的检索功能：密集检索、多向量检索和稀疏检索。该模型可以处理超过100种语言，并且能够处理从短句到长达8192个词元的长文档等不同粒度的输入。BGE-M3在多语言和跨语言检索任务中表现出色，在 MIRACL 和 MKQA 等基准测试中取得了领先结果。它还具有处理长文档检索的能力，在 MLDR 和 NarritiveQA 等数据集上展现了优秀性能"
+		description: "BGE-M3 is a versatile, multilingual, multi-granularity text embedding model. It supports three common retrieval functions: dense retrieval, multi-vector retrieval and sparse retrieval. It handles 100+ languages and inputs of different granularity, from short sentences to long documents of up to 8,192 tokens. BGE-M3 excels at multilingual and cross-lingual retrieval, achieving leading results on benchmarks such as MIRACL and MKQA, and shows strong long-document retrieval performance on the MLDR and NarrativeQA datasets"
 	},
 	"netease-youdao/bce-embedding-base_v1": {
 		dimensions: 768,
-		description: "bce-embedding-base_v1 是由网易有道开发的双语和跨语言嵌入模型。该模型在中英文语义表示和检索任务中表现出色，尤其擅长跨语言场景。它是为检索增强生成（RAG）系统优化的，可以直接应用于教育、医疗、法律等多个领域。该模型不需要特定指令即可使用，能够高效地生成语义向量，为语义搜索和问答系统提供关键支持"
+		description: "bce-embedding-base_v1 is a bilingual and cross-lingual embedding model developed by NetEase Youdao. It excels at Chinese-English semantic representation and retrieval tasks, especially in cross-lingual scenarios. Optimized for retrieval-augmented generation (RAG) systems, it can be applied directly in education, healthcare, legal and other domains. It requires no special instruction and efficiently generates semantic vectors, providing key support for semantic search and question-answering systems"
 	},
 	"BAAI/bge-large-zh-v1.5": {
 		dimensions: 1024,
-		description: "BAAI/bge-large-zh-v1.5 是一个大型中文文本嵌入模型，是 BGE (BAAI General Embedding) 系列的一部分。该模型在 C-MTEB 基准测试中表现出色，在 31 个数据集上的平均得分为 64.53，在检索、语义相似度、文本对分类等多个任务中都取得了优异成绩。它支持最大 512 个 token 的输入长度，适用于各种中文自然语言处理任务，如文本检索、语义相似度计算等"
+		description: "BAAI/bge-large-zh-v1.5 is a large Chinese text embedding model, part of the BGE (BAAI General Embedding) family. It performs strongly on the C-MTEB benchmark with an average score of 64.53 across 31 datasets, achieving excellent results in retrieval, semantic similarity, sentence-pair classification and other tasks. It supports input lengths of up to 512 tokens and is suitable for a wide range of Chinese NLP tasks such as text retrieval and semantic similarity computation"
 	},
 	"BAAI/bge-large-en-v1.5": {
 		dimensions: 1024,
-		description: "BAAI/bge-large-en-v1.5 是一个大型英文文本嵌入模型，是 BGE (BAAI General Embedding) 系列的一部分。它在 MTEB 基准测试中取得了优异的表现，在 56 个数据集上的平均得分为 64.23，在检索、聚类、文本对分类等多个任务中表现出色。该模型支持最大 512 个 token 的输入长度，适用于各种自然语言处理任务，如文本检索、语义相似度计算等"
+		description: "BAAI/bge-large-en-v1.5 is a large English text embedding model, part of the BGE (BAAI General Embedding) family. It performs strongly on the MTEB benchmark with an average score of 64.23 across 56 datasets, achieving excellent results in retrieval, clustering, sentence-pair classification and other tasks. It supports input lengths of up to 512 tokens and is suitable for a wide range of NLP tasks such as text retrieval and semantic similarity computation"
 	},
 	"Pro/BAAI/bge-m3": {
 		dimensions: 1024,
-		description: "BGE-M3 是一个多功能、多语言、多粒度的文本嵌入模型。它支持三种常见的检索功能：密集检索、多向量检索和稀疏检索。该模型可以处理超过100种语言，并且能够处理从短句到长达8192个词元的长文档等不同粒度的输入。BGE-M3在多语言和跨语言检索任务中表现出色，在 MIRACL 和 MKQA 等基准测试中取得了领先结果。它还具有处理长文档检索的能力，在 MLDR 和 NarritiveQA 等数据集上展现了优秀性能"
+		description: "BGE-M3 is a versatile, multilingual, multi-granularity text embedding model. It supports three common retrieval functions: dense retrieval, multi-vector retrieval and sparse retrieval. It handles 100+ languages and inputs of different granularity, from short sentences to long documents of up to 8,192 tokens. BGE-M3 excels at multilingual and cross-lingual retrieval, achieving leading results on benchmarks such as MIRACL and MKQA, and shows strong long-document retrieval performance on the MLDR and NarrativeQA datasets"
 	}
 } as const satisfies Record<string, EmbeddingModelInfo>
 
@@ -1648,32 +1648,32 @@ export const moonshotModels = {
 	}
 } as const satisfies Record<string, ModelInfo>
 
-// LocalProvider (本地嵌入模型)
+// LocalProvider (local embedding models)
 export const localProviderDefaultModelId = null // this is not supported for chat/autocomplete
 export const localProviderDefaultInsightModelId = null // this is not supported for insight
 export const localProviderDefaultAutoCompleteModelId = null // this is not supported for chat/autocomplete  
 export const localProviderDefaultEmbeddingModelId: keyof typeof localProviderEmbeddingModels = "TaylorAI/bge-micro-v2"
 
 export const localProviderEmbeddingModels = {
-	'TaylorAI/bge-micro-v2': { dimensions: 384, description: 'BGE-micro-v2 (本地，512令牌，384维)' },
-	'Xenova/all-MiniLM-L6-v2': { dimensions: 384, description: 'All-MiniLM-L6-v2 (推荐，轻量级)' },
+	'TaylorAI/bge-micro-v2': { dimensions: 384, description: 'BGE-micro-v2 (local, 512 tokens, 384-dim)' },
+	'Xenova/all-MiniLM-L6-v2': { dimensions: 384, description: 'All-MiniLM-L6-v2 (recommended, lightweight)' },
 	'Xenova/bge-small-en-v1.5': { dimensions: 384, description: 'BGE-small-en-v1.5' },
-	'Xenova/bge-base-en-v1.5': { dimensions: 768, description: 'BGE-base-en-v1.5 (更高质量)' },
-	'Xenova/jina-embeddings-v2-base-zh': { dimensions: 768, description: 'Jina-v2-base-zh (中英双语)' },
+	'Xenova/bge-base-en-v1.5': { dimensions: 768, description: 'BGE-base-en-v1.5 (higher quality)' },
+	'Xenova/jina-embeddings-v2-base-zh': { dimensions: 768, description: 'Jina-v2-base-zh (Chinese-English bilingual)' },
 	'Xenova/jina-embeddings-v2-small-en': { dimensions: 512, description: 'Jina-v2-small-en' },
-	'Xenova/multilingual-e5-small': { dimensions: 384, description: 'E5-small (多语言)' },
-	'Xenova/multilingual-e5-base': { dimensions: 768, description: 'E5-base (多语言，更高质量)' },
+	'Xenova/multilingual-e5-small': { dimensions: 384, description: 'E5-small (multilingual)' },
+	'Xenova/multilingual-e5-base': { dimensions: 768, description: 'E5-base (multilingual, higher quality)' },
 	'Xenova/gte-small': { dimensions: 384, description: 'GTE-small' },
 	'Xenova/e5-small-v2': { dimensions: 384, description: 'E5-small-v2' },
-	'Xenova/e5-base-v2': { dimensions: 768, description: 'E5-base-v2 (更高质量)' },
-	'Snowflake/snowflake-arctic-embed-xs': { dimensions: 384, description: 'Snowflake Arctic Embed XS (本地，512令牌，384维)' },
-	'Snowflake/snowflake-arctic-embed-s': { dimensions: 384, description: 'Snowflake Arctic Embed Small (本地，512令牌，384维)' },
-	'Snowflake/snowflake-arctic-embed-m': { dimensions: 768, description: 'Snowflake Arctic Embed Medium (本地，512令牌，768维)' },
-	'TaylorAI/gte-tiny': { dimensions: 384, description: 'GTE-tiny (本地，512令牌，384维)' },
-	'Mihaiii/Ivysaur': { dimensions: 384, description: 'Ivysaur (本地，512令牌，384维)' },
-	'andersonbcdefg/bge-small-4096': { dimensions: 384, description: 'BGE-small-4K (本地，4096令牌，384维)' },
-	'nomic-ai/nomic-embed-text-v1.5': { dimensions: 768, description: 'Nomic-embed-text-v1.5 (本地，2048令牌，768维)' },
-	'nomic-ai/nomic-embed-text-v1': { dimensions: 768, description: 'Nomic-embed-text (本地，2048令牌，768维)' }
+	'Xenova/e5-base-v2': { dimensions: 768, description: 'E5-base-v2 (higher quality)' },
+	'Snowflake/snowflake-arctic-embed-xs': { dimensions: 384, description: 'Snowflake Arctic Embed XS (local, 512 tokens, 384-dim)' },
+	'Snowflake/snowflake-arctic-embed-s': { dimensions: 384, description: 'Snowflake Arctic Embed Small (local, 512 tokens, 384-dim)' },
+	'Snowflake/snowflake-arctic-embed-m': { dimensions: 768, description: 'Snowflake Arctic Embed Medium (local, 512 tokens, 768-dim)' },
+	'TaylorAI/gte-tiny': { dimensions: 384, description: 'GTE-tiny (local, 512 tokens, 384-dim)' },
+	'Mihaiii/Ivysaur': { dimensions: 384, description: 'Ivysaur (local, 512 tokens, 384-dim)' },
+	'andersonbcdefg/bge-small-4096': { dimensions: 384, description: 'BGE-small-4K (local, 4096 tokens, 384-dim)' },
+	'nomic-ai/nomic-embed-text-v1.5': { dimensions: 768, description: 'Nomic-embed-text-v1.5 (local, 2048 tokens, 768-dim)' },
+	'nomic-ai/nomic-embed-text-v1': { dimensions: 768, description: 'Nomic-embed-text (local, 2048 tokens, 768-dim)' }
 } as const satisfies Record<string, EmbeddingModelInfo>
 
 // Ollama
