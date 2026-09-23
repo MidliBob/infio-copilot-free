@@ -8,6 +8,7 @@ import {
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 
+import { DEFAULT_YACY_BASE_URL } from '../constants';
 import { t } from '../lang/helpers';
 import { InfioSettings } from '../types/settings';
 import { findFilesMatchingPatterns } from '../utils/glob-utils';
@@ -32,6 +33,8 @@ export class InfioSettingTab extends PluginSettingTab {
 	private autoCompleteContainer: HTMLElement | null = null;
 	private modelsContainer: HTMLElement | null = null;
 	private pluginInfoContainer: HTMLElement | null = null;
+	private tavilySetting: Setting | null = null;
+	private yacySetting: Setting | null = null;
 
 	constructor(app: App, plugin: InfioPluginLike) {
 		// @ts-ignore
@@ -268,57 +271,30 @@ export class InfioSettingTab extends PluginSettingTab {
 			.setName(t('settings.WebSearch.title'))
 
 		new Setting(containerEl)
-			.setName(t('settings.WebSearch.serperApiKey'))
-			.setDesc(createFragment(el => {
-				el.appendText(t('settings.WebSearch.serperApiKeyDescription') + ' ');
-				const a = el.createEl('a', {
-					href: 'https://serpapi.com/manage-api-key',
-					text: 'https://serpapi.com/manage-api-key'
-				});
-				a.setAttr('target', '_blank');
-				a.setAttr('rel', 'noopener');
-			}))
-			.setClass('setting-item-heading-smaller')
-			.addText((text) => {
-				const t = text
-					.setValue(this.plugin.settings.serperApiKey)
-					.onChange(async (value) => {
-						await this.plugin.setSettings({
-							...this.plugin.settings,
-							serperApiKey: value,
-						})
-					});
-				if (t.inputEl) {
-					t.inputEl.type = "password";
-				}
-				return t;
-			})
-
-		new Setting(containerEl)
-			.setName(t('settings.WebSearch.searchEngine'))
-			.setDesc(t('settings.WebSearch.searchEngineDescription'))
+			.setName(t('settings.WebSearch.provider'))
+			.setDesc(t('settings.WebSearch.providerDescription'))
 			.addDropdown((dropdown) =>
 				dropdown
-					.addOption('google', t('settings.WebSearch.google'))
-					.addOption('duckduckgo', t('settings.WebSearch.duckDuckGo'))
-					.addOption('bing', t('settings.WebSearch.bing'))
-					.setValue(this.plugin.settings.serperSearchEngine)
+					.addOption('tavily', t('settings.WebSearch.tavily'))
+					.addOption('yacy', t('settings.WebSearch.yacy'))
+					.setValue(this.plugin.settings.webSearchProvider)
 					.onChange(async (value) => {
+						const provider = value === 'yacy' ? 'yacy' : 'tavily';
 						await this.plugin.setSettings({
 							...this.plugin.settings,
-							// @ts-ignore
-							serperSearchEngine: value,
+							webSearchProvider: provider,
 						})
+						this.toggleWebSearchProviderFields(provider)
 					}),
 			)
 
-		new Setting(containerEl)
-			.setName(t('settings.WebSearch.jinaApiKey'))
+		this.tavilySetting = new Setting(containerEl)
+			.setName(t('settings.WebSearch.tavilyApiKey'))
 			.setDesc(createFragment(el => {
-				el.appendText(t('settings.WebSearch.jinaApiKeyDescription') + ' ');
+				el.appendText(t('settings.WebSearch.tavilyApiKeyDescription') + ' ');
 				const a = el.createEl('a', {
-					href: 'https://jina.ai/api-key',
-					text: 'https://jina.ai/api-key'
+					href: 'https://app.tavily.com/',
+					text: 'https://app.tavily.com/'
 				});
 				a.setAttr('target', '_blank');
 				a.setAttr('rel', 'noopener');
@@ -326,11 +302,11 @@ export class InfioSettingTab extends PluginSettingTab {
 			.setClass('setting-item-heading-smaller')
 			.addText((text) => {
 				const t = text
-					.setValue(this.plugin.settings.jinaApiKey)
+					.setValue(this.plugin.settings.tavilyApiKey)
 					.onChange(async (value) => {
 						await this.plugin.setSettings({
 							...this.plugin.settings,
-							jinaApiKey: value,
+							tavilyApiKey: value,
 						})
 					});
 				if (t.inputEl) {
@@ -338,6 +314,41 @@ export class InfioSettingTab extends PluginSettingTab {
 				}
 				return t;
 			})
+
+		this.yacySetting = new Setting(containerEl)
+			.setName(t('settings.WebSearch.yacyBaseUrl'))
+			.setDesc(createFragment(el => {
+				el.appendText(t('settings.WebSearch.yacyBaseUrlDescription') + ' ');
+				const a = el.createEl('a', {
+					href: 'https://yacy.net/',
+					text: 'https://yacy.net/'
+				});
+				a.setAttr('target', '_blank');
+				a.setAttr('rel', 'noopener');
+			}))
+			.setClass('setting-item-heading-smaller')
+			.addText((text) =>
+				text
+					.setPlaceholder(DEFAULT_YACY_BASE_URL)
+					.setValue(this.plugin.settings.yacyBaseUrl)
+					.onChange(async (value) => {
+						await this.plugin.setSettings({
+							...this.plugin.settings,
+							yacyBaseUrl: value,
+						})
+					}))
+
+		this.toggleWebSearchProviderFields(this.plugin.settings.webSearchProvider)
+	}
+
+	// Show only the fields that belong to the selected search provider
+	private toggleWebSearchProviderFields(provider: string): void {
+		if (this.tavilySetting) {
+			this.tavilySetting.settingEl.style.display = provider === 'tavily' ? '' : 'none';
+		}
+		if (this.yacySetting) {
+			this.yacySetting.settingEl.style.display = provider === 'yacy' ? '' : 'none';
+		}
 	}
 
 	renderRAGSection(containerEl: HTMLElement): void {

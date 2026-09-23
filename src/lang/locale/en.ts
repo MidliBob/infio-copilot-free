@@ -403,15 +403,14 @@ export default {
 		// Deep Research Section
 		WebSearch: {
 			title: 'Web search',
-			serperApiKey: 'Serper API key',
-			serperApiKeyDescription: 'API key for web search functionality. Serper allows the plugin to search the internet for information, similar to a search engine. Get your key from',
-			searchEngine: 'Serper search engine',
-			searchEngineDescription: 'Choose the search engine to use for web search.',
-			google: 'Google',
-			duckDuckGo: 'DuckDuckGo',
-			bing: 'Bing',
-			jinaApiKey: 'Jina API key (Optional)',
-			jinaApiKeyDescription: 'API key for parsing web pages into markdown format. If not provided, local parsing will be used. Get your key from',
+			provider: 'Search provider',
+			providerDescription: 'Choose which service the plugin uses for web search. Tavily is a cloud search API with a free tier; YaCy is a self-hosted decentralized search engine that works without API keys.',
+			tavily: 'Tavily',
+			yacy: 'YaCy (self-hosted)',
+			tavilyApiKey: 'Tavily API key',
+			tavilyApiKeyDescription: 'API key for the Tavily web search API (free tier: 1000 searches per month). Get your key from',
+			yacyBaseUrl: 'YaCy peer URL',
+			yacyBaseUrlDescription: 'Base URL of your YaCy peer, for example http://localhost:8090. Run your own peer or point to a public one; no API key is required. Learn more at',
 		},
 		
 		// RAG Section

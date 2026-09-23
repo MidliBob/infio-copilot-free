@@ -692,15 +692,14 @@ export default {
 		},
 		"WebSearch": {
 			"title": "Веб-поиск",
-			"serperApiKey": "API-ключ Serper",
-			"serperApiKeyDescription": "Ключ для функции веб-поиска. Serper позволяет плагину искать информацию в интернете, как поисковик. Получить ключ можно на",
-			"searchEngine": "Поисковый движок Serper",
-			"searchEngineDescription": "Выберите поисковый движок для веб-поиска.",
-			"google": "Google",
-			"duckDuckGo": "DuckDuckGo",
-			"bing": "Bing",
-			"jinaApiKey": "API-ключ Jina (необязательно)",
-			"jinaApiKeyDescription": "Ключ для разбора веб-страниц в формат markdown. Без него будет использоваться локальный разбор. Получить ключ можно на"
+			"provider": "Поисковый сервис",
+			"providerDescription": "Выберите, какой сервис плагин использует для веб-поиска. Tavily — облачный поисковый API с бесплатным тарифом; YaCy — самостоятельный децентрализованный поисковый движок, который работает без API-ключей.",
+			"tavily": "Tavily",
+			"yacy": "YaCy (свой сервер)",
+			"tavilyApiKey": "API-ключ Tavily",
+			"tavilyApiKeyDescription": "Ключ для поискового API Tavily (бесплатный тариф: 1000 запросов в месяц). Получить ключ можно на",
+			"yacyBaseUrl": "Адрес пира YaCy",
+			"yacyBaseUrlDescription": "Базовый адрес вашего пира YaCy, например http://localhost:8090. Запустите собственный пир или укажите публичный; API-ключ не требуется. Подробности на"
 		},
 		"RAG": {
 			"title": "RAG (дополнительно)",

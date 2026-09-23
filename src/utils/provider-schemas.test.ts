@@ -1,7 +1,8 @@
 import {
 	parseOllamaTags,
 	parseOpenRouterModels,
-	parseSerperResults,
+	parseTavilyResults,
+	parseYacyResults,
 } from './provider-schemas'
 
 describe('parseOllamaTags', () => {
@@ -83,23 +84,56 @@ describe('parseOpenRouterModels', () => {
 	})
 })
 
-describe('parseSerperResults', () => {
-	it('parses organic results', () => {
-		const results = parseSerperResults({
-			organic_results: [
-				{ title: 'T', link: 'https://a', snippet: 'S', position: 1 },
-				{ link: 'https://b' },
+describe('parseTavilyResults', () => {
+	it('parses the results array', () => {
+		const results = parseTavilyResults({
+			query: 'q',
+			answer: null,
+			results: [
+				{ title: 'T', url: 'https://a', content: 'C', score: 0.9 },
+				{ url: 'https://b' },
 			],
 		})
 		expect(results).toHaveLength(2)
-		expect(results[0]).toEqual({ title: 'T', link: 'https://a', snippet: 'S' })
+		expect(results[0]).toEqual({ title: 'T', url: 'https://a', content: 'C' })
 		expect(results[1].title).toBeUndefined()
 	})
 
-	it('returns [] when organic_results is missing or malformed', () => {
-		expect(parseSerperResults({})).toEqual([])
-		expect(parseSerperResults({ organic_results: null })).toEqual([])
-		expect(parseSerperResults({ organic_results: [{ title: 'no link' }] })).toEqual([])
-		expect(parseSerperResults('nope')).toEqual([])
+	it('returns [] when results is missing or malformed', () => {
+		expect(parseTavilyResults({})).toEqual([])
+		expect(parseTavilyResults({ results: null })).toEqual([])
+		expect(parseTavilyResults({ results: [{ title: 'no url' }] })).toEqual([])
+		expect(parseTavilyResults('nope')).toEqual([])
+	})
+})
+
+describe('parseYacyResults', () => {
+	it('normalizes items from the channels envelope', () => {
+		expect(parseYacyResults({
+			channels: [{
+				items: [
+					{ title: 'A', link: [{ href: 'https://a.example' }], description: 'snippet A' },
+					{ title: 'B', link: { href: 'https://b.example' }, content: 'snippet B' },
+					{ title: 'C', link: 'https://c.example' },
+				],
+			}],
+		})).toEqual([
+			{ title: 'A', link: 'https://a.example', snippet: 'snippet A' },
+			{ title: 'B', link: 'https://b.example', snippet: 'snippet B' },
+			{ title: 'C', link: 'https://c.example', snippet: undefined },
+		])
+	})
+
+	it('accepts a single item object instead of an array', () => {
+		expect(parseYacyResults({
+			channels: [{ items: { title: 'Solo', link: [{ href: 'https://s.example' }], description: 'd' } }],
+		})).toEqual([{ title: 'Solo', link: 'https://s.example', snippet: 'd' }])
+	})
+
+	it('returns [] on zero results and malformed input', () => {
+		expect(parseYacyResults({ channels: [{ totalResults: '0' }] })).toEqual([])
+		expect(parseYacyResults({})).toEqual([])
+		expect(parseYacyResults({ channels: [{ items: [{ title: 'no link' }] }] })).toEqual([])
+		expect(parseYacyResults('nope')).toEqual([])
 	})
 })

@@ -33,7 +33,7 @@ describe('parseSmartCopilotSettings', () => {
 			debugMode: false,
 		})
 		expect(result).toEqual({
-			version: 0.6,
+			version: 0.7,
 			workspace: '',
 			activeModels: DEFAULT_MODELS,
 			activeProviderTab: 'Ollama',
@@ -139,15 +139,15 @@ describe('parseSmartCopilotSettings', () => {
 			userMessageTemplate: '{{prefix}}<mask/>{{suffix}}',
 			chainOfThoughRemovalRegex: '(.|\\n)*ANSWER:',
 			dontIncludeDataviews: true,
-			jinaApiKey: '',
 			maxPrefixCharLimit: 4000,
 			maxSuffixCharLimit: 4000,
 			mode: 'ask',
 			defaultMention: 'none',
 			removeDuplicateMathBlockIndicator: true,
 			removeDuplicateCodeBlockIndicator: true,
-			serperApiKey: '',
-			serperSearchEngine: 'google',
+			webSearchProvider: 'tavily',
+			tavilyApiKey: '',
+			yacyBaseUrl: 'http://localhost:8090',
 			ignoredFilePatterns: '**/secret/**\n',
 			ignoredTags: '',
 			cacheSuggestions: true,
@@ -274,7 +274,7 @@ describe('settings migration', () => {
 
 		const result = parseInfioSettings(oldSettings)
 		expect(result).toEqual({
-			version: 0.6,
+			version: 0.7,
 			workspace: '',
 			activeModels: DEFAULT_MODELS,
 			activeProviderTab: 'Ollama',
@@ -380,15 +380,15 @@ describe('settings migration', () => {
 			userMessageTemplate: '{{prefix}}<mask/>{{suffix}}',
 			chainOfThoughRemovalRegex: '(.|\\n)*ANSWER:',
 			dontIncludeDataviews: true,
-			jinaApiKey: '',
 			maxPrefixCharLimit: 4000,
 			maxSuffixCharLimit: 4000,
 			mode: 'ask',
 			defaultMention: 'none',
 			removeDuplicateMathBlockIndicator: true,
 			removeDuplicateCodeBlockIndicator: true,
-			serperApiKey: '',
-			serperSearchEngine: 'google',
+			webSearchProvider: 'tavily',
+			tavilyApiKey: '',
+			yacyBaseUrl: 'http://localhost:8090',
 			ignoredFilePatterns: '**/secret/**\n',
 			ignoredTags: '',
 			cacheSuggestions: true,
@@ -502,7 +502,7 @@ describe('settings migration', () => {
 		
 		// Should successfully parse and migrate max_tokens to 4096
 		expect(result.modelOptions.max_tokens).toBe(4096)
-		expect(result.version).toBe(0.6)
+		expect(result.version).toBe(0.7)
 	})
 
 	it('should not change max_tokens if it is already above minimum', () => {
@@ -541,11 +541,11 @@ describe('settings migration', () => {
 		
 		// Should keep the existing max_tokens value since it's already valid
 		expect(result.modelOptions.max_tokens).toBe(6000)
-		expect(result.version).toBe(0.6)
+		expect(result.version).toBe(0.7)
 	})
 })
 
-describe('Infio provider removal migration (0.5 -> 0.6)', () => {
+describe('Infio provider removal migration (0.5 -> 0.7)', () => {
 	it('remaps Infio selections to Ollama/LocalProvider and drops stale data', () => {
 		const infioEraSettings = {
 			version: 0.5,
@@ -597,7 +597,7 @@ describe('Infio provider removal migration (0.5 -> 0.6)', () => {
 
 		const result = parseInfioSettings(infioEraSettings)
 
-		expect(result.version).toBe(0.6)
+		expect(result.version).toBe(0.7)
 		expect(result.defaultProvider).toBe('Ollama')
 		expect(result.activeProviderTab).toBe('Ollama')
 		expect(result.chatModelProvider).toBe('Ollama')
@@ -612,5 +612,26 @@ describe('Infio provider removal migration (0.5 -> 0.6)', () => {
 		expect(result.collectedEmbeddingModels).toEqual([])
 		expect('infioProvider' in result).toBe(false)
 		expect('infioApiKey' in result).toBe(false)
+	})
+})
+
+describe('Serper/Jina removal migration (0.6 -> 0.7)', () => {
+	it('drops the removed web-search credentials and falls back to Tavily defaults', () => {
+		const serperEraSettings = {
+			version: 0.6,
+			serperApiKey: 'secret-serper-key',
+			serperSearchEngine: 'bing',
+			jinaApiKey: 'secret-jina-key',
+		}
+
+		const result = parseInfioSettings(serperEraSettings)
+
+		expect(result.version).toBe(0.7)
+		expect('serperApiKey' in result).toBe(false)
+		expect('serperSearchEngine' in result).toBe(false)
+		expect('jinaApiKey' in result).toBe(false)
+		expect(result.webSearchProvider).toBe('tavily')
+		expect(result.tavilyApiKey).toBe('')
+		expect(result.yacyBaseUrl).toBe('http://localhost:8090')
 	})
 })

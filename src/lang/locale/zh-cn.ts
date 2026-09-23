@@ -404,15 +404,14 @@ export default {
 		// 网页搜索部分
 		WebSearch: {
 			title: '网页搜索',
-			serperApiKey: 'Serper API 密钥',
-			serperApiKeyDescription: '用于网页搜索功能的 API 密钥。Serper 允许插件在互联网上搜索信息，类似于搜索引擎。请从此处获取您的密钥',
-			searchEngine: 'Serper 搜索引擎',
-			searchEngineDescription: '选择用于网页搜索的搜索引擎。',
-			google: 'Google',
-			duckDuckGo: 'DuckDuckGo',
-			bing: 'Bing',
-			jinaApiKey: 'Jina API 密钥（可选）',
-			jinaApiKeyDescription: '用于将网页解析为 Markdown 格式的 API 密钥。如果未提供，将使用本地解析。请从此处获取您的密钥',
+			provider: '搜索服务',
+			providerDescription: '选择插件用于网页搜索的服务。Tavily 是带有免费额度的云端搜索 API；YaCy 是无需 API 密钥的自托管去中心化搜索引擎。',
+			tavily: 'Tavily',
+			yacy: 'YaCy（自托管）',
+			tavilyApiKey: 'Tavily API 密钥',
+			tavilyApiKeyDescription: 'Tavily 网页搜索 API 的密钥（免费额度：每月 1000 次搜索）。请从此处获取您的密钥',
+			yacyBaseUrl: 'YaCy 节点地址',
+			yacyBaseUrlDescription: '您的 YaCy 节点的基础 URL，例如 http://localhost:8090。可以自行运行节点或使用公共节点；无需 API 密钥。详情请访问',
 		},
 		
 		// RAG 部分

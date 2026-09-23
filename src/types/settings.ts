@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DEFAULT_MODELS } from '../constants';
+import { DEFAULT_MODELS, DEFAULT_YACY_BASE_URL } from '../constants';
 import {
 	MAX_DELAY,
 	MAX_MAX_CHAR_LIMIT,
@@ -15,7 +15,7 @@ import { ApiProvider } from '../types/llm/model';
 import { isRegexValid, isValidIgnorePattern } from '../utils/auto-complete';
 import { logger } from '../utils/logger'
 
-export const SETTINGS_SCHEMA_VERSION = 0.6
+export const SETTINGS_SCHEMA_VERSION = 0.7
 
 const OpenRouterProviderSchema = z.object({
 	name: z.literal('OpenRouter'),
@@ -337,9 +337,9 @@ export const InfioSettingsSchema = z.object({
 	defaultMention: z.enum(['none', 'current-file', 'vault']).catch('none'),
 
 	// web search
-	serperApiKey: z.string().catch(''),
-	serperSearchEngine: z.enum(['google', 'duckduckgo', 'bing']).catch('google'),
-	jinaApiKey: z.string().catch(''),
+	webSearchProvider: z.enum(['tavily', 'yacy']).catch('tavily'),
+	tavilyApiKey: z.string().catch(''),
+	yacyBaseUrl: z.string().catch(DEFAULT_YACY_BASE_URL),
 
 	// Files Search
 	filesSearchSettings: FilesSearchSettingsSchema,
@@ -529,6 +529,24 @@ const MIGRATIONS: Migration[] = [
 			// credentials/config of the removed provider
 			delete newData.infioProvider
 			delete newData.infioApiKey
+
+			return newData
+		},
+	},
+	{
+		fromVersion: 0.6,
+		toVersion: 0.7,
+		migrate: (data) => {
+			const newData = { ...data }
+			newData.version = 0.7
+
+			// Serper and Jina stopped working in some regions, so both
+			// providers were removed. Web search is now served by Tavily
+			// (cloud API) or a self-hosted YaCy peer; drop the stale
+			// credentials and let the schema default pick the provider.
+			delete newData.serperApiKey
+			delete newData.serperSearchEngine
+			delete newData.jinaApiKey
 
 			return newData
 		},
