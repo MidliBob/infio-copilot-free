@@ -381,7 +381,7 @@ export class VectorManager {
 									})
 									.filter((chunk): chunk is InsertVector => chunk !== null)
 							} catch (error) {
-								logger.warn(`跳过文件 ${file.path}:`, error.message)
+								logger.warn(`Skipping file ${file.path}:`, error.message)
 								skippedFiles.push(file.path)
 								return []
 							}
@@ -534,7 +534,7 @@ export class VectorManager {
 		}
 
 		if (skippedFiles.length > 0) {
-			logger.warn(`跳过了 ${skippedFiles.length} 个有问题的文件:`, skippedFiles)
+			logger.warn(`Skipped ${skippedFiles.length} problematic files:`, skippedFiles)
 			new Notice(t('notifications.indexSkippedFiles', { count: skippedFiles.length }))
 		}
 	}
@@ -696,7 +696,7 @@ export class VectorManager {
 									})
 									.filter((chunk): chunk is InsertVector => chunk !== null)
 							} catch (error) {
-								logger.warn(`跳过文件 ${file.path}:`, error.message)
+								logger.warn(`Skipping file ${file.path}:`, error.message)
 								skippedFiles.push(file.path)
 								return []
 							}
@@ -854,7 +854,7 @@ export class VectorManager {
 		}
 
 		if (skippedFiles.length > 0) {
-			logger.warn(`跳过了 ${skippedFiles.length} 个有问题的文件:`, skippedFiles)
+			logger.warn(`Skipped ${skippedFiles.length} problematic files:`, skippedFiles)
 			new Notice(t('notifications.indexSkippedFiles', { count: skippedFiles.length }))
 		}
 	}
@@ -1063,7 +1063,7 @@ export class VectorManager {
 				this.forceGarbageCollection()
 			}
 		} catch (error) {
-			logger.warn(`跳过文件 ${file.path}:`, error.message)
+			logger.warn(`Skipping file ${file.path}:`, error.message)
 			new Notice(t('notifications.indexSkippedFile', { name: file.name, error: error.message }))
 		}
 	}

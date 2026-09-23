@@ -66,7 +66,7 @@ const WorkspaceSelect = () => {
 
 			return workspaceList
 		} catch (error) {
-			logger.error('获取工作区列表失败:', error)
+			logger.error('Failed to fetch the workspace list:', error)
 			return []
 		}
 	}, [workspaceManager, settings.workspace])
@@ -78,7 +78,7 @@ const WorkspaceSelect = () => {
 			const workspaceList = await getWorkspaces()
 			setWorkspaces(workspaceList)
 		} catch (error) {
-			logger.error('刷新工作区列表失败:', error)
+			logger.error('Failed to refresh the workspace list:', error)
 		} finally {
 			setIsLoading(false)
 		}
@@ -104,7 +104,7 @@ const WorkspaceSelect = () => {
 			// 刷新工作区列表以更新状态
 			await refreshWorkspaces()
 		} catch (error) {
-			logger.error('切换工作区失败:', error)
+			logger.error('Failed to switch workspace:', error)
 			new Notice(t('workspace.switchFailed'))
 		}
 	}

@@ -429,12 +429,12 @@ export class TransEngine {
 	> {
 		// 如果没有必要的参数，跳过缓存检查
 		if (!this.embeddingModel || !this.insightManager) {
-			logger.debug("TransEngine: 跳过缓存检查");
-			logger.debug("embeddingModel:", this.embeddingModel ? "已初始化" : "未初始化");
-			logger.debug("insightManager:", this.insightManager ? "已初始化" : "未初始化");
+			logger.debug("TransEngine: skipping cache check");
+			logger.debug("embeddingModel:", this.embeddingModel ? "initialized" : "not initialized");
+			logger.debug("insightManager:", this.insightManager ? "initialized" : "not initialized");
 			logger.debug("embeddingModelId:", this.settings.embeddingModelId);
 			logger.debug("embeddingModelProvider:", this.settings.embeddingModelProvider);
-			logger.debug("提示：请在插件设置中配置嵌入模型，或点击'一键配置'按钮");
+			logger.debug("Hint: configure an embedding model in the plugin settings, or use the one-click configuration button");
 			return {
 				success: true,
 				foundCache: false
@@ -453,7 +453,7 @@ export class TransEngine {
 
 			if (matchingInsight) {
 				// 找到匹配的缓存结果，直接返回
-				logger.debug(`使用缓存的转换结果: ${transformationType} for ${sourcePath}`);
+				logger.debug(`Using cached transformation result: ${transformationType} for ${sourcePath}`);
 				return {
 					success: true,
 					foundCache: true,
@@ -472,7 +472,7 @@ export class TransEngine {
 				foundCache: false
 			};
 		} catch (cacheError) {
-			logger.warn('查询缓存失败，继续执行转换:', cacheError);
+			logger.warn('Cache lookup failed, continuing with transformation:', cacheError);
 			// 缓存查询失败不影响主流程
 			return {
 				success: true,
@@ -527,9 +527,9 @@ export class TransEngine {
 		contentType: 'document' | 'tag' | 'folder'
 	): Promise<void> {
 		if (!this.embeddingModel || !this.insightManager) {
-			logger.debug("TransEngine: 无法保存到数据库");
-			logger.debug("embeddingModel:", this.embeddingModel ? "已初始化" : "未初始化");
-			logger.debug("insightManager:", this.insightManager ? "已初始化" : "未初始化");
+			logger.debug("TransEngine: cannot save to the database");
+			logger.debug("embeddingModel:", this.embeddingModel ? "initialized" : "not initialized");
+			logger.debug("insightManager:", this.insightManager ? "initialized" : "not initialized");
 			logger.debug("embeddingModelId:", this.settings.embeddingModelId);
 			logger.debug("embeddingModelProvider:", this.settings.embeddingModelProvider);
 			return;
@@ -552,9 +552,9 @@ export class TransEngine {
 				this.embeddingModel
 			);
 
-			logger.debug(`转换结果已成功保存到数据库: ${transformationType} for ${sourcePath}`);
+			logger.debug(`Transformation result saved to the database: ${transformationType} for ${sourcePath}`);
 		} catch (dbError) {
-			logger.warn('保存洞察到数据库失败:', dbError);
+			logger.warn('Failed to save insight to the database:', dbError);
 			// 后台任务失败不影响主要的转换结果
 		}
 	}
@@ -797,7 +797,7 @@ export class TransEngine {
 					if (fileResult.success && fileResult.result) {
 						fileSummaries.push(`### ${file.name}\n${fileResult.result}`);
 					} else {
-						logger.warn(`处理文件失败: ${file.path}`, fileResult.error);
+						logger.warn(`Failed to process file: ${file.path}`, fileResult.error);
 					}
 				}
 
@@ -824,7 +824,7 @@ export class TransEngine {
 					if (subfolderResult.success && subfolderResult.result) {
 						subfolderSummaries.push(`### ${subfolder.name}\n${subfolderResult.result}`);
 					} else {
-						logger.warn(`处理子文件夹失败: ${subfolder.path}`, subfolderResult.error);
+						logger.warn(`Failed to process subfolder: ${subfolder.path}`, subfolderResult.error);
 					}
 				}
 
@@ -928,11 +928,11 @@ export class TransEngine {
 	> {
 		if (!this.embeddingModel || !this.insightManager) {
 			logger.warn('TransEngine: embedding model or insight manager not available')
-			logger.debug("embeddingModel:", this.embeddingModel ? "已初始化" : "未初始化");
-			logger.debug("insightManager:", this.insightManager ? "已初始化" : "未初始化");
+			logger.debug("embeddingModel:", this.embeddingModel ? "initialized" : "not initialized");
+			logger.debug("insightManager:", this.insightManager ? "initialized" : "not initialized");
 			logger.debug("embeddingModelId:", this.settings.embeddingModelId);
 			logger.debug("embeddingModelProvider:", this.settings.embeddingModelProvider);
-			logger.debug("提示：请在插件设置中配置嵌入模型，或点击'一键配置'按钮");
+			logger.debug("Hint: configure an embedding model in the plugin settings, or use the one-click configuration button");
 			return []
 		}
 
@@ -988,11 +988,11 @@ export class TransEngine {
 	async getAllInsights(): Promise<Omit<import('../../database/schema').SelectSourceInsight, 'embedding'>[]> {
 		if (!this.embeddingModel || !this.insightManager) {
 			logger.warn('TransEngine: embedding model or insight manager not available')
-			logger.debug("embeddingModel:", this.embeddingModel ? "已初始化" : "未初始化");
-			logger.debug("insightManager:", this.insightManager ? "已初始化" : "未初始化");
+			logger.debug("embeddingModel:", this.embeddingModel ? "initialized" : "not initialized");
+			logger.debug("insightManager:", this.insightManager ? "initialized" : "not initialized");
 			logger.debug("embeddingModelId:", this.settings.embeddingModelId);
 			logger.debug("embeddingModelProvider:", this.settings.embeddingModelProvider);
-			logger.debug("提示：请在插件设置中配置嵌入模型，或点击'一键配置'按钮");
+			logger.debug("Hint: configure an embedding model in the plugin settings, or use the one-click configuration button");
 			return []
 		}
 
@@ -1026,7 +1026,7 @@ export class TransEngine {
 					taggedFiles.push(file)
 				}
 			} catch (error) {
-				logger.warn(`检查文件标签失败: ${file.path}`, error)
+				logger.warn(`Failed to check file tags: ${file.path}`, error)
 			}
 		}
 
@@ -1142,7 +1142,7 @@ export class TransEngine {
 			// 检查缓存
 			const fileMetadata = await this.getFileMetadata(filePath)
 			if (!fileMetadata.success) {
-				logger.warn(`无法获取文件元数据: ${filePath}`)
+				logger.warn(`Failed to get file metadata: ${filePath}`)
 				return null
 			}
 
@@ -1159,14 +1159,14 @@ export class TransEngine {
 			// 获取文件内容
 			const contentResult = await this.getFileContent(filePath)
 			if (!contentResult.success) {
-				logger.warn(`无法读取文件内容: ${filePath}`)
+				logger.warn(`Failed to read file content: ${filePath}`)
 				return null
 			}
 
 			// 验证内容
 			const contentValidation = DocumentProcessor.validateContent(contentResult.fileContent)
 			if (contentValidation.isErr()) {
-				logger.warn(`文件内容无效: ${filePath}`)
+				logger.warn(`Invalid file content: ${filePath}`)
 				return null
 			}
 
@@ -1194,7 +1194,7 @@ export class TransEngine {
 			return summary
 
 		} catch (error) {
-			logger.warn(`处理文件失败: ${filePath}`, error)
+			logger.warn(`Failed to process file: ${filePath}`, error)
 			return null
 		}
 	}
@@ -1282,9 +1282,9 @@ export class TransEngine {
 				},
 				this.embeddingModel
 			)
-			logger.debug(`文件夹摘要已保存到数据库: ${folderPath}`)
+			logger.debug(`Folder summary saved to the database: ${folderPath}`)
 		} catch (error) {
-			logger.warn('保存文件夹摘要到数据库失败:', error)
+			logger.warn('Failed to save folder summary to the database:', error)
 		}
 	}
 
@@ -1387,7 +1387,7 @@ export class TransEngine {
 				// 对于 vault 工作区，删除所有洞察
 				await this.insightManager.clearAllInsights(this.embeddingModel)
 
-				logger.debug(`已删除 vault 工作区的所有 ${allInsights.length} 个转换`)
+				logger.debug(`Deleted all ${allInsights.length} transformations of the vault workspace`)
 
 				return {
 					success: true,
@@ -1408,7 +1408,7 @@ export class TransEngine {
 			// 批量删除洞察
 			if (uniquePaths.length > 0) {
 				await this.insightManager.deleteInsightsBySourcePaths(uniquePaths, this.embeddingModel)
-				logger.debug(`已删除工作区 "${workspaceName}" 的 ${deletedCount} 个转换，涉及 ${uniquePaths.length} 个路径`)
+				logger.debug(`Deleted ${deletedCount} transformations of workspace "${workspaceName}" across ${uniquePaths.length} paths`)
 			}
 
 			return {
@@ -1417,7 +1417,7 @@ export class TransEngine {
 			}
 
 		} catch (error) {
-			logger.error('删除工作区转换失败:', error)
+			logger.error('Failed to delete workspace transformations:', error)
 			return {
 				success: false,
 				deletedCount: 0,
@@ -1457,7 +1457,7 @@ export class TransEngine {
 
 			if (workspaceInsights.length > 0) {
 				await this.insightManager.deleteInsightsBySourcePath(workspaceInsightPath, this.embeddingModel)
-				logger.debug(`已删除工作区 "${workspaceName}" 的 ${workspaceInsights.length} 个转换`)
+				logger.debug(`Deleted ${workspaceInsights.length} transformations of workspace "${workspaceName}"`)
 			}
 
 			return {
@@ -1466,7 +1466,7 @@ export class TransEngine {
 			}
 
 		} catch (error) {
-			logger.error('删除工作区转换失败:', error)
+			logger.error('Failed to delete workspace transformations:', error)
 			return {
 				success: false,
 				deletedCount: 0,
@@ -1496,14 +1496,14 @@ export class TransEngine {
 			// 直接按ID删除洞察
 			await this.insightManager.deleteInsightById(insightId, this.embeddingModel)
 
-			logger.debug(`已删除洞察 ID: ${insightId}`)
+			logger.debug(`Deleted insight ID: ${insightId}`)
 
 			return {
 				success: true
 			}
 
 		} catch (error) {
-			logger.error('删除单个洞察失败:', error)
+			logger.error('Failed to delete insight:', error)
 			return {
 				success: false,
 				error: t('insights.error.deleteInsightFailed', { error: error instanceof Error ? error.message : String(error) })
@@ -1653,7 +1653,7 @@ export class TransEngine {
 						}
 						processedFiles++;
 					} else {
-						logger.warn(`处理文件失败: ${file.path}`, fileResult.error);
+						logger.warn(`Failed to process file: ${file.path}`, fileResult.error);
 						const isTopLevelFile = topLevelFiles.some(f => f.path === file.path);
 						if (isTopLevelFile) {
 							topLevelSummaries.push(t('insights.summaryNote.fileFailed', { name: file.name, error: fileResult.error }));
@@ -1661,7 +1661,7 @@ export class TransEngine {
 						skippedItems++;
 					}
 				} catch (error) {
-					logger.error(`文件处理异常: ${file.path}`, error);
+					logger.error(`File processing exception: ${file.path}`, error);
 					const isTopLevelFile = topLevelFiles.some(f => f.path === file.path);
 					if (isTopLevelFile) {
 						topLevelSummaries.push(t('insights.summaryNote.fileError', { name: file.name, error: error instanceof Error ? error.message : String(error) }));
@@ -1705,7 +1705,7 @@ export class TransEngine {
 						}
 						processedFolders++;
 					} else {
-						logger.warn(`处理文件夹失败: ${folder.path}`, folderResult.error);
+						logger.warn(`Failed to process folder: ${folder.path}`, folderResult.error);
 						const isTopLevelFolder = topLevelFolders.some(f => f.path === folder.path);
 						if (isTopLevelFolder) {
 							topLevelSummaries.push(t('insights.summaryNote.folderFailed', { name: folder.name, error: folderResult.error }));
@@ -1713,7 +1713,7 @@ export class TransEngine {
 						skippedItems++;
 					}
 				} catch (error) {
-					logger.error(`文件夹处理异常: ${folder.path}`, error);
+					logger.error(`Folder processing exception: ${folder.path}`, error);
 					const isTopLevelFolder = topLevelFolders.some(f => f.path === folder.path);
 					if (isTopLevelFolder) {
 						topLevelSummaries.push(t('insights.summaryNote.folderError', { name: folder.name, error: error instanceof Error ? error.message : String(error) }));
@@ -1781,7 +1781,7 @@ export class TransEngine {
 
 			if (cacheCheckResult.foundCache && cacheCheckResult.result.success) {
 				// 找到缓存的工作区洞察，直接返回
-				logger.debug(`使用缓存的工作区洞察: ${workspace.name}`);
+				logger.debug(`Using cached workspace insights: ${workspace.name}`);
 
 				onProgress?.({
 					stage: t('insights.stage.usingCachedInsight'),
@@ -1881,7 +1881,7 @@ export class TransEngine {
 					insightId = latestInsight?.id;
 				}
 			} catch (error) {
-				logger.warn('保存洞察到数据库失败:', error);
+				logger.warn('Failed to save insight to the database:', error);
 				// 不影响主流程，仅记录警告
 			}
 
@@ -1934,7 +1934,7 @@ export class TransEngine {
 		try {
 			const folder = this.app.vault.getAbstractFileByPath(normalizePath(folderPath));
 			if (!folder || !(folder instanceof TFolder)) {
-				logger.warn(`文件夹不存在或无法访问: ${folderPath}`);
+				logger.warn(`Folder does not exist or is not accessible: ${folderPath}`);
 				return items;
 			}
 
@@ -1982,7 +1982,7 @@ export class TransEngine {
 
 			return items;
 		} catch (error) {
-			logger.error(`收集文件夹项目时出错: ${folderPath}`, error);
+			logger.error(`Error while collecting folder items: ${folderPath}`, error);
 			return items;
 		}
 	}

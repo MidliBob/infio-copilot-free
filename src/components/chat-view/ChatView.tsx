@@ -977,7 +977,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 												const itemType = isFolder ? t('fileOps.typeFolder') : t('fileOps.typeFile');
 												results.push(t('fileOps.trashOk', { type: itemType, path: operation.path }));
 											} catch (error) {
-												logger.error('删除失败:', error);
+												logger.error('Delete failed:', error);
 												results.push(t('fileOps.deleteFailed', { path: operation.path, error: error.message }));
 											}
 										} else {
@@ -1049,7 +1049,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 							}
 						};
 					} catch (error) {
-						logger.error('文件管理操作失败:', error);
+						logger.error('File management operation failed:', error);
 						return {
 							type: 'manage_files',
 							applyMsgId,

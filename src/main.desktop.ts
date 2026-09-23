@@ -501,24 +501,24 @@ export async function loadDesktop(base: Plugin) {
 		id: 'test-dataview-simple',
 		name: t('main.testDataview'),
 		callback: async () => {
-			logger.debug('开始测试 Dataview...');
+			logger.debug('Testing Dataview...');
 			if (!plugin.dataviewManager) { new Notice(t('notifications.dataviewNotInitialized')); return; }
 			if (!plugin.dataviewManager.isDataviewAvailable()) {
 				new Notice(t('notifications.dataviewNotInstalled'));
-				logger.debug('Dataview API 不可用');
+				logger.debug('Dataview API is not available');
 				return;
 			}
-			logger.debug('Dataview API 可用，执行简单查询...');
+			logger.debug('Dataview API is available, running a simple query...');
 			try {
 				const result = await plugin.dataviewManager.executeQuery('LIST FROM ""');
 				if (result.success) {
 					new Notice(t('notifications.dataviewQuerySuccess'));
 				} else {
 					new Notice(t('notifications.dataviewQueryFailed', { error: result.error }));
-					logger.error('查询错误:', result.error);
+					logger.error('Query error:', result.error);
 				}
 			} catch (error) {
-				logger.error('执行测试查询失败:', error);
+				logger.error('Failed to execute the test query:', error);
 				new Notice(t('notifications.dataviewQueryError'));
 			}
 		},
@@ -539,13 +539,13 @@ export async function loadDesktop(base: Plugin) {
 					dims: result.vec.length,
 					values: result.vec.slice(0, 4).map(v => v.toFixed(4)).join(', '),
 				});
-				logger.debug('本地嵌入测试结果:', result);
+				logger.debug('Local embedding test result:', result);
 				const modal = new Modal(plugin.app);
 				modal.titleEl.setText(t('notifications.embeddingTestTitle'));
 				modal.contentEl.createEl('pre', { text: resultMessage });
 				modal.open();
 			} catch (error) {
-				logger.error('嵌入测试失败:', error);
+				logger.error('Embedding test failed:', error);
 				new Notice(t('notifications.embeddingTestFailed', { error: error.message }), 5000);
 			}
 		},

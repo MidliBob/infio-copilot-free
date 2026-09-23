@@ -75,7 +75,7 @@ const WorkspaceView = () => {
 			
 			return workspaceList
 		} catch (error) {
-			logger.error('获取工作区列表失败:', error)
+			logger.error('Failed to fetch the workspace list:', error)
 			return []
 		}
 	}, [workspaceManager, settings.workspace])
@@ -87,7 +87,7 @@ const WorkspaceView = () => {
 			const workspaceList = await getWorkspaces()
 			setWorkspaces(workspaceList)
 		} catch (error) {
-			logger.error('刷新工作区列表失败:', error)
+			logger.error('Failed to refresh the workspace list:', error)
 			new Notice(String(t('workspace.notices.refreshFailed')))
 		} finally {
 			setIsLoading(false)
@@ -111,7 +111,7 @@ const WorkspaceView = () => {
 			// 刷新工作区列表以更新状态
 			await refreshWorkspaces()
 		} catch (error) {
-			logger.error('切换工作区失败:', error)
+			logger.error('Failed to switch workspace:', error)
 			new Notice(String(t('workspace.notices.switchFailed')))
 		}
 	}
@@ -139,7 +139,7 @@ const WorkspaceView = () => {
 				new Notice(String(t('workspace.notices.deleteFailed')))
 			}
 		} catch (error) {
-			logger.error('删除工作区失败:', error)
+			logger.error('Failed to delete workspace:', error)
 			new Notice(String(t('workspace.notices.deleteFailed')))
 		}
 	}
@@ -171,7 +171,7 @@ const WorkspaceView = () => {
 			await refreshWorkspaces()
 			closeCreateModal()
 		} catch (error) {
-			logger.error('创建工作区失败:', error)
+			logger.error('Failed to create workspace:', error)
 			throw error
 		}
 	}
@@ -197,7 +197,7 @@ const WorkspaceView = () => {
 			new Notice(String(t('workspace.notices.updated', { name: updates.name || editingWorkspace.name })))
 			await refreshWorkspaces()
 		} catch (error) {
-			logger.error('更新工作区失败:', error)
+			logger.error('Failed to update workspace:', error)
 			throw error
 		}
 	}
@@ -267,7 +267,7 @@ const WorkspaceView = () => {
 	// 组件初始化
 	useEffect(() => {
 		refreshWorkspaces().catch((error) => {
-			logger.error('初始化工作区列表失败:', error)
+			logger.error('Failed to initialize the workspace list:', error)
 		})
 	}, [refreshWorkspaces])
 

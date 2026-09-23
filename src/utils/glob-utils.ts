@@ -281,7 +281,7 @@ export const semanticSearchFiles = async (
 		})
 
 		if (ragResults.length > 0) {
-			resultSections.push('## 📝 原始笔记内容')
+			resultSections.push('## 📝 Original note content')
 			const ragSnippets = ragResults.map(({ path, content, metadata }: any) => {
 				const contentWithLineNumbers = addLineNumbers(content, metadata.startLine)
 				return `<file_block_content location="${path}#L${metadata.startLine}-${metadata.endLine}">\n${contentWithLineNumbers}\n</file_block_content>`
@@ -289,8 +289,8 @@ export const semanticSearchFiles = async (
 			resultSections.push(ragSnippets)
 		}
 	} catch (error) {
-		logger.warn('RAG 搜索失败:', error)
-		resultSections.push('## 📝 原始笔记内容\n⚠️ 原始笔记搜索失败')
+		logger.warn('RAG search failed:', error)
+		resultSections.push('## 📝 Original note content\n⚠️ Original note search failed')
 	}
 
 	// 2. 查询抽象洞察数据库 (TransEngine) - 使用新的 processQuery 接口
@@ -304,7 +304,7 @@ export const semanticSearchFiles = async (
 			})
 
 			if (insightResults.length > 0) {
-				resultSections.push('\n## 🧠 AI 抽象洞察')
+				resultSections.push('\n## 🧠 AI abstract insights')
 				
 				// 按转换类型分组
 				const groupedInsights: { [key: string]: any[] } = {}
@@ -331,8 +331,8 @@ export const semanticSearchFiles = async (
 				}
 			}
 		} catch (error) {
-			logger.warn('TransEngine 搜索失败:', error)
-			resultSections.push('\n## 🧠 AI 抽象洞察\n⚠️ 洞察搜索失败: ' + (error instanceof Error ? error.message : String(error)))
+			logger.warn('TransEngine search failed:', error)
+			resultSections.push('\n## 🧠 AI abstract insights\n⚠️ Insight search failed: ' + (error instanceof Error ? error.message : String(error)))
 		}
 	}
 

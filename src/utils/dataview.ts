@@ -24,7 +24,7 @@ export class DataviewManager {
 			const api = getAPI(this.app) as DataviewApi | null;
 			return api;
 		} catch (error) {
-			logger.error('获取 Dataview API 失败:', error);
+			logger.error('Failed to get the Dataview API:', error);
 			return null;
 		}
 	}
@@ -75,7 +75,7 @@ export class DataviewManager {
 			};
 
 		} catch (error) {
-			logger.error('Dataview 查询执行失败:', error);
+			logger.error('Dataview query execution failed:', error);
 			return {
 				success: false,
 				error: error instanceof Error ? error.message : t('chat.dataview.unknownError')
@@ -109,7 +109,7 @@ export class DataviewManager {
 				};
 			}
 		} catch (error) {
-			logger.error('Dataview JS 执行失败:', error);
+			logger.error('Dataview JS execution failed:', error);
 			return {
 				success: false,
 				error: error instanceof Error ? error.message : t('chat.dataview.unknownError')

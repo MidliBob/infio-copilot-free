@@ -103,12 +103,12 @@ async function testEndpoint(url: string, timeout = 3000): Promise<boolean> {
 	const signal = controller.signal;
 
 	const timeoutId = setTimeout(() => {
-		console.log(`请求 ${url} 超时。`);
+		console.log(`Request to ${url} timed out.`);
 		controller.abort();
 	}, timeout);
 
 	try {
-		console.log(`正在测试端点: ${url}`);
+		console.log(`Testing endpoint: ${url}`);
 		// 我们使用 'HEAD' 方法，因为它只请求头部信息，非常快速，适合做存活检测。
 		// 'no-cors' 模式允许我们在浏览器环境中进行跨域请求以进行简单的可达性测试，
 		// 即使我们不能读取响应内容，请求成功也意味着网络是通的。
@@ -116,12 +116,12 @@ async function testEndpoint(url: string, timeout = 3000): Promise<boolean> {
 		
 		// 如果 fetch 成功，清除超时定时器并返回 true
 		clearTimeout(timeoutId);
-		console.log(`端点 ${url} 可访问。`);
+		console.log(`Endpoint ${url} is reachable.`);
 		return true;
 	} catch (error) {
 		// 如果发生网络错误或请求被中止 (超时)，则进入 catch 块
 		clearTimeout(timeoutId); // 同样需要清除定时器
-		console.warn(`无法访问端点 ${url}:`, error instanceof Error && error.name === 'AbortError' ? '超时' : (error as Error).message);
+		console.warn(`Cannot reach endpoint ${url}:`, error instanceof Error && error.name === 'AbortError' ? 'timeout' : (error as Error).message);
 		return false;
 	}
 }
@@ -137,10 +137,10 @@ async function pickRemoteHost(): Promise<string | null> {
 	const isDefaultReachable = await testEndpoint(defaultEndpoint);
 
 	if (!isDefaultReachable) {
-		console.log(`默认端点不可达，将切换到备用镜像: ${fallbackEndpoint}`);
+		console.log(`Default endpoint is unreachable, switching to the fallback mirror: ${fallbackEndpoint}`);
 		return fallbackEndpoint;
 	}
-	console.log(`将使用默认端点: ${defaultEndpoint}`);
+	console.log(`Using the default endpoint: ${defaultEndpoint}`);
 	return null;
 }
 

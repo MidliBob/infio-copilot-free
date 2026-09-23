@@ -145,11 +145,11 @@ const SearchView = () => {
 			// 设置搜索范围信息（用于调试）
 			let scopeDescription = ''
 			if (currentWorkspace) {
-				scopeDescription = `工作区: ${currentWorkspace.name}`
+				scopeDescription = `workspace: ${currentWorkspace.name}`
 			} else {
-				scopeDescription = '整个 Vault'
+				scopeDescription = 'entire vault'
 			}
-			logger.debug('搜索范围:', scopeDescription)
+			logger.debug('Search scope:', scopeDescription)
 
 			// 构建搜索范围
 			let scope: { files: string[], folders: string[] } | undefined
@@ -221,7 +221,7 @@ const SearchView = () => {
 				setInsightResults(insightsResults)
 			}
 		} catch (error) {
-			logger.error('搜索失败:', error)
+			logger.error('Search failed:', error)
 			setSearchResults([])
 			setInsightResults([])
 		} finally {
@@ -256,7 +256,7 @@ const SearchView = () => {
 			setStatisticsInfo(stats)
 
 		} catch (error) {
-			logger.error('加载统计信息失败:', error)
+			logger.error('Failed to load statistics:', error)
 			setStatisticsInfo({ totalFiles: 0, totalChunks: 0 })
 		} finally {
 			setIsLoadingStats(false)
@@ -295,7 +295,7 @@ const SearchView = () => {
 			await loadStatistics()
 
 			// 显示成功消息
-			logger.debug(`✅ 工作区 RAG 向量初始化完成: ${currentWorkspace.name}`)
+			logger.debug(`✅ Workspace RAG vectors initialized: ${currentWorkspace.name}`)
 
 			// 显示成功状态
 			setRAGInitSuccess({
@@ -311,7 +311,7 @@ const SearchView = () => {
 			}, 5000)
 
 		} catch (error) {
-			logger.error('工作区 RAG 向量初始化失败:', error)
+			logger.error('Workspace RAG vector initialization failed:', error)
 			setRAGInitSuccess({ show: false })
 		} finally {
 			setIsInitializingRAG(false)
@@ -336,10 +336,10 @@ const SearchView = () => {
 			// 刷新统计信息
 			await loadStatistics()
 
-			logger.debug('✅ 工作区索引清除完成')
+			logger.debug('✅ Workspace index cleared')
 
 		} catch (error) {
-			logger.error('清除工作区索引失败:', error)
+			logger.error('Failed to clear workspace index:', error)
 		} finally {
 			setIsDeleting(false)
 		}
@@ -384,7 +384,7 @@ const SearchView = () => {
 			return
 		}
 
-		logger.debug('🔍 [SearchView] 点击搜索结果:', {
+		logger.debug('🔍 [SearchView] clicked search result:', {
 			id: result.id,
 			path: result.path,
 			startLine: result.metadata?.startLine,
@@ -395,27 +395,27 @@ const SearchView = () => {
 
 		// 检查路径是否存在
 		if (!result.path) {
-			logger.error('❌ [SearchView] 文件路径为空')
+			logger.error('❌ [SearchView] file path is empty')
 			return
 		}
 
 		// 检查文件是否存在于vault中
 		const file = app.vault.getFileByPath(result.path)
 		if (!file) {
-			logger.error('❌ [SearchView] 在vault中找不到文件:', result.path)
+			logger.error('❌ [SearchView] file not found in vault:', result.path)
 			return
 		}
 
-		logger.debug('✅ [SearchView] 文件存在，准备打开:', {
+		logger.debug('✅ [SearchView] file exists, preparing to open:', {
 			file: file.path,
 			startLine: result.metadata?.startLine
 		})
 
 		try {
 			openMarkdownFile(app, result.path, result.metadata.startLine)
-			logger.debug('✅ [SearchView] 成功调用openMarkdownFile')
+			logger.debug('✅ [SearchView] openMarkdownFile succeeded')
 		} catch (error) {
-			logger.error('❌ [SearchView] 调用openMarkdownFile失败:', error)
+			logger.error('❌ [SearchView] openMarkdownFile failed:', error)
 		}
 	}
 

@@ -162,18 +162,18 @@ export function openMarkdownFile(
 	filePath: string,
 	startLine?: number,
 ) {
-	logger.debug('🔄 [openMarkdownFile] 开始打开文件:', {
+	logger.debug('🔄 [openMarkdownFile] start opening file:', {
 		filePath,
 		startLine
 	})
 
 	const file = app.vault.getFileByPath(filePath)
 	if (!file) {
-		logger.error('❌ [openMarkdownFile] 文件不存在:', filePath)
+		logger.error('❌ [openMarkdownFile] file does not exist:', filePath)
 		return
 	}
 
-	logger.debug('✅ [openMarkdownFile] 找到文件:', {
+	logger.debug('✅ [openMarkdownFile] file found:', {
 		path: file.path,
 		name: file.name,
 		extension: file.extension
@@ -187,28 +187,28 @@ export function openMarkdownFile(
 		)
 
 	if (existingLeaf) {
-		logger.debug('🔄 [openMarkdownFile] 找到已存在的标签，切换到该标签')
+		logger.debug('🔄 [openMarkdownFile] found an existing leaf, switching to it')
 		app.workspace.setActiveLeaf(existingLeaf, { focus: true })
 
 		if (startLine && existingLeaf.view instanceof MarkdownView) {
-			logger.debug('🔄 [openMarkdownFile] 设置行号:', startLine - 1)
+			logger.debug('🔄 [openMarkdownFile] setting line number:', startLine - 1)
 			try {
 				existingLeaf.view.setEphemeralState({ line: startLine - 1 }) // -1 because line is 0-indexed
-				logger.debug('✅ [openMarkdownFile] 成功设置行号')
+				logger.debug('✅ [openMarkdownFile] line number set')
 			} catch (error) {
-				logger.error('❌ [openMarkdownFile] 设置行号失败:', error)
+				logger.error('❌ [openMarkdownFile] failed to set line number:', error)
 			}
 		}
 	} else {
-		logger.debug('🔄 [openMarkdownFile] 创建新标签打开文件')
+		logger.debug('🔄 [openMarkdownFile] opening the file in a new leaf')
 		try {
 			const leaf = app.workspace.getLeaf('tab')
 			void leaf.openFile(file, {
 				eState: startLine ? { line: startLine - 1 } : undefined, // -1 because line is 0-indexed
 			})
-			logger.debug('✅ [openMarkdownFile] 成功在新标签中打开文件')
+			logger.debug('✅ [openMarkdownFile] file opened in a new leaf')
 		} catch (error) {
-			logger.error('❌ [openMarkdownFile] 在新标签中打开文件失败:', error)
+			logger.error('❌ [openMarkdownFile] failed to open the file in a new leaf:', error)
 		}
 	}
 }

@@ -169,7 +169,7 @@ const InsightView = () => {
 			setInsightResults(insightsWithDisplayTime)
 
 		} catch (error) {
-			logger.error('加载洞察失败:', error)
+			logger.error('Failed to load insights:', error)
 			setInsightResults([])
 		} finally {
 			setIsLoading(false)
@@ -224,17 +224,17 @@ const InsightView = () => {
 
 				// 显示成功消息和统计信息
 				logger.debug(t('insights.success.workspaceInitialized', { name: currentWorkspace.name }))
-				logger.debug(`✅ 深度处理完成统计:`)
-				logger.debug(`📁 文件: ${result.processedFiles} 个处理成功`)
-				logger.debug(`📂 文件夹: ${result.processedFolders} 个处理成功`)
-				logger.debug(`📊 总计: ${result.totalItems} 个项目（包含所有子项目）`)
+				logger.debug(`✅ Deep processing statistics:`)
+				logger.debug(`📁 Files processed: ${result.processedFiles}`)
+				logger.debug(`📂 Folders processed: ${result.processedFolders}`)
+				logger.debug(`📊 Total items: ${result.totalItems} (including all sub-items)`)
 				if (result.skippedItems > 0) {
-					logger.debug(`⚠️  跳过: ${result.skippedItems} 个项目`)
+					logger.debug(`⚠️  Skipped items: ${result.skippedItems}`)
 				}
 				if (result.insightId) {
-					logger.debug(`🔍 洞察ID: ${result.insightId}`)
+					logger.debug(`🔍 Insight ID: ${result.insightId}`)
 				}
-				logger.debug(`💡 工作区摘要仅使用顶层配置项目，避免内容重叠`)
+				logger.debug(`💡 Workspace summary uses only top-level configured items to avoid content overlap`)
 
 				// 显示成功状态
 				setInitSuccess({
@@ -364,7 +364,7 @@ const InsightView = () => {
 			return
 		}
 
-		logger.debug('🔍 [InsightView] 点击洞察结果:', {
+		logger.debug('🔍 [InsightView] clicked insight result:', {
 			id: insight.id,
 			path: insight.source_path,
 			type: insight.insight_type,
@@ -382,12 +382,12 @@ const InsightView = () => {
 		if (insight.source_path.startsWith('workspace:')) {
 			// 工作区洞察 - 显示详细信息或切换工作区
 			const workspaceName = insight.source_path.replace('workspace:', '')
-			logger.debug('🌐 [InsightView] 点击工作区洞察:', workspaceName)
+			logger.debug('🌐 [InsightView] clicked workspace insight:', workspaceName)
 			// TODO: 可以实现切换到该工作区或显示工作区详情
 			return
 		} else if (insight.source_type === 'folder') {
 			// 文件夹洞察 - 在文件管理器中显示文件夹
-			logger.debug('📁 [InsightView] 点击文件夹洞察:', insight.source_path)
+			logger.debug('📁 [InsightView] clicked folder insight:', insight.source_path)
 
 			// 尝试在 Obsidian 文件管理器中显示文件夹
 			const folder = app.vault.getAbstractFileByPath(insight.source_path)
@@ -398,7 +398,7 @@ const InsightView = () => {
 					// @ts-expect-error 使用 Obsidian 内部 API
 					fileExplorer.view.revealInFolder(folder)
 				}
-				logger.debug('✅ [InsightView] 在文件管理器中显示文件夹')
+				logger.debug('✅ [InsightView] revealing folder in the file manager')
 			} else {
 				logger.warn(t('insights.error.folderNotFound'), insight.source_path)
 			}
@@ -411,15 +411,15 @@ const InsightView = () => {
 				return
 			}
 
-			logger.debug('✅ [InsightView] 文件存在，准备打开:', {
+			logger.debug('✅ [InsightView] file exists, preparing to open:', {
 				file: file.path
 			})
 
 			try {
 				openMarkdownFile(app, insight.source_path)
-				logger.debug('✅ [InsightView] 成功调用openMarkdownFile')
+				logger.debug('✅ [InsightView] openMarkdownFile succeeded')
 			} catch (error) {
-				logger.error('❌ [InsightView] 调用openMarkdownFile失败:', error)
+				logger.error('❌ [InsightView] openMarkdownFile failed:', error)
 			}
 		}
 	}

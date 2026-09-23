@@ -67,7 +67,7 @@ const WorkspaceEditModal = ({
         const tags = Object.keys(tagsObject).sort()
         setAvailableTags(tags)
       } catch (error) {
-        logger.error('获取标签失败:', error)
+        logger.error('Failed to fetch tags:', error)
         setAvailableTags([])
       }
     }
@@ -261,7 +261,7 @@ const WorkspaceEditModal = ({
       })
       onClose()
     } catch (error) {
-      logger.error('保存工作区失败:', error)
+      logger.error('Failed to save workspace:', error)
       void showMessage(app, { message: String(t('workspace.editModal.saveFailed')) })
     } finally {
       setIsLoading(false)
