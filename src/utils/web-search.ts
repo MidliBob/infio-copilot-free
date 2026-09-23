@@ -1,12 +1,11 @@
-import https from 'https'
-
 import { htmlToMarkdown, requestUrl } from 'obsidian';
 
 import { JINA_BASE_URL, SERPER_BASE_URL } from '../constants';
 import { RAGEngine } from '../core/rag/rag-engine';
 
-import { isVideoUrl, getVideoProvider } from './video-detector';
+import { getVideoProvider, isVideoUrl } from './video-detector';
 import { YoutubeTranscript } from './youtube-transcript';
+import { parseSerperResults } from './provider-schemas';
 import { logger } from './logger'
 
 
@@ -18,11 +17,6 @@ interface SearchResult {
 	content?: string;
 }
 
-interface SearchResponse {
-	organic_results?: SearchResult[];
-}
-
-
 // 添加余弦相似度计算函数
 function cosineSimilarity(vecA: number[], vecB: number[]): number {
 	const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
@@ -33,46 +27,27 @@ function cosineSimilarity(vecA: number[], vecB: number[]): number {
 }
 
 async function serperSearch(query: string, serperApiKey: string, serperSearchEngine: string): Promise<SearchResult[]> {
-	return new Promise((resolve, reject) => {
-		const url = `${SERPER_BASE_URL}?q=${encodeURIComponent(query)}&engine=${serperSearchEngine}&api_key=${serperApiKey}&num=20`;
-		https.get(url, (res: any) => {
-			let data = '';
-
-			res.on('data', (chunk: Buffer) => {
-				data += chunk.toString();
-			});
-
-			res.on('end', () => {
-				try {
-					let parsedData: SearchResponse;
-					try {
-						parsedData = JSON.parse(data);
-					} catch {
-						parsedData = { organic_results: undefined };
-					}
-					const results = parsedData?.organic_results;
-
-					if (!results) {
-						resolve([]);
-						return;
-					}
-
-					resolve(results);
-
-					// const formattedResults = results.map((item: SearchResult) => {
-					// 	return `title: ${item.title}\nurl: ${item.link}\nsnippet: ${item.snippet}\n`;
-					// }).join('\n\n');
-
-					// resolve(formattedResults);
-				} catch (error) {
-					reject(error instanceof Error ? error : new Error(String(error)));
-				}
-			});
-		}).on('error', (error: Error) => {
-			logger.error("serper search error: ", error)
-			reject(error instanceof Error ? error : new Error(String(error)));
-		});
-	});
+	const url = `${SERPER_BASE_URL}?q=${encodeURIComponent(query)}&engine=${serperSearchEngine}&api_key=${serperApiKey}&num=20`;
+	// requestUrl is Obsidian's native HTTP client: unlike Node's `https` it
+	// also works on mobile, and unlike renderer fetch it is not subject to
+	// browser CORS.
+	const response = await requestUrl({ url, throw: false });
+	if (response.status < 200 || response.status >= 300) {
+		logger.error(`serper search failed with HTTP ${response.status}`);
+		return [];
+	}
+	let json: unknown;
+	try {
+		json = JSON.parse(response.text);
+	} catch {
+		return [];
+	}
+	return parseSerperResults(json).map((result) => ({
+		title: result.title ?? '',
+		link: result.link,
+		snippet: result.snippet ?? '',
+		snippet_embedding: [],
+	}));
 }
 
 async function filterByEmbedding(query: string, results: SearchResult[], ragEngine: RAGEngine): Promise<SearchResult[]> {
@@ -144,50 +119,41 @@ Note: This is a video content. Please use specialized video processing tools for
 }
 
 async function fetchByJina(url: string, apiKey: string): Promise<string> {
-	return new Promise((resolve) => {
-		const jinaUrl = `${JINA_BASE_URL}/${url}`;
-
-		const jinaHeaders = {
-			'Authorization': `Bearer ${apiKey}`,
-			'X-No-Cache': 'true',
-		};
-
-		const jinaOptions: https.RequestOptions = {
-			method: 'GET',
-			headers: jinaHeaders,
-		};
-
-		const req = https.request(jinaUrl, jinaOptions, (res) => {
-			let data = '';
-
-			res.on('data', (chunk) => {
-				data += chunk;
-			});
-
-			res.on('end', () => {
-				try {
-					// check if there is an error response
-					const response = JSON.parse(data);
-					if (response.code && response.message) {
-						logger.error(`JINA API error: ${response.message}`);
-						resolve(`fetch jina content error: ${response.message}`);
-						return;
-					}
-					resolve(data);
-				} catch (e) {
-					// if not json format, maybe normal content
-					resolve(data);
-				}
-			});
+	const jinaUrl = `${JINA_BASE_URL}/${url}`;
+	try {
+		// requestUrl instead of Node's `https`: works on mobile, no CORS.
+		const response = await requestUrl({
+			url: jinaUrl,
+			headers: {
+				'Authorization': `Bearer ${apiKey}`,
+				'X-No-Cache': 'true',
+			},
+			throw: false,
 		});
-
-		req.on('error', (e) => {
-			logger.error(`Error: ${e.message}`);
-			resolve(`fetch jina error: ${e.message}`);
-		});
-
-		req.end();
-	});
+		// Jina reports errors as a JSON body with `code` and `message` fields;
+		// anything else is the normal (markdown) payload.
+		try {
+			const parsed: unknown = JSON.parse(response.text);
+			if (
+				typeof parsed === 'object' &&
+				parsed !== null &&
+				'code' in parsed &&
+				parsed.code &&
+				'message' in parsed &&
+				typeof parsed.message === 'string'
+			) {
+				logger.error(`JINA API error: ${parsed.message}`);
+				return `fetch jina content error: ${parsed.message}`;
+			}
+		} catch {
+			// not JSON - fall through and return the raw content
+		}
+		return response.text;
+	} catch (error) {
+		const message = error instanceof Error ? error.message : String(error);
+		logger.error(`Error: ${message}`);
+		return `fetch jina error: ${message}`;
+	}
 }
 
 export async function fetchUrlContent(url: string, apiKey: string): Promise<string | null> {
