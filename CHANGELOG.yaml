@@ -1,4 +1,7 @@
 releases:
+  - version: "1.3.1"
+    fixes:
+      - "Catalog compliance: the 'no-bitwise' eslint-disable directive in the pure-TypeScript MD5 module now carries a description and a paired eslint-enable, as the Obsidian plugin source-code checker requires - no behavior change, cache hashes are byte-identical"
   - version: "1.3.0"
     features:
       - "Reliability phase 2, pass 1: the external JSON the plugin parses itself is now validated with Zod schemas at the boundary - Ollama /api/tags, OpenRouter /models and Serper search results (new src/utils/provider-schemas.ts with unit tests); a malformed or unexpected server response can no longer leak into runtime as untyped data"
