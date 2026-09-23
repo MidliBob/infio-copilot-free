@@ -1,4 +1,12 @@
 releases:
+  - version: "1.2.5"
+    features:
+      - "Full-text search queries now filter common Russian stop words (145 function words, alongside the existing English and Chinese lists), improving result relevance for Russian-language vaults"
+    fixes:
+      - "Empty folders (workspace/fonts, workspace/uploads, _infio_prompts, ...) no longer produce warn-level 'Folder is empty' console spam during insight indexing; they are logged at debug level and remain visible when the Debug mode setting is on"
+    other:
+      - "Console hygiene: the last 116 Chinese log strings (transformation engine, insight/search views, workspace components, embedding worker, Dataview/file utilities) and the Chinese section headings inside semantic-search tool results are now English"
+      - "Embedding-model descriptions for Qwen, SiliconFlow and the local transformers.js presets translated from Chinese to English"
   - version: "1.2.4"
     fixes:
       - "Insight caching never worked with Ollama / OpenAI-compatible embedding models: startup insight loading and every insight cache check failed with 'No source insight table definition found for model: ...' because the insight tables looked up the embedding dimension before the 1.2.3 runtime probe had run on that subsystem's model instance. The probe is now shared by all subsystems (RAG search, vector tables, insight tables) and memoized per model for the session, so one tiny probe request unlocks indexing, semantic search and insight caching alike; failed probes (e.g. Ollama not running yet) are retried on the next operation instead of being cached"
