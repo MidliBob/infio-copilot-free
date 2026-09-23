@@ -3,6 +3,7 @@ import { OPENROUTER_BASE_URL } from '../constants'
 import { ApiProvider } from '../types/llm/model'
 import { InfioSettings } from '../types/settings'
 import { getOllamaEmbeddingModels, getOllamaModels } from './ollama'
+import { parseOpenRouterModels } from './provider-schemas'
 import { logger } from './logger'
 
 export interface ModelInfo {
@@ -160,21 +161,28 @@ async function fetchOpenRouterModels(): Promise<Record<string, ModelInfo>> {
 
 	try {
 		const response = await requestUrl({ url: OPENROUTER_BASE_URL + "/models" });
-		const data = response.json;
-		const models: Record<string, ModelInfo> = {};
+		const parsedModels = parseOpenRouterModels(response.json);
 
-		if (data?.data) {
-			for (const model of data.data) {
-				models[model.id] = {
-					maxTokens: model.top_provider?.max_completion_tokens ?? model.context_length,
-					contextWindow: model.context_length,
-					supportsImages: model.architecture?.modality?.includes("image") ?? false,
-					supportsPromptCache: false,
-					inputPrice: model.pricing?.prompt ?? 0,
-					outputPrice: model.pricing?.completion ?? 0,
-					description: model.description,
-				};
-			}
+		if (parsedModels.length === 0) {
+			// The response was empty or failed schema validation - fall back
+			// to the built-in default instead of caching an empty model list.
+			logger.warn('OpenRouter /models response failed schema validation; using built-in defaults');
+			return {
+				[openRouterDefaultModelId]: openRouterDefaultModelInfo
+			};
+		}
+
+		const models: Record<string, ModelInfo> = {};
+		for (const model of parsedModels) {
+			models[model.id] = {
+				maxTokens: model.top_provider?.max_completion_tokens ?? model.context_length,
+				contextWindow: model.context_length,
+				supportsImages: model.architecture?.modality?.includes("image") ?? false,
+				supportsPromptCache: false,
+				inputPrice: model.pricing?.prompt ?? 0,
+				outputPrice: model.pricing?.completion ?? 0,
+				description: model.description,
+			};
 		}
 
 		openRouterModelsCache = models;

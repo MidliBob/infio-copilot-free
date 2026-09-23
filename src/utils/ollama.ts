@@ -1,22 +1,11 @@
 import { requestUrl } from 'obsidian'
 
-type OllamaTagModel = {
-	name: string
-	capabilities?: string[]
-}
-
-type OllamaTagsResponse = {
-	models: OllamaTagModel[]
-}
+import { type OllamaTagModel, parseOllamaTags } from './provider-schemas'
 
 async function fetchOllamaTags(ollamaUrl: string): Promise<OllamaTagModel[]> {
 	try {
 		const response = await requestUrl(`${ollamaUrl}/api/tags`)
-		const data: OllamaTagsResponse = response.json
-		if (data && Array.isArray(data.models)) {
-			return data.models
-		}
-		return []
+		return parseOllamaTags(response.json)
 	} catch (error) {
 		return []
 	}
