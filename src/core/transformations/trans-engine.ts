@@ -156,6 +156,7 @@ export interface TransformationResult {
 	success: boolean;
 	result?: string;
 	error?: string;
+	empty?: boolean;
 	truncated?: boolean;
 	originalTokens?: number;
 	processedTokens?: number;
@@ -643,7 +644,8 @@ export class TransEngine {
 					if (!folderContentResult.success) {
 						return {
 							success: false,
-							error: folderContentResult.error
+							error: folderContentResult.error,
+							empty: folderContentResult.empty
 						};
 					}
 					content = folderContentResult.content;
@@ -753,6 +755,7 @@ export class TransEngine {
 		success: boolean;
 		content?: string;
 		error?: string;
+		empty?: boolean;
 	}> {
 		try {
 			const folder = this.app.vault.getAbstractFileByPath(normalizePath(folderPath));
@@ -774,6 +777,7 @@ export class TransEngine {
 			if (directFiles.length === 0 && directSubfolders.length === 0) {
 				return {
 					success: false,
+					empty: true,
 					error: t('insights.error.folderEmpty', { path: folderPath })
 				};
 			}
@@ -823,6 +827,8 @@ export class TransEngine {
 
 					if (subfolderResult.success && subfolderResult.result) {
 						subfolderSummaries.push(`### ${subfolder.name}\n${subfolderResult.result}`);
+					} else if (subfolderResult.empty) {
+						logger.debug(`Skipping empty folder: ${subfolder.path}`);
 					} else {
 						logger.warn(`Failed to process subfolder: ${subfolder.path}`, subfolderResult.error);
 					}
@@ -1705,7 +1711,11 @@ export class TransEngine {
 						}
 						processedFolders++;
 					} else {
-						logger.warn(`Failed to process folder: ${folder.path}`, folderResult.error);
+						if (folderResult.empty) {
+							logger.debug(`Skipping empty folder: ${folder.path}`);
+						} else {
+							logger.warn(`Failed to process folder: ${folder.path}`, folderResult.error);
+						}
 						const isTopLevelFolder = topLevelFolders.some(f => f.path === folder.path);
 						if (isTopLevelFolder) {
 							topLevelSummaries.push(t('insights.summaryNote.folderFailed', { name: folder.name, error: folderResult.error }));
