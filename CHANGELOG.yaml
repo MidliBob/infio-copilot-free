@@ -1,4 +1,11 @@
 releases:
+  - version: "1.3.0"
+    features:
+      - "Reliability phase 2, pass 1: the external JSON the plugin parses itself is now validated with Zod schemas at the boundary - Ollama /api/tags, OpenRouter /models and Serper search results (new src/utils/provider-schemas.ts with unit tests); a malformed or unexpected server response can no longer leak into runtime as untyped data"
+    fixes:
+      - "OpenRouter model prices arrive as decimal strings (\"0.000003\") and were previously stored as-is; they are now converted to real numbers, and an empty or unparsable /models response falls back to the built-in default model instead of caching an empty model list"
+      - "Mobile readiness: web search (Serper queries and Jina page fetching) now uses Obsidian's requestUrl instead of Node's https module, which does not exist on Obsidian mobile; as a side benefit these requests bypass browser CORS like the rest of the plugin's networking"
+      - "Mobile readiness: the convert-data cache hash no longer uses Node's crypto module - it is computed by a pure-TypeScript MD5 (RFC 1321) that is byte-identical to Node's, so existing cache files stay valid"
   - version: "1.2.5"
     features:
       - "Full-text search queries now filter common Russian stop words (145 function words, alongside the existing English and Chinese lists), improving result relevance for Russian-language vaults"
