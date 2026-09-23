@@ -1,9 +1,9 @@
-import { createHash } from 'crypto'
 
 import { App } from 'obsidian'
 import { v4 as uuidv4 } from 'uuid'
 
 
+import { md5Hex } from '../../../utils/md5'
 import { AbstractJsonRepository } from '../base'
 import { CONVERT_DATA_DIR, ROOT_DIR } from '../constants'
 
@@ -13,6 +13,9 @@ import {
 	ConvertDataMetadata,
 	ConvertType
 } from './types'
+
+/** Cache file names are `{md5 hash}.json`. */
+const CONVERT_DATA_FILE_NAME_PATTERN = /^([a-f0-9]{32})\.json$/
 
 export class ConvertDataManager extends AbstractJsonRepository<
 	ConvertData,
@@ -24,9 +27,7 @@ export class ConvertDataManager extends AbstractJsonRepository<
 
 	protected parseFileName(fileName: string): ConvertDataMetadata | null {
 		// Check if filename is a valid MD5 hash (32 hex characters)
-		const match = fileName.match(
-			new RegExp(`^([a-f0-9]{32})\\.json$`),
-		)
+		const match = CONVERT_DATA_FILE_NAME_PATTERN.exec(fileName)
 		if (!match) return null
 
 		return {
@@ -47,10 +48,14 @@ export class ConvertDataManager extends AbstractJsonRepository<
 	}
 
 	/**
-	 * 生成源的MD5哈希值
+	 * Generate the MD5 hash of a source string.
+	 *
+	 * Uses the pure-TypeScript md5 because Node's `crypto` module is not
+	 * available on Obsidian mobile. The hashes are byte-identical to the
+	 * Node implementation, so existing cache files stay valid.
 	 */
 	public static generateSourceHash(source: string): string {
-		return createHash('md5').update(source).digest('hex')
+		return md5Hex(source)
 	}
 
 	/**
