@@ -8,8 +8,7 @@
  * so hashes are compatible with anything produced on desktop before.
  */
 
-/* Bitwise helpers operate on signed 32-bit integers by design. */
-/* eslint-disable no-bitwise */
+/* eslint-disable no-bitwise -- MD5 (RFC 1321) is defined entirely in terms of 32-bit rotate/shift/xor operations; the rule is re-enabled at the end of this file. */
 
 // Per-round left rotation amounts (RFC 1321, section 3.4).
 const S11 = 7, S12 = 12, S13 = 17, S14 = 22
@@ -157,3 +156,5 @@ export function md5Hex(input: string): string {
 	}
 	return hex
 }
+
+/* eslint-enable no-bitwise -- end of the pure-TS MD5 module; the rule stays active for the rest of the codebase. */
