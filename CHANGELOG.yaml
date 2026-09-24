@@ -1,4 +1,10 @@
 releases:
+  - version: "1.5.2"
+    fixes:
+      - "Web search no longer fails when the engine returns results without a snippet: the relevance filter falls back to the result title, drops results with no text at all, and logs a warning instead of aborting the whole search when a single result cannot be embedded - previously any empty snippet killed the search with \"Text cannot be empty\" when the local (transformers.js) embedding model was in use"
+      - "A blank search query is now answered directly instead of being sent to the search engine and the embedder"
+    other:
+      - "3 new unit tests (105 total) covering empty-snippet results, per-result embedding failures and the blank-query guard; the Jest console output stays clean"
   - version: "1.5.1"
     features:
       - "The Tavily web search provider is removed: its cloud API became unreachable for users, so web search is now served only by self-hosted engines - SearXNG (the new default) and YaCy - neither of which needs an API key; stored Tavily settings (the provider choice and the API key) migrate away automatically on the first start"
