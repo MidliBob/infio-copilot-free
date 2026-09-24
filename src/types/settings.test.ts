@@ -1,7 +1,19 @@
 import { DEFAULT_MODELS } from '../constants'
 import { DEFAULT_SETTINGS } from '../settings/versions/v1/v1'
+import { logger } from '../utils/logger'
 
 import { parseInfioSettings } from './settings'
+
+// parseInfioSettings logs the whole ZodError and falls back to the defaults
+// when the stored data is unusable. The mock records that call so the expected
+// dump stays out of the Jest console output and can be asserted on instead.
+jest.mock('../utils/logger')
+
+const loggerMock = jest.mocked(logger)
+
+beforeEach(() => {
+	jest.clearAllMocks()
+})
 
 describe('parseSmartCopilotSettings', () => {
 	it('should return default values for empty input', () => {
@@ -616,20 +628,83 @@ describe('Infio provider removal migration (0.5 -> 0.7)', () => {
 })
 
 describe('Serper/Jina removal migration (0.6 -> 0.7)', () => {
-	it('drops the removed web-search credentials and falls back to Tavily defaults', () => {
-		const serperEraSettings = {
-			version: 0.6,
-			serperApiKey: 'secret-serper-key',
-			serperSearchEngine: 'bing',
-			jinaApiKey: 'secret-jina-key',
-		}
+	// A complete 0.6-era payload. With only the removed keys present the schema
+	// parse fails and parseInfioSettings returns the defaults, which also lack
+	// serperApiKey/serperSearchEngine/jinaApiKey - the migration itself would
+	// then go completely untested.
+	const serperEraSettings = {
+		version: 0.6,
+		defaultProvider: 'Ollama',
+		activeProviderTab: 'Ollama',
+		chatModelProvider: 'Ollama',
+		chatModelId: 'qwen2.5:7b',
+		insightModelProvider: 'Ollama',
+		insightModelId: '',
+		applyModelProvider: 'Ollama',
+		applyModelId: '',
+		embeddingModelProvider: 'LocalProvider',
+		embeddingModelId: 'TaylorAI/bge-micro-v2',
+		collectedChatModels: [{ provider: 'OpenAI', modelId: 'gpt-4o' }],
+		collectedEmbeddingModels: [],
+		openAIApiKey: 'sk-survives-migration',
+		serperApiKey: 'secret-serper-key',
+		serperSearchEngine: 'bing',
+		jinaApiKey: 'secret-jina-key',
+		autocompleteEnabled: true,
+		advancedMode: false,
+		apiProvider: 'openai',
+		triggers: DEFAULT_SETTINGS.triggers,
+		delay: 500,
+		modelOptions: {
+			temperature: 1,
+			top_p: 0.1,
+			frequency_penalty: 0.25,
+			presence_penalty: 0,
+			max_tokens: 4096,
+		},
+		systemMessage: DEFAULT_SETTINGS.systemMessage,
+		fewShotExamples: DEFAULT_SETTINGS.fewShotExamples,
+		userMessageTemplate: '{{prefix}}<mask/>{{suffix}}',
+		chainOfThoughRemovalRegex: '(.|\\n)*ANSWER:',
+		dontIncludeDataviews: true,
+		maxPrefixCharLimit: 4000,
+		maxSuffixCharLimit: 4000,
+		removeDuplicateMathBlockIndicator: true,
+		removeDuplicateCodeBlockIndicator: true,
+		ignoredFilePatterns: '**/secret/**\\n',
+		ignoredTags: '',
+		cacheSuggestions: true,
+		debugMode: false,
+	}
 
+	it('drops the removed web-search credentials and falls back to Tavily defaults', () => {
 		const result = parseInfioSettings(serperEraSettings)
 
+		// the migration must have run on a valid parse, not on the fallback
+		expect(loggerMock.error).not.toHaveBeenCalled()
+		expect(result.openAIApiKey).toBe('sk-survives-migration')
+		expect(result.chatModelId).toBe('qwen2.5:7b')
 		expect(result.version).toBe(0.7)
 		expect('serperApiKey' in result).toBe(false)
 		expect('serperSearchEngine' in result).toBe(false)
 		expect('jinaApiKey' in result).toBe(false)
+		expect(result.webSearchProvider).toBe('tavily')
+		expect(result.tavilyApiKey).toBe('')
+		expect(result.yacyBaseUrl).toBe('http://localhost:8090')
+	})
+
+	it('logs and falls back to the defaults when the stored data is unusable', () => {
+		const result = parseInfioSettings({
+			version: 0.6,
+			serperApiKey: 'secret-serper-key',
+		})
+
+		expect(loggerMock.error).toHaveBeenCalledTimes(1)
+		expect(String(loggerMock.error.mock.calls[0][0])).toContain(
+			'using default settings instead',
+		)
+		expect(result.version).toBe(0.7)
+		expect('serperApiKey' in result).toBe(false)
 		expect(result.webSearchProvider).toBe('tavily')
 		expect(result.tavilyApiKey).toBe('')
 		expect(result.yacyBaseUrl).toBe('http://localhost:8090')

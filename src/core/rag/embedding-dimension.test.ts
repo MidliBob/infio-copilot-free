@@ -1,5 +1,12 @@
+import { logger } from '../../utils/logger'
 import { clearEmbeddingDimensionCache, resolveEmbeddingDimension } from './embedding-dimension'
 import { EmbeddingModel } from '../../types/embedding'
+
+// Every successful probe is reported through logger.info; the mock records the
+// message so the suite stays quiet and can assert on it.
+jest.mock('../../utils/logger')
+
+const loggerMock = jest.mocked(logger)
 
 function createMockModel(id: string, dimension: number, getEmbedding: jest.Mock): EmbeddingModel {
 	return {
@@ -14,6 +21,7 @@ function createMockModel(id: string, dimension: number, getEmbedding: jest.Mock)
 describe('resolveEmbeddingDimension', () => {
 	beforeEach(() => {
 		clearEmbeddingDimensionCache()
+		jest.clearAllMocks()
 	})
 
 	it('does not probe models with a statically known dimension', async () => {
@@ -24,6 +32,7 @@ describe('resolveEmbeddingDimension', () => {
 
 		expect(model.dimension).toBe(384)
 		expect(getEmbedding).not.toHaveBeenCalled()
+		expect(loggerMock.info).not.toHaveBeenCalled()
 	})
 
 	it('probes and sets the dimension for providers reporting 0', async () => {
@@ -34,6 +43,9 @@ describe('resolveEmbeddingDimension', () => {
 
 		expect(model.dimension).toBe(768)
 		expect(getEmbedding).toHaveBeenCalledTimes(1)
+		expect(loggerMock.info).toHaveBeenCalledWith(
+			'Detected embedding dimension 768 for model "nomic-embed-text"',
+		)
 	})
 
 	it('reuses the probed dimension for other instances of the same model id', async () => {
@@ -49,6 +61,7 @@ describe('resolveEmbeddingDimension', () => {
 		expect(modelB.dimension).toBe(1024)
 		expect(first).toHaveBeenCalledTimes(1)
 		expect(second).not.toHaveBeenCalled()
+		expect(loggerMock.info).toHaveBeenCalledTimes(1)
 	})
 
 	it('shares a single probe between concurrent callers', async () => {
@@ -107,5 +120,8 @@ describe('resolveEmbeddingDimension', () => {
 		await resolveEmbeddingDimension(model)
 		expect(model.dimension).toBe(384)
 		expect(getEmbedding).toHaveBeenCalledTimes(2)
+		expect(loggerMock.info).toHaveBeenCalledWith(
+			'Detected embedding dimension 384 for model "flaky-model"',
+		)
 	})
 })

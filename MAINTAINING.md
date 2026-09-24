@@ -55,6 +55,13 @@ Notes:
   and `PGLITE_VERSION` in `scripts/copy-pglite-assets.mjs`.
 - Locales live in `src/lang/locale/*.ts` and are compiled into the bundle
   (no runtime locale files).
+- `pnpm test` output must stay free of `● Console` blocks. Suites that exercise
+  an error path on purpose (bad HTTP status, unreachable YaCy peer, corrupt
+  stored settings, ...) mock the logging facade with
+  `jest.mock('<relative path>/logger')` - the manual mock lives in
+  `src/utils/__mocks__/logger.ts` - and then assert on
+  `jest.mocked(logger).error/warn/info`. A diagnostic that is printed instead of
+  asserted on is a diagnostic nobody checks.
 
 ## Release checklist
 

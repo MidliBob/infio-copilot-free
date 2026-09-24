@@ -1,6 +1,7 @@
 import type { RequestUrlParam, RequestUrlResponse } from 'obsidian'
 import { requestUrl } from 'obsidian'
 
+import { logger } from './logger'
 import type { WebSearchEmbedder } from './web-search'
 import {
 	fetchUrlsContent,
@@ -10,7 +11,18 @@ import {
 	yacySearch,
 } from './web-search'
 
+// The failure-path tests below trigger the diagnostics on purpose. The mock
+// (src/utils/__mocks__/logger.ts) records them so they can be asserted on
+// instead of being dumped into the Jest console output.
+jest.mock('./logger')
+
 const requestUrlMock = jest.mocked(requestUrl)
+const loggerMock = jest.mocked(logger)
+
+/** Message (first argument) of every recorded logger.error call. */
+function errorMessages(): string[] {
+	return loggerMock.error.mock.calls.map((call) => String(call[0]))
+}
 
 /** requestUrl also accepts a bare string; our code always passes the object form. */
 function callParam(index: number): RequestUrlParam {
@@ -83,6 +95,13 @@ describe('tavilySearch', () => {
 
 		requestUrlMock.mockRejectedValue(new Error('network down'))
 		expect(await tavilySearch('q', 'k')).toEqual([])
+
+		expect(errorMessages()).toEqual([
+			'tavily search failed with HTTP 401',
+			'tavily search returned a non-JSON response',
+			'tavily search request failed',
+		])
+		expect(loggerMock.error.mock.calls[2][1]).toBeInstanceOf(Error)
 	})
 })
 
@@ -114,6 +133,11 @@ describe('yacySearch', () => {
 
 		requestUrlMock.mockResolvedValue(textResponse(200, JSON.stringify({ channels: [{ totalResults: '0' }] })))
 		expect(await yacySearch('q', 'http://localhost:8090')).toEqual([])
+
+		// an empty result set is not an error, only the refused connection is
+		expect(errorMessages()).toEqual([
+			'yacy search request failed (is the peer running at http://localhost:8090?)',
+		])
 	})
 })
 
@@ -127,6 +151,10 @@ describe('webSearch', () => {
 
 		expect(requestUrlMock).not.toHaveBeenCalled()
 		expect(out).toContain('not configured')
+		expect(loggerMock.warn).toHaveBeenCalledWith(
+			'web search skipped: no Tavily API key configured',
+		)
+		expect(loggerMock.error).not.toHaveBeenCalled()
 	})
 
 	it('searches via the YaCy peer, re-ranks by embedding and inlines page content', async () => {
