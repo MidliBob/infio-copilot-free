@@ -48,6 +48,19 @@ const fakeRagEngine: WebSearchEmbedder = {
 	getEmbedding: async (): Promise<number[]> => [1, 0],
 }
 
+// Mimics the LocalProvider (transformers.js) backend: embedding an empty or
+// whitespace-only text throws, anything else gets the same deterministic
+// vector. This is the exact contract that broke web search when providers
+// returned hits without snippets.
+const strictRagEngine: WebSearchEmbedder = {
+	getEmbedding: async (text: string): Promise<number[]> => {
+		if (!text || text.trim().length === 0) {
+			throw new Error('Text cannot be empty')
+		}
+		return [1, 0]
+	},
+}
+
 beforeEach(() => {
 	jest.clearAllMocks()
 })
@@ -193,6 +206,78 @@ describe('webSearch', () => {
 		)
 
 		expect(out).toContain('no relevant web search results')
+	})
+
+	it('survives hits with empty snippets by falling back to the title', async () => {
+		requestUrlMock
+			.mockResolvedValueOnce(textResponse(200, JSON.stringify({
+				results: [
+					{ url: 'https://a.example', title: 'A', content: 'snippet A' },
+					{ url: 'https://b.example', title: 'B' },
+				],
+			})))
+			.mockResolvedValueOnce(textResponse(200, '<html>page A</html>'))
+			.mockResolvedValueOnce(textResponse(200, '<html>page B</html>'))
+
+		const out = await webSearch(
+			'q',
+			{ provider: 'searxng', yacyBaseUrl: '', searxngBaseUrl: 'http://127.0.0.1:8080' },
+			strictRagEngine,
+		)
+
+		// Both results are embedded (B via its title) and inlined; the search
+		// no longer dies with "Text cannot be empty"
+		expect(out).toContain('<url_content url="https://a.example">')
+		expect(out).toContain('<url_content url="https://b.example">')
+		expect(errorMessages()).toEqual([])
+	})
+
+	it('drops textless hits and isolates per-result embedding failures', async () => {
+		requestUrlMock
+			.mockResolvedValueOnce(textResponse(200, JSON.stringify({
+				results: [
+					{ url: 'https://a.example', title: 'A', content: 'snippet A' },
+					{ url: 'https://empty.example' },
+					{ url: 'https://boom.example', title: 'boom', content: 'boom' },
+				],
+			})))
+			.mockResolvedValueOnce(textResponse(200, '<html>page A</html>'))
+
+		const failingOnBoom: WebSearchEmbedder = {
+			getEmbedding: async (text: string): Promise<number[]> => {
+				if (text.includes('boom')) {
+					throw new Error('model exploded')
+				}
+				return strictRagEngine.getEmbedding(text)
+			},
+		}
+
+		const out = await webSearch(
+			'q',
+			{ provider: 'searxng', yacyBaseUrl: '', searxngBaseUrl: '' },
+			failingOnBoom,
+		)
+
+		// The healthy result still makes it through; the textless and the
+		// failing ones are dropped without failing the whole search
+		expect(out).toContain('<url_content url="https://a.example">')
+		expect(out).not.toContain('https://empty.example')
+		expect(out).not.toContain('https://boom.example')
+		expect(errorMessages()).toEqual([])
+		expect(loggerMock.warn.mock.calls.map((call) => String(call[0])))
+			.toEqual(['web search: could not embed result https://boom.example'])
+	})
+
+	it('answers a blank query without touching the provider or the embedder', async () => {
+		const out = await webSearch(
+			'   ',
+			{ provider: 'searxng', yacyBaseUrl: '', searxngBaseUrl: '' },
+			strictRagEngine,
+		)
+
+		expect(out).toContain('no relevant web search results')
+		expect(requestUrlMock).not.toHaveBeenCalled()
+		expect(errorMessages()).toEqual([])
 	})
 })
 

@@ -152,14 +152,29 @@ async function filterByEmbedding(query: string, results: SearchResult[], ragEngi
 	// Embed every snippet in parallel and score it against the query
 	const processedResults = await Promise.all(
 		results.map(async (result) => {
-			const resultEmbedding = await ragEngine.getEmbedding(result.snippet);
-			const similarity = cosineSimilarity(queryEmbedding, resultEmbedding);
+			// Providers regularly return hits without a snippet, and some
+			// embedding backends throw on an empty string (LocalProvider:
+			// "Text cannot be empty"). Fall back to the title; a result with
+			// no text at all scores 0 and is dropped by the relevance filter
+			// below.
+			const text = (result.snippet || result.title || '').trim();
+			if (text.length === 0) {
+				return { ...result, similarity: 0 };
+			}
+			try {
+				const resultEmbedding = await ragEngine.getEmbedding(text);
+				const similarity = cosineSimilarity(queryEmbedding, resultEmbedding);
 
-			return {
-				...result,
-				similarity,
-				snippet_embedding: resultEmbedding
-			};
+				return {
+					...result,
+					similarity,
+					snippet_embedding: resultEmbedding
+				};
+			} catch (error) {
+				// One unembeddable result must not sink the whole search
+				logger.warn(`web search: could not embed result ${result.link}`, error);
+				return { ...result, similarity: 0 };
+			}
 		})
 	);
 
@@ -222,6 +237,12 @@ export async function webSearch(
 	config: WebSearchConfig,
 	ragEngine: WebSearchEmbedder
 ): Promise<string> {
+	// A blank query would make the embedder throw ("Text cannot be empty")
+	// and surface as a confusing "web search error"; answer directly instead.
+	if (query.trim().length === 0) {
+		logger.warn('web search called with an empty query');
+		return `no relevant web search results found for "${query}"`;
+	}
 	try {
 		const results = await runSearch(query, config);
 		const filteredResults = await filterByEmbedding(query, results, ragEngine);
