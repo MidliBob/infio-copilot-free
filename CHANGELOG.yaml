@@ -1,4 +1,10 @@
 releases:
+  - version: "1.5.0"
+    features:
+      - "SearXNG added as a third web search provider alongside Tavily and YaCy: Settings -> Web search lets you point the plugin at your own SearXNG instance (default http://localhost:8080); like YaCy it is self-hosted and needs no API key, and clicking a web search block in chat opens the query in the instance's own UI"
+    other:
+      - "The SearXNG instance must allow the JSON output format (add \"json\" to search.formats in its settings.yml, see https://docs.searxng.org/dev/search_api.html) - a 403 response is logged with an explicit hint about this requirement"
+      - "6 new unit tests (105 total): SearXNG URL normalization, result mapping, the 403 / non-JSON / instance-down failure paths and provider settings round-trip; the Jest console output stays clean"
   - version: "1.4.0"
     features:
       - "Web search providers replaced: Serper and Jina (unavailable in some regions) are removed; Settings -> Web search now lets you choose between Tavily (cloud search API for LLM tools, free tier of 1000 searches per month) and YaCy (self-hosted decentralized search engine that needs no API key and no third-party cloud); existing settings migrate automatically"
