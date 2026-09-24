@@ -740,6 +740,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 							provider: settings.webSearchProvider,
 							tavilyApiKey: settings.tavilyApiKey,
 							yacyBaseUrl: settings.yacyBaseUrl,
+							searxngBaseUrl: settings.searxngBaseUrl,
 						},
 						(await getRAGEngine())
 					)

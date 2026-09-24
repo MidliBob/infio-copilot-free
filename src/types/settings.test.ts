@@ -160,6 +160,7 @@ describe('parseSmartCopilotSettings', () => {
 			webSearchProvider: 'tavily',
 			tavilyApiKey: '',
 			yacyBaseUrl: 'http://localhost:8090',
+			searxngBaseUrl: 'http://localhost:8080',
 			ignoredFilePatterns: '**/secret/**\n',
 			ignoredTags: '',
 			cacheSuggestions: true,
@@ -401,6 +402,7 @@ describe('settings migration', () => {
 			webSearchProvider: 'tavily',
 			tavilyApiKey: '',
 			yacyBaseUrl: 'http://localhost:8090',
+			searxngBaseUrl: 'http://localhost:8080',
 			ignoredFilePatterns: '**/secret/**\n',
 			ignoredTags: '',
 			cacheSuggestions: true,
@@ -691,6 +693,7 @@ describe('Serper/Jina removal migration (0.6 -> 0.7)', () => {
 		expect(result.webSearchProvider).toBe('tavily')
 		expect(result.tavilyApiKey).toBe('')
 		expect(result.yacyBaseUrl).toBe('http://localhost:8090')
+		expect(result.searxngBaseUrl).toBe('http://localhost:8080')
 	})
 
 	it('logs and falls back to the defaults when the stored data is unusable', () => {
@@ -708,5 +711,64 @@ describe('Serper/Jina removal migration (0.6 -> 0.7)', () => {
 		expect(result.webSearchProvider).toBe('tavily')
 		expect(result.tavilyApiKey).toBe('')
 		expect(result.yacyBaseUrl).toBe('http://localhost:8090')
+		expect(result.searxngBaseUrl).toBe('http://localhost:8080')
+	})
+})
+
+describe('web search provider settings', () => {
+	// The web-search keys all have schema defaults, but a handful of other
+	// fields (cacheSuggestions, debugMode, ...) carry no catch and must be
+	// present for a successful parse - same minimal payload as the defaults
+	// test at the top of the file.
+	const parseableBase = {
+		autocompleteEnabled: true,
+		advancedMode: false,
+		apiProvider: 'openai',
+		triggers: DEFAULT_SETTINGS.triggers,
+		delay: 500,
+		modelOptions: {
+			temperature: 1,
+			top_p: 0.1,
+			frequency_penalty: 0.25,
+			presence_penalty: 0,
+			max_tokens: 4096,
+		},
+		systemMessage: DEFAULT_SETTINGS.systemMessage,
+		fewShotExamples: DEFAULT_SETTINGS.fewShotExamples,
+		userMessageTemplate: '{{prefix}}<mask/>{{suffix}}',
+		chainOfThoughRemovalRegex: '(.|\\n)*ANSWER:',
+		dontIncludeDataviews: true,
+		maxPrefixCharLimit: 4000,
+		maxSuffixCharLimit: 4000,
+		removeDuplicateMathBlockIndicator: true,
+		removeDuplicateCodeBlockIndicator: true,
+		ignoredFilePatterns: '**/secret/**\n',
+		ignoredTags: '',
+		cacheSuggestions: true,
+		debugMode: false,
+	}
+
+	it('keeps a stored SearXNG provider and instance URL', () => {
+		const result = parseInfioSettings({
+			...parseableBase,
+			version: 0.7,
+			webSearchProvider: 'searxng',
+			searxngBaseUrl: 'http://searx.example:8080',
+		})
+
+		expect(loggerMock.error).not.toHaveBeenCalled()
+		expect(result.webSearchProvider).toBe('searxng')
+		expect(result.searxngBaseUrl).toBe('http://searx.example:8080')
+	})
+
+	it('falls back to Tavily for an unknown provider and defaults the instance URL', () => {
+		const result = parseInfioSettings({
+			...parseableBase,
+			version: 0.7,
+			webSearchProvider: 'serper',
+		})
+
+		expect(result.webSearchProvider).toBe('tavily')
+		expect(result.searxngBaseUrl).toBe('http://localhost:8080')
 	})
 })

@@ -1,7 +1,7 @@
 import { Check, Loader2, Search, X } from 'lucide-react'
 import React from 'react'
 
-import { DEFAULT_YACY_BASE_URL } from '../../../constants'
+import { DEFAULT_SEARXNG_BASE_URL, DEFAULT_YACY_BASE_URL } from '../../../constants'
 import { useSettings } from "../../../contexts/SettingsContext"
 import { t } from '../../../lang/helpers'
 import { ApplyStatus, SearchWebToolArgs } from "../../../types/apply"
@@ -21,11 +21,15 @@ export default function MarkdownWebSearchBlock({
 	const { settings } = useSettings()
 
 	const handleClick = () => {
-		// Open the query in a browser: YaCy users land on their own peer's
-		// search page; Tavily is API-only, so fall back to Google.
+		// Open the query in a browser: YaCy and SearXNG users land on their
+		// own instance's search page; Tavily is API-only, so fall back to
+		// Google.
 		if (settings.webSearchProvider === 'yacy') {
 			const base = (settings.yacyBaseUrl || DEFAULT_YACY_BASE_URL).trim().replace(/\/+$/, '')
 			window.open(`${base}/yacysearch.html?query=${encodeURIComponent(query)}`, '_blank')
+		} else if (settings.webSearchProvider === 'searxng') {
+			const base = (settings.searxngBaseUrl || DEFAULT_SEARXNG_BASE_URL).trim().replace(/\/+$/, '')
+			window.open(`${base}/search?q=${encodeURIComponent(query)}`, '_blank')
 		} else {
 			window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank')
 		}

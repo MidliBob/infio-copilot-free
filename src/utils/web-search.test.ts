@@ -5,7 +5,9 @@ import { logger } from './logger'
 import type { WebSearchEmbedder } from './web-search'
 import {
 	fetchUrlsContent,
+	normalizeSearxngBaseUrl,
 	normalizeYacyBaseUrl,
+	searxngSearch,
 	tavilySearch,
 	webSearch,
 	yacySearch,
@@ -55,6 +57,13 @@ describe('normalizeYacyBaseUrl', () => {
 	it('trims slashes and falls back to the local peer default', () => {
 		expect(normalizeYacyBaseUrl('http://192.168.1.10:8090//')).toBe('http://192.168.1.10:8090')
 		expect(normalizeYacyBaseUrl('  ')).toBe('http://localhost:8090')
+	})
+})
+
+describe('normalizeSearxngBaseUrl', () => {
+	it('trims slashes and falls back to the local instance default', () => {
+		expect(normalizeSearxngBaseUrl('http://192.168.1.10:8080//')).toBe('http://192.168.1.10:8080')
+		expect(normalizeSearxngBaseUrl('  ')).toBe('http://localhost:8080')
 	})
 })
 
@@ -141,11 +150,50 @@ describe('yacySearch', () => {
 	})
 })
 
+describe('searxngSearch', () => {
+	it('queries the JSON API and maps results', async () => {
+		requestUrlMock.mockResolvedValue(textResponse(200, JSON.stringify({
+			query: 'obsidian plugins',
+			results: [
+				{ url: 'https://a.example', title: 'A', content: 'snippet A', engine: 'google', score: 3.2 },
+				{ url: 'https://b.example', title: 'B', engine: 'duckduckgo' },
+			],
+		})))
+
+		const results = await searxngSearch('obsidian plugins', 'http://localhost:8080/')
+
+		const call = callParam(0)
+		expect(call.url).toBe('http://localhost:8080/search?q=obsidian%20plugins&format=json&categories=general&pageno=1')
+		expect(results).toEqual([
+			{ title: 'A', link: 'https://a.example', snippet: 'snippet A', snippet_embedding: [] },
+			{ title: 'B', link: 'https://b.example', snippet: '', snippet_embedding: [] },
+		])
+	})
+
+	it('returns [] on HTTP errors, non-JSON bodies and network failures', async () => {
+		requestUrlMock.mockResolvedValue(textResponse(403, '<html>Forbidden</html>'))
+		expect(await searxngSearch('q', 'http://localhost:8080')).toEqual([])
+
+		requestUrlMock.mockResolvedValue(textResponse(200, '<html>not json</html>'))
+		expect(await searxngSearch('q', 'http://localhost:8080')).toEqual([])
+
+		requestUrlMock.mockRejectedValue(new Error('connect ECONNREFUSED 127.0.0.1:8080'))
+		expect(await searxngSearch('q', 'http://localhost:8080')).toEqual([])
+
+		expect(errorMessages()).toEqual([
+			'searxng search failed with HTTP 403 (SearXNG returns 403 when the JSON output format is not enabled in its settings.yml)',
+			'searxng search returned a non-JSON response',
+			'searxng search request failed (is the instance running at http://localhost:8080?)',
+		])
+		expect(loggerMock.error.mock.calls[2][1]).toBeInstanceOf(Error)
+	})
+})
+
 describe('webSearch', () => {
 	it('does not hit the network when Tavily is selected but has no API key', async () => {
 		const out = await webSearch(
 			'q',
-			{ provider: 'tavily', tavilyApiKey: '', yacyBaseUrl: '' },
+			{ provider: 'tavily', tavilyApiKey: '', yacyBaseUrl: '', searxngBaseUrl: '' },
 			fakeRagEngine,
 		)
 
@@ -168,7 +216,7 @@ describe('webSearch', () => {
 
 		const out = await webSearch(
 			'q',
-			{ provider: 'yacy', tavilyApiKey: '', yacyBaseUrl: 'http://127.0.0.1:8090' },
+			{ provider: 'yacy', tavilyApiKey: '', yacyBaseUrl: 'http://127.0.0.1:8090', searxngBaseUrl: '' },
 			fakeRagEngine,
 		)
 
@@ -178,12 +226,32 @@ describe('webSearch', () => {
 		expect(out).toContain('page A')
 	})
 
+	it('searches via the SearXNG instance, re-ranks by embedding and inlines page content', async () => {
+		requestUrlMock
+			.mockResolvedValueOnce(textResponse(200, JSON.stringify({
+				results: [{ url: 'https://a.example', title: 'A', content: 'snippet A' }],
+			})))
+			.mockResolvedValueOnce(textResponse(200, '<html><body>page A</body></html>'))
+
+		const out = await webSearch(
+			'q',
+			{ provider: 'searxng', tavilyApiKey: '', yacyBaseUrl: '', searxngBaseUrl: 'http://127.0.0.1:8080' },
+			fakeRagEngine,
+		)
+
+		expect(requestUrlMock).toHaveBeenCalledTimes(2)
+		expect(callParam(0).url).toContain('http://127.0.0.1:8080/search?')
+		expect(callParam(0).url).toContain('format=json')
+		expect(out).toContain('<url_content url="https://a.example">')
+		expect(out).toContain('page A')
+	})
+
 	it('reports when the provider returned nothing relevant', async () => {
 		requestUrlMock.mockResolvedValue(textResponse(200, JSON.stringify({ results: [] })))
 
 		const out = await webSearch(
 			'q',
-			{ provider: 'tavily', tavilyApiKey: 'tvly-key', yacyBaseUrl: '' },
+			{ provider: 'tavily', tavilyApiKey: 'tvly-key', yacyBaseUrl: '', searxngBaseUrl: '' },
 			fakeRagEngine,
 		)
 

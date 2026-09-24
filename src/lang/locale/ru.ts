@@ -693,13 +693,16 @@ export default {
 		"WebSearch": {
 			"title": "Веб-поиск",
 			"provider": "Поисковый сервис",
-			"providerDescription": "Выберите, какой сервис плагин использует для веб-поиска. Tavily — облачный поисковый API с бесплатным тарифом; YaCy — самостоятельный децентрализованный поисковый движок, который работает без API-ключей.",
+			"providerDescription": "Выберите, какой сервис плагин использует для веб-поиска. Tavily — облачный поисковый API с бесплатным тарифом; YaCy и SearXNG — самостоятельные поисковые движки, которые работают без API-ключей.",
 			"tavily": "Tavily",
 			"yacy": "YaCy (свой сервер)",
+			"searxng": "SearXNG (свой сервер)",
 			"tavilyApiKey": "API-ключ Tavily",
 			"tavilyApiKeyDescription": "Ключ для поискового API Tavily (бесплатный тариф: 1000 запросов в месяц). Получить ключ можно на",
 			"yacyBaseUrl": "Адрес пира YaCy",
-			"yacyBaseUrlDescription": "Базовый адрес вашего пира YaCy, например http://localhost:8090. Запустите собственный пир или укажите публичный; API-ключ не требуется. Подробности на"
+			"yacyBaseUrlDescription": "Базовый адрес вашего пира YaCy, например http://localhost:8090. Запустите собственный пир или укажите публичный; API-ключ не требуется. Подробности на",
+			"searxngBaseUrl": "Адрес экземпляра SearXNG",
+			"searxngBaseUrlDescription": "Базовый адрес вашего экземпляра SearXNG, например http://localhost:8080 (Docker) или http://localhost:8888 (установка на хост). Экземпляр должен разрешать JSON-формат выдачи: добавьте \"json\" в search.formats в его settings.yml. API-ключ не требуется. Подробности на"
 		},
 		"RAG": {
 			"title": "RAG (дополнительно)",

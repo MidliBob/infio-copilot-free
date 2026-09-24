@@ -1,20 +1,21 @@
 import { htmlToMarkdown, requestUrl } from 'obsidian';
 
-import { DEFAULT_YACY_BASE_URL, TAVILY_SEARCH_URL } from '../constants';
+import { DEFAULT_SEARXNG_BASE_URL, DEFAULT_YACY_BASE_URL, TAVILY_SEARCH_URL } from '../constants';
 
 import { getVideoProvider, isVideoUrl } from './video-detector';
 import { YoutubeTranscript } from './youtube-transcript';
-import { parseTavilyResults, parseYacyResults } from './provider-schemas';
+import { parseSearxngResults, parseTavilyResults, parseYacyResults } from './provider-schemas';
 import { logger } from './logger'
 
 /** The web search backends supported by the plugin. */
-export type WebSearchProvider = 'tavily' | 'yacy'
+export type WebSearchProvider = 'tavily' | 'yacy' | 'searxng'
 
 /** Everything webSearch() needs to know about the user's configuration. */
 export type WebSearchConfig = {
 	provider: WebSearchProvider
 	tavilyApiKey: string
 	yacyBaseUrl: string
+	searxngBaseUrl: string
 }
 
 /**
@@ -137,9 +138,57 @@ export async function yacySearch(query: string, baseUrl: string): Promise<Search
 	}
 }
 
+/** Trims a user-provided SearXNG instance URL and falls back to the local default. */
+export function normalizeSearxngBaseUrl(baseUrl: string): string {
+	const trimmed = (baseUrl ?? '').trim().replace(/\/+$/, '');
+	return trimmed.length > 0 ? trimmed : DEFAULT_SEARXNG_BASE_URL;
+}
+
+/**
+ * SearXNG: a self-hosted metasearch engine that aggregates results from many
+ * other search engines. Like YaCy it needs no API key and no third-party
+ * cloud. Queries the instance JSON API at GET <instance>/search?format=json;
+ * the instance must allow the JSON output format (`search.formats` in its
+ * settings.yml), otherwise it answers with HTTP 403.
+ */
+export async function searxngSearch(query: string, baseUrl: string): Promise<SearchResult[]> {
+	const instance = normalizeSearxngBaseUrl(baseUrl);
+	const url = `${instance}/search?q=${encodeURIComponent(query)}&format=json&categories=general&pageno=1`;
+	try {
+		const response = await requestUrl({ url, throw: false });
+		if (response.status < 200 || response.status >= 300) {
+			// 403 almost always means the instance serves HTML only.
+			const hint = response.status === 403
+				? ' (SearXNG returns 403 when the JSON output format is not enabled in its settings.yml)'
+				: '';
+			logger.error(`searxng search failed with HTTP ${response.status}${hint}`);
+			return [];
+		}
+		let json: unknown;
+		try {
+			json = JSON.parse(response.text);
+		} catch {
+			logger.error('searxng search returned a non-JSON response');
+			return [];
+		}
+		return parseSearxngResults(json).map((result) => ({
+			title: result.title ?? '',
+			link: result.url,
+			snippet: result.content ?? '',
+			snippet_embedding: [],
+		}));
+	} catch (error) {
+		logger.error(`searxng search request failed (is the instance running at ${instance}?)`, error);
+		return [];
+	}
+}
+
 async function runSearch(query: string, config: WebSearchConfig): Promise<SearchResult[]> {
 	if (config.provider === 'yacy') {
 		return yacySearch(query, config.yacyBaseUrl);
+	}
+	if (config.provider === 'searxng') {
+		return searxngSearch(query, config.searxngBaseUrl);
 	}
 	return tavilySearch(query, config.tavilyApiKey);
 }
@@ -229,7 +278,7 @@ export async function webSearch(
 ): Promise<string> {
 	if (config.provider === 'tavily' && !(config.tavilyApiKey ?? '').trim()) {
 		logger.warn('web search skipped: no Tavily API key configured');
-		return 'web search is not configured: set a Tavily API key or switch to the YaCy provider in the plugin settings';
+		return 'web search is not configured: set a Tavily API key or switch to a self-hosted provider (YaCy or SearXNG) in the plugin settings';
 	}
 	try {
 		const results = await runSearch(query, config);

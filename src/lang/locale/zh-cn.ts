@@ -405,13 +405,16 @@ export default {
 		WebSearch: {
 			title: '网页搜索',
 			provider: '搜索服务',
-			providerDescription: '选择插件用于网页搜索的服务。Tavily 是带有免费额度的云端搜索 API；YaCy 是无需 API 密钥的自托管去中心化搜索引擎。',
+			providerDescription: '选择插件用于网页搜索的服务。Tavily 是带有免费额度的云端搜索 API；YaCy 和 SearXNG 是无需 API 密钥的自托管搜索引擎。',
 			tavily: 'Tavily',
 			yacy: 'YaCy（自托管）',
+			searxng: 'SearXNG（自托管）',
 			tavilyApiKey: 'Tavily API 密钥',
 			tavilyApiKeyDescription: 'Tavily 网页搜索 API 的密钥（免费额度：每月 1000 次搜索）。请从此处获取您的密钥',
 			yacyBaseUrl: 'YaCy 节点地址',
 			yacyBaseUrlDescription: '您的 YaCy 节点的基础 URL，例如 http://localhost:8090。可以自行运行节点或使用公共节点；无需 API 密钥。详情请访问',
+			searxngBaseUrl: 'SearXNG 实例地址',
+			searxngBaseUrlDescription: '您的 SearXNG 实例的基础 URL，例如 http://localhost:8080（Docker）或 http://localhost:8888（裸机安装）。实例必须允许 JSON 输出格式：在其 settings.yml 的 search.formats 中加入 "json"。无需 API 密钥。详情请访问',
 		},
 		
 		// RAG 部分

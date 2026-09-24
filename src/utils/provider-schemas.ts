@@ -187,3 +187,31 @@ export function parseYacyResults(json: unknown): YacyNormalizedResult[] {
 	}
 	return out
 }
+
+// --- SearXNG web search results ----------------------------------------------
+
+/**
+ * SearXNG's /search?format=json answers with a flat `results[]` array; each
+ * hit carries `url`, `title` and a `content` snippet. Engines behind SearXNG
+ * differ in what they return, so title/content are optional.
+ */
+const SearxngResultSchema = z.object({
+	title: OptionalString,
+	url: z.string(),
+	content: OptionalString,
+})
+
+const SearxngResponseSchema = z.object({
+	results: z.array(SearxngResultSchema).nullish(),
+})
+
+export type SearxngResult = z.infer<typeof SearxngResultSchema>
+
+/** Validates a SearXNG /search JSON response body; returns [] on mismatch. */
+export function parseSearxngResults(json: unknown): SearxngResult[] {
+	const parsed = SearxngResponseSchema.safeParse(json)
+	if (!parsed.success) {
+		return []
+	}
+	return parsed.data.results ?? []
+}

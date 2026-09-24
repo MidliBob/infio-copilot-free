@@ -24,6 +24,7 @@ export const ALIBABA_QWEN_BASE_URL = 'https://dashscope.aliyuncs.com/compatible-
 export const MOONSHOT_BASE_URL = 'https://api.moonshot.cn/v1'
 export const TAVILY_SEARCH_URL = 'https://api.tavily.com/search'
 export const DEFAULT_YACY_BASE_URL = 'http://localhost:8090'
+export const DEFAULT_SEARXNG_BASE_URL = 'http://localhost:8080'
 // Pricing in dollars per million tokens
 type ModelPricing = {
 	input: number

@@ -8,7 +8,7 @@ import {
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 
-import { DEFAULT_YACY_BASE_URL } from '../constants';
+import { DEFAULT_SEARXNG_BASE_URL, DEFAULT_YACY_BASE_URL } from '../constants';
 import { t } from '../lang/helpers';
 import { InfioSettings } from '../types/settings';
 import { findFilesMatchingPatterns } from '../utils/glob-utils';
@@ -35,6 +35,7 @@ export class InfioSettingTab extends PluginSettingTab {
 	private pluginInfoContainer: HTMLElement | null = null;
 	private tavilySetting: Setting | null = null;
 	private yacySetting: Setting | null = null;
+	private searxngSetting: Setting | null = null;
 
 	constructor(app: App, plugin: InfioPluginLike) {
 		// @ts-ignore
@@ -277,9 +278,10 @@ export class InfioSettingTab extends PluginSettingTab {
 				dropdown
 					.addOption('tavily', t('settings.WebSearch.tavily'))
 					.addOption('yacy', t('settings.WebSearch.yacy'))
+					.addOption('searxng', t('settings.WebSearch.searxng'))
 					.setValue(this.plugin.settings.webSearchProvider)
 					.onChange(async (value) => {
-						const provider = value === 'yacy' ? 'yacy' : 'tavily';
+						const provider = value === 'yacy' ? 'yacy' : value === 'searxng' ? 'searxng' : 'tavily';
 						await this.plugin.setSettings({
 							...this.plugin.settings,
 							webSearchProvider: provider,
@@ -338,6 +340,29 @@ export class InfioSettingTab extends PluginSettingTab {
 						})
 					}))
 
+		this.searxngSetting = new Setting(containerEl)
+			.setName(t('settings.WebSearch.searxngBaseUrl'))
+			.setDesc(createFragment(el => {
+				el.appendText(t('settings.WebSearch.searxngBaseUrlDescription') + ' ');
+				const a = el.createEl('a', {
+					href: 'https://docs.searxng.org/',
+					text: 'https://docs.searxng.org/'
+				});
+				a.setAttr('target', '_blank');
+				a.setAttr('rel', 'noopener');
+			}))
+			.setClass('setting-item-heading-smaller')
+			.addText((text) =>
+				text
+					.setPlaceholder(DEFAULT_SEARXNG_BASE_URL)
+					.setValue(this.plugin.settings.searxngBaseUrl)
+					.onChange(async (value) => {
+						await this.plugin.setSettings({
+							...this.plugin.settings,
+							searxngBaseUrl: value,
+						})
+					}))
+
 		this.toggleWebSearchProviderFields(this.plugin.settings.webSearchProvider)
 	}
 
@@ -348,6 +373,9 @@ export class InfioSettingTab extends PluginSettingTab {
 		}
 		if (this.yacySetting) {
 			this.yacySetting.settingEl.style.display = provider === 'yacy' ? '' : 'none';
+		}
+		if (this.searxngSetting) {
+			this.searxngSetting.settingEl.style.display = provider === 'searxng' ? '' : 'none';
 		}
 	}
 

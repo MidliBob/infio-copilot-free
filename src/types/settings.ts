@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { DEFAULT_MODELS, DEFAULT_YACY_BASE_URL } from '../constants';
+import { DEFAULT_MODELS, DEFAULT_SEARXNG_BASE_URL, DEFAULT_YACY_BASE_URL } from '../constants';
 import {
 	MAX_DELAY,
 	MAX_MAX_CHAR_LIMIT,
@@ -337,9 +337,10 @@ export const InfioSettingsSchema = z.object({
 	defaultMention: z.enum(['none', 'current-file', 'vault']).catch('none'),
 
 	// web search
-	webSearchProvider: z.enum(['tavily', 'yacy']).catch('tavily'),
+	webSearchProvider: z.enum(['tavily', 'yacy', 'searxng']).catch('tavily'),
 	tavilyApiKey: z.string().catch(''),
 	yacyBaseUrl: z.string().catch(DEFAULT_YACY_BASE_URL),
+	searxngBaseUrl: z.string().catch(DEFAULT_SEARXNG_BASE_URL),
 
 	// Files Search
 	filesSearchSettings: FilesSearchSettingsSchema,
