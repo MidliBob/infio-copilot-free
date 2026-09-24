@@ -15,7 +15,7 @@ import { ApiProvider } from '../types/llm/model';
 import { isRegexValid, isValidIgnorePattern } from '../utils/auto-complete';
 import { logger } from '../utils/logger'
 
-export const SETTINGS_SCHEMA_VERSION = 0.7
+export const SETTINGS_SCHEMA_VERSION = 0.8
 
 const OpenRouterProviderSchema = z.object({
 	name: z.literal('OpenRouter'),
@@ -337,8 +337,7 @@ export const InfioSettingsSchema = z.object({
 	defaultMention: z.enum(['none', 'current-file', 'vault']).catch('none'),
 
 	// web search
-	webSearchProvider: z.enum(['tavily', 'yacy', 'searxng']).catch('tavily'),
-	tavilyApiKey: z.string().catch(''),
+	webSearchProvider: z.enum(['yacy', 'searxng']).catch('searxng'),
 	yacyBaseUrl: z.string().catch(DEFAULT_YACY_BASE_URL),
 	searxngBaseUrl: z.string().catch(DEFAULT_SEARXNG_BASE_URL),
 
@@ -548,6 +547,25 @@ const MIGRATIONS: Migration[] = [
 			delete newData.serperApiKey
 			delete newData.serperSearchEngine
 			delete newData.jinaApiKey
+
+			return newData
+		},
+	},
+	{
+		fromVersion: 0.7,
+		toVersion: 0.8,
+		migrate: (data) => {
+			const newData = { ...data }
+			newData.version = 0.8
+
+			// The Tavily cloud API became unreachable for users, so the
+			// provider was removed. Web search is now served only by the
+			// self-hosted engines (SearXNG or YaCy); drop the stale key and
+			// let the schema default pick the provider.
+			delete newData.tavilyApiKey
+			if (newData.webSearchProvider === 'tavily') {
+				delete newData.webSearchProvider
+			}
 
 			return newData
 		},

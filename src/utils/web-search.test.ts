@@ -8,7 +8,6 @@ import {
 	normalizeSearxngBaseUrl,
 	normalizeYacyBaseUrl,
 	searxngSearch,
-	tavilySearch,
 	webSearch,
 	yacySearch,
 } from './web-search'
@@ -64,53 +63,6 @@ describe('normalizeSearxngBaseUrl', () => {
 	it('trims slashes and falls back to the local instance default', () => {
 		expect(normalizeSearxngBaseUrl('http://192.168.1.10:8080//')).toBe('http://192.168.1.10:8080')
 		expect(normalizeSearxngBaseUrl('  ')).toBe('http://localhost:8080')
-	})
-})
-
-describe('tavilySearch', () => {
-	it('POSTs the query with a Bearer key and maps results', async () => {
-		requestUrlMock.mockResolvedValue(textResponse(200, JSON.stringify({
-			query: 'obsidian plugins',
-			answer: null,
-			results: [
-				{ title: 'A', url: 'https://a.example', content: 'snippet A', score: 0.9 },
-				{ title: 'B', url: 'https://b.example', content: 'snippet B', score: 0.5 },
-			],
-		})))
-
-		const results = await tavilySearch('obsidian plugins', 'tvly-key')
-
-		expect(requestUrlMock).toHaveBeenCalledTimes(1)
-		const call = callParam(0)
-		expect(call.url).toBe('https://api.tavily.com/search')
-		expect(call.method).toBe('POST')
-		expect(call.headers).toMatchObject({ Authorization: 'Bearer tvly-key' })
-		expect(JSON.parse(String(call.body))).toMatchObject({
-			query: 'obsidian plugins',
-			max_results: 20,
-		})
-		expect(results).toEqual([
-			{ title: 'A', link: 'https://a.example', snippet: 'snippet A', snippet_embedding: [] },
-			{ title: 'B', link: 'https://b.example', snippet: 'snippet B', snippet_embedding: [] },
-		])
-	})
-
-	it('returns [] on HTTP errors, non-JSON bodies and network failures', async () => {
-		requestUrlMock.mockResolvedValue(textResponse(401, '{"detail":{"error":"Invalid API Key"}}'))
-		expect(await tavilySearch('q', 'bad-key')).toEqual([])
-
-		requestUrlMock.mockResolvedValue(textResponse(200, '<html>not json</html>'))
-		expect(await tavilySearch('q', 'k')).toEqual([])
-
-		requestUrlMock.mockRejectedValue(new Error('network down'))
-		expect(await tavilySearch('q', 'k')).toEqual([])
-
-		expect(errorMessages()).toEqual([
-			'tavily search failed with HTTP 401',
-			'tavily search returned a non-JSON response',
-			'tavily search request failed',
-		])
-		expect(loggerMock.error.mock.calls[2][1]).toBeInstanceOf(Error)
 	})
 })
 
@@ -190,21 +142,6 @@ describe('searxngSearch', () => {
 })
 
 describe('webSearch', () => {
-	it('does not hit the network when Tavily is selected but has no API key', async () => {
-		const out = await webSearch(
-			'q',
-			{ provider: 'tavily', tavilyApiKey: '', yacyBaseUrl: '', searxngBaseUrl: '' },
-			fakeRagEngine,
-		)
-
-		expect(requestUrlMock).not.toHaveBeenCalled()
-		expect(out).toContain('not configured')
-		expect(loggerMock.warn).toHaveBeenCalledWith(
-			'web search skipped: no Tavily API key configured',
-		)
-		expect(loggerMock.error).not.toHaveBeenCalled()
-	})
-
 	it('searches via the YaCy peer, re-ranks by embedding and inlines page content', async () => {
 		requestUrlMock
 			.mockResolvedValueOnce(textResponse(200, JSON.stringify({
@@ -216,7 +153,7 @@ describe('webSearch', () => {
 
 		const out = await webSearch(
 			'q',
-			{ provider: 'yacy', tavilyApiKey: '', yacyBaseUrl: 'http://127.0.0.1:8090', searxngBaseUrl: '' },
+			{ provider: 'yacy', yacyBaseUrl: 'http://127.0.0.1:8090', searxngBaseUrl: '' },
 			fakeRagEngine,
 		)
 
@@ -235,7 +172,7 @@ describe('webSearch', () => {
 
 		const out = await webSearch(
 			'q',
-			{ provider: 'searxng', tavilyApiKey: '', yacyBaseUrl: '', searxngBaseUrl: 'http://127.0.0.1:8080' },
+			{ provider: 'searxng', yacyBaseUrl: '', searxngBaseUrl: 'http://127.0.0.1:8080' },
 			fakeRagEngine,
 		)
 
@@ -251,7 +188,7 @@ describe('webSearch', () => {
 
 		const out = await webSearch(
 			'q',
-			{ provider: 'tavily', tavilyApiKey: 'tvly-key', yacyBaseUrl: '', searxngBaseUrl: '' },
+			{ provider: 'searxng', yacyBaseUrl: '', searxngBaseUrl: '' },
 			fakeRagEngine,
 		)
 

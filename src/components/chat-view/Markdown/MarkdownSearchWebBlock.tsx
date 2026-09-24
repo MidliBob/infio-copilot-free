@@ -21,17 +21,14 @@ export default function MarkdownWebSearchBlock({
 	const { settings } = useSettings()
 
 	const handleClick = () => {
-		// Open the query in a browser: YaCy and SearXNG users land on their
-		// own instance's search page; Tavily is API-only, so fall back to
-		// Google.
+		// Open the query in a browser: both providers are self-hosted web
+		// apps, so users always land on their own instance's search page.
 		if (settings.webSearchProvider === 'yacy') {
 			const base = (settings.yacyBaseUrl || DEFAULT_YACY_BASE_URL).trim().replace(/\/+$/, '')
 			window.open(`${base}/yacysearch.html?query=${encodeURIComponent(query)}`, '_blank')
-		} else if (settings.webSearchProvider === 'searxng') {
+		} else {
 			const base = (settings.searxngBaseUrl || DEFAULT_SEARXNG_BASE_URL).trim().replace(/\/+$/, '')
 			window.open(`${base}/search?q=${encodeURIComponent(query)}`, '_blank')
-		} else {
-			window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank')
 		}
 	}
 

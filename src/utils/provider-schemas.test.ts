@@ -1,7 +1,6 @@
 import {
 	parseOllamaTags,
 	parseOpenRouterModels,
-	parseTavilyResults,
 	parseYacyResults,
 } from './provider-schemas'
 
@@ -81,29 +80,6 @@ describe('parseOpenRouterModels', () => {
 		expect(parseOpenRouterModels({ data: [{ id: 1 }] })).toEqual([])
 		expect(parseOpenRouterModels({ data: [{ context_length: 'x' }] })).toEqual([])
 		expect(parseOpenRouterModels(null)).toEqual([])
-	})
-})
-
-describe('parseTavilyResults', () => {
-	it('parses the results array', () => {
-		const results = parseTavilyResults({
-			query: 'q',
-			answer: null,
-			results: [
-				{ title: 'T', url: 'https://a', content: 'C', score: 0.9 },
-				{ url: 'https://b' },
-			],
-		})
-		expect(results).toHaveLength(2)
-		expect(results[0]).toEqual({ title: 'T', url: 'https://a', content: 'C' })
-		expect(results[1].title).toBeUndefined()
-	})
-
-	it('returns [] when results is missing or malformed', () => {
-		expect(parseTavilyResults({})).toEqual([])
-		expect(parseTavilyResults({ results: null })).toEqual([])
-		expect(parseTavilyResults({ results: [{ title: 'no url' }] })).toEqual([])
-		expect(parseTavilyResults('nope')).toEqual([])
 	})
 })
 

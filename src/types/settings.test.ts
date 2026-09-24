@@ -45,7 +45,7 @@ describe('parseSmartCopilotSettings', () => {
 			debugMode: false,
 		})
 		expect(result).toEqual({
-			version: 0.7,
+			version: 0.8,
 			workspace: '',
 			activeModels: DEFAULT_MODELS,
 			activeProviderTab: 'Ollama',
@@ -157,8 +157,7 @@ describe('parseSmartCopilotSettings', () => {
 			defaultMention: 'none',
 			removeDuplicateMathBlockIndicator: true,
 			removeDuplicateCodeBlockIndicator: true,
-			webSearchProvider: 'tavily',
-			tavilyApiKey: '',
+			webSearchProvider: 'searxng',
 			yacyBaseUrl: 'http://localhost:8090',
 			searxngBaseUrl: 'http://localhost:8080',
 			ignoredFilePatterns: '**/secret/**\n',
@@ -287,7 +286,7 @@ describe('settings migration', () => {
 
 		const result = parseInfioSettings(oldSettings)
 		expect(result).toEqual({
-			version: 0.7,
+			version: 0.8,
 			workspace: '',
 			activeModels: DEFAULT_MODELS,
 			activeProviderTab: 'Ollama',
@@ -399,8 +398,7 @@ describe('settings migration', () => {
 			defaultMention: 'none',
 			removeDuplicateMathBlockIndicator: true,
 			removeDuplicateCodeBlockIndicator: true,
-			webSearchProvider: 'tavily',
-			tavilyApiKey: '',
+			webSearchProvider: 'searxng',
 			yacyBaseUrl: 'http://localhost:8090',
 			searxngBaseUrl: 'http://localhost:8080',
 			ignoredFilePatterns: '**/secret/**\n',
@@ -516,7 +514,7 @@ describe('settings migration', () => {
 		
 		// Should successfully parse and migrate max_tokens to 4096
 		expect(result.modelOptions.max_tokens).toBe(4096)
-		expect(result.version).toBe(0.7)
+		expect(result.version).toBe(0.8)
 	})
 
 	it('should not change max_tokens if it is already above minimum', () => {
@@ -555,11 +553,11 @@ describe('settings migration', () => {
 		
 		// Should keep the existing max_tokens value since it's already valid
 		expect(result.modelOptions.max_tokens).toBe(6000)
-		expect(result.version).toBe(0.7)
+		expect(result.version).toBe(0.8)
 	})
 })
 
-describe('Infio provider removal migration (0.5 -> 0.7)', () => {
+describe('Infio provider removal migration (0.5 -> 0.8)', () => {
 	it('remaps Infio selections to Ollama/LocalProvider and drops stale data', () => {
 		const infioEraSettings = {
 			version: 0.5,
@@ -611,7 +609,7 @@ describe('Infio provider removal migration (0.5 -> 0.7)', () => {
 
 		const result = parseInfioSettings(infioEraSettings)
 
-		expect(result.version).toBe(0.7)
+		expect(result.version).toBe(0.8)
 		expect(result.defaultProvider).toBe('Ollama')
 		expect(result.activeProviderTab).toBe('Ollama')
 		expect(result.chatModelProvider).toBe('Ollama')
@@ -629,7 +627,7 @@ describe('Infio provider removal migration (0.5 -> 0.7)', () => {
 	})
 })
 
-describe('Serper/Jina removal migration (0.6 -> 0.7)', () => {
+describe('Serper/Jina removal migration (0.6 -> 0.8)', () => {
 	// A complete 0.6-era payload. With only the removed keys present the schema
 	// parse fails and parseInfioSettings returns the defaults, which also lack
 	// serperApiKey/serperSearchEngine/jinaApiKey - the migration itself would
@@ -679,19 +677,19 @@ describe('Serper/Jina removal migration (0.6 -> 0.7)', () => {
 		debugMode: false,
 	}
 
-	it('drops the removed web-search credentials and falls back to Tavily defaults', () => {
+	it('drops the removed web-search credentials and falls back to the SearXNG default', () => {
 		const result = parseInfioSettings(serperEraSettings)
 
 		// the migration must have run on a valid parse, not on the fallback
 		expect(loggerMock.error).not.toHaveBeenCalled()
 		expect(result.openAIApiKey).toBe('sk-survives-migration')
 		expect(result.chatModelId).toBe('qwen2.5:7b')
-		expect(result.version).toBe(0.7)
+		expect(result.version).toBe(0.8)
 		expect('serperApiKey' in result).toBe(false)
 		expect('serperSearchEngine' in result).toBe(false)
 		expect('jinaApiKey' in result).toBe(false)
-		expect(result.webSearchProvider).toBe('tavily')
-		expect(result.tavilyApiKey).toBe('')
+		expect(result.webSearchProvider).toBe('searxng')
+		expect('tavilyApiKey' in result).toBe(false)
 		expect(result.yacyBaseUrl).toBe('http://localhost:8090')
 		expect(result.searxngBaseUrl).toBe('http://localhost:8080')
 	})
@@ -706,10 +704,10 @@ describe('Serper/Jina removal migration (0.6 -> 0.7)', () => {
 		expect(String(loggerMock.error.mock.calls[0][0])).toContain(
 			'using default settings instead',
 		)
-		expect(result.version).toBe(0.7)
+		expect(result.version).toBe(0.8)
 		expect('serperApiKey' in result).toBe(false)
-		expect(result.webSearchProvider).toBe('tavily')
-		expect(result.tavilyApiKey).toBe('')
+		expect(result.webSearchProvider).toBe('searxng')
+		expect('tavilyApiKey' in result).toBe(false)
 		expect(result.yacyBaseUrl).toBe('http://localhost:8090')
 		expect(result.searxngBaseUrl).toBe('http://localhost:8080')
 	})
@@ -751,7 +749,7 @@ describe('web search provider settings', () => {
 	it('keeps a stored SearXNG provider and instance URL', () => {
 		const result = parseInfioSettings({
 			...parseableBase,
-			version: 0.7,
+			version: 0.8,
 			webSearchProvider: 'searxng',
 			searxngBaseUrl: 'http://searx.example:8080',
 		})
@@ -761,14 +759,89 @@ describe('web search provider settings', () => {
 		expect(result.searxngBaseUrl).toBe('http://searx.example:8080')
 	})
 
-	it('falls back to Tavily for an unknown provider and defaults the instance URL', () => {
+	it('falls back to SearXNG for an unknown provider and defaults the instance URL', () => {
 		const result = parseInfioSettings({
 			...parseableBase,
-			version: 0.7,
+			version: 0.8,
 			webSearchProvider: 'serper',
 		})
 
-		expect(result.webSearchProvider).toBe('tavily')
+		expect(result.webSearchProvider).toBe('searxng')
 		expect(result.searxngBaseUrl).toBe('http://localhost:8080')
+	})
+})
+
+describe('Tavily removal migration (0.7 -> 0.8)', () => {
+	// A complete 0.7-era payload as stored by releases 1.4.0-1.5.0, with the
+	// Tavily provider selected and an API key on disk.
+	const tavilyEraSettings = {
+		version: 0.7,
+		defaultProvider: 'Ollama',
+		activeProviderTab: 'Ollama',
+		chatModelProvider: 'Ollama',
+		chatModelId: 'qwen2.5:7b',
+		insightModelProvider: 'Ollama',
+		insightModelId: '',
+		applyModelProvider: 'Ollama',
+		applyModelId: '',
+		embeddingModelProvider: 'LocalProvider',
+		embeddingModelId: 'TaylorAI/bge-micro-v2',
+		collectedChatModels: [{ provider: 'OpenAI', modelId: 'gpt-4o' }],
+		collectedEmbeddingModels: [],
+		openAIApiKey: 'sk-survives-migration',
+		webSearchProvider: 'tavily',
+		tavilyApiKey: 'secret-tavily-key',
+		autocompleteEnabled: true,
+		advancedMode: false,
+		apiProvider: 'openai',
+		triggers: DEFAULT_SETTINGS.triggers,
+		delay: 500,
+		modelOptions: {
+			temperature: 1,
+			top_p: 0.1,
+			frequency_penalty: 0.25,
+			presence_penalty: 0,
+			max_tokens: 4096,
+		},
+		systemMessage: DEFAULT_SETTINGS.systemMessage,
+		fewShotExamples: DEFAULT_SETTINGS.fewShotExamples,
+		userMessageTemplate: '{{prefix}}<mask/>{{suffix}}',
+		chainOfThoughRemovalRegex: '(.|\\n)*ANSWER:',
+		dontIncludeDataviews: true,
+		maxPrefixCharLimit: 4000,
+		maxSuffixCharLimit: 4000,
+		removeDuplicateMathBlockIndicator: true,
+		removeDuplicateCodeBlockIndicator: true,
+		ignoredFilePatterns: '**/secret/**\\n',
+		ignoredTags: '',
+		cacheSuggestions: true,
+		debugMode: false,
+	}
+
+	it('drops the Tavily key and re-selects the SearXNG default provider', () => {
+		const result = parseInfioSettings(tavilyEraSettings)
+
+		// the migration must have run on a valid parse, not on the fallback
+		expect(loggerMock.error).not.toHaveBeenCalled()
+		expect(result.openAIApiKey).toBe('sk-survives-migration')
+		expect(result.chatModelId).toBe('qwen2.5:7b')
+		expect(result.version).toBe(0.8)
+		expect(result.webSearchProvider).toBe('searxng')
+		expect('tavilyApiKey' in result).toBe(false)
+		expect(result.searxngBaseUrl).toBe('http://localhost:8080')
+	})
+
+	it('keeps an explicit YaCy choice and its peer URL', () => {
+		const result = parseInfioSettings({
+			...tavilyEraSettings,
+			webSearchProvider: 'yacy',
+			yacyBaseUrl: 'http://mypeer.example:8090',
+		})
+
+		expect(loggerMock.error).not.toHaveBeenCalled()
+		expect(result.version).toBe(0.8)
+		expect(result.webSearchProvider).toBe('yacy')
+		expect(result.yacyBaseUrl).toBe('http://mypeer.example:8090')
+		expect('tavilyApiKey' in result).toBe(false)
 	})
 })

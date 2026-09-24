@@ -92,29 +92,6 @@ export function parseOpenRouterModels(json: unknown): OpenRouterModel[] {
 	return parsed.data.data
 }
 
-// --- Tavily web search results ---------------------------------------------
-
-const TavilyResultSchema = z.object({
-	title: OptionalString,
-	url: z.string(),
-	content: OptionalString,
-})
-
-const TavilyResponseSchema = z.object({
-	results: z.array(TavilyResultSchema).nullish(),
-})
-
-export type TavilyResult = z.infer<typeof TavilyResultSchema>
-
-/** Validates a Tavily /search response body; returns [] on mismatch. */
-export function parseTavilyResults(json: unknown): TavilyResult[] {
-	const parsed = TavilyResponseSchema.safeParse(json)
-	if (!parsed.success) {
-		return []
-	}
-	return parsed.data.results ?? []
-}
-
 // --- YaCy web search results ---------------------------------------------------
 
 /**

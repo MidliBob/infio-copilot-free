@@ -22,7 +22,6 @@ export const GROK_BASE_URL = 'https://api.x.ai/v1'
 export const SILICONFLOW_BASE_URL = 'https://api.siliconflow.cn/v1'
 export const ALIBABA_QWEN_BASE_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
 export const MOONSHOT_BASE_URL = 'https://api.moonshot.cn/v1'
-export const TAVILY_SEARCH_URL = 'https://api.tavily.com/search'
 export const DEFAULT_YACY_BASE_URL = 'http://localhost:8090'
 export const DEFAULT_SEARXNG_BASE_URL = 'http://localhost:8080'
 // Pricing in dollars per million tokens

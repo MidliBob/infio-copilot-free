@@ -1,19 +1,18 @@
 import { htmlToMarkdown, requestUrl } from 'obsidian';
 
-import { DEFAULT_SEARXNG_BASE_URL, DEFAULT_YACY_BASE_URL, TAVILY_SEARCH_URL } from '../constants';
+import { DEFAULT_SEARXNG_BASE_URL, DEFAULT_YACY_BASE_URL } from '../constants';
 
 import { getVideoProvider, isVideoUrl } from './video-detector';
 import { YoutubeTranscript } from './youtube-transcript';
-import { parseSearxngResults, parseTavilyResults, parseYacyResults } from './provider-schemas';
+import { parseSearxngResults, parseYacyResults } from './provider-schemas';
 import { logger } from './logger'
 
-/** The web search backends supported by the plugin. */
-export type WebSearchProvider = 'tavily' | 'yacy' | 'searxng'
+/** The web search backends supported by the plugin. Both are self-hosted. */
+export type WebSearchProvider = 'yacy' | 'searxng'
 
 /** Everything webSearch() needs to know about the user's configuration. */
 export type WebSearchConfig = {
 	provider: WebSearchProvider
-	tavilyApiKey: string
 	yacyBaseUrl: string
 	searxngBaseUrl: string
 }
@@ -46,56 +45,6 @@ function cosineSimilarity(vecA: number[], vecB: number[]): number {
 	const magnitudeB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
 
 	return dotProduct / (magnitudeA * magnitudeB);
-}
-
-/**
- * Tavily: a cloud search API built for LLM tool use (free tier: 1000
- * searches per month). POST https://api.tavily.com/search with a Bearer
- * key; the response carries `results[]` with `title`, `url` and a
- * `content` snippet.
- */
-export async function tavilySearch(query: string, apiKey: string): Promise<SearchResult[]> {
-	try {
-		// requestUrl is Obsidian's native HTTP client: unlike Node's `https` it
-		// also works on mobile, and unlike renderer fetch it is not subject to
-		// browser CORS.
-		const response = await requestUrl({
-			url: TAVILY_SEARCH_URL,
-			method: 'POST',
-			headers: {
-				'Authorization': `Bearer ${apiKey}`,
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				query,
-				search_depth: 'basic',
-				topic: 'general',
-				max_results: MAX_SEARCH_RESULTS,
-				include_answer: false,
-			}),
-			throw: false,
-		});
-		if (response.status < 200 || response.status >= 300) {
-			logger.error(`tavily search failed with HTTP ${response.status}`);
-			return [];
-		}
-		let json: unknown;
-		try {
-			json = JSON.parse(response.text);
-		} catch {
-			logger.error('tavily search returned a non-JSON response');
-			return [];
-		}
-		return parseTavilyResults(json).map((result) => ({
-			title: result.title ?? '',
-			link: result.url,
-			snippet: result.content ?? '',
-			snippet_embedding: [],
-		}));
-	} catch (error) {
-		logger.error('tavily search request failed', error);
-		return [];
-	}
 }
 
 /** Trims a user-provided YaCy peer URL and falls back to the local default. */
@@ -187,10 +136,7 @@ async function runSearch(query: string, config: WebSearchConfig): Promise<Search
 	if (config.provider === 'yacy') {
 		return yacySearch(query, config.yacyBaseUrl);
 	}
-	if (config.provider === 'searxng') {
-		return searxngSearch(query, config.searxngBaseUrl);
-	}
-	return tavilySearch(query, config.tavilyApiKey);
+	return searxngSearch(query, config.searxngBaseUrl);
 }
 
 async function filterByEmbedding(query: string, results: SearchResult[], ragEngine: WebSearchEmbedder): Promise<SearchResult[]> {
@@ -276,10 +222,6 @@ export async function webSearch(
 	config: WebSearchConfig,
 	ragEngine: WebSearchEmbedder
 ): Promise<string> {
-	if (config.provider === 'tavily' && !(config.tavilyApiKey ?? '').trim()) {
-		logger.warn('web search skipped: no Tavily API key configured');
-		return 'web search is not configured: set a Tavily API key or switch to a self-hosted provider (YaCy or SearXNG) in the plugin settings';
-	}
 	try {
 		const results = await runSearch(query, config);
 		const filteredResults = await filterByEmbedding(query, results, ragEngine);

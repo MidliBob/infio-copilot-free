@@ -404,12 +404,9 @@ export default {
 		WebSearch: {
 			title: 'Web search',
 			provider: 'Search provider',
-			providerDescription: 'Choose which service the plugin uses for web search. Tavily is a cloud search API with a free tier; YaCy and SearXNG are self-hosted search engines that work without API keys.',
-			tavily: 'Tavily',
+			providerDescription: 'Choose which service the plugin uses for web search. YaCy and SearXNG are self-hosted search engines that work without API keys.',
 			yacy: 'YaCy (self-hosted)',
 			searxng: 'SearXNG (self-hosted)',
-			tavilyApiKey: 'Tavily API key',
-			tavilyApiKeyDescription: 'API key for the Tavily web search API (free tier: 1000 searches per month). Get your key from',
 			yacyBaseUrl: 'YaCy peer URL',
 			yacyBaseUrlDescription: 'Base URL of your YaCy peer, for example http://localhost:8090. Run your own peer or point to a public one; no API key is required. Learn more at',
 			searxngBaseUrl: 'SearXNG instance URL',

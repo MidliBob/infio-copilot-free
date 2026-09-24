@@ -33,7 +33,6 @@ export class InfioSettingTab extends PluginSettingTab {
 	private autoCompleteContainer: HTMLElement | null = null;
 	private modelsContainer: HTMLElement | null = null;
 	private pluginInfoContainer: HTMLElement | null = null;
-	private tavilySetting: Setting | null = null;
 	private yacySetting: Setting | null = null;
 	private searxngSetting: Setting | null = null;
 
@@ -276,12 +275,11 @@ export class InfioSettingTab extends PluginSettingTab {
 			.setDesc(t('settings.WebSearch.providerDescription'))
 			.addDropdown((dropdown) =>
 				dropdown
-					.addOption('tavily', t('settings.WebSearch.tavily'))
 					.addOption('yacy', t('settings.WebSearch.yacy'))
 					.addOption('searxng', t('settings.WebSearch.searxng'))
 					.setValue(this.plugin.settings.webSearchProvider)
 					.onChange(async (value) => {
-						const provider = value === 'yacy' ? 'yacy' : value === 'searxng' ? 'searxng' : 'tavily';
+						const provider = value === 'yacy' ? 'yacy' : 'searxng';
 						await this.plugin.setSettings({
 							...this.plugin.settings,
 							webSearchProvider: provider,
@@ -289,33 +287,6 @@ export class InfioSettingTab extends PluginSettingTab {
 						this.toggleWebSearchProviderFields(provider)
 					}),
 			)
-
-		this.tavilySetting = new Setting(containerEl)
-			.setName(t('settings.WebSearch.tavilyApiKey'))
-			.setDesc(createFragment(el => {
-				el.appendText(t('settings.WebSearch.tavilyApiKeyDescription') + ' ');
-				const a = el.createEl('a', {
-					href: 'https://app.tavily.com/',
-					text: 'https://app.tavily.com/'
-				});
-				a.setAttr('target', '_blank');
-				a.setAttr('rel', 'noopener');
-			}))
-			.setClass('setting-item-heading-smaller')
-			.addText((text) => {
-				const t = text
-					.setValue(this.plugin.settings.tavilyApiKey)
-					.onChange(async (value) => {
-						await this.plugin.setSettings({
-							...this.plugin.settings,
-							tavilyApiKey: value,
-						})
-					});
-				if (t.inputEl) {
-					t.inputEl.type = "password";
-				}
-				return t;
-			})
 
 		this.yacySetting = new Setting(containerEl)
 			.setName(t('settings.WebSearch.yacyBaseUrl'))
@@ -368,9 +339,6 @@ export class InfioSettingTab extends PluginSettingTab {
 
 	// Show only the fields that belong to the selected search provider
 	private toggleWebSearchProviderFields(provider: string): void {
-		if (this.tavilySetting) {
-			this.tavilySetting.settingEl.style.display = provider === 'tavily' ? '' : 'none';
-		}
 		if (this.yacySetting) {
 			this.yacySetting.settingEl.style.display = provider === 'yacy' ? '' : 'none';
 		}
