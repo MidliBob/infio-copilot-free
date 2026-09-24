@@ -1,4 +1,11 @@
 releases:
+  - version: "1.5.1"
+    features:
+      - "The Tavily web search provider is removed: its cloud API became unreachable for users, so web search is now served only by self-hosted engines - SearXNG (the new default) and YaCy - neither of which needs an API key; stored Tavily settings (the provider choice and the API key) migrate away automatically on the first start"
+    other:
+      - "Settings schema 0.8 (was 0.7): the migration drops the stored Tavily key and re-selects the default search provider; an explicit YaCy choice and its peer URL survive; desktop and mobile schemas stay in sync"
+      - "Clicking a web search block in chat now always opens the query in your own search engine's UI - the Google fallback that served the API-only provider is gone"
+      - "Unit tests: 102 total (5 Tavily tests removed, 2 added for the 0.7 -> 0.8 migration); the Jest console output stays clean"
   - version: "1.5.0"
     features:
       - "SearXNG added as a third web search provider alongside Tavily and YaCy: Settings -> Web search lets you point the plugin at your own SearXNG instance (default http://localhost:8080); like YaCy it is self-hosted and needs no API key, and clicking a web search block in chat opens the query in the instance's own UI"
