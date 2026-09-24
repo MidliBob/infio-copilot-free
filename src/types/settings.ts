@@ -15,21 +15,7 @@ import { ApiProvider } from '../types/llm/model';
 import { isRegexValid, isValidIgnorePattern } from '../utils/auto-complete';
 import { logger } from '../utils/logger'
 
-export const SETTINGS_SCHEMA_VERSION = 0.8
-
-const OpenRouterProviderSchema = z.object({
-	name: z.literal('OpenRouter'),
-	apiKey: z.string().catch(''),
-	baseUrl: z.string().catch(''),
-	useCustomUrl: z.boolean().catch(false),
-	models: z.array(z.string()).catch([])
-}).catch({
-	name: 'OpenRouter',
-	apiKey: '',
-	baseUrl: '',
-	useCustomUrl: false,
-	models: []
-})
+export const SETTINGS_SCHEMA_VERSION = 0.9
 
 const SiliconFlowProviderSchema = z.object({
 	name: z.literal('SiliconFlow'),
@@ -59,20 +45,6 @@ const AlibabaQwenProviderSchema = z.object({
 	models: []
 })
 
-const AnthropicProviderSchema = z.object({
-	name: z.literal('Anthropic'),
-	apiKey: z.string().catch(''),
-	baseUrl: z.string().optional(),
-	useCustomUrl: z.boolean().catch(false),
-	models: z.array(z.string()).catch([])
-}).catch({
-	name: 'Anthropic',
-	apiKey: '',
-	baseUrl: '',
-	useCustomUrl: false,
-	models: []
-})
-
 const DeepSeekProviderSchema = z.object({
 	name: z.literal('DeepSeek'),
 	apiKey: z.string().catch(''),
@@ -87,48 +59,6 @@ const DeepSeekProviderSchema = z.object({
 	models: []
 })
 
-const GoogleProviderSchema = z.object({
-	name: z.literal('Google'),
-	apiKey: z.string().catch(''),
-	baseUrl: z.string().catch(''),
-	useCustomUrl: z.boolean().catch(false),
-	models: z.array(z.string()).catch([])
-}).catch({
-	name: 'Google',
-	apiKey: '',
-	baseUrl: '',
-	useCustomUrl: false,
-	models: []
-})
-
-const OpenAIProviderSchema = z.object({
-	name: z.literal('OpenAI'),
-	apiKey: z.string().catch(''),
-	baseUrl: z.string().optional(),
-	useCustomUrl: z.boolean().catch(false),
-	models: z.array(z.string()).catch([])
-}).catch({
-	name: 'OpenAI',
-	apiKey: '',
-	baseUrl: '',
-	useCustomUrl: false,
-	models: []
-})
-
-const OpenAICompatibleProviderSchema = z.object({
-	name: z.literal('OpenAICompatible'),
-	apiKey: z.string().catch(''),
-	baseUrl: z.string().optional(),
-	useCustomUrl: z.boolean().catch(true),
-	models: z.array(z.string()).catch([])
-}).catch({
-	name: 'OpenAICompatible',
-	apiKey: '',
-	baseUrl: '',
-	useCustomUrl: true,
-	models: []
-})
-
 const OllamaProviderSchema = z.object({
 	name: z.literal('Ollama'),
 	apiKey: z.string().catch('ollama'),
@@ -140,34 +70,6 @@ const OllamaProviderSchema = z.object({
 	apiKey: 'ollama',
 	baseUrl: '',
 	useCustomUrl: true,
-	models: []
-})
-
-const GroqProviderSchema = z.object({
-	name: z.literal('Groq'),
-	apiKey: z.string().catch(''),
-	baseUrl: z.string().catch(''),
-	useCustomUrl: z.boolean().catch(false),
-	models: z.array(z.string()).catch([])
-}).catch({
-	name: 'Groq',
-	apiKey: '',
-	baseUrl: '',
-	useCustomUrl: false,
-	models: []
-})
-
-const GrokProviderSchema = z.object({
-	name: z.literal('Grok'),
-	apiKey: z.string().catch(''),
-	baseUrl: z.string().catch(''),
-	useCustomUrl: z.boolean().catch(false),
-	models: z.array(z.string()).catch([])
-}).catch({
-	name: 'Grok',
-	apiKey: '',
-	baseUrl: '',
-	useCustomUrl: false,
 	models: []
 })
 
@@ -201,12 +103,6 @@ const LocalProviderSchema = z.object({
 
 const ollamaModelSchema = z.object({
 	baseUrl: z.string().catch(''),
-	model: z.string().catch(''),
-})
-
-const openAICompatibleModelSchema = z.object({
-	baseUrl: z.string().catch(''),
-	apiKey: z.string().catch(''),
 	model: z.string().catch(''),
 })
 
@@ -261,18 +157,11 @@ export const InfioSettingsSchema = z.object({
 
 	// Provider
 	defaultProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.Ollama),
-	openrouterProvider: OpenRouterProviderSchema,
 	siliconflowProvider: SiliconFlowProviderSchema,
 	alibabaQwenProvider: AlibabaQwenProviderSchema,
-	anthropicProvider: AnthropicProviderSchema,
 	deepseekProvider: DeepSeekProviderSchema,
-	openaiProvider: OpenAIProviderSchema,
-	googleProvider: GoogleProviderSchema,
 	ollamaProvider: OllamaProviderSchema,
-	groqProvider: GroqProviderSchema,
-	grokProvider: GrokProviderSchema,
 	moonshotProvider: MoonshotProviderSchema,
-	openaicompatibleProvider: OpenAICompatibleProviderSchema,
 	localproviderProvider: LocalProviderSchema,
 
 	// MCP Servers
@@ -359,10 +248,6 @@ export const InfioSettingsSchema = z.object({
 		})
 	).catch(DEFAULT_MODELS),
 	// API Keys [compatible]
-	openAIApiKey: z.string().catch(''),
-	anthropicApiKey: z.string().catch(''),
-	geminiApiKey: z.string().catch(''),
-	groqApiKey: z.string().catch(''),
 	deepseekApiKey: z.string().catch(''),
 	ollamaEmbeddingModel: ollamaModelSchema.catch({
 		baseUrl: '',
@@ -372,18 +257,8 @@ export const InfioSettingsSchema = z.object({
 		baseUrl: '',
 		model: '',
 	}),
-	openAICompatibleChatModel: openAICompatibleModelSchema.catch({
-		baseUrl: '',
-		apiKey: '',
-		model: '',
-	}),
 	ollamaApplyModel: ollamaModelSchema.catch({
 		baseUrl: '',
-		model: '',
-	}),
-	openAICompatibleApplyModel: openAICompatibleModelSchema.catch({
-		baseUrl: '',
-		apiKey: '',
 		model: '',
 	}),
 
@@ -566,6 +441,76 @@ const MIGRATIONS: Migration[] = [
 			if (newData.webSearchProvider === 'tavily') {
 				delete newData.webSearchProvider
 			}
+
+			return newData
+		},
+	},
+	{
+		fromVersion: 0.8,
+		toVersion: 0.9,
+		migrate: (data) => {
+			const newData = { ...data }
+			newData.version = 0.9
+
+			// The OpenAI, Anthropic, Google, Groq, Grok, OpenRouter and
+			// custom OpenAI-compatible endpoints were removed from the
+			// plugin. Chat/insight/apply fall back to the local Ollama
+			// server, embeddings fall back to LocalProvider; drop the
+			// stale credentials of the removed providers.
+			const removedProviders = ['OpenAI', 'Anthropic', 'Google', 'Groq', 'Grok', 'OpenRouter', 'OpenAICompatible']
+			const removedEmbeddingProviders = ['OpenAI', 'Google', 'OpenAICompatible']
+			const isRemoved = (value: unknown) => typeof value === 'string' && removedProviders.includes(value)
+			const isRemovedEmbedding = (value: unknown) => typeof value === 'string' && removedEmbeddingProviders.includes(value)
+
+			if (isRemoved(newData.chatModelProvider)) {
+				newData.chatModelProvider = 'Ollama'
+				newData.chatModelId = ''
+			}
+			if (isRemoved(newData.insightModelProvider)) {
+				newData.insightModelProvider = 'Ollama'
+				newData.insightModelId = ''
+			}
+			if (isRemoved(newData.applyModelProvider)) {
+				newData.applyModelProvider = 'Ollama'
+				newData.applyModelId = ''
+			}
+			if (isRemovedEmbedding(newData.embeddingModelProvider)) {
+				newData.embeddingModelProvider = 'LocalProvider'
+				// same value as localProviderDefaultEmbeddingModelId in utils/api.ts;
+				// hardcoded because migrations must not depend on live code
+				newData.embeddingModelId = 'TaylorAI/bge-micro-v2'
+			}
+			if (isRemoved(newData.defaultProvider)) {
+				newData.defaultProvider = 'Ollama'
+			}
+			if (isRemoved(newData.activeProviderTab)) {
+				newData.activeProviderTab = 'Ollama'
+			}
+
+			// zod would discard the WHOLE array if a single entry referenced a
+			// removed provider, so filter the collected model lists here
+			for (const key of ['collectedChatModels', 'collectedInsightModels', 'collectedApplyModels', 'collectedEmbeddingModels']) {
+				const list = newData[key]
+				if (Array.isArray(list)) {
+					newData[key] = list.filter((m) => !(m && typeof m === 'object' && 'provider' in m && removedProviders.some((name) => name === m.provider)))
+				}
+			}
+
+			// credentials/config of the removed providers
+			delete newData.openaiProvider
+			delete newData.anthropicProvider
+			delete newData.googleProvider
+			delete newData.groqProvider
+			delete newData.grokProvider
+			delete newData.openrouterProvider
+			delete newData.openaicompatibleProvider
+			// legacy compatibility keys of the removed providers
+			delete newData.openAIApiKey
+			delete newData.anthropicApiKey
+			delete newData.geminiApiKey
+			delete newData.groqApiKey
+			delete newData.openAICompatibleChatModel
+			delete newData.openAICompatibleApplyModel
 
 			return newData
 		},

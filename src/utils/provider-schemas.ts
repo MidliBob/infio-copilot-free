@@ -17,21 +17,6 @@ const OptionalString = z
 	.nullish()
 	.transform((value) => value ?? undefined)
 
-/** Optional number; null is normalized to undefined. */
-const OptionalNumber = z
-	.number()
-	.nullish()
-	.transform((value) => value ?? undefined)
-
-/**
- * Numeric field that tolerates decimal strings: OpenRouter returns prices
- * as strings like "0.000003". null/undefined normalize to undefined.
- */
-const NumericField = z
-	.union([z.number(), z.string()])
-	.nullish()
-	.transform((value) => (value == null ? undefined : Number(value)))
-
 // --- Ollama /api/tags -----------------------------------------------------
 
 const OllamaTagModelSchema = z.object({
@@ -52,44 +37,6 @@ export function parseOllamaTags(json: unknown): OllamaTagModel[] {
 		return []
 	}
 	return parsed.data.models ?? []
-}
-
-// --- OpenRouter /api/v1/models --------------------------------------------
-
-const OpenRouterModelSchema = z.object({
-	id: z.string(),
-	description: OptionalString,
-	context_length: OptionalNumber,
-	top_provider: z
-		.object({ max_completion_tokens: OptionalNumber })
-		.nullish()
-		.transform((value) => value ?? undefined),
-	architecture: z
-		.object({ modality: OptionalString })
-		.nullish()
-		.transform((value) => value ?? undefined),
-	pricing: z
-		.object({
-			prompt: NumericField,
-			completion: NumericField,
-		})
-		.nullish()
-		.transform((value) => value ?? undefined),
-})
-
-const OpenRouterModelsResponseSchema = z.object({
-	data: z.array(OpenRouterModelSchema),
-})
-
-export type OpenRouterModel = z.infer<typeof OpenRouterModelSchema>
-
-/** Validates an OpenRouter /models response body; returns [] on mismatch. */
-export function parseOpenRouterModels(json: unknown): OpenRouterModel[] {
-	const parsed = OpenRouterModelsResponseSchema.safeParse(json)
-	if (!parsed.success) {
-		return []
-	}
-	return parsed.data.data
 }
 
 // --- YaCy web search results ---------------------------------------------------

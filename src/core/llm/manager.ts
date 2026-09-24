@@ -1,4 +1,4 @@
-import { ALIBABA_QWEN_BASE_URL, DEEPSEEK_BASE_URL, GROK_BASE_URL, MOONSHOT_BASE_URL, OPENROUTER_BASE_URL, SILICONFLOW_BASE_URL } from '../../constants'
+import { ALIBABA_QWEN_BASE_URL, DEEPSEEK_BASE_URL, MOONSHOT_BASE_URL, SILICONFLOW_BASE_URL } from '../../constants'
 import { ApiProvider, LLMModel } from '../../types/llm/model'
 import {
 	LLMOptions,
@@ -11,11 +11,7 @@ import {
 } from '../../types/llm/response'
 import { InfioSettings } from '../../types/settings'
 
-import { AnthropicProvider } from './anthropic'
-import { GeminiProvider } from './gemini'
-import { GroqProvider } from './groq'
 import { OllamaProvider } from './ollama'
-import { OpenAIAuthenticatedProvider } from './openai'
 import { OpenAICompatibleProvider } from './openai-compatible'
 
 
@@ -33,26 +29,13 @@ export type LLMManagerInterface = {
 }
 
 class LLMManager implements LLMManagerInterface {
-	private openaiProvider: OpenAIAuthenticatedProvider
 	private deepseekProvider: OpenAICompatibleProvider
-	private anthropicProvider: AnthropicProvider
-	private googleProvider: GeminiProvider
-	private groqProvider: GroqProvider
-	private grokProvider: OpenAICompatibleProvider
 	private moonshotProvider: OpenAICompatibleProvider
-	private openrouterProvider: OpenAICompatibleProvider
 	private siliconflowProvider: OpenAICompatibleProvider
 	private alibabaQwenProvider: OpenAICompatibleProvider
 	private ollamaProvider: OllamaProvider
-	private openaiCompatibleProvider: OpenAICompatibleProvider
 
 	constructor(settings: InfioSettings) {
-		this.openrouterProvider = new OpenAICompatibleProvider(
-			settings.openrouterProvider.apiKey,
-			settings.openrouterProvider.baseUrl && settings.openrouterProvider.useCustomUrl ?
-				settings.openrouterProvider.baseUrl
-				: OPENROUTER_BASE_URL
-		)
 		this.siliconflowProvider = new OpenAICompatibleProvider(
 			settings.siliconflowProvider.apiKey,
 			settings.siliconflowProvider.baseUrl && settings.siliconflowProvider.useCustomUrl ?
@@ -71,15 +54,6 @@ class LLMManager implements LLMManagerInterface {
 				settings.deepseekProvider.baseUrl
 				: DEEPSEEK_BASE_URL
 		)
-		this.openaiProvider = new OpenAIAuthenticatedProvider(settings.openaiProvider.apiKey)
-		this.anthropicProvider = new AnthropicProvider(settings.anthropicProvider.apiKey)
-		this.googleProvider = new GeminiProvider(settings.googleProvider.apiKey)
-		this.groqProvider = new GroqProvider(settings.groqProvider.apiKey)
-		this.grokProvider = new OpenAICompatibleProvider(settings.grokProvider.apiKey,
-			settings.grokProvider.baseUrl && settings.grokProvider.useCustomUrl ?
-				settings.grokProvider.baseUrl
-				: GROK_BASE_URL
-		)
 		this.moonshotProvider = new OpenAICompatibleProvider(
 			settings.moonshotProvider.apiKey,
 			settings.moonshotProvider.baseUrl && settings.moonshotProvider.useCustomUrl ?
@@ -87,7 +61,6 @@ class LLMManager implements LLMManagerInterface {
 				: MOONSHOT_BASE_URL
 		)
 		this.ollamaProvider = new OllamaProvider(settings.ollamaProvider.baseUrl)
-		this.openaiCompatibleProvider = new OpenAICompatibleProvider(settings.openaicompatibleProvider.apiKey, settings.openaicompatibleProvider.baseUrl)
 	}
 
 	async generateResponse(
@@ -96,12 +69,6 @@ class LLMManager implements LLMManagerInterface {
 		options?: LLMOptions,
 	): Promise<LLMResponseNonStreaming> {
 		switch (model.provider) {
-			case ApiProvider.OpenRouter:
-				return await this.openrouterProvider.generateResponse(
-					model,
-					request,
-					options,
-				)
 			case ApiProvider.SiliconFlow:
 				return await this.siliconflowProvider.generateResponse(
 					model,
@@ -120,34 +87,8 @@ class LLMManager implements LLMManagerInterface {
 					request,
 					options,
 				)
-			case ApiProvider.OpenAI:
-				return await this.openaiProvider.generateResponse(
-					model,
-					request,
-					options,
-				)
-			case ApiProvider.Anthropic:
-				return await this.anthropicProvider.generateResponse(
-					model,
-					request,
-					options,
-				)
-			case ApiProvider.Google:
-				return await this.googleProvider.generateResponse(
-					model,
-					request,
-					options,
-				)
-			case ApiProvider.Groq:
-				return await this.groqProvider.generateResponse(model, request, options)
 			case ApiProvider.Ollama:
 				return await this.ollamaProvider.generateResponse(
-					model,
-					request,
-					options,
-				)
-			case ApiProvider.Grok:
-				return await this.grokProvider.generateResponse(
 					model,
 					request,
 					options,
@@ -158,8 +99,6 @@ class LLMManager implements LLMManagerInterface {
 					request,
 					options,
 				)
-			case ApiProvider.OpenAICompatible:
-				return await this.openaiCompatibleProvider.generateResponse(model, request, options)
 			default:
 				throw new Error(`Unsupported model provider: ${model.provider}`)
 		}
@@ -171,34 +110,16 @@ class LLMManager implements LLMManagerInterface {
 		options?: LLMOptions,
 	): Promise<AsyncIterable<LLMResponseStreaming>> {
 		switch (model.provider) {
-			case ApiProvider.OpenRouter:
-				return await this.openrouterProvider.streamResponse(model, request, options)
 			case ApiProvider.SiliconFlow:
 				return await this.siliconflowProvider.streamResponse(model, request, options)
 			case ApiProvider.AlibabaQwen:
 				return await this.alibabaQwenProvider.streamResponse(model, request, options)
 			case ApiProvider.Deepseek:
 				return await this.deepseekProvider.streamResponse(model, request, options)
-			case ApiProvider.OpenAI:
-				return await this.openaiProvider.streamResponse(model, request, options)
-			case ApiProvider.Anthropic:
-				return await this.anthropicProvider.streamResponse(
-					model,
-					request,
-					options,
-				)
-			case ApiProvider.Google:
-				return await this.googleProvider.streamResponse(model, request, options)
-			case ApiProvider.Groq:
-				return await this.groqProvider.streamResponse(model, request, options)
-			case ApiProvider.Grok:
-				return await this.grokProvider.streamResponse(model, request, options)
 			case ApiProvider.Moonshot:
 				return await this.moonshotProvider.streamResponse(model, request, options)
 			case ApiProvider.Ollama:
 				return await this.ollamaProvider.streamResponse(model, request, options)
-			case ApiProvider.OpenAICompatible:
-				return await this.openaiCompatibleProvider.streamResponse(model, request, options)
 		}
 	}
 }

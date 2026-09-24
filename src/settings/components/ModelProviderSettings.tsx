@@ -22,33 +22,19 @@ type CustomProviderSettingsProps = {
 }
 
 type ProviderSettingKey =
-	| 'openrouterProvider'
-	| 'openaiProvider'
 	| 'siliconflowProvider'
 	| 'alibabaQwenProvider'
-	| 'anthropicProvider'
 	| 'deepseekProvider'
-	| 'googleProvider'
-	| 'groqProvider'
-	| 'grokProvider'
 	| 'moonshotProvider'
 	| 'ollamaProvider'
-	| 'openaicompatibleProvider'
 	| 'localproviderProvider';
 
 const keyMap: Record<ApiProvider, ProviderSettingKey> = {
-	'OpenRouter': 'openrouterProvider',
-	'OpenAI': 'openaiProvider',
 	'SiliconFlow': 'siliconflowProvider',
 	'AlibabaQwen': 'alibabaQwenProvider',
-	'Anthropic': 'anthropicProvider',
 	'Deepseek': 'deepseekProvider',
-	'Google': 'googleProvider',
-	'Groq': 'groqProvider',
-	'Grok': 'grokProvider',
 	'Moonshot': 'moonshotProvider',
 	'Ollama': 'ollamaProvider',
-	'OpenAICompatible': 'openaicompatibleProvider',
 	'LocalProvider': 'localproviderProvider',
 };
 
@@ -322,8 +308,8 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 			const { default: LLMManager } = await import('../../core/llm/manager');
 			const { GetDefaultModelId } = await import('../../utils/api');
 
-			// 对于Ollama和OpenAICompatible，不支持测试API连接
-			if (provider === ApiProvider.Ollama || provider === ApiProvider.OpenAICompatible) {
+			// 对于Ollama，不支持测试API连接
+			if (provider === ApiProvider.Ollama) {
 				throw new Error(t("settings.ModelProvider.testConnection.notSupported", { provider }));
 			}
 
@@ -645,7 +631,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 						name={t("settings.Models.chatModel")}
 						description={t("settings.Models.chatModelDescription")}
 						settings={settings}
-						provider={settings.chatModelProvider || ApiProvider.OpenAI}
+						provider={settings.chatModelProvider || ApiProvider.Ollama}
 						modelId={settings.chatModelId}
 						updateModel={updateChatModelId}
 					/>
@@ -663,7 +649,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 						name={t("settings.Models.autocompleteModel")}
 						description={t("settings.Models.autocompleteModelDescription")}
 						settings={settings}
-						provider={settings.applyModelProvider || ApiProvider.OpenAI}
+						provider={settings.applyModelProvider || ApiProvider.Ollama}
 						modelId={settings.applyModelId}
 						updateModel={updateApplyModelId}
 					/>
@@ -672,7 +658,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 						name={t("settings.Models.embeddingModel")}
 						description={t("settings.Models.embeddingModelDescription")}
 						settings={settings}
-						provider={settings.embeddingModelProvider || ApiProvider.Google}
+						provider={settings.embeddingModelProvider || ApiProvider.LocalProvider}
 						modelId={settings.embeddingModelId}
 						isEmbedding={true}
 						updateModel={updateEmbeddingModelId}

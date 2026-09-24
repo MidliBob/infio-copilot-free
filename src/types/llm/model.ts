@@ -1,32 +1,15 @@
 export enum ApiProvider {
-	OpenRouter = "OpenRouter",
 	SiliconFlow = "SiliconFlow",
 	AlibabaQwen = "AlibabaQwen",
-	Anthropic = "Anthropic",
 	Deepseek = "Deepseek",
-	OpenAI = "OpenAI",
-	Google = "Google",
-	Groq = "Groq",
-	Grok = "Grok",
 	Moonshot = "Moonshot",
 	Ollama = "Ollama",
-	OpenAICompatible = "OpenAICompatible",
 	LocalProvider = "LocalProvider",
 }
 
 export type LLMModel = {
 	provider: ApiProvider;
 	modelId: string;
-}
-
-// Model Providers
-export enum ModelProviders {
-  OPENAI = "openai",
-  ANTHROPIC = "anthropic",
-  GOOGLE = "google",
-  GROQ = "groq",
-  deepseek = "deepseek",
-  Ollama = "ollama",
 }
 
 export type CustomLLMModel = {
