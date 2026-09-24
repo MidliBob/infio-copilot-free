@@ -1,4 +1,11 @@
 releases:
+  - version: "1.5.3"
+    features:
+      - "Seven cloud LLM providers removed - OpenAI, Anthropic, Google (Gemini), Groq, Grok, OpenRouter and the custom OpenAI-compatible endpoint: none of these clouds is reachable or used by the maintainer. The plugin now ships six providers: Ollama (the primary local server), Deepseek, SiliconFlow, AlibabaQwen, Moonshot and LocalProvider (local transformers.js embeddings)"
+    other:
+      - "Settings schema 0.9 (was 0.8): stored selections of the removed providers migrate to Ollama (chat/insight/apply) and LocalProvider (embeddings, model TaylorAI/bge-micro-v2); their API keys, provider cards and collected model entries are dropped on the first start; Ollama and the remaining providers keep their configuration; desktop and mobile schemas stay in sync"
+      - "The npm dependencies @anthropic-ai/sdk, @google/genai, @google/generative-ai and groq-sdk are gone; about 2500 lines of provider handlers, model catalogs and settings schemas removed, the bundle shrinks accordingly"
+      - "Unit tests: 104 total (3 OpenRouter parser tests removed, 2 added for the 0.8 -> 0.9 migration); the Jest console output stays clean"
   - version: "1.5.2"
     fixes:
       - "Web search no longer fails when the engine returns results without a snippet: the relevance filter falls back to the result title, drops results with no text at all, and logs a warning instead of aborting the whole search when a single result cannot be embedded - previously any empty snippet killed the search with \"Text cannot be empty\" when the local (transformers.js) embedding model was in use"
