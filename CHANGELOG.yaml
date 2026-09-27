@@ -1,4 +1,14 @@
 releases:
+  - version: "1.6.2"
+    fixes:
+      - "Indexing a vault against a stopped embedding server no longer hammers it and no longer pretends to succeed: every chunk used to burn its full retry budget (3 backoff attempts x up to 3 SDK HTTP attempts each - hundreds of pointless connection-refused requests on a real vault), and because per-chunk errors were swallowed, the vault/workspace index 'completed' with zero vectors and only a flooded console. A circuit breaker (trips after 3 consecutive connection-level failures, 30 s half-open cooldown) now aborts the whole operation within seconds with the actionable provider message from 1.6.1, which the error-notice layer surfaces with a Retry button"
+      - "backOff no longer retries an open circuit (a retry predicate stops on CircuitOpenError), and chunk tasks still queued in the concurrency limiter short-circuit without touching the network; Promise.allSettled keeps their rejections from escaping as unhandled"
+    other:
+      - "The breaker guards connectivity only, not correctness: any server response (even HTTP 500/429/'model not found') counts as reachable and resets it, so a single flaky chunk still retries exactly as before; after the cooldown one probe request is allowed through, and a success fully closes the circuit"
+      - "network-errors.ts gained isNetworkFailure() (transport-level classification of caught values, including the plugin's own 'Cannot reach ...' wording); extractErrorMessage() moved there from error-notice.ts and is re-exported for API compatibility"
+      - "The single-file indexing path (UpdateFileVectorIndex) is intentionally untouched - it already fails fast via its AbortController"
+      - "Unit tests: 153 total (16 new: breaker thresholds, resets, half-open on an injected clock, callWithBreaker short-circuiting, isNetworkFailure and extractErrorMessage); the Jest console output stays clean"
+      - "Lint ratchet: no regressions - vector-manager.ts stays exactly at its frozen baseline (63), the new files are clean; total debt unchanged at 1154 errors in 128 files"
   - version: "1.6.1"
     fixes:
       - "A stopped Ollama server is finally explained instead of reported as the opaque 'Connection error.': the OpenAI SDK wraps every transport failure (ERR_CONNECTION_REFUSED included) into APIConnectionError with that default message, and the network-failure classifier did not know the wording, so the actionable hint prepared in 1.1.x never surfaced. The classifier (now shared in src/utils/network-errors.ts) also matches 'Request timed out.', which fixes chat, embeddings, indexing and the embedding-dimension probe alike - they now say 'Cannot reach Ollama at <url>' with the ollama serve / OLLAMA_ORIGINS / Test-connection steps"
