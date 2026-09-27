@@ -1,0 +1,102 @@
+{
+	"$comment": "Frozen TypeScript suppression debt per file. Regenerate ONLY with: node scripts/ts-suppressions.mjs --update. Enforced by src/ts-suppressions.test.ts; policy and cleanup plan: docs/ts-suppressions.md.",
+	"files": {
+		"src/ChatView.tsx": {
+			"nocheck": 1,
+			"ignore": 4
+		},
+		"src/components/chat-view/ChatView.tsx": {
+			"expectError": 2
+		},
+		"src/components/chat-view/CustomModeView.tsx": {
+			"expectError": 1
+		},
+		"src/components/chat-view/InsightView.tsx": {
+			"expectError": 1
+		},
+		"src/components/chat-view/Markdown/MarkdownEditFileBlock.tsx": {
+			"ignore": 1
+		},
+		"src/components/chat-view/WorkspaceEditModal.tsx": {
+			"ignore": 1
+		},
+		"src/core/file-search/match/coreplugin-match.ts": {
+			"ignore": 1
+		},
+		"src/core/llm/ollama.ts": {
+			"nocheck": 1
+		},
+		"src/core/mcp/McpHub.ts": {
+			"expectError": 1
+		},
+		"src/core/mcp/McpServerManager.ts": {
+			"nocheck": 1
+		},
+		"src/core/prompts/sections/custom-system-prompt.ts": {
+			"nocheck": 1
+		},
+		"src/database/database-manager.ts": {
+			"expectError": 1
+		},
+		"src/embedworker/EmbeddingManager.ts": {
+			"nocheck": 1
+		},
+		"src/event-listener.ts": {
+			"nocheck": 1
+		},
+		"src/main.desktop.ts": {
+			"nocheck": 1,
+			"expectError": 3
+		},
+		"src/main.ts": {
+			"nocheck": 1
+		},
+		"src/pgworker/index.ts": {
+			"nocheck": 1
+		},
+		"src/pgworker/pglite.worker.ts": {
+			"expectError": 1
+		},
+		"src/render-plugin/completion-key-watcher.ts": {
+			"nocheck": 1
+		},
+		"src/render-plugin/document-changes-listener.ts": {
+			"nocheck": 1
+		},
+		"src/render-plugin/render-surgestion-plugin.ts": {
+			"nocheck": 1
+		},
+		"src/render-plugin/states.ts": {
+			"nocheck": 1
+		},
+		"src/render-plugin/types.ts": {
+			"nocheck": 1
+		},
+		"src/render-plugin/user-event.ts": {
+			"nocheck": 1
+		},
+		"src/settings/SettingTab.tsx": {
+			"ignore": 8
+		},
+		"src/settings/components/ModelProviderSettings.tsx": {
+			"ignore": 2
+		},
+		"src/settings/components/ProviderModelsPicker.tsx": {
+			"expectError": 1
+		},
+		"src/utils/auto-complete.ts": {
+			"nocheck": 1,
+			"expectError": 1
+		},
+		"src/utils/extract-text.ts": {
+			"ignore": 1
+		},
+		"src/utils/parse-icf-block.ts": {
+			"nocheck": 1,
+			"expectError": 30
+		},
+		"src/utils/prompt-generator.ts": {
+			"ignore": 1
+		}
+	}
+}
