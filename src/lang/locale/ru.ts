@@ -512,7 +512,8 @@ export default {
 	"errors": {
 		"retry": "Повторить",
 		"semanticSearchUnavailable": "Семантический поиск недоступен",
-		"ragInitFailed": "Не удалось инициализировать векторный индекс"
+		"ragInitFailed": "Не удалось инициализировать векторный индекс",
+		"insightsInitFailed": "Не удалось инициализировать AI-инсайты"
 	},
 	"applyView": {
 		"applyingFile": "Применение: {{file}}",

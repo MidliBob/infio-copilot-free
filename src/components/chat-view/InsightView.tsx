@@ -9,6 +9,7 @@ import { Workspace } from '../../database/json/workspace/types'
 import { WorkspaceManager } from '../../database/json/workspace/WorkspaceManager'
 import { SelectSourceInsight } from '../../database/schema'
 import { t } from '../../lang/helpers'
+import { showErrorNoticeOnce } from '../../utils/error-notice'
 import { getFilesWithTag } from '../../utils/glob-utils'
 import { openMarkdownFile } from '../../utils/obsidian'
 
@@ -253,8 +254,12 @@ const InsightView = () => {
 				throw new Error(String(result.error || t('insights.error.initializationFailed')))
 			}
 
-		} catch (error) {
-			logger.error(t('insights.error.initializationFailed'), error)
+		} catch (error: unknown) {
+			showErrorNoticeOnce('insights-init', {
+				title: t('errors.insightsInitFailed'),
+				error,
+				logMessage: 'Workspace insights initialization failed:',
+			})
 			setInsightResults([])
 			setInitSuccess({ show: false }) // 清理成功状态
 		} finally {

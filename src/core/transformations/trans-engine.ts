@@ -9,6 +9,8 @@ import { RequestMessage } from '../../types/llm/request';
 import { t } from '../../lang/helpers';
 import { InfioSettings } from '../../types/settings';
 import { readTFileContentPdf } from '../../utils/obsidian';
+import { CircuitOpenError } from '../../utils/circuit-breaker';
+import { streamChatWithBreaker } from '../../utils/llm-circuit';
 import { getFullLanguageName } from '../../utils/prompt-generator';
 import { tokenCount } from '../../utils/token';
 import LLMManager from '../llm/manager';
@@ -202,25 +204,22 @@ class TransformationLLMClient {
 	}
 
 	async queryChatModel(messages: RequestMessage[]): Promise<Result<string, Error>> {
-		try {
-			const stream = await this.llm.streamResponse(
+		const result = await streamChatWithBreaker(() =>
+			this.llm.streamResponse(
 				this.model,
 				{
 					messages: messages,
 					model: this.model.modelId,
 					stream: true,
 				}
-			);
-
-			let response_content = "";
-			for await (const chunk of stream) {
-				const content = chunk.choices[0]?.delta?.content ?? '';
-				response_content += content;
-			}
-			return ok(response_content);
-		} catch (error) {
-			return err(error instanceof Error ? error : new Error(String(error)));
+			)
+		);
+		// A tripped breaker is fatal for the calling operation: throw it so the
+		// insight loops abort instead of warning once per file/folder.
+		if (result.isErr() && result.error instanceof CircuitOpenError) {
+			throw result.error;
 		}
+		return result;
 	}
 }
 
@@ -741,6 +740,9 @@ export class TransEngine {
 			};
 
 		} catch (error) {
+			if (error instanceof CircuitOpenError) {
+				throw error;
+			}
 			return {
 				success: false,
 				error: t('insights.error.transformationFailed', { error: error instanceof Error ? error.message : String(error) })
@@ -843,6 +845,9 @@ export class TransEngine {
 			};
 
 		} catch (error) {
+			if (error instanceof CircuitOpenError) {
+				throw error;
+			}
 			return {
 				success: false,
 				error: t('insights.error.folderReadFailed', { error: error instanceof Error ? error.message : String(error) })
@@ -1200,6 +1205,9 @@ export class TransEngine {
 			return summary
 
 		} catch (error) {
+			if (error instanceof CircuitOpenError) {
+				throw error;
+			}
 			logger.warn(`Failed to process file: ${filePath}`, error)
 			return null
 		}
@@ -1667,6 +1675,9 @@ export class TransEngine {
 						skippedItems++;
 					}
 				} catch (error) {
+					if (error instanceof CircuitOpenError) {
+						throw error;
+					}
 					logger.error(`File processing exception: ${file.path}`, error);
 					const isTopLevelFile = topLevelFiles.some(f => f.path === file.path);
 					if (isTopLevelFile) {
@@ -1723,6 +1734,9 @@ export class TransEngine {
 						skippedItems++;
 					}
 				} catch (error) {
+					if (error instanceof CircuitOpenError) {
+						throw error;
+					}
 					logger.error(`Folder processing exception: ${folder.path}`, error);
 					const isTopLevelFolder = topLevelFolders.some(f => f.path === folder.path);
 					if (isTopLevelFolder) {

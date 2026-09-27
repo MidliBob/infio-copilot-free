@@ -268,6 +268,7 @@ export default {
 		retry: '重试',
 		semanticSearchUnavailable: '语义搜索不可用',
 		ragInitFailed: '向量索引初始化失败',
+		insightsInitFailed: 'AI 洞察初始化失败',
 	},
 	applyView: {
 		applyingFile: '正在应用: {{file}}',
