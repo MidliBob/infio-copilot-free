@@ -509,6 +509,9 @@ export default {
 		"migrationFailed": "Не удалось мигрировать на JSON-хранилище. Подробности — в консоли.",
 		"reloadingInfio": "Перезагрузка «Infio Copilot Free» из-за миграции"
 	},
+	"errors": {
+		"retry": "Повторить"
+	},
 	"applyView": {
 		"applyingFile": "Применение: {{file}}",
 		"acceptChanges": "Принять изменения",

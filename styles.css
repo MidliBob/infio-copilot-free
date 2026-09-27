@@ -4091,3 +4091,39 @@ button.icf-chat-input-model-select {
 	display: block;
 	margin: 0 auto;
 }
+
+/* Error notices (src/utils/error-notice.ts) */
+.icf-error-notice {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-width: 240px;
+	max-width: 480px;
+}
+.icf-error-notice-title {
+	font-weight: var(--font-semibold);
+	color: var(--text-error);
+}
+.icf-error-notice-message {
+	color: var(--text-normal);
+}
+.icf-error-notice-detail {
+	color: var(--text-muted);
+	font-family: var(--font-monospace);
+	font-size: var(--font-ui-smaller);
+	white-space: pre-wrap;
+	word-break: break-word;
+	max-height: 6.5em;
+	overflow-y: auto;
+	border-left: 2px solid var(--background-modifier-border);
+	padding-left: 6px;
+}
+.icf-error-notice-actions {
+	display: flex;
+	gap: 8px;
+	margin-top: 2px;
+}
+.icf-error-notice-action {
+	font-size: var(--font-ui-small);
+	padding: 2px 12px;
+}

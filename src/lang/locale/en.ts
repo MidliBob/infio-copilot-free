@@ -263,6 +263,9 @@ export default {
 		migrationFailed: 'Failed to migrate to JSON storage. Please check the console for details.',
 		reloadingInfio: 'Reloading "Infio Copilot Free" due to migration',
 	},
+	errors: {
+		retry: 'Retry',
+	},
 	applyView: {
 		applyingFile: 'Applying: {{file}}',
 		acceptChanges: 'Accept changes',

@@ -18,6 +18,7 @@ import { EmbeddingManager } from './embedworker/EmbeddingManager'
 import EventListener from "./event-listener"
 import JsonView from './JsonFileView'
 import { t } from './lang/helpers'
+import { retryAction, showErrorNotice } from './utils/error-notice'
 import { logger, setDebugEnabled } from './utils/logger'
 import { PreviewView } from './PreviewView'
 import CompletionKeyWatcher from "./render-plugin/completion-key-watcher"
@@ -202,8 +203,11 @@ export async function loadDesktop(base: Plugin) {
 				logger.debug('Migration to JSON storage completed successfully')
 			})
 		} catch (error) {
-			logger.error('Failed to migrate to JSON storage:', error)
-			new Notice(t('notifications.migrationFailed'))
+			showErrorNotice({
+				title: t('notifications.migrationFailed'),
+				error,
+				logMessage: 'Failed to migrate to JSON storage:',
+			})
 		}
 	}
 	plugin.reloadChatView = async function () {
@@ -342,61 +346,77 @@ export async function loadDesktop(base: Plugin) {
 		},
 	})
 
+	const rebuildVaultIndex = async (): Promise<void> => {
+		const notice = new Notice(t('notifications.rebuildingIndex'), 0)
+		try {
+			const ragEngine = await plugin.getRAGEngine()
+			await ragEngine.updateVaultIndex(
+				{ reindexAll: true },
+				(queryProgress) => {
+					if (queryProgress.type === 'indexing') {
+						const { completedChunks, totalChunks } =
+							queryProgress.indexProgress
+						notice.setMessage(
+							t('notifications.indexingChunks', { completedChunks, totalChunks }),
+						)
+					}
+				},
+			)
+			notice.setMessage(t('notifications.rebuildComplete'))
+			window.setTimeout(() => { notice.hide() }, 1000)
+		} catch (error) {
+			notice.hide()
+			showErrorNotice({
+				title: t('notifications.rebuildFailed'),
+				error,
+				logMessage: 'Failed to rebuild vault index:',
+				actions: [retryAction(() => { void rebuildVaultIndex() })],
+			})
+		}
+	}
+
 	plugin.addCommand({
 		id: 'rebuild-vault-index',
 		name: t('main.rebuildVaultIndex'),
-		callback: async () => {
-			const notice = new Notice(t('notifications.rebuildingIndex'), 0)
-			try {
-				const ragEngine = await plugin.getRAGEngine()
-				await ragEngine.updateVaultIndex(
-					{ reindexAll: true },
-					(queryProgress) => {
-						if (queryProgress.type === 'indexing') {
-							const { completedChunks, totalChunks } =
-								queryProgress.indexProgress
-							notice.setMessage(
-								t('notifications.indexingChunks', { completedChunks, totalChunks }),
-							)
-						}
-					},
-				)
-				notice.setMessage(t('notifications.rebuildComplete'))
-			} catch (error) {
-				logger.error(error)
-				notice.setMessage(t('notifications.rebuildFailed'))
-			} finally {
-				window.setTimeout(() => { notice.hide() }, 1000)
-			}
+		callback: () => {
+			void rebuildVaultIndex()
 		},
 	})
+
+	const updateVaultIndex = async (): Promise<void> => {
+		const notice = new Notice(t('notifications.updatingIndex'), 0)
+		try {
+			const ragEngine = await plugin.getRAGEngine()
+			await ragEngine.updateVaultIndex(
+				{ reindexAll: false },
+				(queryProgress) => {
+					if (queryProgress.type === 'indexing') {
+						const { completedChunks, totalChunks } =
+							queryProgress.indexProgress
+						notice.setMessage(
+							t('notifications.indexingChunks', { completedChunks, totalChunks }),
+						)
+					}
+				},
+			)
+			notice.setMessage(t('notifications.updateComplete'))
+			window.setTimeout(() => { notice.hide() }, 1000)
+		} catch (error) {
+			notice.hide()
+			showErrorNotice({
+				title: t('notifications.updateFailed'),
+				error,
+				logMessage: 'Failed to update vault index:',
+				actions: [retryAction(() => { void updateVaultIndex() })],
+			})
+		}
+	}
 
 	plugin.addCommand({
 		id: 'update-vault-index',
 		name: t('main.updateVaultIndex'),
-		callback: async () => {
-			const notice = new Notice(t('notifications.updatingIndex'), 0)
-			try {
-				const ragEngine = await plugin.getRAGEngine()
-				await ragEngine.updateVaultIndex(
-					{ reindexAll: false },
-					(queryProgress) => {
-						if (queryProgress.type === 'indexing') {
-							const { completedChunks, totalChunks } =
-								queryProgress.indexProgress
-							notice.setMessage(
-								t('notifications.indexingChunks', { completedChunks, totalChunks }),
-							)
-						}
-					},
-				)
-				notice.setMessage(t('notifications.updateComplete'))
-			} catch (error) {
-				logger.error(error)
-				notice.setMessage(t('notifications.updateFailed'))
-			} finally {
-				window.setTimeout(() => { notice.hide() }, 1000)
-			}
+		callback: () => {
+			void updateVaultIndex()
 		},
 	})
 

@@ -264,6 +264,9 @@ export default {
 		migrationFailed: '迁移到 JSON 存储失败。请检查控制台以获取详细信息。',
 		reloadingInfio: '因迁移而重新加载 "infio"',
 	},
+	errors: {
+		retry: '重试',
+	},
 	applyView: {
 		applyingFile: '正在应用: {{file}}',
 		acceptChanges: '接受更改',
