@@ -48,9 +48,6 @@
 			"nocheck": 1,
 			"expectError": 3
 		},
-		"src/main.ts": {
-			"nocheck": 1
-		},
 		"src/pgworker/index.ts": {
 			"nocheck": 1
 		},

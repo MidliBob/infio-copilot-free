@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Platform, Plugin } from 'obsidian'
 import { logger } from './utils/logger'
 

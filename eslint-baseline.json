@@ -444,9 +444,6 @@
 			"@typescript-eslint/no-unsafe-member-access": 7,
 			"@typescript-eslint/no-unused-vars": 1
 		},
-		"src/main.ts": {
-			"@typescript-eslint/ban-ts-comment": 1
-		},
 		"src/pgworker/index.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/no-unsafe-assignment": 3,
