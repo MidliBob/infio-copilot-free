@@ -1,4 +1,17 @@
 releases:
+  - version: "1.6.0"
+    features:
+      - "Actionable error notices: a unified error layer renders failures as styled notices (themed error title, explanation, monospace detail extracted from the caught value) with optional action buttons. Vault index rebuild/update failures now offer a one-click Retry instead of a bare 'failed' line; the JSON-storage migration failure shows the real reason. Full error objects still go to the logging facade (visible in the developer console, Debug mode for verbose output)"
+      - "TypeScript suppression ratchet: every @ts-nocheck / @ts-ignore / @ts-expect-error under src/ is inventoried (docs/ts-suppressions.md, 77 markers in 30 files after this release) and frozen in ts-suppressions-baseline.json; a Jest test fails CI on any new suppression - and on a burned-down one until the baseline is shrunk in the same commit"
+    fixes:
+      - "src/main.ts no longer hides behind a blanket @ts-nocheck (core-module policy): the plugin entry point type-checks cleanly without it; the next candidate (src/main.desktop.ts) is documented in the inventory"
+      - "The t() translation helper is strictly typed - (str, params?: Record<string, unknown>): string instead of any/any: unknown keys resolving to a section now return the key path instead of rendering '[object Object]', and the honest return type rippled through the codebase, burning down 377 unsafe-any lint violations in one pass (frozen debt: 1531 -> 1154)"
+      - "McpHubView: two 'as string' assertions made redundant by the typed t() removed (the new lint ratchet caught them), and raw error.message in the server-creation failure notice replaced with the safe extractErrorMessage() helper"
+    other:
+      - "ESLint debt ledger after this release: 1154 errors in 128 files (was 1531/152 at the 1.5.5 freeze); biggest burn-downs from the t() ripple: SettingTab.tsx (unsafe-argument 67 -> 2), trans-engine.ts (34 -> 0), the Markdown tool-result blocks and InlineEdit (unsafe-call/member-access zeroed)"
+      - "New i18n key errors.retry added to en/ru/zh-cn in sync (the locale-completeness test enforces it)"
+      - "Unit tests: 121 total (16 new: 13 for the error-notice layer running in jsdom, 3 for the suppression ratchet); the Jest console output stays clean"
+      - "No behavior change beyond the described notice upgrades; bundle size unchanged (~15 MB, phase 4 target)"
   - version: "1.5.5"
     fixes:
       - "ESLint had been crashing before evaluating a single rule since the pnpm 12 config move: the dependency overrides forced brace-expansion 2.x under minimatch 10, which expects the v5 API, so any brace glob (including the lint script's own 'src/**/*.{ts,tsx}') died with 'expand is not a function'. The brace-expansion override is removed - the only consumer in the tree is minimatch 10, which now resolves brace-expansion 5.0.12 (newer than every patched release of the ReDoS CVE the override was guarding)"
