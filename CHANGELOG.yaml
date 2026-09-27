@@ -1,4 +1,14 @@
 releases:
+  - version: "1.6.1"
+    fixes:
+      - "A stopped Ollama server is finally explained instead of reported as the opaque 'Connection error.': the OpenAI SDK wraps every transport failure (ERR_CONNECTION_REFUSED included) into APIConnectionError with that default message, and the network-failure classifier did not know the wording, so the actionable hint prepared in 1.1.x never surfaced. The classifier (now shared in src/utils/network-errors.ts) also matches 'Request timed out.', which fixes chat, embeddings, indexing and the embedding-dimension probe alike - they now say 'Cannot reach Ollama at <url>' with the ollama serve / OLLAMA_ORIGINS / Test-connection steps"
+      - "Embeddings through a custom OpenAI-compatible endpoint (vLLM, LM Studio, llama.cpp, corporate proxy) got the same treatment: an unreachable server is described as 'Cannot reach the OpenAI-compatible endpoint at <url>. Make sure the server is running and the base URL in the plugin settings is correct.' HTTP-level failures (401/404/429) keep the server's own wording, and the 429 rate-limit path is unchanged"
+      - "Embedding-server failures at startup no longer live only in the developer console: the semantic search tab shows a 'Semantic search is unavailable' notice with the extracted cause and a Retry button (once per session for the automatic statistics load), and a failed manual vector-index initialization shows a notice with Retry that restarts the indexing"
+    other:
+      - "The error-notice layer (1.6.0) gained showErrorNoticeOnce(key, ...) for automatic background failures: the first occurrence is shown, repeats are only logged, and the standard Retry action resets the key so a user-triggered attempt always gets fresh feedback"
+      - "New i18n keys errors.semanticSearchUnavailable and errors.ragInitFailed added in sync across en/ru/zh-cn (the locale-completeness test enforces it)"
+      - "Unit tests: 137 total (16 new: the shared network-failure classifier, the exact SDK wordings seen in the field, once-per-session semantics); the Jest console output stays clean"
+      - "Lint ratchet: no regressions - the frozen debt stays at 1154 errors in 128 files; the two catch variables touched in the search view are typed unknown instead of implicit any"
   - version: "1.6.0"
     features:
       - "Actionable error notices: a unified error layer renders failures as styled notices (themed error title, explanation, monospace detail extracted from the caught value) with optional action buttons. Vault index rebuild/update failures now offer a one-click Retry instead of a bare 'failed' line; the JSON-storage migration failure shows the real reason. Full error objects still go to the logging facade (visible in the developer console, Debug mode for verbose output)"
