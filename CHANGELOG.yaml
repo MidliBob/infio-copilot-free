@@ -1,4 +1,14 @@
 releases:
+  - version: "1.5.5"
+    fixes:
+      - "ESLint had been crashing before evaluating a single rule since the pnpm 12 config move: the dependency overrides forced brace-expansion 2.x under minimatch 10, which expects the v5 API, so any brace glob (including the lint script's own 'src/**/*.{ts,tsx}') died with 'expand is not a function'. The brace-expansion override is removed - the only consumer in the tree is minimatch 10, which now resolves brace-expansion 5.0.12 (newer than every patched release of the ReDoS CVE the override was guarding)"
+      - "src/utils/icon.d.ts deleted: an orphaned duplicate of src/utils/icon.ts that TypeScript never includes in the compilation program (the real implementation shadows it), which made ESLint fail parsing with 'TSConfig does not include this file'"
+    other:
+      - "The lint gate is now a ratchet: the full type-aware scan found 1531 pre-existing errors in 152 files (mostly upstream style debt plus 1134 no-unsafe-* violations), frozen in eslint-baseline.json. 'pnpm lint:ratchet' (scripts/lint-ratchet.mjs) fails CI on any NEW violation, prints improvements and shrinks the baseline with --update; --batch=N runs chunks in child processes for low-memory machines. 'pnpm lint' still shows the raw red picture until the debt burns down"
+      - "CI now also runs on pushes to master (previously pull-request-only, so with direct pushes the gate never executed - which is why the broken lint went unnoticed for a week); duplicate runs are cancelled via concurrency"
+      - "MAINTAINING.md: the CI section rewritten for the ratchet workflow; the stale 'Roadmap (next releases)' section (dead Infio provider, 'more locales' - both long resolved differently) replaced with a pointer to ROADMAP.md"
+      - "ROADMAP.md synchronized with reality: a release-history table (0.8.7 -> 1.5.5, including the free/self-hosted pivot of 1.4.0-1.5.4), phases re-mapped (phase 0 done; phase 2 pass 2 -> 1.6.0 with fresh debt measurements; phase 3 -> 1.7.0; phase 4 -> 1.8.0; mobile parity -> 2.0.0), acceptance checklist updated"
+      - "No plugin behavior change; unit tests: 105 total, the Jest console output stays clean"
   - version: "1.5.4"
     features:
       - "The custom OpenAI-compatible endpoint is back: 1.5.3 dropped it together with the cloud providers, but unlike them it is not tied to any particular service - you supply the base URL and the API key yourself, so it covers local servers (vLLM, LM Studio, llama.cpp, LocalAI), corporate proxies and any other OpenAI-compatible backend; it can again be picked for chat, insights, autocomplete and embeddings"
