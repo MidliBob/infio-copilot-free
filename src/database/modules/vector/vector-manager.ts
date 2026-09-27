@@ -25,6 +25,7 @@ import { vectorTables } from '../../schema';
 
 import { VectorRepository } from './vector-repository';
 import { logger } from '../../../utils/logger'
+import { CircuitBreaker, CircuitOpenError, callWithBreaker } from '../../../utils/circuit-breaker'
 
 export class VectorManager {
 	private app: App
@@ -242,6 +243,9 @@ export class VectorManager {
 		},
 		updateProgress?: (indexProgress: IndexProgress) => void,
 	): Promise<void> {
+		// Connectivity circuit breaker: a dead embedding server must not be
+		// hammered once per chunk x retry - see utils/circuit-breaker.ts.
+		const breaker = new CircuitBreaker()
 		await resolveEmbeddingDimension(embeddingModel)
 		let filesToIndex: TFile[]
 		if (options.reindexAll) {
@@ -413,7 +417,7 @@ export class VectorManager {
 								}
 
 								const batchTexts = validBatchData.map(chunk => chunk.content)
-								const batchEmbeddings = await embeddingModel.getBatchEmbeddings(batchTexts)
+								const batchEmbeddings = await callWithBreaker(breaker, () => embeddingModel.getBatchEmbeddings(batchTexts))
 
 								// 合并embedding结果到chunk数据
 								for (let k = 0; k < validBatchData.length; k++) {
@@ -433,6 +437,7 @@ export class VectorManager {
 								startingDelay: 500,
 								timeMultiple: 1.5,
 								jitter: 'full',
+								retry: (error: unknown) => !(error instanceof CircuitOpenError),
 							},
 						)
 
@@ -469,7 +474,7 @@ export class VectorManager {
 												return
 											}
 
-											const embedding = await embeddingModel.getEmbedding(content)
+											const embedding = await callWithBreaker(breaker, () => embeddingModel.getEmbedding(content))
 											const embeddedChunk = {
 												path: chunk.path,
 												mtime: chunk.mtime,
@@ -484,15 +489,28 @@ export class VectorManager {
 											startingDelay: 1000,
 											timeMultiple: 2.0,
 											jitter: 'full',
+											retry: (error: unknown) => !(error instanceof CircuitOpenError),
 										},
 									)
 								} catch (error) {
+									if (error instanceof CircuitOpenError) {
+										throw error
+									}
 									logger.error('Error in embedding task:', error)
 								}
 							}),
 						)
 
-						await Promise.all(tasks)
+						// Fail fast: a tripped breaker (dead embedding server) aborts the whole
+						// operation with its actionable error. allSettled keeps the rejections of
+						// the remaining queued tasks from escaping as unhandled.
+						const settled = await Promise.allSettled(tasks)
+						for (const result of settled) {
+							if (result.status === 'rejected') {
+								const reason: unknown = result.reason
+								throw reason instanceof Error ? reason : new Error(String(reason))
+							}
+						}
 
 						// 第三步：立即存储
 						if (embeddedBatch.length > 0) {
@@ -551,6 +569,9 @@ export class VectorManager {
 		},
 		updateProgress?: (indexProgress: IndexProgress) => void,
 	): Promise<void> {
+		// Connectivity circuit breaker: a dead embedding server must not be
+		// hammered once per chunk x retry - see utils/circuit-breaker.ts.
+		const breaker = new CircuitBreaker()
 		await resolveEmbeddingDimension(embeddingModel)
 		let filesToIndex: TFile[]
 		if (options.reindexAll) {
@@ -733,7 +754,7 @@ export class VectorManager {
 								}
 
 								const batchTexts = validBatchData.map(chunk => chunk.content)
-								const batchEmbeddings = await embeddingModel.getBatchEmbeddings(batchTexts)
+								const batchEmbeddings = await callWithBreaker(breaker, () => embeddingModel.getBatchEmbeddings(batchTexts))
 
 								// 合并embedding结果到chunk数据
 								for (let k = 0; k < validBatchData.length; k++) {
@@ -753,6 +774,7 @@ export class VectorManager {
 								startingDelay: 1000,
 								timeMultiple: 2.0,
 								jitter: 'full',
+								retry: (error: unknown) => !(error instanceof CircuitOpenError),
 							},
 						)
 
@@ -789,7 +811,7 @@ export class VectorManager {
 												return
 											}
 
-											const embedding = await embeddingModel.getEmbedding(content)
+											const embedding = await callWithBreaker(breaker, () => embeddingModel.getEmbedding(content))
 											const embeddedChunk = {
 												path: chunk.path,
 												mtime: chunk.mtime,
@@ -804,15 +826,28 @@ export class VectorManager {
 											startingDelay: 1000,
 											timeMultiple: 2.0,
 											jitter: 'full',
+											retry: (error: unknown) => !(error instanceof CircuitOpenError),
 										},
 									)
 								} catch (error) {
+									if (error instanceof CircuitOpenError) {
+										throw error
+									}
 									logger.error('Error in embedding task:', error)
 								}
 							}),
 						)
 
-						await Promise.all(tasks)
+						// Fail fast: a tripped breaker (dead embedding server) aborts the whole
+						// operation with its actionable error. allSettled keeps the rejections of
+						// the remaining queued tasks from escaping as unhandled.
+						const settled = await Promise.allSettled(tasks)
+						for (const result of settled) {
+							if (result.status === 'rejected') {
+								const reason: unknown = result.reason
+								throw reason instanceof Error ? reason : new Error(String(reason))
+							}
+						}
 
 						// 第三步：立即存储
 						if (embeddedBatch.length > 0) {

@@ -2,6 +2,10 @@ import { Notice } from 'obsidian'
 
 import { t } from '../lang/helpers'
 import { logger } from './logger'
+import { extractErrorMessage } from './network-errors'
+
+// Re-exported so existing callers keep importing it from the error layer.
+export { extractErrorMessage }
 
 /**
  * Unified "error -> actionable notice" layer (ROADMAP phase 2, item 5).
@@ -37,30 +41,6 @@ export type ErrorNoticeOptions = {
 
 const DETAIL_MAX_LENGTH = 300
 const DEFAULT_TIMEOUT = 10000
-
-/**
- * Best-effort human-readable message from a caught value:
- * Error.message, plain strings, `{ message }`-shaped objects, String()
- * for primitives, empty string for null/undefined.
- */
-export function extractErrorMessage(error: unknown): string {
-	if (error instanceof Error) {
-		return error.message
-	}
-	if (typeof error === 'string') {
-		return error
-	}
-	if (typeof error === 'object' && error !== null && 'message' in error) {
-		const message: unknown = error.message
-		if (typeof message === 'string') {
-			return message
-		}
-	}
-	if (error === undefined || error === null) {
-		return ''
-	}
-	return String(error)
-}
 
 /** Standard "Retry" action with the localized label. */
 export function retryAction(onRetry: () => void): ErrorNoticeAction {

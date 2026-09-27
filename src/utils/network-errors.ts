@@ -24,6 +24,7 @@ const NETWORK_FAILURE_PATTERNS = [
 	'timeout',
 	'timed out', // OpenAI SDK APIConnectionTimeoutError: "Request timed out."
 	'terminated',
+	'cannot reach', // our own wording: describeOllamaNetworkError / describeEndpointNetworkError
 ]
 
 export function isNetworkFailureMessage(message: string): boolean {
@@ -70,4 +71,37 @@ export function describeEndpointNetworkError(
 		`Cannot reach the ${serverLabel} at ${baseUrl || '(no address set)'}. ` +
 		'Make sure the server is running and the base URL in the plugin settings is correct.'
 	)
+}
+
+/** True when the caught value looks like a transport-level failure. */
+export function isNetworkFailure(error: unknown): boolean {
+	if (extractNetworkErrorStatus(error) !== undefined) {
+		return false
+	}
+	const message = error instanceof Error ? error.message : String(error ?? '')
+	return isNetworkFailureMessage(message)
+}
+
+/**
+ * Best-effort human-readable message from a caught value:
+ * Error.message, plain strings, `{ message }`-shaped objects, String()
+ * for primitives, empty string for null/undefined.
+ */
+export function extractErrorMessage(error: unknown): string {
+	if (error instanceof Error) {
+		return error.message
+	}
+	if (typeof error === 'string') {
+		return error
+	}
+	if (typeof error === 'object' && error !== null && 'message' in error) {
+		const message: unknown = error.message
+		if (typeof message === 'string') {
+			return message
+		}
+	}
+	if (error === undefined || error === null) {
+		return ''
+	}
+	return String(error)
 }

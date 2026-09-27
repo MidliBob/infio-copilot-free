@@ -1,6 +1,8 @@
 import {
 	describeEndpointNetworkError,
+	extractErrorMessage,
 	extractNetworkErrorStatus,
+	isNetworkFailure,
 	isNetworkFailureMessage,
 } from './network-errors'
 
@@ -71,5 +73,50 @@ describe('describeEndpointNetworkError', () => {
 	it('returns null for non-network errors so callers rethrow the original', () => {
 		expect(describeEndpointNetworkError(new Error('model "foo" not found'), url, label)).toBeNull()
 		expect(describeEndpointNetworkError(undefined, url, label)).toBeNull()
+	})
+})
+
+describe('isNetworkFailure', () => {
+	it('is true for transport-level errors without an HTTP status', () => {
+		expect(isNetworkFailure(new Error('Connection error.'))).toBe(true)
+		expect(isNetworkFailure(new TypeError('Failed to fetch'))).toBe(true)
+		expect(isNetworkFailure('ECONNREFUSED')).toBe(true)
+	})
+
+	it('is true for our own actionable wording, so wrapped errors still trip breakers', () => {
+		const wrapped = new Error(
+			'Cannot reach Ollama at http://localhost:11434. 1) make sure Ollama is running',
+		)
+		expect(isNetworkFailure(wrapped)).toBe(true)
+	})
+
+	it('is false when the server answered, whatever it answered', () => {
+		expect(isNetworkFailure({ status: 500, message: 'Connection error.' })).toBe(false)
+		expect(isNetworkFailure({ status: 429, message: 'rate limit' })).toBe(false)
+		expect(isNetworkFailure({ status: 403, message: 'forbidden' })).toBe(false)
+	})
+
+	it('is false for application-level errors and empty values', () => {
+		expect(isNetworkFailure(new Error('model "foo" not found'))).toBe(false)
+		expect(isNetworkFailure(undefined)).toBe(false)
+		expect(isNetworkFailure(null)).toBe(false)
+	})
+})
+
+describe('extractErrorMessage', () => {
+	it('prefers Error.message and string values', () => {
+		expect(extractErrorMessage(new Error('boom'))).toBe('boom')
+		expect(extractErrorMessage('plain')).toBe('plain')
+	})
+
+	it('reads a string message off message-shaped objects', () => {
+		expect(extractErrorMessage({ message: 'shaped' })).toBe('shaped')
+		expect(extractErrorMessage({ message: 42 })).toBe('[object Object]')
+	})
+
+	it('falls back to String() and empty string', () => {
+		expect(extractErrorMessage(7)).toBe('7')
+		expect(extractErrorMessage(null)).toBe('')
+		expect(extractErrorMessage(undefined)).toBe('')
 	})
 })
