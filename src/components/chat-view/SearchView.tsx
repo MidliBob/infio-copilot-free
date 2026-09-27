@@ -12,6 +12,12 @@ import { WorkspaceManager } from '../../database/json/workspace/WorkspaceManager
 import { SelectVector } from '../../database/schema'
 import { t } from '../../lang/helpers'
 import { Mentionable } from '../../types/mentionable'
+import {
+	resetShownErrorNotice,
+	retryAction,
+	showErrorNotice,
+	showErrorNoticeOnce,
+} from '../../utils/error-notice'
 import { getFilesWithTag } from '../../utils/glob-utils'
 import { openMarkdownFile } from '../../utils/obsidian'
 
@@ -255,8 +261,18 @@ const SearchView = () => {
 			const stats = await ragEngine.getWorkspaceStatistics(currentWorkspace)
 			setStatisticsInfo(stats)
 
-		} catch (error) {
-			logger.error('Failed to load statistics:', error)
+		} catch (error: unknown) {
+			showErrorNoticeOnce('search-statistics', {
+				title: t('errors.semanticSearchUnavailable'),
+				error,
+				logMessage: 'Failed to load statistics:',
+				actions: [
+					retryAction(() => {
+						resetShownErrorNotice('search-statistics')
+						void loadStatistics()
+					}),
+				],
+			})
 			setStatisticsInfo({ totalFiles: 0, totalChunks: 0 })
 		} finally {
 			setIsLoadingStats(false)
@@ -310,8 +326,17 @@ const SearchView = () => {
 				setRAGInitSuccess({ show: false })
 			}, 5000)
 
-		} catch (error) {
-			logger.error('Workspace RAG vector initialization failed:', error)
+		} catch (error: unknown) {
+			showErrorNotice({
+				title: t('errors.ragInitFailed'),
+				error,
+				logMessage: 'Workspace RAG vector initialization failed:',
+				actions: [
+					retryAction(() => {
+						void initializeWorkspaceRAG()
+					}),
+				],
+			})
 			setRAGInitSuccess({ show: false })
 		} finally {
 			setIsInitializingRAG(false)

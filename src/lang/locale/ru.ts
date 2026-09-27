@@ -510,7 +510,9 @@ export default {
 		"reloadingInfio": "Перезагрузка «Infio Copilot Free» из-за миграции"
 	},
 	"errors": {
-		"retry": "Повторить"
+		"retry": "Повторить",
+		"semanticSearchUnavailable": "Семантический поиск недоступен",
+		"ragInitFailed": "Не удалось инициализировать векторный индекс"
 	},
 	"applyView": {
 		"applyingFile": "Применение: {{file}}",

@@ -31,7 +31,14 @@ jest.mock('obsidian', () => {
 	}
 })
 
-import { extractErrorMessage, retryAction, showErrorNotice } from './error-notice'
+import {
+	extractErrorMessage,
+	resetAllShownErrorNotices,
+	resetShownErrorNotice,
+	retryAction,
+	showErrorNotice,
+	showErrorNoticeOnce,
+} from './error-notice'
 import { logger } from './logger'
 
 jest.mock('./logger')
@@ -58,6 +65,7 @@ function textOf(fragment: DocumentFragment, selector: string): string | null {
 
 beforeEach(() => {
 	mockCreatedNotices.length = 0
+	resetAllShownErrorNotices()
 	jest.clearAllMocks()
 })
 
@@ -161,5 +169,49 @@ describe('retryAction', () => {
 	it('uses the localized retry label', () => {
 		const action = retryAction(jest.fn())
 		expect(action.label).toBe('Retry') // moment.locale() is mocked to 'en'
+	})
+})
+
+describe('showErrorNoticeOnce', () => {
+	it('shows the first notice and suppresses repeats for the same key', () => {
+		const shown = showErrorNoticeOnce('embedding-down', {
+			title: 'Semantic search is unavailable',
+			error: new Error('Cannot reach Ollama'),
+		})
+		expect(shown).not.toBeNull()
+		expect(mockCreatedNotices.length).toBe(1)
+
+		const suppressed = showErrorNoticeOnce('embedding-down', {
+			title: 'Semantic search is unavailable',
+			error: new Error('Cannot reach Ollama'),
+		})
+		expect(suppressed).toBeNull()
+		expect(mockCreatedNotices.length).toBe(1)
+	})
+
+	it('still logs every suppressed occurrence', () => {
+		showErrorNoticeOnce('embedding-down', { title: 'Failed', error: new Error('boom') })
+		showErrorNoticeOnce('embedding-down', { title: 'Failed', error: new Error('boom') })
+		expect(jest.mocked(logger.error)).toHaveBeenCalledTimes(2)
+	})
+
+	it('tracks different keys independently', () => {
+		showErrorNoticeOnce('a', { title: 'First' })
+		showErrorNoticeOnce('b', { title: 'Second' })
+		expect(mockCreatedNotices.length).toBe(2)
+	})
+
+	it('resetShownErrorNotice lets the user-triggered retry surface a new failure', () => {
+		showErrorNoticeOnce('embedding-down', { title: 'Failed' })
+		resetShownErrorNotice('embedding-down')
+		showErrorNoticeOnce('embedding-down', { title: 'Failed' })
+		expect(mockCreatedNotices.length).toBe(2)
+	})
+
+	it('resetAllShownErrorNotices clears every key', () => {
+		showErrorNoticeOnce('a', { title: 'First' })
+		resetAllShownErrorNotices()
+		showErrorNoticeOnce('a', { title: 'First' })
+		expect(mockCreatedNotices.length).toBe(2)
 	})
 })

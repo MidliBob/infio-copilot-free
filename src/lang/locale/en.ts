@@ -265,6 +265,8 @@ export default {
 	},
 	errors: {
 		retry: 'Retry',
+		semanticSearchUnavailable: 'Semantic search is unavailable',
+		ragInitFailed: 'Vector index initialization failed',
 	},
 	applyView: {
 		applyingFile: 'Applying: {{file}}',
