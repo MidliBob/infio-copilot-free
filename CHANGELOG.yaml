@@ -1,4 +1,9 @@
 releases:
+  - version: "1.6.3"
+    fixes:
+      - "Error notices rendered as empty black pills: Obsidian's Notice ingests a DocumentFragment at construction time (its nodes are moved into the notice element), but the error layer passed the fragment in before populating it - and appended the action buttons even later, so neither the text nor the Retry button ever reached the DOM. The field symptom after 1.6.2: the breaker aborted indexing cleanly with the full actionable message in the console, while the notice meant to show it was blank. The fragment is now fully populated (title, explanation, detail, action row) before new Notice(...)"
+    other:
+      - "The Jest Notice mock is now faithful to Obsidian (it moves the fragment's nodes into a message element inside the constructor) and every assertion reads through that element, so this class of ordering bug fails the suite: with the old assembly order four tests go red, with the fix all 153 pass"
   - version: "1.6.2"
     fixes:
       - "Indexing a vault against a stopped embedding server no longer hammers it and no longer pretends to succeed: every chunk used to burn its full retry budget (3 backoff attempts x up to 3 SDK HTTP attempts each - hundreds of pointless connection-refused requests on a real vault), and because per-chunk errors were swallowed, the vault/workspace index 'completed' with zero vectors and only a flooded console. A circuit breaker (trips after 3 consecutive connection-level failures, 30 s half-open cooldown) now aborts the whole operation within seconds with the actionable provider message from 1.6.1, which the error-notice layer surfaces with a Retry button"
