@@ -1,4 +1,14 @@
 releases:
+  - version: "1.6.4"
+    fixes:
+      - "Autocomplete leaked an unhandled rejection on every keystroke while the chat endpoint was down: the autocomplete LLM client declared a neverthrow Result contract but had no catch, so the thrown transport error escaped past fetchPredictions/predict into 'Uncaught (in promise)'. The client now delegates to a breaker-backed helper that never throws, restoring the declared contract by construction"
+      - "Background chat-API consumers stop hammering a dead server: autocomplete (per keystroke) and workspace insights (per file and folder across the whole vault, each with its own retry budget) now share a session-scoped circuit breaker - three consecutive connection failures open it for 30 s and no HTTP request is attempted while open; any server answer or success closes it. Insights initialization aborts as a whole instead of warning once per file, and its failure surfaces as a once-per-session notice with the extracted 'Cannot reach ...' cause"
+      - "Autocomplete fails silently (debug log only) on transport errors instead of stacking a 'Something went wrong' notice per keystroke; non-transport errors keep the notice"
+    other:
+      - "New src/utils/llm-circuit.ts: the session breaker plus streamChatWithBreaker(), the single accumulation+breaker helper both chat clients (autocomplete and transformations) delegate to; user-initiated chat sends intentionally bypass the breaker and surface their own errors, while a success there closes the circuit"
+      - "New i18n key errors.insightsInitFailed added in sync across en/ru/zh-cn"
+      - "Unit tests: 158 total (5 new for the breaker-backed chat helper: accumulation, err-instead-of-throw, open-circuit skips the network, application errors never trip, closing after a successful probe); the Jest console output stays clean"
+      - "Lint ratchet: no regressions - the touched debt-free files stay at zero, total debt unchanged at 1154 errors in 128 files"
   - version: "1.6.3"
     fixes:
       - "Error notices rendered as empty black pills: Obsidian's Notice ingests a DocumentFragment at construction time (its nodes are moved into the notice element), but the error layer passed the fragment in before populating it - and appended the action buttons even later, so neither the text nor the Retry button ever reached the DOM. The field symptom after 1.6.2: the breaker aborted indexing cleanly with the full actionable message in the console, while the notice meant to show it was blank. The fragment is now fully populated (title, explanation, detail, action row) before new Notice(...)"
