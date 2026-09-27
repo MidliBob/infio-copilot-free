@@ -125,7 +125,6 @@ export function showErrorNotice(options: ErrorNoticeOptions): Notice {
 	}
 
 	const hasActions = actions !== undefined && actions.length > 0
-	const notice = new Notice(fragment, timeout ?? (hasActions ? 0 : DEFAULT_TIMEOUT))
 
 	if (actions !== undefined && actions.length > 0) {
 		const actionsEl = document.createElement('div')
@@ -143,6 +142,11 @@ export function showErrorNotice(options: ErrorNoticeOptions): Notice {
 		container.appendChild(actionsEl)
 	}
 
+	// Obsidian's Notice ingests a DocumentFragment at construction time
+	// (its nodes are moved into the notice element), so the fragment must be
+	// fully populated BEFORE the constructor runs - a notice built around an
+	// empty fragment renders as an empty black pill (seen in the field).
 	fragment.appendChild(container)
+	const notice = new Notice(fragment, timeout ?? (hasActions ? 0 : DEFAULT_TIMEOUT))
 	return notice
 }

@@ -7,7 +7,8 @@
 // (jest.mock factories may only reference out-of-scope variables whose name
 // starts with "mock".)
 type MockNoticeRecord = {
-	message: unknown
+	/** Obsidian moves the fragment's nodes into this element AT CONSTRUCTION. */
+	messageEl: HTMLElement
 	duration: unknown
 	hide: jest.Mock
 	setMessage: jest.Mock
@@ -16,8 +17,16 @@ const mockCreatedNotices: MockNoticeRecord[] = []
 
 jest.mock('obsidian', () => {
 	const Notice = jest.fn((message?: unknown, duration?: unknown) => {
+		// Faithful to Obsidian: a DocumentFragment is consumed (its nodes are
+		// moved) when the Notice is constructed, not later.
+		const messageEl = document.createElement('div')
+		if (typeof message === 'string') {
+			messageEl.textContent = message
+		} else if (message instanceof DocumentFragment) {
+			messageEl.append(message)
+		}
 		const instance: MockNoticeRecord = {
-			message,
+			messageEl,
 			duration,
 			hide: jest.fn(),
 			setMessage: jest.fn(),
@@ -51,16 +60,8 @@ function lastNotice(): MockNoticeRecord {
 	return record
 }
 
-function noticeFragment(record: MockNoticeRecord): DocumentFragment {
-	const message = record.message
-	if (!(message instanceof DocumentFragment)) {
-		throw new Error('Notice was not constructed with a DocumentFragment')
-	}
-	return message
-}
-
-function textOf(fragment: DocumentFragment, selector: string): string | null {
-	return fragment.querySelector(selector)?.textContent ?? null
+function textOf(root: HTMLElement, selector: string): string | null {
+	return root.querySelector(selector)?.textContent ?? null
 }
 
 beforeEach(() => {
@@ -94,14 +95,17 @@ describe('extractErrorMessage', () => {
 })
 
 describe('showErrorNotice', () => {
-	it('renders title, message and error detail into the notice fragment', () => {
+	it('renders title, message and error detail into the notice element', () => {
+		// regression guard for the field bug: Obsidian consumes the
+		// DocumentFragment when the Notice is constructed, so content must be
+		// in place before that - an empty fragment renders an empty notice
 		showErrorNotice({
 			title: 'Index rebuild failed',
 			message: 'The vault index could not be rebuilt.',
 			error: new Error('PGlite: out of memory'),
 		})
 
-		const fragment = noticeFragment(lastNotice())
+		const fragment = lastNotice().messageEl
 		expect(textOf(fragment, '.icf-error-notice-title')).toBe('Index rebuild failed')
 		expect(textOf(fragment, '.icf-error-notice-message')).toBe('The vault index could not be rebuilt.')
 		expect(textOf(fragment, '.icf-error-notice-detail')).toBe('PGlite: out of memory')
@@ -110,7 +114,7 @@ describe('showErrorNotice', () => {
 	it('omits empty sections', () => {
 		showErrorNotice({ title: 'Failed' })
 
-		const fragment = noticeFragment(lastNotice())
+		const fragment = lastNotice().messageEl
 		expect(textOf(fragment, '.icf-error-notice-title')).toBe('Failed')
 		expect(fragment.querySelector('.icf-error-notice-message')).toBeNull()
 		expect(fragment.querySelector('.icf-error-notice-detail')).toBeNull()
@@ -120,7 +124,7 @@ describe('showErrorNotice', () => {
 	it('truncates very long error details', () => {
 		showErrorNotice({ title: 'Failed', error: new Error('x'.repeat(400)) })
 
-		const detail = textOf(noticeFragment(lastNotice()), '.icf-error-notice-detail') ?? ''
+		const detail = textOf(lastNotice().messageEl, '.icf-error-notice-detail') ?? ''
 		expect(detail.length).toBe(301) // 300 chars + ellipsis
 		expect(detail.endsWith('…')).toBe(true)
 	})
@@ -150,7 +154,7 @@ describe('showErrorNotice', () => {
 		// notices with actions stay until dismissed
 		expect(record.duration).toBe(0)
 
-		const button = noticeFragment(record).querySelector('.icf-error-notice-action')
+		const button = record.messageEl.querySelector('.icf-error-notice-action')
 		expect(button).not.toBeNull()
 		expect(button?.textContent).toBe('Do it again')
 
