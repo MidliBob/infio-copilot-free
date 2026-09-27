@@ -1,4 +1,11 @@
 releases:
+  - version: "1.5.4"
+    features:
+      - "The custom OpenAI-compatible endpoint is back: 1.5.3 dropped it together with the cloud providers, but unlike them it is not tied to any particular service - you supply the base URL and the API key yourself, so it covers local servers (vLLM, LM Studio, llama.cpp, LocalAI), corporate proxies and any other OpenAI-compatible backend; it can again be picked for chat, insights, autocomplete and embeddings"
+    other:
+      - "The 0.8 -> 0.9 migration no longer counts OpenAICompatible among the removed providers, so a stored custom endpoint survives the upgrade; the settings schema version stays 0.9 and desktop/mobile schemas stay in sync. If you already launched 1.5.3, that release deleted the card - fill in the base URL and the key once more, or restore data.json from a backup"
+      - "Unit tests: 105 total (1 added for the custom-endpoint migration path); the Jest console output stays clean; the bundle grows by 2 KB"
+      - "README (English, Russian and Simplified Chinese) now lists the providers the plugin actually ships - the clouds removed in 1.5.3 were still advertised in the feature list"
   - version: "1.5.3"
     features:
       - "Seven cloud LLM providers removed - OpenAI, Anthropic, Google (Gemini), Groq, Grok, OpenRouter and the custom OpenAI-compatible endpoint: none of these clouds is reachable or used by the maintainer. The plugin now ships six providers: Ollama (the primary local server), Deepseek, SiliconFlow, AlibabaQwen, Moonshot and LocalProvider (local transformers.js embeddings)"
