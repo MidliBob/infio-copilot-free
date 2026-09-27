@@ -102,28 +102,27 @@ Planned. Requirements and steps:
 
 ## CI
 
-- `ci.yml` runs on pull requests into `master`: type-check, lint
-  (`continue-on-error`, legacy style debt), jest tests.
-- Lint debt: `pnpm run lint` reports pre-existing issues from upstream; fix
-  opportunistically, do not block features on it.
+- `ci.yml` runs on pull requests into `master` **and on pushes to `master`**:
+  type-check, lint ratchet, jest tests.
+- Lint gate = **ratchet** (`pnpm run lint:ratchet`,
+  `scripts/lint-ratchet.mjs`): the pre-existing upstream style debt is frozen
+  in `eslint-baseline.json` (per file, per rule; error severity only, with the
+  three disabled `no-unsafe-*` rules force-tracked), and any *new* violation
+  fails CI. `pnpm run lint` still shows the raw ESLint picture (it is red
+  until the debt is burned down — that is expected).
+- Burning down the debt: fix violations in a file/module, then shrink the
+  baseline in the same commit: `node scripts/lint-ratchet.mjs --update`
+  (the script prints the improvements it saw and reminds you). When a rule
+  reaches zero across the baseline, enable it in `.eslintrc.js` and delete it
+  from the forced list in `scripts/lint-ratchet.mjs`.
+- Low-memory machines: a single type-aware ESLint process over the whole
+  `src/` needs several GB of heap. Use `pnpm run lint:ratchet -- --batch=14`
+  to lint in chunks (slower, but each process stays under ~1 GB).
 
-## Roadmap (next releases)
+## Roadmap
 
-- **Ollama model lists**: fetch `GET {baseUrl}/api/tags` via Obsidian
-  `requestUrl` (avoids CORS) and populate the model pickers; same for
-  OpenAI-compatible `/v1/models`.
-- **Ollama embeddings**: verify/fix endpoint handling
-  (`/v1/embeddings` vs `/api/embed`, upstream issue #148).
-- **Local LLM calls via `requestUrl`** to remove the `OLLAMA_ORIGINS`
-  requirement for Ollama users.
-- **Drop the dead Infio cloud provider** (`infioProvider`, `use-infio.ts`,
-  `INFIO_*` constants, ProUpgradeModal) with a settings-migration note.
-- **Refresh built-in model catalogs** (Claude 4.x, GPT-5, Gemini 2.5, …).
-- **Rename remaining `Infio*` internals** (`InfioSettings` type, file names)
-  for a consistent codebase.
-- **Mobile pass**: the mobile build skips the database; audit feature
-  degradation and subscription leftovers.
-- More locales (the loader-free i18n makes additions cheap).
+See [ROADMAP.md](ROADMAP.md) — it is the single source of truth for release
+planning (this section used to duplicate it and rotted).
 
 ## History pointer
 

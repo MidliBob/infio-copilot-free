@@ -3,6 +3,12 @@ name: CI
 on:
   pull_request:
     branches: [master]
+  push:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check:
@@ -22,7 +28,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
       - name: Type check
         run: pnpm run type:check
-      - name: Lint check
-        run: pnpm run lint
+      - name: Lint ratchet (no new ESLint violations)
+        run: pnpm run lint:ratchet
       - name: Test
         run: pnpm test

@@ -1,0 +1,670 @@
+{
+	"$comment": "Frozen ESLint error debt per file/rule. Regenerate ONLY with: node scripts/lint-ratchet.mjs --update. See scripts/lint-ratchet.mjs header and MAINTAINING.md.",
+	"files": {
+		"src/ChatView.tsx": {
+			"@typescript-eslint/ban-ts-comment": 5,
+			"@typescript-eslint/no-unsafe-assignment": 4,
+			"@typescript-eslint/no-unsafe-call": 6,
+			"@typescript-eslint/no-unsafe-return": 6,
+			"@typescript-eslint/prefer-ts-expect-error": 4
+		},
+		"src/JsonFileView.tsx": {
+			"@typescript-eslint/no-unsafe-argument": 1
+		},
+		"src/components/apply-view/ApplyViewRoot.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 4,
+			"@typescript-eslint/no-unsafe-call": 3,
+			"@typescript-eslint/no-unsafe-member-access": 3
+		},
+		"src/components/chat-view/ChatView.tsx": {
+			"@typescript-eslint/consistent-type-assertions": 3,
+			"@typescript-eslint/no-explicit-any": 1,
+			"@typescript-eslint/no-unsafe-argument": 15,
+			"@typescript-eslint/no-unsafe-assignment": 13,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 3,
+			"sort-imports": 1
+		},
+		"src/components/chat-view/CommandsView.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 1
+		},
+		"src/components/chat-view/CustomModeView.tsx": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-unsafe-assignment": 3
+		},
+		"src/components/chat-view/FileReadResults.tsx": {
+			"no-inline-styles/no-inline-styles": 2
+		},
+		"src/components/chat-view/HelloInfo.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 6
+		},
+		"src/components/chat-view/InsightView.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 9,
+			"@typescript-eslint/no-unsafe-call": 1
+		},
+		"src/components/chat-view/Markdown/MarkdownApplyDiffBlock.tsx": {
+			"no-inline-styles/no-inline-styles": 1
+		},
+		"src/components/chat-view/Markdown/MarkdownEditFileBlock.tsx": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-member-access": 2,
+			"@typescript-eslint/prefer-ts-expect-error": 1
+		},
+		"src/components/chat-view/Markdown/MarkdownListFilesBlock.tsx": {
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 1
+		},
+		"src/components/chat-view/Markdown/MarkdownManageFilesBlock.tsx": {
+			"@typescript-eslint/no-unsafe-return": 6
+		},
+		"src/components/chat-view/Markdown/MarkdownMatchSearchFilesBlock.tsx": {
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-member-access": 2
+		},
+		"src/components/chat-view/Markdown/MarkdownReadFileBlock.tsx": {
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 1
+		},
+		"src/components/chat-view/Markdown/MarkdownRegexSearchFilesBlock.tsx": {
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-member-access": 2
+		},
+		"src/components/chat-view/Markdown/MarkdownSearchAndReplace.tsx": {
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 1
+		},
+		"src/components/chat-view/Markdown/MarkdownSearchWebBlock.tsx": {
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 1,
+			"no-inline-styles/no-inline-styles": 1
+		},
+		"src/components/chat-view/Markdown/MarkdownSemanticSearchFilesBlock.tsx": {
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-member-access": 2
+		},
+		"src/components/chat-view/Markdown/MarkdownSwitchModeBlock.tsx": {
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 1,
+			"no-inline-styles/no-inline-styles": 1
+		},
+		"src/components/chat-view/Markdown/MarkdownWithIcon.tsx": {
+			"@typescript-eslint/no-unsafe-return": 2,
+			"no-inline-styles/no-inline-styles": 1
+		},
+		"src/components/chat-view/Markdown/MermaidBlock.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 2,
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/components/chat-view/McpHubView.tsx": {
+			"@typescript-eslint/consistent-type-assertions": 2,
+			"@typescript-eslint/no-unsafe-argument": 3,
+			"@typescript-eslint/no-unsafe-assignment": 7,
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-member-access": 5
+		},
+		"src/components/chat-view/QueryProgress.tsx": {
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-member-access": 2
+		},
+		"src/components/chat-view/SearchView.tsx": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-explicit-any": 1,
+			"@typescript-eslint/no-unsafe-argument": 1,
+			"@typescript-eslint/no-unsafe-assignment": 2
+		},
+		"src/components/chat-view/SimilaritySearchResults.tsx": {
+			"no-inline-styles/no-inline-styles": 2
+		},
+		"src/components/chat-view/UserMessageView.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 1
+		},
+		"src/components/chat-view/WebsiteReadResults.tsx": {
+			"no-inline-styles/no-inline-styles": 2
+		},
+		"src/components/chat-view/WorkspaceEditModal.tsx": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-unsafe-assignment": 2,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/prefer-ts-expect-error": 1
+		},
+		"src/components/chat-view/WorkspaceSelect.tsx": {
+			"@typescript-eslint/no-unsafe-argument": 1
+		},
+		"src/components/chat-view/WorkspaceView.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 3,
+			"@typescript-eslint/no-unsafe-return": 5
+		},
+		"src/components/chat-view/chat-input/LexicalContentEditable.tsx": {
+			"no-inline-styles/no-inline-styles": 1
+		},
+		"src/components/chat-view/chat-input/ModelSelect.tsx": {
+			"@typescript-eslint/consistent-type-assertions": 3,
+			"@typescript-eslint/no-unnecessary-type-assertion": 1
+		},
+		"src/components/chat-view/chat-input/SearchInputWithActions.tsx": {
+			"@typescript-eslint/no-explicit-any": 1,
+			"@typescript-eslint/no-unsafe-member-access": 3
+		},
+		"src/components/chat-view/chat-input/SearchModeSelect.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 6,
+			"sort-imports": 1
+		},
+		"src/components/chat-view/chat-input/plugins/command/CommandPlugin.tsx": {
+			"no-inline-styles/no-inline-styles": 1
+		},
+		"src/components/chat-view/chat-input/plugins/command/CreateCommandPopoverPlugin.tsx": {
+			"no-inline-styles/no-inline-styles": 1
+		},
+		"src/components/chat-view/chat-input/plugins/mention/AutoLinkMentionPlugin.tsx": {
+			"@typescript-eslint/no-unsafe-argument": 1,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 1
+		},
+		"src/components/chat-view/chat-input/plugins/mention/MentionNode.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-unsafe-assignment": 1
+		},
+		"src/components/chat-view/chat-input/plugins/mention/MentionPlugin.tsx": {
+			"no-inline-styles/no-inline-styles": 1
+		},
+		"src/components/chat-view/chat-input/plugins/on-mutation/OnMutationPlugin.tsx": {
+			"@typescript-eslint/consistent-type-assertions": 2
+		},
+		"src/components/chat-view/chat-input/plugins/shared/LexicalMenu.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-unsafe-assignment": 1,
+			"@typescript-eslint/no-unsafe-return": 1
+		},
+		"src/components/chat-view/chat-input/plugins/typeahead-menu/LexicalTypeaheadMenuPlugin.tsx": {
+			"@typescript-eslint/no-unsafe-return": 1
+		},
+		"src/components/chat-view/chat-input/utils/editor-state-to-plain-text.test.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1
+		},
+		"src/components/chat-view/chat-input/utils/editor-state-to-plain-text.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1
+		},
+		"src/components/inline-edit/InlineEdit.tsx": {
+			"@typescript-eslint/consistent-type-assertions": 3,
+			"@typescript-eslint/no-unsafe-argument": 4,
+			"@typescript-eslint/no-unsafe-assignment": 1,
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/components/modals/ImageSelectorModal.tsx": {
+			"@typescript-eslint/prefer-regexp-exec": 1,
+			"no-inline-styles/no-inline-styles": 1
+		},
+		"src/core/autocomplete/context-detection.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-unsafe-enum-comparison": 1
+		},
+		"src/core/autocomplete/post-processors/remove-overlap.ts": {
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/core/autocomplete/pre-processors/data-view-remover.ts": {
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/core/autocomplete/pre-processors/length-limiter.ts": {
+			"@typescript-eslint/no-unused-vars": 3
+		},
+		"src/core/autocomplete/states/disabled-file-specific-state.ts": {
+			"@typescript-eslint/no-unused-vars": 2
+		},
+		"src/core/autocomplete/states/disabled-manual-state.ts": {
+			"@typescript-eslint/no-unused-vars": 2
+		},
+		"src/core/autocomplete/states/init-state.ts": {
+			"@typescript-eslint/no-unused-vars": 3
+		},
+		"src/core/autocomplete/states/state.ts": {
+			"@typescript-eslint/no-unused-vars": 4
+		},
+		"src/core/autocomplete/utils.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-member-access": 2
+		},
+		"src/core/diff/DiffStrategy.ts": {
+			"@typescript-eslint/no-unused-vars": 2
+		},
+		"src/core/diff/insert-groups.ts": {
+			"prefer-const": 1
+		},
+		"src/core/diff/strategies/multi-search-replace.ts": {
+			"@typescript-eslint/no-unused-vars": 3
+		},
+		"src/core/diff/strategies/new-unified/edit-strategies.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/prefer-regexp-exec": 1
+		},
+		"src/core/diff/strategies/new-unified/search-strategies.ts": {
+			"@typescript-eslint/no-unsafe-assignment": 1,
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-return": 1
+		},
+		"src/core/diff/strategies/search-replace.ts": {
+			"@typescript-eslint/no-unused-vars": 2,
+			"@typescript-eslint/prefer-regexp-exec": 4,
+			"prefer-const": 1
+		},
+		"src/core/diff/strategies/unified.ts": {
+			"@typescript-eslint/no-unsafe-member-access": 1
+		},
+		"src/core/file-search/match/coreplugin-match.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/consistent-type-assertions": 3,
+			"@typescript-eslint/no-explicit-any": 3,
+			"@typescript-eslint/no-unnecessary-type-assertion": 1,
+			"@typescript-eslint/no-unsafe-argument": 2,
+			"@typescript-eslint/no-unsafe-assignment": 3,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 5,
+			"@typescript-eslint/prefer-ts-expect-error": 1,
+			"sort-imports": 1
+		},
+		"src/core/file-search/match/omnisearch-match.ts": {
+			"sort-imports": 1
+		},
+		"src/core/file-search/regex/ripgrep-regex.ts": {
+			"@typescript-eslint/consistent-type-assertions": 2,
+			"@typescript-eslint/no-non-null-assertion": 3,
+			"@typescript-eslint/no-unnecessary-type-assertion": 3,
+			"@typescript-eslint/no-unsafe-argument": 2,
+			"@typescript-eslint/no-unsafe-assignment": 6,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 9,
+			"sort-imports": 1
+		},
+		"src/core/llm/ollama.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/no-unsafe-assignment": 1
+		},
+		"src/core/llm/openai-compatible.ts": {
+			"@typescript-eslint/consistent-type-assertions": 2
+		},
+		"src/core/llm/openai-message-adapter.ts": {
+			"@typescript-eslint/consistent-type-assertions": 4
+		},
+		"src/core/mcp/McpHub.ts": {
+			"@typescript-eslint/consistent-type-assertions": 2,
+			"@typescript-eslint/no-dynamic-delete": 1,
+			"@typescript-eslint/no-explicit-any": 1,
+			"@typescript-eslint/no-unsafe-argument": 5,
+			"@typescript-eslint/no-unsafe-assignment": 20,
+			"@typescript-eslint/no-unsafe-call": 4,
+			"@typescript-eslint/no-unsafe-member-access": 47
+		},
+		"src/core/mcp/McpServerManager.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/core/mcp/type.ts": {
+			"@typescript-eslint/no-explicit-any": 2
+		},
+		"src/core/prompts/sections/custom-system-prompt.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/consistent-type-assertions": 2,
+			"@typescript-eslint/no-unsafe-argument": 1
+		},
+		"src/core/prompts/sections/mcp-servers.ts": {
+			"@typescript-eslint/no-unsafe-assignment": 1,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 4
+		},
+		"src/core/prompts/sections/rules.ts": {
+			"@typescript-eslint/no-unused-vars": 3
+		},
+		"src/core/prompts/sections/tool-use-guidelines.ts": {
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/core/prompts/tools/fetch-url-content.ts": {
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/core/prompts/tools/index.ts": {
+			"@typescript-eslint/no-unsafe-assignment": 1
+		},
+		"src/core/prompts/tools/manage-files.ts": {
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/core/prompts/tools/search-web.ts": {
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/core/prompts/tools/tool-groups.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1
+		},
+		"src/core/prompts/tools/types.ts": {
+			"@typescript-eslint/no-explicit-any": 1
+		},
+		"src/core/rag/embedding-dimension.test.ts": {
+			"@typescript-eslint/no-unsafe-argument": 1
+		},
+		"src/core/rag/embedding.ts": {
+			"@typescript-eslint/no-explicit-any": 1,
+			"@typescript-eslint/no-unsafe-call": 12,
+			"@typescript-eslint/no-unsafe-member-access": 20
+		},
+		"src/core/transformations/trans-engine.ts": {
+			"@typescript-eslint/no-unsafe-argument": 8,
+			"@typescript-eslint/no-unsafe-assignment": 34
+		},
+		"src/database/database-manager.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/no-redundant-type-constituents": 2,
+			"@typescript-eslint/no-unsafe-assignment": 1,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 1,
+			"sort-imports": 1
+		},
+		"src/database/json/base.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1
+		},
+		"src/database/json/chat/ChatManager.ts": {
+			"@typescript-eslint/prefer-regexp-exec": 2
+		},
+		"src/database/json/command/CommandManager.ts": {
+			"@typescript-eslint/prefer-regexp-exec": 1
+		},
+		"src/database/json/custom-mode/CustomModeManager.ts": {
+			"@typescript-eslint/prefer-regexp-exec": 1
+		},
+		"src/database/json/workspace/types.ts": {
+			"@typescript-eslint/no-explicit-any": 1
+		},
+		"src/database/modules/command/command-manager.ts": {
+			"@typescript-eslint/no-unsafe-argument": 1,
+			"@typescript-eslint/no-unsafe-assignment": 1,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 1
+		},
+		"src/database/modules/command/command-repository.ts": {
+			"@typescript-eslint/no-explicit-any": 1
+		},
+		"src/database/modules/conversation/conversation-manager.ts": {
+			"@typescript-eslint/no-unsafe-argument": 2,
+			"@typescript-eslint/no-unsafe-assignment": 7,
+			"@typescript-eslint/no-unsafe-call": 3,
+			"@typescript-eslint/no-unsafe-member-access": 3
+		},
+		"src/database/modules/insight/insight-manager.ts": {
+			"@typescript-eslint/consistent-type-assertions": 2,
+			"@typescript-eslint/no-non-null-assertion": 2,
+			"@typescript-eslint/no-unnecessary-type-assertion": 2,
+			"@typescript-eslint/no-unsafe-argument": 1
+		},
+		"src/database/modules/vector/vector-manager.ts": {
+			"@typescript-eslint/consistent-type-assertions": 7,
+			"@typescript-eslint/no-explicit-any": 9,
+			"@typescript-eslint/no-unsafe-argument": 4,
+			"@typescript-eslint/no-unsafe-assignment": 10,
+			"@typescript-eslint/no-unsafe-call": 4,
+			"@typescript-eslint/no-unsafe-member-access": 33
+		},
+		"src/embedworker/EmbeddingManager.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/consistent-type-assertions": 2,
+			"@typescript-eslint/no-unsafe-assignment": 1,
+			"@typescript-eslint/no-unsafe-call": 1
+		},
+		"src/embedworker/embed.worker.ts": {
+			"@typescript-eslint/consistent-type-assertions": 10
+		},
+		"src/event-listener.ts": {
+			"@typescript-eslint/ban-ts-comment": 1
+		},
+		"src/hooks/use-chat-history.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-unnecessary-type-assertion": 1
+		},
+		"src/hooks/use-custom-mode.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1
+		},
+		"src/lang/helpers.ts": {
+			"@typescript-eslint/no-explicit-any": 3,
+			"@typescript-eslint/no-unsafe-assignment": 1,
+			"@typescript-eslint/no-unsafe-member-access": 3
+		},
+		"src/main.desktop.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/consistent-type-assertions": 23,
+			"@typescript-eslint/no-explicit-any": 6,
+			"@typescript-eslint/no-unsafe-argument": 43,
+			"@typescript-eslint/no-unsafe-assignment": 25,
+			"@typescript-eslint/no-unsafe-call": 31,
+			"@typescript-eslint/no-unsafe-member-access": 88,
+			"@typescript-eslint/no-unsafe-return": 14,
+			"@typescript-eslint/no-unused-vars": 3,
+			"sort-imports": 1
+		},
+		"src/main.mobile.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-unsafe-argument": 2,
+			"@typescript-eslint/no-unsafe-call": 3,
+			"@typescript-eslint/no-unsafe-member-access": 7,
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/main.ts": {
+			"@typescript-eslint/ban-ts-comment": 1
+		},
+		"src/pgworker/index.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/no-unsafe-assignment": 3,
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-member-access": 1,
+			"@typescript-eslint/no-unsafe-return": 1
+		},
+		"src/pgworker/pglite.worker.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-redundant-type-constituents": 1,
+			"@typescript-eslint/no-unnecessary-type-assertion": 1,
+			"@typescript-eslint/no-unsafe-argument": 1,
+			"@typescript-eslint/no-unsafe-assignment": 3,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 2
+		},
+		"src/render-plugin/completion-key-watcher.ts": {
+			"@typescript-eslint/ban-ts-comment": 1
+		},
+		"src/render-plugin/document-changes-listener.ts": {
+			"@typescript-eslint/ban-ts-comment": 1
+		},
+		"src/render-plugin/render-surgestion-plugin.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/no-unused-vars": 1
+		},
+		"src/render-plugin/states.ts": {
+			"@typescript-eslint/ban-ts-comment": 1
+		},
+		"src/render-plugin/types.ts": {
+			"@typescript-eslint/ban-ts-comment": 1
+		},
+		"src/render-plugin/user-event.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/consistent-type-assertions": 2,
+			"@typescript-eslint/no-unsafe-enum-comparison": 1
+		},
+		"src/settings/SettingTab.tsx": {
+			"@typescript-eslint/ban-ts-comment": 8,
+			"@typescript-eslint/consistent-type-assertions": 5,
+			"@typescript-eslint/no-unsafe-argument": 67,
+			"@typescript-eslint/no-unsafe-assignment": 8,
+			"@typescript-eslint/no-unsafe-member-access": 5,
+			"@typescript-eslint/prefer-ts-expect-error": 8
+		},
+		"src/settings/components/AdvancedSettings.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 10
+		},
+		"src/settings/components/BasicAutoCompleteSettings.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 6
+		},
+		"src/settings/components/CheckBoxSettingItem.tsx": {
+			"@typescript-eslint/unbound-method": 1
+		},
+		"src/settings/components/DangerZoneSettings.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 4
+		},
+		"src/settings/components/FewShotExampleSettings.tsx": {
+			"no-inline-styles/no-inline-styles": 22
+		},
+		"src/settings/components/FormComponents.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 2
+		},
+		"src/settings/components/ModelProviderSettings.tsx": {
+			"@typescript-eslint/ban-ts-comment": 2,
+			"@typescript-eslint/no-unsafe-argument": 15,
+			"@typescript-eslint/no-unsafe-assignment": 79,
+			"@typescript-eslint/no-unsafe-call": 19,
+			"@typescript-eslint/no-unsafe-member-access": 59,
+			"@typescript-eslint/no-unsafe-return": 1,
+			"@typescript-eslint/prefer-ts-expect-error": 2
+		},
+		"src/settings/components/PluginInfoSettings.tsx": {
+			"@typescript-eslint/no-unused-vars": 2
+		},
+		"src/settings/components/PostprocessingSettings.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 4
+		},
+		"src/settings/components/PreprocessingSettings.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 8
+		},
+		"src/settings/components/PrivacySettings.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 4
+		},
+		"src/settings/components/ProviderModelsPicker.tsx": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-unsafe-assignment": 1
+		},
+		"src/settings/components/TextSettingItem.tsx": {
+			"@typescript-eslint/unbound-method": 1
+		},
+		"src/settings/components/TriggerSettings.tsx": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/unbound-method": 1,
+			"no-inline-styles/no-inline-styles": 3
+		},
+		"src/settings/components/TriggerSettingsSection.tsx": {
+			"@typescript-eslint/no-unsafe-assignment": 5
+		},
+		"src/settings/versions/migration.ts": {
+			"@typescript-eslint/no-explicit-any": 5,
+			"@typescript-eslint/no-unsafe-argument": 1,
+			"@typescript-eslint/no-unsafe-assignment": 1,
+			"@typescript-eslint/no-unsafe-call": 3,
+			"@typescript-eslint/no-unsafe-member-access": 12
+		},
+		"src/settings/versions/v0/v0.ts": {
+			"@typescript-eslint/no-base-to-string": 2
+		},
+		"src/settings/versions/v1/v1.ts": {
+			"@typescript-eslint/no-base-to-string": 2
+		},
+		"src/types/settings-mobile.ts": {
+			"@typescript-eslint/consistent-type-assertions": 3,
+			"@typescript-eslint/no-explicit-any": 1,
+			"@typescript-eslint/no-unsafe-member-access": 2
+		},
+		"src/types/settings.ts": {
+			"@typescript-eslint/consistent-type-assertions": 3,
+			"@typescript-eslint/no-explicit-any": 1,
+			"@typescript-eslint/no-unsafe-member-access": 2
+		},
+		"src/utils/api.ts": {
+			"@typescript-eslint/no-unsafe-assignment": 5
+		},
+		"src/utils/auto-complete.ts": {
+			"@typescript-eslint/ban-ts-comment": 2,
+			"@typescript-eslint/no-explicit-any": 7,
+			"@typescript-eslint/no-redundant-type-constituents": 1,
+			"@typescript-eslint/no-unsafe-argument": 11,
+			"@typescript-eslint/no-unsafe-assignment": 2,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 1,
+			"@typescript-eslint/no-unsafe-return": 1
+		},
+		"src/utils/config.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-explicit-any": 2,
+			"@typescript-eslint/no-unsafe-member-access": 2,
+			"@typescript-eslint/no-unsafe-return": 1
+		},
+		"src/utils/dataview.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-redundant-type-constituents": 2,
+			"@typescript-eslint/no-unnecessary-type-assertion": 1,
+			"@typescript-eslint/no-unsafe-assignment": 12,
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-member-access": 8,
+			"@typescript-eslint/no-unsafe-return": 2
+		},
+		"src/utils/extract-text.ts": {
+			"@typescript-eslint/prefer-regexp-exec": 1
+		},
+		"src/utils/glob-utils.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-explicit-any": 2,
+			"@typescript-eslint/no-unsafe-argument": 2,
+			"@typescript-eslint/no-unsafe-member-access": 6,
+			"@typescript-eslint/no-unused-vars": 9
+		},
+		"src/utils/lodash-lite.ts": {
+			"@typescript-eslint/consistent-type-assertions": 16,
+			"@typescript-eslint/no-dynamic-delete": 1
+		},
+		"src/utils/modes.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-explicit-any": 2,
+			"@typescript-eslint/no-unsafe-argument": 3,
+			"@typescript-eslint/no-unsafe-assignment": 1,
+			"@typescript-eslint/no-unsafe-return": 1
+		},
+		"src/utils/obsidian.ts": {
+			"@typescript-eslint/no-explicit-any": 2,
+			"@typescript-eslint/no-unsafe-assignment": 6,
+			"@typescript-eslint/no-unsafe-call": 5,
+			"@typescript-eslint/no-unsafe-member-access": 9,
+			"@typescript-eslint/no-unsafe-return": 1
+		},
+		"src/utils/ollama.test.ts": {
+			"@typescript-eslint/no-unsafe-assignment": 1
+		},
+		"src/utils/ollama.ts": {
+			"@typescript-eslint/no-unsafe-assignment": 1
+		},
+		"src/utils/open-settings-modal.ts": {
+			"@typescript-eslint/consistent-type-assertions": 2
+		},
+		"src/utils/parse-icf-block.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/consistent-type-assertions": 6,
+			"@typescript-eslint/no-explicit-any": 1,
+			"@typescript-eslint/no-unnecessary-type-assertion": 1,
+			"@typescript-eslint/no-unsafe-assignment": 36,
+			"@typescript-eslint/no-unsafe-call": 1,
+			"@typescript-eslint/no-unsafe-member-access": 4,
+			"@typescript-eslint/no-unsafe-return": 1
+		},
+		"src/utils/prompt-generator.ts": {
+			"@typescript-eslint/ban-ts-comment": 1,
+			"@typescript-eslint/no-unsafe-assignment": 5,
+			"@typescript-eslint/no-unsafe-call": 3,
+			"@typescript-eslint/no-unsafe-member-access": 8,
+			"@typescript-eslint/no-unused-vars": 2,
+			"@typescript-eslint/prefer-ts-expect-error": 1
+		},
+		"src/utils/tool-groups.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-explicit-any": 3
+		},
+		"src/utils/useDebounceEffect.ts": {
+			"@typescript-eslint/no-explicit-any": 1,
+			"@typescript-eslint/no-unsafe-assignment": 1
+		},
+		"src/utils/video-detector.ts": {
+			"@typescript-eslint/consistent-type-assertions": 2
+		},
+		"src/utils/youtube-transcript.ts": {
+			"@typescript-eslint/consistent-type-assertions": 1
+		}
+	}
+}

@@ -12,7 +12,8 @@
     "version": "node version-bump.mjs",
     "type:check": "tsc --noEmit -skipLibCheck",
     "test": "jest",
-    "lint": "eslint 'src/**/*.{ts,tsx}'"
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint:ratchet": "node scripts/lint-ratchet.mjs"
   },
   "keywords": [],
   "author": "MidliBob",
