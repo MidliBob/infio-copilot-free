@@ -7,6 +7,7 @@ export const providerApiUrls: Record<ApiProvider, string> = {
 	[ApiProvider.Deepseek]: 'https://platform.deepseek.com/api_keys/',
 	[ApiProvider.Moonshot]: 'https://platform.moonshot.cn/console/api-keys',
 	[ApiProvider.Ollama]: '', // Ollama 不需要API Key
+	[ApiProvider.OpenAICompatible]: '', // custom endpoint, the user supplies the base URL
 	[ApiProvider.LocalProvider]: '', // 本地提供者，无固定URL
 };
 

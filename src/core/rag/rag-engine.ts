@@ -74,7 +74,7 @@ export class RAGEngine {
 
 	async initializeDimension(): Promise<void> {
 		if (this.embeddingModel.dimension === 0 &&
-			this.settings.embeddingModelProvider === ApiProvider.Ollama) {
+			(this.settings.embeddingModelProvider === ApiProvider.Ollama || this.settings.embeddingModelProvider === ApiProvider.OpenAICompatible)) {
 			await resolveEmbeddingDimension(this.embeddingModel)
 		}
 	}

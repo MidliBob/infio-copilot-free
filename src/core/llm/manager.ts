@@ -34,6 +34,7 @@ class LLMManager implements LLMManagerInterface {
 	private siliconflowProvider: OpenAICompatibleProvider
 	private alibabaQwenProvider: OpenAICompatibleProvider
 	private ollamaProvider: OllamaProvider
+	private openaiCompatibleProvider: OpenAICompatibleProvider
 
 	constructor(settings: InfioSettings) {
 		this.siliconflowProvider = new OpenAICompatibleProvider(
@@ -61,6 +62,7 @@ class LLMManager implements LLMManagerInterface {
 				: MOONSHOT_BASE_URL
 		)
 		this.ollamaProvider = new OllamaProvider(settings.ollamaProvider.baseUrl)
+		this.openaiCompatibleProvider = new OpenAICompatibleProvider(settings.openaicompatibleProvider.apiKey, settings.openaicompatibleProvider.baseUrl)
 	}
 
 	async generateResponse(
@@ -99,6 +101,8 @@ class LLMManager implements LLMManagerInterface {
 					request,
 					options,
 				)
+			case ApiProvider.OpenAICompatible:
+				return await this.openaiCompatibleProvider.generateResponse(model, request, options)
 			default:
 				throw new Error(`Unsupported model provider: ${model.provider}`)
 		}
@@ -120,6 +124,8 @@ class LLMManager implements LLMManagerInterface {
 				return await this.moonshotProvider.streamResponse(model, request, options)
 			case ApiProvider.Ollama:
 				return await this.ollamaProvider.streamResponse(model, request, options)
+			case ApiProvider.OpenAICompatible:
+				return await this.openaiCompatibleProvider.streamResponse(model, request, options)
 		}
 	}
 }

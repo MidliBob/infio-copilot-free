@@ -59,6 +59,20 @@ const DeepSeekProviderSchema = z.object({
 	models: []
 })
 
+const OpenAICompatibleProviderSchema = z.object({
+	name: z.literal('OpenAICompatible'),
+	apiKey: z.string().catch(''),
+	baseUrl: z.string().optional(),
+	useCustomUrl: z.boolean().catch(true),
+	models: z.array(z.string()).catch([])
+}).catch({
+	name: 'OpenAICompatible',
+	apiKey: '',
+	baseUrl: '',
+	useCustomUrl: true,
+	models: []
+})
+
 const OllamaProviderSchema = z.object({
 	name: z.literal('Ollama'),
 	apiKey: z.string().catch('ollama'),
@@ -162,6 +176,7 @@ export const InfioSettingsSchema = z.object({
 	deepseekProvider: DeepSeekProviderSchema,
 	ollamaProvider: OllamaProviderSchema,
 	moonshotProvider: MoonshotProviderSchema,
+	openaicompatibleProvider: OpenAICompatibleProviderSchema,
 	localproviderProvider: LocalProviderSchema,
 
 	// MCP Servers
@@ -452,13 +467,14 @@ const MIGRATIONS: Migration[] = [
 			const newData = { ...data }
 			newData.version = 0.9
 
-			// The OpenAI, Anthropic, Google, Groq, Grok, OpenRouter and
-			// custom OpenAI-compatible endpoints were removed from the
-			// plugin. Chat/insight/apply fall back to the local Ollama
-			// server, embeddings fall back to LocalProvider; drop the
-			// stale credentials of the removed providers.
-			const removedProviders = ['OpenAI', 'Anthropic', 'Google', 'Groq', 'Grok', 'OpenRouter', 'OpenAICompatible']
-			const removedEmbeddingProviders = ['OpenAI', 'Google', 'OpenAICompatible']
+			// The OpenAI, Anthropic, Google, Groq, Grok and OpenRouter
+			// providers were removed from the plugin. Chat/insight/apply
+			// fall back to the local Ollama server, embeddings fall back
+			// to LocalProvider; drop the stale credentials of the removed
+			// providers. The custom OpenAI-compatible endpoint stays: it is
+			// not tied to any particular cloud.
+			const removedProviders = ['OpenAI', 'Anthropic', 'Google', 'Groq', 'Grok', 'OpenRouter']
+			const removedEmbeddingProviders = ['OpenAI', 'Google']
 			const isRemoved = (value: unknown) => typeof value === 'string' && removedProviders.includes(value)
 			const isRemovedEmbedding = (value: unknown) => typeof value === 'string' && removedEmbeddingProviders.includes(value)
 
@@ -503,8 +519,7 @@ const MIGRATIONS: Migration[] = [
 			delete newData.groqProvider
 			delete newData.grokProvider
 			delete newData.openrouterProvider
-			delete newData.openaicompatibleProvider
-			// legacy compatibility keys of the removed providers
+			// unused legacy keys of the removed providers
 			delete newData.openAIApiKey
 			delete newData.anthropicApiKey
 			delete newData.geminiApiKey

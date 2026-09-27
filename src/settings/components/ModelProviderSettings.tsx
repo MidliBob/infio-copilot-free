@@ -27,6 +27,7 @@ type ProviderSettingKey =
 	| 'deepseekProvider'
 	| 'moonshotProvider'
 	| 'ollamaProvider'
+	| 'openaicompatibleProvider'
 	| 'localproviderProvider';
 
 const keyMap: Record<ApiProvider, ProviderSettingKey> = {
@@ -35,6 +36,7 @@ const keyMap: Record<ApiProvider, ProviderSettingKey> = {
 	'Deepseek': 'deepseekProvider',
 	'Moonshot': 'moonshotProvider',
 	'Ollama': 'ollamaProvider',
+	'OpenAICompatible': 'openaicompatibleProvider',
 	'LocalProvider': 'localproviderProvider',
 };
 
@@ -308,8 +310,8 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 			const { default: LLMManager } = await import('../../core/llm/manager');
 			const { GetDefaultModelId } = await import('../../utils/api');
 
-			// 对于Ollama，不支持测试API连接
-			if (provider === ApiProvider.Ollama) {
+			// 对于Ollama和OpenAICompatible，不支持测试API连接
+			if (provider === ApiProvider.Ollama || provider === ApiProvider.OpenAICompatible) {
 				throw new Error(t("settings.ModelProvider.testConnection.notSupported", { provider }));
 			}
 

@@ -1018,6 +1018,7 @@ export const GetAllProviders = (): ApiProvider[] => {
 		ApiProvider.SiliconFlow,
 		ApiProvider.AlibabaQwen,
 		ApiProvider.Moonshot,
+		ApiProvider.OpenAICompatible,
 		ApiProvider.LocalProvider,
 	]
 }
@@ -1026,6 +1027,7 @@ export const GetEmbeddingProviders = (): ApiProvider[] => {
 	return [
 		ApiProvider.AlibabaQwen,
 		ApiProvider.SiliconFlow,
+		ApiProvider.OpenAICompatible,
 		ApiProvider.Ollama,
 		ApiProvider.LocalProvider,
 	]
@@ -1044,6 +1046,8 @@ export const GetProviderModels = async (provider: ApiProvider, settings?: InfioS
 			return moonshotModels
 		case ApiProvider.Ollama:
 			return await fetchOllamaModels(settings?.ollamaProvider.baseUrl)
+		case ApiProvider.OpenAICompatible:
+			return {} // user-configured endpoint, models are added by hand
 		case ApiProvider.LocalProvider:
 			return {} 
 		default:
@@ -1064,6 +1068,8 @@ export const GetProviderModelsWithSettings = async (provider: ApiProvider, setti
 			return moonshotModels
 		case ApiProvider.Ollama:
 			return await fetchOllamaModels(settings?.ollamaProvider.baseUrl)
+		case ApiProvider.OpenAICompatible:
+			return {} // user-configured endpoint, models are added by hand
 		case ApiProvider.LocalProvider:
 			return {} // LocalProvider only supports embedding models
 		default:
@@ -1152,6 +1158,13 @@ export const GetDefaultModelId = (provider: ApiProvider): { chat: string, insigh
 				"insight": null, // user-configured
 				"autoComplete": null, // user-configured
 				"embedding": null, // not supported
+			}
+		case ApiProvider.OpenAICompatible:
+			return {
+				"chat": null, // user-configured
+				"insight": null, // user-configured
+				"autoComplete": null, // user-configured
+				"embedding": null, // user-configured
 			}
 		case ApiProvider.LocalProvider:
 			return {

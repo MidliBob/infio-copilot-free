@@ -164,6 +164,13 @@ describe('parseSmartCopilotSettings', () => {
 				useCustomUrl: false,
 				models: [],
 			},
+			openaicompatibleProvider: {
+				name: 'OpenAICompatible',
+				apiKey: '',
+				baseUrl: '',
+				useCustomUrl: true,
+				models: [],
+			},
 			siliconflowProvider: {
 				name: 'SiliconFlow',
 				apiKey: '',
@@ -340,6 +347,13 @@ describe('settings migration', () => {
 				apiKey: '',
 				baseUrl: '',
 				useCustomUrl: false,
+				models: [],
+			},
+			openaicompatibleProvider: {
+				name: 'OpenAICompatible',
+				apiKey: '',
+				baseUrl: '',
+				useCustomUrl: true,
 				models: [],
 			},
 			siliconflowProvider: {
@@ -733,14 +747,15 @@ describe('Cloud provider removal migration (0.8 -> 0.9)', () => {
 		insightModelId: 'claude-sonnet-4-20250514',
 		applyModelProvider: 'OpenRouter',
 		applyModelId: 'google/gemini-2.5-pro-preview',
-		embeddingModelProvider: 'OpenAICompatible',
-		embeddingModelId: 'text-embedding-3-small',
+		embeddingModelProvider: 'Google',
+		embeddingModelId: 'text-embedding-004',
 		collectedChatModels: [
 			{ provider: 'OpenAI', modelId: 'gpt-4o' },
 			{ provider: 'Deepseek', modelId: 'deepseek-chat' },
 		],
 		collectedEmbeddingModels: [
 			{ provider: 'Google', modelId: 'text-embedding-004' },
+			{ provider: 'OpenAICompatible', modelId: 'bge-m3' },
 		],
 		openaiProvider: { name: 'OpenAI', apiKey: 'sk-secret', baseUrl: '', useCustomUrl: false, models: [] },
 		anthropicProvider: { name: 'Anthropic', apiKey: 'sk-ant-secret', baseUrl: '', useCustomUrl: false, models: [] },
@@ -802,14 +817,21 @@ describe('Cloud provider removal migration (0.8 -> 0.9)', () => {
 		expect(result.embeddingModelProvider).toBe('LocalProvider')
 		expect(result.embeddingModelId).toBe('TaylorAI/bge-micro-v2')
 		expect(result.collectedChatModels).toEqual([{ provider: 'Deepseek', modelId: 'deepseek-chat' }])
-		expect(result.collectedEmbeddingModels).toEqual([])
+		expect(result.collectedEmbeddingModels).toEqual([{ provider: 'OpenAICompatible', modelId: 'bge-m3' }])
 		expect('openaiProvider' in result).toBe(false)
 		expect('anthropicProvider' in result).toBe(false)
 		expect('googleProvider' in result).toBe(false)
 		expect('groqProvider' in result).toBe(false)
 		expect('grokProvider' in result).toBe(false)
 		expect('openrouterProvider' in result).toBe(false)
-		expect('openaicompatibleProvider' in result).toBe(false)
+		// the custom endpoint survives: it is not tied to a removed cloud
+		expect(result.openaicompatibleProvider).toEqual({
+			name: 'OpenAICompatible',
+			apiKey: 'compat-secret',
+			baseUrl: 'https://my.endpoint/v1',
+			useCustomUrl: true,
+			models: [],
+		})
 		expect('openAIApiKey' in result).toBe(false)
 		expect('anthropicApiKey' in result).toBe(false)
 		expect('geminiApiKey' in result).toBe(false)
@@ -820,6 +842,39 @@ describe('Cloud provider removal migration (0.8 -> 0.9)', () => {
 		expect(result.deepseekProvider.apiKey).toBe('dk-kept')
 		expect(result.deepseekApiKey).toBe('dk-kept')
 		expect(result.ollamaProvider.baseUrl).toBe('http://localhost:11434')
+	})
+
+	it('keeps a custom OpenAI-compatible endpoint selected everywhere', () => {
+		const result = parseInfioSettings({
+			...cloudEraSettings,
+			defaultProvider: 'OpenAICompatible',
+			activeProviderTab: 'OpenAICompatible',
+			chatModelProvider: 'OpenAICompatible',
+			chatModelId: 'my-chat-model',
+			insightModelProvider: 'OpenAICompatible',
+			insightModelId: 'my-chat-model',
+			applyModelProvider: 'OpenAICompatible',
+			applyModelId: 'my-chat-model',
+			embeddingModelProvider: 'OpenAICompatible',
+			embeddingModelId: 'my-embedding-model',
+			collectedChatModels: [{ provider: 'OpenAICompatible', modelId: 'my-chat-model' }],
+			collectedEmbeddingModels: [{ provider: 'OpenAICompatible', modelId: 'my-embedding-model' }],
+		})
+
+		expect(loggerMock.error).not.toHaveBeenCalled()
+		expect(result.version).toBe(0.9)
+		expect(result.defaultProvider).toBe('OpenAICompatible')
+		expect(result.activeProviderTab).toBe('OpenAICompatible')
+		expect(result.chatModelProvider).toBe('OpenAICompatible')
+		expect(result.chatModelId).toBe('my-chat-model')
+		expect(result.insightModelProvider).toBe('OpenAICompatible')
+		expect(result.applyModelProvider).toBe('OpenAICompatible')
+		expect(result.embeddingModelProvider).toBe('OpenAICompatible')
+		expect(result.embeddingModelId).toBe('my-embedding-model')
+		expect(result.collectedChatModels).toEqual([{ provider: 'OpenAICompatible', modelId: 'my-chat-model' }])
+		expect(result.collectedEmbeddingModels).toEqual([{ provider: 'OpenAICompatible', modelId: 'my-embedding-model' }])
+		expect(result.openaicompatibleProvider.baseUrl).toBe('https://my.endpoint/v1')
+		expect(result.openaicompatibleProvider.apiKey).toBe('compat-secret')
 	})
 
 	it('keeps an Ollama chat setup and LocalProvider embeddings untouched', () => {

@@ -4,6 +4,7 @@ export enum ApiProvider {
 	Deepseek = "Deepseek",
 	Moonshot = "Moonshot",
 	Ollama = "Ollama",
+	OpenAICompatible = "OpenAICompatible",
 	LocalProvider = "LocalProvider",
 }
 
