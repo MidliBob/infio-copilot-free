@@ -20,9 +20,9 @@
   WebAssembly 的 PostgreSQL，运行于 OPFS 存储）。
 - **AI 洞察** —— 详细/简明摘要、关键洞察、论文分析等多种笔记转换。
 - **自动补全** —— 使用你选择的模型进行行内代码/文本补全。
-- **支持任意提供商** —— OpenAI、Anthropic、Google、OpenRouter、DeepSeek、
-  Groq、xAI、Moonshot、SiliconFlow、阿里云百炼（Qwen）、OpenAI 兼容端点、
-  Ollama 及其他本地服务器，另内置本地嵌入模型（嵌入无需 API Key）。
+- **支持任意提供商** —— Ollama 及其他本地服务器、任意 OpenAI 兼容端点
+  （vLLM、LM Studio、llama.cpp、企业代理）、DeepSeek、Moonshot、SiliconFlow、
+  阿里云百炼（Qwen），另内置本地嵌入模型（嵌入无需 API Key）。
 - **工作区、自定义模式、快捷命令、MCP 服务器。**
 - **本地化界面** —— 英语、俄语和简体中文跟随 Obsidian 的界面语言；其他
   语言将回退为英语。

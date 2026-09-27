@@ -24,9 +24,9 @@ plugin alive and evolving.
 - **AI insights** — dense/simple summaries, key insights, paper analysis and
   other transformations of your notes.
 - **Autocomplete** — inline code/text completion with a model of your choice.
-- **Any provider** — OpenAI, Anthropic, Google, OpenRouter, DeepSeek, Groq,
-  xAI, Moonshot, SiliconFlow, Alibaba Qwen, OpenAI-compatible endpoints,
-  Ollama and other local servers, plus built-in local embedding models
+- **Any provider** — Ollama and other local servers, any OpenAI-compatible
+  endpoint (vLLM, LM Studio, llama.cpp, a corporate proxy), DeepSeek,
+  Moonshot, SiliconFlow, Alibaba Qwen, plus built-in local embedding models
   (no API key needed for embeddings).
 - **Workspaces, custom modes, quick commands, MCP servers.**
 - **Localized UI** — English, Russian and Simplified Chinese follow
