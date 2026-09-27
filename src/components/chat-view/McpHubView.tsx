@@ -7,6 +7,7 @@ import { useMcpHub } from '../../contexts/McpHubContext'
 import { useSettings } from '../../contexts/SettingsContext'
 import { McpErrorEntry, McpResource, McpResourceTemplate, McpServer, McpTool } from '../../core/mcp/type'
 import { t } from '../../lang/helpers'
+import { extractErrorMessage } from '../../utils/error-notice'
 import { logger } from '../../utils/logger'
 import { showConfirm } from '../../utils/modal-dialogs'
 
@@ -105,9 +106,9 @@ const McpHubView = () => {
 				// 清空表单
 				setNewServerName('')
 				setNewServerConfig('')
-				new Notice(t('mcpHub.createSuccess').replace('{name}', newServerName) as string)
+				new Notice(t('mcpHub.createSuccess').replace('{name}', newServerName))
 			} catch (error) {
-				new Notice(t('mcpHub.createFailed').replace('{error}', error.message) as string)
+				new Notice(t('mcpHub.createFailed').replace('{error}', extractErrorMessage(error)))
 			}
 		}
 	}
