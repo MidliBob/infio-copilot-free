@@ -6,6 +6,7 @@ import { EmbeddingModel } from '../../types/embedding'
 import { ApiProvider } from '../../types/llm/model'
 import { InfioSettings } from '../../types/settings'
 import { GetEmbeddingModelInfo } from '../../utils/api'
+import { describeEndpointNetworkError } from '../../utils/network-errors'
 import { describeOllamaNetworkError } from '../../utils/ollama'
 import {
 	LLMAPIKeyNotSetException,
@@ -283,6 +284,14 @@ export const getEmbeddingModel = (
 								'OpenAI Compatible API rate limit exceeded. Please try again later.',
 							)
 						}
+						const described = describeEndpointNetworkError(
+							error,
+							settings.openaicompatibleProvider.baseUrl,
+							'OpenAI-compatible endpoint',
+						)
+						if (described !== null) {
+							throw new Error(described)
+						}
 						throw error
 					}
 				},
@@ -307,6 +316,14 @@ export const getEmbeddingModel = (
 							throw new LLMRateLimitExceededException(
 								'OpenAI Compatible API rate limit exceeded. Please try again later.',
 							)
+						}
+						const described = describeEndpointNetworkError(
+							error,
+							settings.openaicompatibleProvider.baseUrl,
+							'OpenAI-compatible endpoint',
+						)
+						if (described !== null) {
+							throw new Error(described)
 						}
 						throw error
 					}
