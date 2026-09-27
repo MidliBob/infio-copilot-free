@@ -6,6 +6,7 @@ import { LLMModel } from "../../types/llm/model";
 import { RequestMessage } from '../../types/llm/request';
 import { InfioSettings } from "../../types/settings";
 import LLMManager from '../llm/manager';
+import { streamChatWithBreaker } from '../../utils/llm-circuit';
 
 import Context from "./context-detection";
 import RemoveCodeIndicators from "./post-processors/remove-code-indicators";
@@ -34,21 +35,20 @@ class LLMClient {
 	}
 
 	async queryChatModel(messages: RequestMessage[]): Promise<Result<string, Error>> {
-		const stream = await this.llm.streamResponse(
-			this.model,
-			{
-				messages: messages,
-				model: this.model.modelId,
-				stream: true,
-			}
-		)
-
-		let response_content = ""
-		for await (const chunk of stream) {
-			const content = chunk.choices[0]?.delta?.content ?? ''
-			response_content += content
-		}
-		return ok(response_content);
+		// Breaker-backed and never throws: transport failures arrive as err(...),
+		// which is what the neverthrow contract of this method always promised
+		// (the missing catch here used to leak an unhandled rejection whenever
+		// the endpoint was down).
+		return streamChatWithBreaker(() =>
+			this.llm.streamResponse(
+				this.model,
+				{
+					messages: messages,
+					model: this.model.modelId,
+					stream: true,
+				}
+			)
+		);
 	}
 
 	async queryChatModelStream(messages: RequestMessage[]): Promise<AsyncIterable<string>> {

@@ -6,6 +6,7 @@ import Context from "../context-detection";
 
 import State from "./state";
 import { logger } from '../../../utils/logger'
+import { isNetworkFailure } from '../../../utils/network-errors'
 
 class PredictingState extends State {
 	private predictionPromise: Promise<void> | null = null;
@@ -69,10 +70,17 @@ class PredictingState extends State {
 		}
 
 		if (result.isErr()) {
-			new Notice(
-				`Copilot: Something went wrong cannot make a prediction. Full error is available in the dev console. Please check your settings. `
-			);
-			logger.error(result.error);
+			if (isNetworkFailure(result.error)) {
+				// Endpoint down: autocomplete yields silently on every keystroke
+				// instead of stacking notices; connectivity is reported by the
+				// user-facing surfaces (chat, index, insights notices).
+				logger.debug('Autocomplete skipped, chat endpoint unreachable:', result.error.message);
+			} else {
+				new Notice(
+					`Copilot: Something went wrong cannot make a prediction. Full error is available in the dev console. Please check your settings. `
+				);
+				logger.error(result.error);
+			}
 			this.context.transitionToIdleState();
 		}
 
