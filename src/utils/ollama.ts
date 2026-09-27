@@ -1,5 +1,6 @@
 import { requestUrl } from 'obsidian'
 
+import { extractNetworkErrorStatus, isNetworkFailureMessage } from './network-errors'
 import { type OllamaTagModel, parseOllamaTags } from './provider-schemas'
 
 async function fetchOllamaTags(ollamaUrl: string): Promise<OllamaTagModel[]> {
@@ -110,28 +111,15 @@ const ORIGINS_HINT =
 export function describeOllamaNetworkError(error: unknown, rawBaseUrl: string): string | null {
 	const baseUrl = normalizeOllamaBaseUrl(rawBaseUrl)
 	const message = error instanceof Error ? error.message : String(error ?? '')
-	const lower = message.toLowerCase()
-
-	let status: number | undefined
-	if (error && typeof error === 'object' && 'status' in error) {
-		const rawStatus = error.status
-		if (typeof rawStatus === 'number') {
-			status = rawStatus
-		}
-	}
+	const status = extractNetworkErrorStatus(error)
 
 	// Browsers mask CORS-blocked responses (Ollama's 403 without
-	// Access-Control-Allow-Origin) as opaque network failures, so a bare
-	// "Failed to fetch" is either "not running" or "origins not allowed".
+	// Access-Control-Allow-Origin) as opaque network failures, and the
+	// OpenAI SDK wraps every transport failure into APIConnectionError
+	// ("Connection error.") - so a bare network-failure text is either
+	// "not running" or "origins not allowed".
 	const looksLikeNetworkFailure =
-		status === undefined &&
-		(lower.includes('failed to fetch') ||
-			lower.includes('fetch failed') ||
-			lower.includes('network') ||
-			lower.includes('econnrefused') ||
-			lower.includes('connection refused') ||
-			lower.includes('timeout') ||
-			lower.includes('terminated'))
+		status === undefined && isNetworkFailureMessage(message)
 
 	if (status === 403 || looksLikeNetworkFailure) {
 		return (

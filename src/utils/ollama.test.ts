@@ -119,6 +119,22 @@ describe('describeOllamaNetworkError', () => {
 		expect(described).toContain('ollama serve')
 	})
 
+	it('explains the OpenAI SDK "Connection error." wording (dead Ollama server)', () => {
+		// the exact failure observed in the field: the SDK wraps the refused
+		// connection into APIConnectionError and the OLLAMA_ORIGINS hint was lost
+		const described = describeOllamaNetworkError(new Error('Connection error.'), url)
+		expect(described).not.toBeNull()
+		expect(described).toContain('Cannot reach Ollama')
+		expect(described).toContain(url)
+		expect(described).toContain('ollama serve')
+		expect(described).toContain('OLLAMA_ORIGINS=app://obsidian.md')
+	})
+
+	it('explains the SDK timeout wording', () => {
+		const described = describeOllamaNetworkError(new Error('Request timed out.'), url)
+		expect(described).toContain('Cannot reach Ollama')
+	})
+
 	it('explains a readable 403 with the OLLAMA_ORIGINS hint', () => {
 		const described = describeOllamaNetworkError({ status: 403, message: 'forbidden' }, url)
 		expect(described).toContain('OLLAMA_ORIGINS')
