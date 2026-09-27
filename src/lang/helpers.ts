@@ -20,25 +20,32 @@ const localeMap: { [k: string]: Partial<typeof en> } = {
 // top-level lookup used as the per-segment fallback for partial translations
 const enFlat: Record<string, unknown> = en;
 
-export function t(str: string, params?: Record<string, any>): any {
-	// 动态获取当前语言
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === 'object' && value !== null;
+}
+
+export function t(str: string, params?: Record<string, unknown>): string {
+	// Resolve the current UI language at call time
 	const currentLocale = moment.locale();
 	const locale = localeMap[currentLocale] ?? en;
 
 	const path = str.split('.');
-	let result: any = locale;
+	let result: unknown = locale;
 
 	for (const key of path) {
-		result = result?.[key] ?? enFlat[key];
+		result = (isRecord(result) ? result[key] : undefined) ?? enFlat[key];
 		if (result === undefined) return str;
 	}
 
 	// Handle parameter interpolation
 	if (params && typeof result === 'string') {
-		return result.replace(/\{([^}]+)\}/g, (match, key) => {
+		return result.replace(/\{([^}]+)\}/g, (match: string, key: string) => {
 			return params[key] !== undefined ? String(params[key]) : match;
 		});
 	}
 
-	return result;
+	// A key that resolves to a section (object) instead of a leaf string is a
+	// caller mistake; returning the key path keeps it visible in the UI
+	// instead of rendering "[object Object]".
+	return typeof result === 'string' ? result : str;
 }

@@ -420,11 +420,6 @@
 		"src/hooks/use-custom-mode.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1
 		},
-		"src/lang/helpers.ts": {
-			"@typescript-eslint/no-explicit-any": 3,
-			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-unsafe-member-access": 3
-		},
 		"src/main.desktop.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/consistent-type-assertions": 23,
