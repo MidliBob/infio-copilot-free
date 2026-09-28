@@ -216,7 +216,7 @@ export async function applyGitFallback(app: App, hunk: Hunk, content: string[]):
 					result: newLines,
 					strategy: "git-fallback",
 				}
-			} catch (cherryPickError) {
+			} catch {
 				logger.error("Strategy 1 failed with merge conflict")
 			}
 		} catch (error) {
@@ -258,7 +258,7 @@ export async function applyGitFallback(app: App, hunk: Hunk, content: string[]):
 					result: newLines,
 					strategy: "git-fallback",
 				}
-			} catch (cherryPickError) {
+			} catch {
 				logger.error("Strategy 2 failed with merge conflict")
 			}
 		} catch (error) {

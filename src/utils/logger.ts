@@ -37,6 +37,7 @@ function out(): ConsoleLike {
 	// property reference (not a console.* call), so esbuild's
 	// drop:['console'] does not strip production debug logging
 	const scope: { console: ConsoleLike } =
+		// workers have no window: globalThis is the only shared console scope
 		typeof window !== 'undefined' ? window : globalThis
 	return scope.console
 }

@@ -35,9 +35,6 @@
 		"src/core/prompts/sections/custom-system-prompt.ts": {
 			"nocheck": 1
 		},
-		"src/database/database-manager.ts": {
-			"expectError": 1
-		},
 		"src/embedworker/EmbeddingManager.ts": {
 			"nocheck": 1
 		},

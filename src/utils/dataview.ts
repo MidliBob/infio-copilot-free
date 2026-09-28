@@ -203,7 +203,7 @@ export class DataviewManager {
 		if (typeof result === 'object') {
 			try {
 				return JSON.stringify(result, null, 2);
-			} catch (e) {
+			} catch {
 				return t('chat.dataview.objectResult', { repr: Object.prototype.toString.call(result) });
 			}
 		}

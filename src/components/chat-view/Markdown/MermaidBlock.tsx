@@ -83,7 +83,7 @@ interface MermaidToolbarProps {
 }
 
 function MermaidToolbar({ code }: MermaidToolbarProps) {
-	const { showCopyFeedback, copyWithFeedback } = useCopyToClipboard()
+	const { copyWithFeedback } = useCopyToClipboard()
 
 	const handleCopy = (e: React.MouseEvent) => {
 		e.stopPropagation()

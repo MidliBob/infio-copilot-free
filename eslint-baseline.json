@@ -43,9 +43,6 @@
 		"src/components/chat-view/Markdown/MarkdownWithIcon.tsx": {
 			"no-inline-styles/no-inline-styles": 1
 		},
-		"src/components/chat-view/Markdown/MermaidBlock.tsx": {
-			"@typescript-eslint/no-unused-vars": 1
-		},
 		"src/components/chat-view/McpHubView.tsx": {
 			"@typescript-eslint/no-unsafe-assignment": 2,
 			"@typescript-eslint/no-unsafe-member-access": 2
@@ -128,8 +125,7 @@
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/core/autocomplete/context-detection.ts": {
-			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unsafe-enum-comparison": 1
+			"@typescript-eslint/consistent-type-assertions": 1
 		},
 		"src/core/autocomplete/post-processors/remove-overlap.ts": {
 			"@typescript-eslint/no-unused-vars": 1
@@ -176,9 +172,8 @@
 			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/core/diff/strategies/search-replace.ts": {
-			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/prefer-regexp-exec": 4,
-			"prefer-const": 1
+			"@typescript-eslint/no-unused-vars": 1,
+			"@typescript-eslint/prefer-regexp-exec": 4
 		},
 		"src/core/diff/strategies/unified.ts": {
 			"@typescript-eslint/no-unsafe-member-access": 1
@@ -200,8 +195,6 @@
 		},
 		"src/core/file-search/regex/ripgrep-regex.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-non-null-assertion": 3,
-			"@typescript-eslint/no-unnecessary-type-assertion": 3,
 			"@typescript-eslint/no-unsafe-argument": 2,
 			"@typescript-eslint/no-unsafe-assignment": 6,
 			"@typescript-eslint/no-unsafe-call": 1,
@@ -228,8 +221,7 @@
 			"@typescript-eslint/no-unsafe-member-access": 47
 		},
 		"src/core/mcp/McpServerManager.ts": {
-			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/ban-ts-comment": 1
 		},
 		"src/core/mcp/type.ts": {
 			"@typescript-eslint/no-explicit-any": 2
@@ -277,11 +269,7 @@
 			"@typescript-eslint/no-unsafe-member-access": 20
 		},
 		"src/database/database-manager.ts": {
-			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-redundant-type-constituents": 2,
 			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-unsafe-member-access": 1,
 			"sort-imports": 1
 		},
 		"src/database/json/base.ts": {
@@ -299,34 +287,26 @@
 		"src/database/json/workspace/types.ts": {
 			"@typescript-eslint/no-explicit-any": 1
 		},
-		"src/database/modules/command/command-manager.ts": {
-			"@typescript-eslint/no-unsafe-argument": 1,
-			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-unsafe-member-access": 1
-		},
 		"src/database/modules/command/command-repository.ts": {
 			"@typescript-eslint/no-explicit-any": 1
 		},
 		"src/database/modules/conversation/conversation-manager.ts": {
-			"@typescript-eslint/no-unsafe-argument": 2,
-			"@typescript-eslint/no-unsafe-assignment": 7,
-			"@typescript-eslint/no-unsafe-call": 3,
-			"@typescript-eslint/no-unsafe-member-access": 3
+			"@typescript-eslint/no-unsafe-argument": 1,
+			"@typescript-eslint/no-unsafe-assignment": 5,
+			"@typescript-eslint/no-unsafe-call": 2,
+			"@typescript-eslint/no-unsafe-member-access": 2
 		},
 		"src/database/modules/insight/insight-manager.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2,
 			"@typescript-eslint/no-non-null-assertion": 2,
-			"@typescript-eslint/no-unnecessary-type-assertion": 2,
-			"@typescript-eslint/no-unsafe-argument": 1
+			"@typescript-eslint/no-unnecessary-type-assertion": 2
 		},
 		"src/database/modules/vector/vector-manager.ts": {
-			"@typescript-eslint/consistent-type-assertions": 7,
-			"@typescript-eslint/no-explicit-any": 9,
+			"@typescript-eslint/consistent-type-assertions": 1,
+			"@typescript-eslint/no-explicit-any": 3,
 			"@typescript-eslint/no-unsafe-argument": 1,
-			"@typescript-eslint/no-unsafe-assignment": 9,
-			"@typescript-eslint/no-unsafe-call": 4,
-			"@typescript-eslint/no-unsafe-member-access": 33
+			"@typescript-eslint/no-unsafe-assignment": 8,
+			"@typescript-eslint/no-unsafe-member-access": 26
 		},
 		"src/embedworker/EmbeddingManager.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
@@ -374,9 +354,7 @@
 			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/pgworker/pglite.worker.ts": {
-			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-redundant-type-constituents": 1,
-			"@typescript-eslint/no-unnecessary-type-assertion": 1,
 			"@typescript-eslint/no-unsafe-argument": 1,
 			"@typescript-eslint/no-unsafe-assignment": 3,
 			"@typescript-eslint/no-unsafe-call": 1,
@@ -399,9 +377,7 @@
 			"@typescript-eslint/ban-ts-comment": 1
 		},
 		"src/render-plugin/user-event.ts": {
-			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-unsafe-enum-comparison": 1
+			"@typescript-eslint/ban-ts-comment": 1
 		},
 		"src/settings/SettingTab.tsx": {
 			"@typescript-eslint/ban-ts-comment": 8,

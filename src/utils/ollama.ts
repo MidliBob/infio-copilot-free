@@ -7,7 +7,7 @@ async function fetchOllamaTags(ollamaUrl: string): Promise<OllamaTagModel[]> {
 	try {
 		const response = await requestUrl(`${ollamaUrl}/api/tags`)
 		return parseOllamaTags(response.json)
-	} catch (error) {
+	} catch {
 		return []
 	}
 }
@@ -79,7 +79,10 @@ export async function checkOllamaHealth(rawBaseUrl: string): Promise<OllamaHealt
 	}
 
 	try {
-		const probe = await fetch(`${baseUrl}/api/version`, {
+		// Intentional renderer fetch (not requestUrl): stage 2 must reproduce the
+	// exact transport chat/embedding calls use, so CORS blocks (OLLAMA_ORIGINS)
+	// surface here as opaque failures while stage 1 (requestUrl) succeeds.
+	const probe = await fetch(`${baseUrl}/api/version`, {
 			method: 'GET',
 			cache: 'no-store',
 			signal: AbortSignal.timeout(5000),

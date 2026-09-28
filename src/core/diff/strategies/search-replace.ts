@@ -121,7 +121,7 @@ Your search/replace content here
 			}
 		}
 
-		let [_, searchContent, replaceContent] = match
+		let [, searchContent, replaceContent] = match
 
 		// Detect line ending from original content
 		const lineEnding = originalContent.includes("\r\n") ? "\r\n" : "\n"

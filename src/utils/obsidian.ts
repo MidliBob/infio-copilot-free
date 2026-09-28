@@ -125,7 +125,7 @@ export function getOpenFiles(app: App): TFile[] {
 				v.view instanceof MarkdownView && !!v.view.file
 			)
 			.map((v) => v.view.file)
-	} catch (e) {
+	} catch {
 		return []
 	}
 }

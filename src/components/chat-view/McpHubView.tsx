@@ -91,7 +91,7 @@ const McpHubView = () => {
 		// check config is valid json
 		try {
 			JSON.parse(newServerConfig)
-		} catch (error) {
+		} catch {
 			new Notice(t('mcpHub.invalidConfig'))
 			return
 		}

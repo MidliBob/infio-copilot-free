@@ -671,7 +671,7 @@ export function parseMsgBlocks(
 							if (Array.isArray(parsedUrls)) {
 								urls = parsedUrls
 							}
-						} catch (error) {
+						} catch {
 							// logger.error('Failed to parse URLs JSON', error)
 						}
 					}

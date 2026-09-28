@@ -3,7 +3,6 @@
 import { App } from "obsidian"
 
 import { McpHub } from "./McpHub"
-import { logger } from '../../utils/logger'
 
 /**
  * Singleton manager for MCP server instances.

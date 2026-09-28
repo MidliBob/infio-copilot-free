@@ -119,6 +119,27 @@ Planned. Requirements and steps:
   `src/` needs several GB of heap. Use `pnpm run lint:ratchet -- --batch=14`
   to lint in chunks (slower, but each process stays under ~1 GB).
 
+## Validator warnings with written justification
+
+For catalog submission the Obsidian plugin validator must reach zero
+*errors*; warnings are acceptable only with a written rationale. The
+ones that cannot be fixed by construction are recorded here:
+
+- `fetch`, `globalThis` and bare `setTimeout/clearTimeout` inside
+  `src/embedworker/*` and `src/pgworker/*`: Web Workers have neither
+  Obsidian's `requestUrl` nor a `window`; workers use the platform
+  primitives by design (comments in place mark each spot).
+- `globalThis` in `src/utils/logger.ts`: the logging facade must work
+  in the main thread AND in workers, where `window` does not exist.
+- The stage-2 `fetch` in `src/utils/ollama.ts`: an intentional
+  reproduction of the renderer transport to detect OLLAMA_ORIGINS
+  (CORS) blocks; `requestUrl` bypasses CORS and cannot detect them.
+
+Deliberately deferred to planned releases: `no-misused-promises`
+void-wrapping of async JSX handlers, the `no-unsafe-*`/`any` debt
+(phase 2 pass 3, module by module), SSE -> StreamableHTTP and the
+declarative Settings API (phase 3).
+
 ## Roadmap
 
 See [ROADMAP.md](ROADMAP.md) — it is the single source of truth for release
