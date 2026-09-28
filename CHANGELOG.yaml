@@ -1,4 +1,11 @@
 releases:
+  - version: "1.6.11"
+    fixes:
+      - "Local-provider model downloads no longer die on CORS-blocked mirrors: when huggingface.co is unreachable the worker falls back to hf-mirror.com, which sends no Access-Control-Allow-Origin headers, and the worker's plain fetch was blocked for origin app://obsidian.md ('Failed to fetch', then the circuit breaker). Model and endpoint requests now go through a fetch proxy: the worker posts fetch-request messages and the main thread performs them with requestUrl (native HTTP, CORS-free), transferring the bytes back as an ArrayBuffer; blob/data URLs stay native. With useBrowserCache already on, a successfully loaded model is then served from the IndexedDB cache without network"
+      - "Ripgrep spawn failures now suggest installing ripgrep when it is missing (the real-world Windows case): the error names the binary, the settings page and, per platform, 'winget install BurntSushi.ripgrep.MSVC' (PowerShell) or the macOS/Linux package managers; the same install instruction is shown in the Ripgrep path setting description (en/ru/zh-cn)"
+    other:
+      - "New src/embedworker/fetch-proxy-protocol.ts carries the proxy protocol as pure functions (performFetchProxyRequest, responseFromFetchProxy, message guards) and is covered by 6 unit tests; total 172 tests, Jest console clean"
+      - "The worker endpoint reachability probe also runs through the proxy now, with the timeout applied by requestUrl on the main thread; the last type assertion left in embed.worker.ts is gone (baseline 1076 errors in 125 files)"
   - version: "1.6.10"
     fixes:
       - "Ripgrep backend failures are actionable now: a spawn error (missing binary, permissions, wrong path - the common Windows case) reports the exact binary used and points to Settings -> Infio Copilot Free -> Files search, or to switching the regex backend to the built-in plugin; previously the tool answer was a bare 'ripgrep process error: <syscall>'"
