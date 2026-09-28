@@ -331,6 +331,8 @@ export default {
 			localProviderFeature1: '完全隐私 - 数据不会离开您的设备',
 			localProviderFeature2: '无 API 费用 - 完全本地运行',
 			localProviderFeature3: '离线功能 - 无需网络连接即可工作',
+			localEmbeddingsWebgpuTitle: '本地嵌入使用 GPU（WebGPU）',
+			localEmbeddingsWebgpuDescription: '实验性功能：本地 transformers.js 嵌入模型通过 WebGPU（fp16）在 GPU 上运行。若无法创建 WebGPU 会话，插件将回退到 WASM CPU（q8）。不同后端的向量数值不一致——切换此开关后请重建 vault 索引。',
 			testConnection: {
 				testApiConnection: '测试 API 连接',
 				testingConnection: '正在测试连接...',

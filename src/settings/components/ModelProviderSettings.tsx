@@ -12,7 +12,7 @@ import { showMessage } from '../../utils/modal-dialogs';
 import { OllamaHealthResult, checkOllamaHealth } from '../../utils/ollama';
 import { getProviderApiUrl } from '../../utils/provider-urls';
 
-import { ApiKeyComponent, CustomUrlComponent } from './FormComponents';
+import { ApiKeyComponent, CustomUrlComponent, ToggleComponent } from './FormComponents';
 import { ComboBoxComponent } from './ProviderModelsPicker';
 import { logger } from '../../utils/logger'
 
@@ -665,6 +665,21 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 						isEmbedding={true}
 						updateModel={updateEmbeddingModelId}
 					/>
+
+					{(settings.embeddingModelProvider || ApiProvider.LocalProvider) ===
+						ApiProvider.LocalProvider && (
+						<ToggleComponent
+							name={t("settings.ModelProvider.localEmbeddingsWebgpuTitle")}
+							description={t("settings.ModelProvider.localEmbeddingsWebgpuDescription")}
+							value={settings.localEmbeddingsWebgpu}
+							onChange={(value) =>
+								void handleSettingsUpdate({
+									...settings,
+									localEmbeddingsWebgpu: value,
+								})
+							}
+						/>
+					)}
 				</div>
 			</div>
 

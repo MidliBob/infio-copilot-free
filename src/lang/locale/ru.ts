@@ -628,6 +628,8 @@ export default {
 			"localProviderFeature1": "Полная приватность — данные не покидают устройство",
 			"localProviderFeature2": "Без затрат на API — всё выполняется локально",
 			"localProviderFeature3": "Работает офлайн — без подключения к интернету",
+			"localEmbeddingsWebgpuTitle": "Использовать GPU (WebGPU) для локальных эмбеддингов",
+			"localEmbeddingsWebgpuDescription": "Экспериментально: локальная модель transformers.js считается на GPU через WebGPU (fp16). Если сессию WebGPU создать не удаётся, плагин откатывается на WASM CPU (q8). Векторы разных бэкендов численно не совпадают - после переключения тумблера пересоберите индекс vault.",
 			"testConnection": {
 				"testApiConnection": "Проверить подключение к API",
 				"testingConnection": "Проверка подключения...",
