@@ -1,4 +1,12 @@
 releases:
+  - version: "1.6.12"
+    fixes:
+      - "The 1.6.11 fetch proxy no longer confuses its own answers with commands: the worker's main message listener ignored fetch-response messages, so every proxied download also ran through processMessage and threw 'Unknown method: undefined' into the console; responses are now routed to the proxy listener only"
+      - "Proxied downloads carry Content-Type again (alongside Content-Length): without it the ONNX Runtime wasm streaming compile failed with 'Incorrect response MIME type. Expected application/wasm' and fell back to slower ArrayBuffer instantiation; a protocol test now guards the header"
+      - "The transient 'TransEngine: embedding model or insight manager not available' warning (startup, or while a model load is failing) is logged at debug level - the actionable details and the one-click-configuration hint that follow it were already debug-level"
+    other:
+      - "Field note: 'Cannot reach endpoint https://huggingface.co: net::ERR_CONNECTION_CLOSED' means the user's network blocks Hugging Face; the endpoint probe fails honestly and the worker switches to the mirror, which the proxy now serves without CORS problems"
+      - "Unit tests: 172 total (the protocol suite grew a Content-Type regression guard); Jest console clean; lint ratchet baselines of the touched files unchanged"
   - version: "1.6.11"
     fixes:
       - "Local-provider model downloads no longer die on CORS-blocked mirrors: when huggingface.co is unreachable the worker falls back to hf-mirror.com, which sends no Access-Control-Allow-Origin headers, and the worker's plain fetch was blocked for origin app://obsidian.md ('Failed to fetch', then the circuit breaker). Model and endpoint requests now go through a fetch proxy: the worker posts fetch-request messages and the main thread performs them with requestUrl (native HTTP, CORS-free), transferring the bytes back as an ArrayBuffer; blob/data URLs stay native. With useBrowserCache already on, a successfully loaded model is then served from the IndexedDB cache without network"
