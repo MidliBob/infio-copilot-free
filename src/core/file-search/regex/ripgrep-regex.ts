@@ -62,7 +62,12 @@ async function execRipgrep(bin: string, args: string[]): Promise<string> {
 			}
 		})
 		rgProcess.on("error", (error) => {
-			reject(new Error(`ripgrep process error: ${error.message}`))
+			reject(new Error(
+				`ripgrep process error: ${error.message} (binary: ${bin}). ` +
+				'Check Settings -> Infio Copilot Free -> Files search: the ripgrep ' +
+				'path must point to a runnable rg executable, or switch the regex ' +
+				'search backend to the built-in plugin.',
+			))
 		})
 	})
 }
@@ -132,12 +137,8 @@ export async function regexSearchUsingRipgrep(
 					const currentLine = currentResult.line
 					const beforeContext = currentResult.beforeContext
 					const afterContext = currentResult.afterContext
-					if (
-						currentLine !== undefined &&
-						beforeContext !== undefined &&
-						afterContext !== undefined
-					) {
-						if (parsed.data.line_number < currentLine) {
+					if (beforeContext !== undefined && afterContext !== undefined) {
+						if (currentLine !== undefined && parsed.data.line_number < currentLine) {
 							beforeContext.push(truncatedContext)
 						} else {
 							afterContext.push(truncatedContext)
