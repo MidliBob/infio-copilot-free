@@ -1,4 +1,13 @@
 releases:
+  - version: "1.6.9"
+    fixes:
+      - "Obsidian validator quick-wins: cross-window instanceOf instead of instanceof HTMLElement; the ripgrep exclusion glob now uses Vault#configDir instead of a hardcoded '.obsidian' (and its non-null assertions are gone); the debug gc hook no longer touches 'global' or casts; bare setTimeout became window.setTimeout; the deprecated onnx wasm.simd flag is dropped; the embedding-dimension probe checks 'undefined' instead of Promise truthiness; the PGlite live types resolve without @ts-expect-error; enum-to-string comparisons go through toString(); the error-notice layer now builds its DOM with Obsidian's createFragment/createDiv/createEl helpers per plugin guidelines"
+      - "The release-notes tooling moved from js-yaml (flagged by the validator's module-replacements list) to the yaml package; package.json no longer mentions js-yaml"
+    other:
+      - "Validator recommendations cleaned where free: unused destructurings/catch parameters/imports removed, 'catch {}' adopted, and the unavoidable warnings (worker fetch/globalThis/setTimeout, logger globalThis, the OLLAMA_ORIGINS stage-2 fetch) are documented with written justification in MAINTAINING.md for catalog review"
+      - "Frozen debt shrank as casts and any-chains disappeared along the way: eslint baseline 1132 -> 1077 errors in 125 files (vector-manager 63 -> 39, ripgrep-regex 27 -> 21, database-manager 7 -> 2 among others); ts-suppressions 77 -> 76"
+      - "Unit tests: 166 total, Jest console clean; the error-notice suite gained a cast-free jsdom polyfill of the Obsidian dom extensions"
+      - "Deliberately deferred and tracked: void-wrapping async JSX handlers (no-misused-promises), the remaining no-unsafe-*/any debt (phase 2 pass 3), SSE -> StreamableHTTP and the declarative Settings API (phase 3)"
   - version: "1.6.8"
     fixes:
       - "Type-check regression from 1.6.7: 'App.plugins' does not exist in Obsidian's public typings (TS2339), so reading the plugin registry there was rejected by tsc. The registry is now read reflectively into an unknown value (Reflect.get) and validated structurally by getDataviewApi - no casts, no global App augmentation, and an unexpected shape still yields the graceful 'Dataview plugin is not installed' path"
