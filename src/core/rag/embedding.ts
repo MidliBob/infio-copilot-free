@@ -46,12 +46,14 @@ export const getEmbeddingModel = (
 				supportsBatch: true,
 				getEmbedding: async (text: string) => {
 					try {
-						// 确保模型已加载
-						if (!embeddingManager.modelLoaded || embeddingManager.currentModel !== settings.embeddingModelId) {
-							logger.debug(`Loading model: ${settings.embeddingModelId}`)
-							await embeddingManager.loadModel(settings.embeddingModelId, settings.localEmbeddingsWebgpu)
-						}
-						
+						// loadModel is idempotent: it returns immediately when
+						// this exact model+backend combination is live, and
+						// unloads+reloads when the model id OR the WebGPU
+						// toggle changed at runtime. The old guard here
+						// compared only the model id, so flipping the GPU
+						// toggle took effect solely after a plugin restart.
+						await embeddingManager.loadModel(settings.embeddingModelId, settings.localEmbeddingsWebgpu)
+
 						const result = await embeddingManager.embed(text)
 						return result.vec
 					} catch (error) {
@@ -61,12 +63,10 @@ export const getEmbeddingModel = (
 				},
 				getBatchEmbeddings: async (texts: string[]) => {
 					try {
-						// 确保模型已加载
-						if (!embeddingManager.modelLoaded || embeddingManager.currentModel !== settings.embeddingModelId) {
-							logger.debug(`Loading model: ${settings.embeddingModelId}`)
-							await embeddingManager.loadModel(settings.embeddingModelId, settings.localEmbeddingsWebgpu)
-						}
-						
+						// Same idempotent load as in getEmbedding: picks up
+						// model-id and GPU-toggle changes without a restart.
+						await embeddingManager.loadModel(settings.embeddingModelId, settings.localEmbeddingsWebgpu)
+
 						const results = await embeddingManager.embedBatch(texts)
 						return results.map(result => result.vec)
 					} catch (error) {

@@ -218,9 +218,47 @@ async function loadTransformers(): Promise<void> {
 	}
 }
 
+/**
+ * Release the ONNX session(s) held by a pipeline value.
+ *
+ * transformers.js v3 `Pipeline` exposes an async `dispose()`; the deprecated
+ * v2 API used `destroy()`. Both names are probed at runtime (no type
+ * assertions) and the release is awaited, so session memory - notably the
+ * WebGPU one - is really freed before a subsequent load creates a new
+ * session. The old unload path only checked for v2's `destroy()`, which
+ * never matched under v3, so "unloading" silently leaked sessions.
+ */
+async function disposePipelineValue(value: unknown): Promise<void> {
+	if (typeof value !== 'object' || value === null) {
+		return;
+	}
+	for (const method of ['dispose', 'destroy']) {
+		if (method in value) {
+			const fn: unknown = Reflect.get(value, method);
+			if (typeof fn === 'function') {
+				await fn.call(value);
+				return;
+			}
+		}
+	}
+}
+
 async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ model_loaded: boolean; backend: string }> {
 	try {
 		console.debug(`Loading model: ${modelKey}, GPU: ${useGpu}`);
+
+		// A reload can target a different device (the GPU toggle flipped at
+		// runtime) or a different model: release the previous session first.
+		// Without this the old pipeline leaks and - for use_gpu=false - even
+		// keeps serving embeddings, because the WASM fallback below only
+		// creates a session when `pipeline` is null.
+		if (pipeline !== null) {
+			console.debug('Disposing the previous pipeline before load');
+			await disposePipelineValue(pipeline);
+			pipeline = null;
+		}
+		tokenizer = null;
+		model = null;
 
 		// 确保 Transformers.js 已加载
 		await loadTransformers();
@@ -338,10 +376,9 @@ async function unloadModel(): Promise<{ model_unloaded: boolean }> {
 	try {
 		console.debug('Unloading model...');
 
-		if (pipeline && typeof pipeline === 'object' && 'destroy' in pipeline) {
-			const pipelineWithDestroy = pipeline as { destroy: () => void };
-			pipelineWithDestroy.destroy();
-		}
+		// v3 Pipeline: async dispose() (v2 used destroy()); awaited so the
+		// ONNX/WebGPU session is really released before the next load.
+		await disposePipelineValue(pipeline);
 		pipeline = null;
 
 		tokenizer = null;

@@ -535,7 +535,7 @@ export async function loadDesktop(base: Plugin) {
 		callback: async () => {
 			try {
 				if (!plugin.embeddingManager) { new Notice(t('notifications.embeddingNotInitialized'), 5000); return; }
-				await plugin.embeddingManager.loadModel("Xenova/all-MiniLM-L6-v2", true);
+				await plugin.embeddingManager.loadModel("Xenova/all-MiniLM-L6-v2", plugin.settings.localEmbeddingsWebgpu);
 				const testText = "hello world";
 				const result = await plugin.embeddingManager.embed(testText);
 				const resultMessage = t('notifications.embeddingTestResult', {

@@ -19,6 +19,8 @@ export interface EmbedResult {
 
 export interface ModelLoadResult {
 	model_loaded: boolean;
+	/** Actual backend the worker settled on (e.g. webgpu-fp16, wasm-q8). */
+	backend?: string;
 }
 
 export interface ModelUnloadResult {
@@ -47,6 +49,14 @@ export class EmbeddingManager {
 	private nextRequestId = 0;
 	private isModelLoaded = false;
 	private currentModelId: string | null = null;
+	// The GPU flag the current session was loaded with. The worker bakes the
+	// device into the ONNX session at load time, so a flipped toggle must
+	// trigger unload+load - comparing only the model id (as before) made the
+	// setting apply exclusively at plugin start.
+	private currentUseGpu: boolean | null = null;
+	// In-flight load, so concurrent callers coalesce into one worker round
+	// trip instead of racing several load/unload sequences.
+	private loadInFlight: Promise<ModelLoadResult> | null = null;
 
 	constructor() {
 		// 创建 Worker，使用与 pgworker 相同的模式
@@ -96,6 +106,7 @@ export class EmbeddingManager {
 			// 重置状态
 			this.isModelLoaded = false;
 			this.currentModelId = null;
+			this.currentUseGpu = null;
 		};
 	}
 
@@ -107,19 +118,41 @@ export class EmbeddingManager {
 		});
 	}
 
-	public async loadModel(modelId: string, useGpu: boolean = false): Promise<ModelLoadResult> {
+	public loadModel(modelId: string, useGpu: boolean = false): Promise<ModelLoadResult> {
+		// Idempotent fast path: the very same model AND backend (GPU flag) is
+		// already live - nothing to do. embedding.ts calls loadModel before
+		// every batch, so this path must stay cheap and silent.
+		if (this.isModelLoaded && this.currentModelId === modelId && this.currentUseGpu === useGpu) {
+			return Promise.resolve({ model_loaded: true });
+		}
+
+		// Another load is in flight (possibly for a different configuration):
+		// wait for it to settle, then re-evaluate against the fresh state.
+		if (this.loadInFlight !== null) {
+			const inFlight = this.loadInFlight;
+			return inFlight.then(
+				() => this.loadModel(modelId, useGpu),
+				() => this.loadModel(modelId, useGpu),
+			);
+		}
+
+		const loadPromise = this.performLoadModel(modelId, useGpu).finally(() => {
+			if (this.loadInFlight === loadPromise) {
+				this.loadInFlight = null;
+			}
+		});
+		this.loadInFlight = loadPromise;
+		return loadPromise;
+	}
+
+	private async performLoadModel(modelId: string, useGpu: boolean): Promise<ModelLoadResult> {
 		logger.debug(`Loading embedding model: ${modelId}, GPU: ${useGpu}`);
 
 		try {
-			// 如果已经加载了相同的模型，直接返回
-			if (this.isModelLoaded && this.currentModelId === modelId) {
-				logger.debug(`Model ${modelId} already loaded`);
-				return { model_loaded: true };
-			}
-
-			// 如果加载了不同的模型，先卸载
-			if (this.isModelLoaded && this.currentModelId !== modelId) {
-				logger.debug(`Unloading previous model: ${this.currentModelId}`);
+			// A different model or a different backend (GPU toggle) is
+			// loaded: unload first, then load the requested configuration.
+			if (this.isModelLoaded && (this.currentModelId !== modelId || this.currentUseGpu !== useGpu)) {
+				logger.debug(`Unloading previous model: ${this.currentModelId} (GPU: ${this.currentUseGpu})`);
 				await this.unloadModel();
 			}
 
@@ -130,9 +163,10 @@ export class EmbeddingManager {
 
 			this.isModelLoaded = result.model_loaded;
 			this.currentModelId = result.model_loaded ? modelId : null;
+			this.currentUseGpu = result.model_loaded ? useGpu : null;
 
 			if (result.model_loaded) {
-				logger.debug(`Model ${modelId} loaded successfully`);
+				logger.debug(`Model ${modelId} loaded successfully (GPU: ${useGpu}, backend: ${result.backend ?? 'unknown'})`);
 			}
 
 			return result;
@@ -140,6 +174,7 @@ export class EmbeddingManager {
 			logger.error(`Failed to load model ${modelId}:`, error);
 			this.isModelLoaded = false;
 			this.currentModelId = null;
+			this.currentUseGpu = null;
 			throw error;
 		}
 	}
@@ -226,6 +261,7 @@ export class EmbeddingManager {
 
 			this.isModelLoaded = false;
 			this.currentModelId = null;
+			this.currentUseGpu = null;
 
 			logger.debug('Model unloaded successfully');
 			return result;
@@ -234,6 +270,7 @@ export class EmbeddingManager {
 			// 即使卸载失败，也重置状态
 			this.isModelLoaded = false;
 			this.currentModelId = null;
+			this.currentUseGpu = null;
 			throw error;
 		}
 	}
@@ -298,6 +335,8 @@ export class EmbeddingManager {
 		this.worker.terminate();
 		this.requests.clear();
 		this.isModelLoaded = false;
+		this.currentModelId = null;
+		this.currentUseGpu = null;
 	}
 
 	/**
