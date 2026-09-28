@@ -1,4 +1,4 @@
-console.log('Embedding worker loaded');
+console.debug('Embedding worker loaded');
 
 // --- Electron `process` shim neutralization -----------------------------
 // Obsidian desktop runs inside Electron, which exposes a `process` shim
@@ -28,7 +28,7 @@ console.log('Embedding worker loaded');
 		}
 	}
 	const after: { process?: unknown } = globalThis;
-	console.log(`[worker] Electron process shim: present=${shimPresent} neutralized=${after.process === undefined}`);
+	console.debug(`[worker] Electron process shim: present=${shimPresent} neutralized=${after.process === undefined}`);
 })();
 
 interface EmbedInput {
@@ -103,12 +103,12 @@ async function testEndpoint(url: string, timeout = 3000): Promise<boolean> {
 	const signal = controller.signal;
 
 	const timeoutId = setTimeout(() => {
-		console.log(`Request to ${url} timed out.`);
+		console.debug(`Request to ${url} timed out.`);
 		controller.abort();
 	}, timeout);
 
 	try {
-		console.log(`Testing endpoint: ${url}`);
+		console.debug(`Testing endpoint: ${url}`);
 		// 我们使用 'HEAD' 方法，因为它只请求头部信息，非常快速，适合做存活检测。
 		// 'no-cors' 模式允许我们在浏览器环境中进行跨域请求以进行简单的可达性测试，
 		// 即使我们不能读取响应内容，请求成功也意味着网络是通的。
@@ -116,7 +116,7 @@ async function testEndpoint(url: string, timeout = 3000): Promise<boolean> {
 		
 		// 如果 fetch 成功，清除超时定时器并返回 true
 		clearTimeout(timeoutId);
-		console.log(`Endpoint ${url} is reachable.`);
+		console.debug(`Endpoint ${url} is reachable.`);
 		return true;
 	} catch (error) {
 		// 如果发生网络错误或请求被中止 (超时)，则进入 catch 块
@@ -137,10 +137,10 @@ async function pickRemoteHost(): Promise<string | null> {
 	const isDefaultReachable = await testEndpoint(defaultEndpoint);
 
 	if (!isDefaultReachable) {
-		console.log(`Default endpoint is unreachable, switching to the fallback mirror: ${fallbackEndpoint}`);
+		console.debug(`Default endpoint is unreachable, switching to the fallback mirror: ${fallbackEndpoint}`);
 		return fallbackEndpoint;
 	}
-	console.log(`Using the default endpoint: ${defaultEndpoint}`);
+	console.debug(`Using the default endpoint: ${defaultEndpoint}`);
 	return null;
 }
 
@@ -149,7 +149,7 @@ async function loadTransformers(): Promise<void> {
 	if (transformersLoaded) return;
 
 	try {
-		console.log('Loading Transformers.js...');
+		console.debug('Loading Transformers.js...');
 
 		// Transformers.js v3 (@huggingface/transformers) - maintained successor of
 		// the deprecated @xenova/transformers v2, with real WebGPU support
@@ -173,7 +173,7 @@ async function loadTransformers(): Promise<void> {
 
 		transformersModule = transformers;
 		transformersLoaded = true;
-		console.log('Transformers.js loaded successfully');
+		console.debug('Transformers.js loaded successfully');
 	} catch (error) {
 		console.error('Failed to load Transformers.js:', error);
 		throw new Error(`Failed to load Transformers.js: ${error}`);
@@ -182,7 +182,7 @@ async function loadTransformers(): Promise<void> {
 
 async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ model_loaded: boolean }> {
 	try {
-		console.log(`Loading model: ${modelKey}, GPU: ${useGpu}`);
+		console.debug(`Loading model: ${modelKey}, GPU: ${useGpu}`);
 
 		// 确保 Transformers.js 已加载
 		await loadTransformers();
@@ -199,7 +199,7 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 		const progress_callback = (progress: unknown) => {
 			try {
 				if (progress && typeof progress === 'object') {
-					// console.log('Model loading progress:', progress);
+					// console.debug('Model loading progress:', progress);
 				}
 			} catch (error) {
 				// 忽略进度回调错误，避免中断模型加载
@@ -215,16 +215,33 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 		// and keep failing the load. device:'wasm' (plus env.device above)
 		// makes the choice explicit. Phase 1 revisits WebGPU bundling.
 		if (useGpu) {
-			console.log('[Transformers] GPU requested; staying on WASM CPU (q8) until phase-1 WebGPU work');
+			console.debug('[Transformers] GPU requested; staying on WASM CPU (q8) until phase-1 WebGPU work');
 		}
-		pipeline = await pipelineFactory('feature-extraction', modelKey, {
-			device: 'wasm',
-			dtype: 'q8',
-			progress_callback,
-		});
+		// Hugging Face serves model files with chunked transfer encoding (no
+		// content-length header); transformers.js console.warns with a stack
+		// trace about it on every load. The condition is known-benign (the
+		// buffer grows as needed), so suppress exactly that message while the
+		// model and tokenizer load, and restore the console afterwards.
+		const originalWarn = console.warn
+		console.warn = (...args: unknown[]) => {
+			const first = args[0]
+			if (typeof first === 'string' && first.includes('Unable to determine content-length')) {
+				return
+			}
+			originalWarn(...args)
+		}
+		try {
+			pipeline = await pipelineFactory('feature-extraction', modelKey, {
+				device: 'wasm',
+				dtype: 'q8',
+				progress_callback,
+			});
 
-		// 创建分词器
-		tokenizer = await AutoTokenizer.from_pretrained(modelKey);
+			// 创建分词器
+			tokenizer = await AutoTokenizer.from_pretrained(modelKey);
+		} finally {
+			console.warn = originalWarn
+		}
 
 		model = {
 			loaded: true,
@@ -232,7 +249,7 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 			use_gpu: useGpu
 		};
 
-		console.log(`Model ${modelKey} loaded successfully`);
+		console.debug(`Model ${modelKey} loaded successfully`);
 		return { model_loaded: true };
 
 	} catch (error) {
@@ -243,7 +260,7 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 
 async function unloadModel(): Promise<{ model_unloaded: boolean }> {
 	try {
-		console.log('Unloading model...');
+		console.debug('Unloading model...');
 
 		if (pipeline && typeof pipeline === 'object' && 'destroy' in pipeline) {
 			const pipelineWithDestroy = pipeline as { destroy: () => void };
@@ -254,7 +271,7 @@ async function unloadModel(): Promise<{ model_unloaded: boolean }> {
 		tokenizer = null;
 		model = null;
 
-		console.log('Model unloaded successfully');
+		console.debug('Model unloaded successfully');
 		return { model_unloaded: true };
 
 	} catch (error) {
@@ -285,7 +302,7 @@ async function embedBatch(inputs: EmbedInput[]): Promise<EmbedResult[]> {
 			throw new Error('Model not loaded');
 		}
 
-		console.log(`Processing ${inputs.length} inputs`);
+		console.debug(`Processing ${inputs.length} inputs`);
 
 		// 过滤空输入
 		const filteredInputs = inputs.filter(item => item.embed_input && item.embed_input.length > 0);
@@ -298,7 +315,7 @@ async function embedBatch(inputs: EmbedInput[]): Promise<EmbedResult[]> {
 		const batchSize = 1;
 
 		if (filteredInputs.length > batchSize) {
-			console.log(`Processing ${filteredInputs.length} inputs in batches of ${batchSize}`);
+			console.debug(`Processing ${filteredInputs.length} inputs in batches of ${batchSize}`);
 			const results: EmbedResult[] = [];
 
 			for (let i = 0; i < filteredInputs.length; i += batchSize) {
@@ -400,19 +417,19 @@ async function processMessage(data: WorkerMessage): Promise<WorkerResponse> {
 
 		switch (method) {
 			case 'load': {
-				console.log('Load method called with params:', params);
+				console.debug('Load method called with params:', params);
 				const loadParams = params as LoadParams;
 				result = await loadModel(loadParams.model_key, loadParams.use_gpu || false);
 				break;
 			}
 
 			case 'unload':
-				console.log('Unload method called');
+				console.debug('Unload method called');
 				result = await unloadModel();
 				break;
 
 			case 'embed_batch': {
-				console.log('Embed batch method called');
+				console.debug('Embed batch method called');
 				if (!model) {
 					throw new Error('Model not loaded');
 				}
@@ -432,7 +449,7 @@ async function processMessage(data: WorkerMessage): Promise<WorkerResponse> {
 			}
 
 			case 'count_tokens': {
-				console.log('Count tokens method called');
+				console.debug('Count tokens method called');
 				if (!model) {
 					throw new Error('Model not loaded');
 				}
@@ -466,7 +483,7 @@ async function processMessage(data: WorkerMessage): Promise<WorkerResponse> {
 
 self.addEventListener('message', async (event) => {
 	try {
-		console.log('Worker received message:', event.data);
+		console.debug('Worker received message:', event.data);
 
 		// 验证消息格式
 		if (!event.data || typeof event.data !== 'object') {
@@ -479,7 +496,7 @@ self.addEventListener('message', async (event) => {
 		}
 
 		const response = await processMessage(event.data as WorkerMessage);
-		console.log('Worker sending response:', response);
+		console.debug('Worker sending response:', response);
 		self.postMessage(response);
 	} catch (error) {
 		console.error('Unhandled error in worker message handler:', error);
@@ -507,4 +524,4 @@ self.addEventListener('unhandledrejection', (event) => {
 	event.preventDefault(); // 防止默认的控制台错误
 });
 
-console.log('Embedding worker ready'); 
+console.debug('Embedding worker ready');

@@ -26,6 +26,6 @@ export const createAndInitDb = async (filesystem: string, assets?: PgliteAssets)
 		},
 		filesystem, 
 	)
-	console.log(`PGlite DB created in ${filesystem}://infio-db`)
+	console.debug(`PGlite DB created in ${filesystem}://infio-db`)
 	return pg
 }

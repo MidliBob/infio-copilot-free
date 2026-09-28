@@ -138,7 +138,10 @@ ones that cannot be fixed by construction are recorded here:
 Deliberately deferred to planned releases: `no-misused-promises`
 void-wrapping of async JSX handlers, the `no-unsafe-*`/`any` debt
 (phase 2 pass 3, module by module), SSE -> StreamableHTTP and the
-declarative Settings API (phase 3).
+declarative Settings API (phase 3), and the typescript-eslint
+"unsupported TypeScript version" banner on `pnpm lint*` (migration to
+@typescript-eslint v8, which supports TS 5.9, is part of the phase-3
+ESLint gate hardening; the banner does not affect results).
 
 ## Roadmap
 

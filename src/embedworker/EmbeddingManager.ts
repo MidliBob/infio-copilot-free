@@ -1,5 +1,6 @@
 // 导入完整的嵌入 Worker
 // @ts-nocheck
+import { logger } from '../utils/logger'
 import EmbedWorker from './embed.worker';
 
 // 类型定义
@@ -62,7 +63,7 @@ export class EmbeddingManager {
 					this.requests.delete(id);
 				}
 			} catch (err) {
-				console.error("Error processing worker message:", err);
+				logger.error("Error processing worker message:", err);
 				// 拒绝所有待处理的请求
 				this.requests.forEach(request => {
 					request.reject(new Error(`Worker message processing error: ${(err as Error).message}`));
@@ -72,7 +73,7 @@ export class EmbeddingManager {
 		};
 
 		this.worker.onerror = (error) => {
-			console.error("EmbeddingWorker error:", error);
+			logger.error("EmbeddingWorker error:", error);
 			// 拒绝所有待处理的请求
 			this.requests.forEach(request => {
 				request.reject(new Error(`Worker error: ${error.message || 'Unknown worker error'}`));
@@ -94,18 +95,18 @@ export class EmbeddingManager {
 	}
 
 	public async loadModel(modelId: string, useGpu: boolean = false): Promise<ModelLoadResult> {
-		console.log(`Loading embedding model: ${modelId}, GPU: ${useGpu}`);
+		logger.debug(`Loading embedding model: ${modelId}, GPU: ${useGpu}`);
 
 		try {
 			// 如果已经加载了相同的模型，直接返回
 			if (this.isModelLoaded && this.currentModelId === modelId) {
-				console.log(`Model ${modelId} already loaded`);
+				logger.debug(`Model ${modelId} already loaded`);
 				return { model_loaded: true };
 			}
 
 			// 如果加载了不同的模型，先卸载
 			if (this.isModelLoaded && this.currentModelId !== modelId) {
-				console.log(`Unloading previous model: ${this.currentModelId}`);
+				logger.debug(`Unloading previous model: ${this.currentModelId}`);
 				await this.unloadModel();
 			}
 
@@ -118,12 +119,12 @@ export class EmbeddingManager {
 			this.currentModelId = result.model_loaded ? modelId : null;
 
 			if (result.model_loaded) {
-				console.log(`Model ${modelId} loaded successfully`);
+				logger.debug(`Model ${modelId} loaded successfully`);
 			}
 
 			return result;
 		} catch (error) {
-			console.error(`Failed to load model ${modelId}:`, error);
+			logger.error(`Failed to load model ${modelId}:`, error);
 			this.isModelLoaded = false;
 			this.currentModelId = null;
 			throw error;
@@ -144,16 +145,16 @@ export class EmbeddingManager {
 			return [];
 		}
 
-		console.log(`Generating embeddings for ${texts.length} texts`);
+		logger.debug(`Generating embeddings for ${texts.length} texts`);
 
 		try {
 			const inputs = texts.map(text => ({ embed_input: text }));
 			const results = await this.postRequest<EmbedResult[]>('embed_batch', { inputs });
 
-			console.log(`Generated ${results.length} embeddings`);
+			logger.debug(`Generated ${results.length} embeddings`);
 			return results;
 		} catch (error) {
-			console.error('Failed to generate embeddings:', error);
+			logger.error('Failed to generate embeddings:', error);
 			throw error;
 		}
 	}
@@ -192,7 +193,7 @@ export class EmbeddingManager {
 		try {
 			return await this.postRequest<TokenCountResult>('count_tokens', text);
 		} catch (error) {
-			console.error('Failed to count tokens:', error);
+			logger.error('Failed to count tokens:', error);
 			throw error;
 		}
 	}
@@ -202,21 +203,21 @@ export class EmbeddingManager {
 	 */
 	public async unloadModel(): Promise<ModelUnloadResult> {
 		if (!this.isModelLoaded) {
-			console.log('No model to unload');
+			logger.debug('No model to unload');
 			return { model_unloaded: true };
 		}
 
 		try {
-			console.log(`Unloading model: ${this.currentModelId}`);
+			logger.debug(`Unloading model: ${this.currentModelId}`);
 			const result = await this.postRequest<ModelUnloadResult>('unload', {});
 
 			this.isModelLoaded = false;
 			this.currentModelId = null;
 
-			console.log('Model unloaded successfully');
+			logger.debug('Model unloaded successfully');
 			return result;
 		} catch (error) {
-			console.error('Failed to unload model:', error);
+			logger.error('Failed to unload model:', error);
 			// 即使卸载失败，也重置状态
 			this.isModelLoaded = false;
 			this.currentModelId = null;

@@ -13,8 +13,11 @@
  *   console.warn                -> logger.warn  (always)
  *   console.error               -> logger.error (always)
  *
- * Worker bundles (embedworker/pgworker) intentionally keep bare console:
- * they run in a separate context without access to plugin settings.
+ * Worker bundles (embedworker/pgworker) keep bare console by necessity
+ * (no plugin settings in a worker), but routine per-message lines log at
+ * console.debug (hidden under DevTools default levels); warn/error stay
+ * visible. The embed worker also silences the known-benign transformers.js
+ * "Unable to determine content-length" warn while a model loads.
  */
 type ConsoleLike = {
 	log: (...args: unknown[]) => void
