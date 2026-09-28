@@ -1,4 +1,9 @@
 releases:
+  - version: "1.6.8"
+    fixes:
+      - "Type-check regression from 1.6.7: 'App.plugins' does not exist in Obsidian's public typings (TS2339), so reading the plugin registry there was rejected by tsc. The registry is now read reflectively into an unknown value (Reflect.get) and validated structurally by getDataviewApi - no casts, no global App augmentation, and an unexpected shape still yields the graceful 'Dataview plugin is not installed' path"
+    other:
+      - "Release verification now runs every gate with explicit exit codes after a masked pipeline (tsc output piped into tail) briefly hid this regression internally; all gates re-run green: type-check 0, 166/166 tests, lint ratchet unchanged, production build"
   - version: "1.6.7"
     fixes:
       - "The last eight audit findings are gone (pnpm audit is now completely clean): esbuild 0.17.3 (2023) upgraded to 0.28.2 with the transitive chains (ts-jest, drizzle-kit) overridden - this closes GHSA-67mh-4wv8-2f99 and completes the esbuild-plugin-inline-worker compatibility check planned for phase 4; and the obsidian-dataview devDependency is removed together with its obsidian-calendar-ui/svelte/preact chain (seven svelte advisories), which the Obsidian validator kept flagging"
