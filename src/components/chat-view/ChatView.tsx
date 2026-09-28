@@ -50,6 +50,7 @@ import {
 	MentionableBlockData,
 	MentionableCurrentFile,
 } from '../../types/mentionable'
+import { isCancellation } from '../../utils/abort-errors'
 import { ApplyEditToFile, SearchAndReplace } from '../../utils/apply'
 import { listFilesAndFolders, semanticSearchFiles } from '../../utils/glob-utils'
 import {
@@ -374,17 +375,21 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					}
 				}
 			} catch (error) {
-				if (error.name === 'AbortError') {
+				// Stop button, new submission, conversation switch, new chat and
+				// view unmount abort active streams on purpose - not an error.
+				if (isCancellation(error)) {
 					return
-				} else {
-					throw error
 				}
+				throw error
 			}
 		},
 		onError: (error) => {
 			setQueryProgress({
 				type: 'idle',
 			})
+			if (isCancellation(error)) {
+				return
+			}
 			if (
 				error instanceof LLMAPIKeyNotSetException ||
 				error instanceof LLMAPIKeyInvalidException ||
