@@ -1,4 +1,14 @@
 releases:
+  - version: "1.6.17"
+    fixes:
+      - "The WebGPU toggle now applies without a plugin restart: flipping 'Use GPU (WebGPU) for local embeddings' at runtime had no effect until reload because the device flag was lost at three levels - the lazy-load guard in embedding.ts compared only the model id, EmbeddingManager's early return did not track which GPU flag the session was loaded with, and the worker's reload path created a WASM session only when no pipeline existed at all (a reload without unload silently kept the old WebGPU session). The manager now remembers the flag (unload+load on any model or backend change), embedding.ts delegates the decision to the idempotent loadModel before every batch, and the worker always disposes the previous pipeline at the start of a load"
+      - "Session memory leak on unload fixed: the worker checked for v2's destroy() method that transformers.js v3 renamed to async dispose(), so 'unloading' only dropped the reference and never released the ONNX/WebGPU session; the new disposePipelineValue() probes both APIs without type assertions and awaits the release"
+      - "The 'Test local embeddings' command no longer hardcodes GPU=true - it passes the user's localEmbeddingsWebgpu setting, so the smoke test exercises the actual backend"
+    other:
+      - "Concurrent loadModel calls now coalesce into a single worker round trip (loadInFlight deduplication) - previously two consumers embedding at once could race duplicate load/unload sequences"
+      - "The landed backend is logged on the main thread too ('Model ... loaded successfully (GPU: ..., backend: webgpu-fp32)'), complementing the worker's console line"
+      - "New EmbeddingManager unit suite (8 cases: fast path, reload on toggle on/off, model change, dedup, embed after switch, failure reset, terminate) - 180 tests total, 20 suites; eslint baseline 827 -> 826 (one dead v2-era cast removed); type-check and the production build stay green"
+      - "Reminder unchanged: vectors from different backends are not numerically identical - rebuild the vault index after switching the toggle (the switch itself no longer needs a restart)"
   - version: "1.6.16"
     other:
       - "Internal typing burn-down (phase 2, the entrypoint cluster): main.desktop.ts lost the last blanket @ts-nocheck in the core modules and every type assertion (23 casts, 6 of them 'as unknown as any'); the desktop bootstrap now builds the augmented plugin with Object.assign + ThisType, so 'this' is fully typed in all of its methods. A new shared structural type InfioPluginLike (src/types/plugin.ts) replaces the InfioPlugin class in UI consumers (chat view wrapper, settings tab) - the class was unassignable from Plugin because of its async onload(), which is what forced the casts; McpHub/BaseFileView/JsonView take the plain Obsidian Plugin now"
