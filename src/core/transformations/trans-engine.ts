@@ -938,7 +938,9 @@ export class TransEngine {
 		})[]
 	> {
 		if (!this.embeddingModel || !this.insightManager) {
-			logger.warn('TransEngine: embedding model or insight manager not available')
+			// Transient (startup / failed load) or a missing one-click config:
+			// not an error condition, details follow at debug level.
+			logger.debug('TransEngine: embedding model or insight manager not available')
 			logger.debug("embeddingModel:", this.embeddingModel ? "initialized" : "not initialized");
 			logger.debug("insightManager:", this.insightManager ? "initialized" : "not initialized");
 			logger.debug("embeddingModelId:", this.settings.embeddingModelId);
@@ -998,7 +1000,9 @@ export class TransEngine {
 	 */
 	async getAllInsights(): Promise<Omit<import('../../database/schema').SelectSourceInsight, 'embedding'>[]> {
 		if (!this.embeddingModel || !this.insightManager) {
-			logger.warn('TransEngine: embedding model or insight manager not available')
+			// Transient (startup / failed load) or a missing one-click config:
+			// not an error condition, details follow at debug level.
+			logger.debug('TransEngine: embedding model or insight manager not available')
 			logger.debug("embeddingModel:", this.embeddingModel ? "initialized" : "not initialized");
 			logger.debug("insightManager:", this.insightManager ? "initialized" : "not initialized");
 			logger.debug("embeddingModelId:", this.settings.embeddingModelId);

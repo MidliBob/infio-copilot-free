@@ -521,6 +521,12 @@ async function processMessage(data: WorkerMessage): Promise<WorkerResponse> {
 
 self.addEventListener('message', async (event) => {
 	try {
+		// Fetch-proxy responses are consumed by the dedicated listener
+		// registered above; they carry no `method` and must never reach
+		// processMessage (they used to throw "Unknown method: undefined").
+		if (isFetchResponseMessage(event.data)) {
+			return;
+		}
 		console.debug('Worker received message:', event.data);
 
 		// 验证消息格式

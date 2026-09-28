@@ -311,10 +311,18 @@ export class EmbeddingManager {
 				responseType: 'arraybuffer',
 				timeout: timeoutMs,
 			})
+			// Forward the headers transformers.js and the WASM streaming
+			// compiler rely on: Content-Type (application/wasm, application/json)
+			// and Content-Length (download progress). The body is already
+			// decoded by requestUrl, so only these two are safe to replay.
 			const headers: Record<string, string> = {}
 			const contentLength = http.headers['content-length']
 			if (typeof contentLength === 'string') {
 				headers['Content-Length'] = contentLength
+			}
+			const contentType = http.headers['content-type']
+			if (typeof contentType === 'string') {
+				headers['Content-Type'] = contentType
 			}
 			return { status: http.status, headers, body: http.arrayBuffer }
 		})

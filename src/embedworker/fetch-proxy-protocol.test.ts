@@ -65,12 +65,15 @@ describe('responseFromFetchProxy', () => {
 			type: 'fetch-response',
 			requestId: 3,
 			status: 200,
-			headers: { 'Content-Length': '15' },
+			headers: { 'Content-Length': '15', 'Content-Type': 'application/wasm' },
 			body,
 		}
 		const response = responseFromFetchProxy(msg)
 		expect(response.status).toBe(200)
 		expect(response.headers.get('Content-Length')).toBe('15')
+		// regression guard: without Content-Type the ORT wasm streaming
+		// compile fails with "Incorrect response MIME type"
+		expect(response.headers.get('Content-Type')).toBe('application/wasm')
 		expect(await response.text()).toBe('tokenizer-bytes')
 	})
 
