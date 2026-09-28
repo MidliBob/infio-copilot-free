@@ -224,6 +224,8 @@ export const InfioSettingsSchema = z.object({
 	// Embedding Model
 	embeddingModelProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.LocalProvider),
 	embeddingModelId: z.string().catch(''),
+	// Opt-in WebGPU (fp16) for LocalProvider embeddings; WASM q8 otherwise/fallback.
+	localEmbeddingsWebgpu: z.boolean().catch(false),
 
 	// fuzzyMatchThreshold
 	fuzzyMatchThreshold: z.number().catch(0.85),

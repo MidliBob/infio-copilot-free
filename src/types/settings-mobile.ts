@@ -351,6 +351,7 @@ export const InfioSettingsSchema = z.object({
 	// Embedding Model
 	embeddingModelProvider: z.nativeEnum(ApiProvider).catch(ApiProvider.LocalProvider),
 	embeddingModelId: z.string().catch(''),
+	localEmbeddingsWebgpu: z.boolean().catch(false),
 
 	// fuzzyMatchThreshold
 	fuzzyMatchThreshold: z.number().catch(0.85),

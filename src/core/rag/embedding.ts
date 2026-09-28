@@ -49,7 +49,7 @@ export const getEmbeddingModel = (
 						// 确保模型已加载
 						if (!embeddingManager.modelLoaded || embeddingManager.currentModel !== settings.embeddingModelId) {
 							logger.debug(`Loading model: ${settings.embeddingModelId}`)
-							await embeddingManager.loadModel(settings.embeddingModelId, true)
+							await embeddingManager.loadModel(settings.embeddingModelId, settings.localEmbeddingsWebgpu)
 						}
 						
 						const result = await embeddingManager.embed(text)
@@ -64,7 +64,7 @@ export const getEmbeddingModel = (
 						// 确保模型已加载
 						if (!embeddingManager.modelLoaded || embeddingManager.currentModel !== settings.embeddingModelId) {
 							logger.debug(`Loading model: ${settings.embeddingModelId}`)
-							await embeddingManager.loadModel(settings.embeddingModelId, true)
+							await embeddingManager.loadModel(settings.embeddingModelId, settings.localEmbeddingsWebgpu)
 						}
 						
 						const results = await embeddingManager.embedBatch(texts)

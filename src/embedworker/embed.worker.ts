@@ -218,7 +218,7 @@ async function loadTransformers(): Promise<void> {
 	}
 }
 
-async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ model_loaded: boolean }> {
+async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ model_loaded: boolean; backend: string }> {
 	try {
 		console.debug(`Loading model: ${modelKey}, GPU: ${useGpu}`);
 
@@ -252,8 +252,28 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 		// Obsidian desktop, v3's 'auto' device would keep selecting webgpu
 		// and keep failing the load. device:'wasm' (plus env.device above)
 		// makes the choice explicit. Phase 1 revisits WebGPU bundling.
-		if (useGpu) {
-			console.debug('[Transformers] GPU requested; staying on WASM CPU (q8) until phase-1 WebGPU work');
+		// useGpu is an explicit opt-in (settings.localEmbeddingsWebgpu): try a
+		// WebGPU fp16 session first. ORT's webgpu EP used to crash at session
+		// creation in this inline blob worker, so every failure falls back to
+		// the historically stable WASM q8 path. Vectors from different
+		// backends are not numerically identical - rebuild the index after
+		// switching the toggle (documented in the setting description).
+		let backend = 'wasm-q8';
+		if (useGpu && typeof navigator !== 'undefined' && 'gpu' in navigator) {
+			try {
+				console.debug('[Transformers] useGpu: attempting a WebGPU (fp16) session');
+				pipeline = await pipelineFactory('feature-extraction', modelKey, {
+					device: 'webgpu',
+					dtype: 'fp16',
+					progress_callback,
+				});
+				backend = 'webgpu-fp16';
+			} catch (gpuError) {
+				console.warn('[Transformers] WebGPU session failed, falling back to WASM CPU (q8):', gpuError instanceof Error ? gpuError.message : String(gpuError));
+				pipeline = null;
+			}
+		} else if (useGpu) {
+			console.debug('[Transformers] useGpu: navigator.gpu is absent in this environment; using WASM CPU (q8)');
 		}
 		// Hugging Face serves model files with chunked transfer encoding (no
 		// content-length header); transformers.js console.warns with a stack
@@ -269,11 +289,13 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 			originalWarn(...args)
 		}
 		try {
-			pipeline = await pipelineFactory('feature-extraction', modelKey, {
-				device: 'wasm',
-				dtype: 'q8',
-				progress_callback,
-			});
+			if (pipeline === null) {
+				pipeline = await pipelineFactory('feature-extraction', modelKey, {
+					device: 'wasm',
+					dtype: 'q8',
+					progress_callback,
+				});
+			}
 
 			// 创建分词器
 			tokenizer = await AutoTokenizer.from_pretrained(modelKey);
@@ -288,7 +310,8 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 		};
 
 		console.debug(`Model ${modelKey} loaded successfully`);
-		return { model_loaded: true };
+		console.info(`[Transformers] local embeddings backend: ${backend}`);
+		return { model_loaded: true, backend };
 
 	} catch (error) {
 		console.error('Error loading model:', error);
