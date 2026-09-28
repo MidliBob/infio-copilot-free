@@ -1,4 +1,12 @@
 releases:
+  - version: "1.6.15"
+    fixes:
+      - "WebGPU local embeddings now work on GPUs without fp16 support (Pascal generation, e.g. GTX 1060): the 1.6.13 attempt requested an fp16 session and transformers.js refused it with 'The device (webgpu) does not support fp16', dropping straight to WASM CPU. The worker now walks a dtype ladder - webgpu fp16, then webgpu fp32, then WASM q8 - and reports the landed backend ('webgpu-fp16', 'webgpu-fp32' or 'wasm-q8') in the console"
+      - "The expected fp16 capability refusal on older GPUs is logged at debug level (it is a device probe, not an error); only the final GPU-to-CPU fallback keeps the warning"
+      - "The known-benign transformers.js 'Unable to determine content-length' warning is suppressed for the entire backend-selection window: the 1.6.13 shim started after the WebGPU attempt, so that attempt's downloads still printed two stack-traced warns"
+    other:
+      - "Setting descriptions (en/ru/zh) now state that WebGPU runs fp16, or fp32 on devices without fp16 support; the rebuild-the-index warning after switching backends remains valid for every backend pair (fp16/fp32/q8 vectors are not numerically identical)"
+      - "No test-visible behavior change (the worker is integration-tested in Obsidian); 172 tests, type-check, lint baselines and the production build stay green"
   - version: "1.6.14"
     fixes:
       - "The WebGPU toggle missing from 1.6.13 is delivered: the settings UI block and the en/ru/zh locale keys never made it into that release (an editing script aborted before them while the commit message claimed otherwise). The toggle now renders in the model-selection section directly below the embedding model combo box, visible whenever the embedding provider is the local one, and persists through the shared settings update path"
