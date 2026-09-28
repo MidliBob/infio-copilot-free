@@ -315,7 +315,7 @@
 			"@typescript-eslint/no-unsafe-call": 1
 		},
 		"src/embedworker/embed.worker.ts": {
-			"@typescript-eslint/consistent-type-assertions": 10
+			"@typescript-eslint/consistent-type-assertions": 9
 		},
 		"src/event-listener.ts": {
 			"@typescript-eslint/ban-ts-comment": 1

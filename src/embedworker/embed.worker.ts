@@ -1,3 +1,8 @@
+import {
+	isFetchResponseMessage,
+	responseFromFetchProxy,
+} from './fetch-proxy-protocol';
+
 console.debug('Embedding worker loaded');
 
 // --- Electron `process` shim neutralization -----------------------------
@@ -91,6 +96,54 @@ let tokenizer: unknown = null;
 let processing_message = false;
 let transformersLoaded = false;
 
+// ---------------------------------------------------------------------------
+// Fetch proxy: model downloads go through the main thread's requestUrl
+// (native HTTP, no CORS), because mirrors like hf-mirror.com do not send
+// Access-Control-Allow-Origin and a plain worker fetch gets blocked.
+// ---------------------------------------------------------------------------
+const fetchProxyPending = new Map<number, { resolve: (response: Response) => void; reject: (error: Error) => void }>();
+let fetchProxyNextId = 1;
+
+function proxiedFetch(url: string, timeoutMs?: number): Promise<Response> {
+	return new Promise((resolve, reject) => {
+		const requestId = fetchProxyNextId++;
+		fetchProxyPending.set(requestId, { resolve, reject });
+		self.postMessage({ type: 'fetch-request', requestId, url, timeoutMs });
+	});
+}
+
+self.addEventListener('message', (event: MessageEvent) => {
+	if (!isFetchResponseMessage(event.data)) {
+		return;
+	}
+	const pending = fetchProxyPending.get(event.data.requestId);
+	if (pending === undefined) {
+		return;
+	}
+	fetchProxyPending.delete(event.data.requestId);
+	try {
+		pending.resolve(responseFromFetchProxy(event.data));
+	} catch (error) {
+		pending.reject(error instanceof Error ? error : new Error(String(error)));
+	}
+});
+
+// Explicitly typed wrapper: the bare global fetch identifier resolves to any
+// in this worker bundle's lint context, which would poison the shim below.
+const nativeFetch = (input: RequestInfo | URL, init?: RequestInit): Promise<Response> =>
+	self.fetch(input, init);
+
+/** fetch shim for libraries: http(s) via the proxy, blob/data/etc. natively. */
+function workerFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+	const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+	if (!url.startsWith('http://') && !url.startsWith('https://')) {
+		return nativeFetch(input, init);
+	}
+	return proxiedFetch(url);
+}
+
+self.fetch = workerFetch;
+
 /**
  * 测试一个网络端点是否可访问
  * @param {string} url 要测试的 URL
@@ -98,30 +151,15 @@ let transformersLoaded = false;
  * @returns {Promise<boolean>} 如果可访问则返回 true，否则返回 false
  */
 async function testEndpoint(url: string, timeout = 3000): Promise<boolean> {
-	// AbortController 用于在超时后取消 fetch 请求
-	const controller = new AbortController();
-	const signal = controller.signal;
-
-	const timeoutId = setTimeout(() => {
-		console.debug(`Request to ${url} timed out.`);
-		controller.abort();
-	}, timeout);
-
 	try {
 		console.debug(`Testing endpoint: ${url}`);
-		// 我们使用 'HEAD' 方法，因为它只请求头部信息，非常快速，适合做存活检测。
-		// 'no-cors' 模式允许我们在浏览器环境中进行跨域请求以进行简单的可达性测试，
-		// 即使我们不能读取响应内容，请求成功也意味着网络是通的。
-		await fetch(url, { method: 'HEAD', mode: 'no-cors', signal });
-		
-		// 如果 fetch 成功，清除超时定时器并返回 true
-		clearTimeout(timeoutId);
+		// Reachability probe through the proxy: the main thread applies the
+		// timeout via requestUrl, and CORS never interferes.
+		await proxiedFetch(url, timeout);
 		console.debug(`Endpoint ${url} is reachable.`);
 		return true;
 	} catch (error) {
-		// 如果发生网络错误或请求被中止 (超时)，则进入 catch 块
-		clearTimeout(timeoutId); // 同样需要清除定时器
-		console.warn(`Cannot reach endpoint ${url}:`, error instanceof Error && error.name === 'AbortError' ? 'timeout' : (error as Error).message);
+		console.warn(`Cannot reach endpoint ${url}:`, error instanceof Error ? error.message : String(error));
 		return false;
 	}
 }

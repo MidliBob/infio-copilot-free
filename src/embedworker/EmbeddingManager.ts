@@ -1,7 +1,14 @@
 // 导入完整的嵌入 Worker
 // @ts-nocheck
+import { requestUrl } from 'obsidian'
+
 import { logger } from '../utils/logger'
 import EmbedWorker from './embed.worker';
+import {
+	FetchRequestMessage,
+	isFetchRequestMessage,
+	performFetchProxyRequest,
+} from './fetch-proxy-protocol';
 
 // 类型定义
 export interface EmbedResult {
@@ -47,6 +54,12 @@ export class EmbeddingManager {
 
 		// 统一监听来自 Worker 的所有消息
 		this.worker.onmessage = (event) => {
+			// Fetch-proxy requests from the worker are served here, on the
+			// main thread, through requestUrl (native HTTP, CORS-free).
+			if (isFetchRequestMessage(event.data)) {
+				void this.handleFetchProxy(event.data)
+				return
+			}
 			try {
 				const { id, result, error } = event.data as WorkerMessage;
 
@@ -286,4 +299,29 @@ export class EmbeddingManager {
 		this.requests.clear();
 		this.isModelLoaded = false;
 	}
-} 
+
+	/**
+	 * Serve one worker fetch-request via requestUrl and post the bytes back
+	 * (ArrayBuffer transferred, not copied).
+	 */
+	private async handleFetchProxy(msg: FetchRequestMessage): Promise<void> {
+		const response = await performFetchProxyRequest(msg, async (url, timeoutMs) => {
+			const http = await requestUrl({
+				url,
+				responseType: 'arraybuffer',
+				timeout: timeoutMs,
+			})
+			const headers: Record<string, string> = {}
+			const contentLength = http.headers['content-length']
+			if (typeof contentLength === 'string') {
+				headers['Content-Length'] = contentLength
+			}
+			return { status: http.status, headers, body: http.arrayBuffer }
+		})
+		if (response.body !== undefined) {
+			this.worker.postMessage(response, [response.body])
+		} else {
+			this.worker.postMessage(response)
+		}
+	}
+}
