@@ -1,4 +1,12 @@
 releases:
+  - version: "1.6.10"
+    fixes:
+      - "Ripgrep backend failures are actionable now: a spawn error (missing binary, permissions, wrong path - the common Windows case) reports the exact binary used and points to Settings -> Infio Copilot Free -> Files search, or to switching the regex backend to the built-in plugin; previously the tool answer was a bare 'ripgrep process error: <syscall>'"
+      - "Context lines in ripgrep output keep the pre-1.6.9 placement when a result has no line number yet (afterContext), restoring exact legacy behavior alongside the assertion-free parsing"
+    other:
+      - "Console hygiene for local-provider indexing: the embedding worker's 24 routine per-message logs moved to console.debug (hidden under DevTools default levels, warn/error stay visible), EmbeddingManager (main thread) moved onto the logger facade (also clearing its validator 'avoid console logging' warnings), and the known-benign transformers.js 'Unable to determine content-length' warn is suppressed for the duration of a model load only"
+      - "MAINTAINING.md records the worker logging policy and the deferred register: no-misused-promises void-wrapping, the no-unsafe-*/any burn-down (phase 2 pass 3), SSE -> StreamableHTTP and the declarative Settings API (phase 3), and the typescript-eslint 'unsupported TypeScript version' banner (migration to typescript-eslint v8 under the phase-3 lint-gate hardening)"
+      - "No behavior change beyond the described messages; 166 tests, type-check, lint ratchet (1077 errors in 125 files) and the production build all green"
   - version: "1.6.9"
     fixes:
       - "Obsidian validator quick-wins: cross-window instanceOf instead of instanceof HTMLElement; the ripgrep exclusion glob now uses Vault#configDir instead of a hardcoded '.obsidian' (and its non-null assertions are gone); the debug gc hook no longer touches 'global' or casts; bare setTimeout became window.setTimeout; the deprecated onnx wasm.simd flag is dropped; the embedding-dimension probe checks 'undefined' instead of Promise truthiness; the PGlite live types resolve without @ts-expect-error; enum-to-string comparisons go through toString(); the error-notice layer now builds its DOM with Obsidian's createFragment/createDiv/createEl helpers per plugin guidelines"
