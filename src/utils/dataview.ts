@@ -1,7 +1,70 @@
 import { t } from '../lang/helpers'
 import { App } from "obsidian";
-import { DataviewApi, getAPI } from "obsidian-dataview";
 import { logger } from './logger'
+
+/**
+ * Minimal local typing for the Dataview plugin API (runtime soft dependency).
+ *
+ * The npm package obsidian-dataview used to provide these types, but it
+ * dragged a svelte/preact toolchain with open security advisories into the
+ * lockfile (and into the bundle). Dataview is resolved at runtime through
+ * the Obsidian plugin registry instead; only queryMarkdown() and evaluate()
+ * are used, so the surface stays tiny and version drift is caught by the
+ * isDataviewApi guard rather than by a bundled third-party build.
+ */
+export type DataviewEvaluateResult = {
+	successful: boolean
+	value?: unknown
+	error?: unknown
+}
+
+export type DataviewApi = {
+	queryMarkdown(
+		query: string,
+		sourcePath: string,
+		variables: Record<string, unknown>,
+	): Promise<unknown>
+	evaluate(js: string): Promise<DataviewEvaluateResult>
+}
+
+/** Structural view of App.plugins - keeps this module testable without casts. */
+export type DataviewPluginRegistry = {
+	getPlugin(id: string): unknown
+}
+
+function isPluginRegistry(value: unknown): value is DataviewPluginRegistry {
+	return (
+		value !== null &&
+		typeof value === 'object' &&
+		'getPlugin' in value &&
+		typeof value.getPlugin === 'function'
+	)
+}
+
+function isDataviewApi(value: unknown): value is DataviewApi {
+	if (value === null || typeof value !== 'object') {
+		return false
+	}
+	if (!('queryMarkdown' in value) || !('evaluate' in value)) {
+		return false
+	}
+	return (
+		typeof value.queryMarkdown === 'function' &&
+		typeof value.evaluate === 'function'
+	)
+}
+
+export function getDataviewApi(registry: unknown): DataviewApi | null {
+	if (!isPluginRegistry(registry)) {
+		return null
+	}
+	const plugin = registry.getPlugin('dataview')
+	if (plugin === null || typeof plugin !== 'object' || !('api' in plugin)) {
+		return null
+	}
+	const api: unknown = plugin.api
+	return isDataviewApi(api) ? api : null
+}
 
 export interface DataviewQueryResult {
 	success: boolean;
@@ -21,8 +84,7 @@ export class DataviewManager {
 	 */
 	private getAPI(): DataviewApi | null {
 		try {
-			const api = getAPI(this.app) as DataviewApi | null;
-			return api;
+			return getDataviewApi(this.app.plugins);
 		} catch (error) {
 			logger.error('Failed to get the Dataview API:', error);
 			return null;
@@ -52,18 +114,20 @@ export class DataviewManager {
 		try {
 			// 使用 Dataview 的查询引擎
 			const result = await api.queryMarkdown(query, "", {});
-			
+
 			// 检查 Result 对象的结构
-			if (result && typeof result === 'object' && 'successful' in result) {
+			if (result !== null && typeof result === 'object' && 'successful' in result) {
+				const value: unknown = 'value' in result ? result.value : undefined
+				const failure: unknown = 'error' in result ? result.error : undefined
 				if (result.successful) {
 					return {
 						success: true,
-						data: String(result.value || '')
+						data: String(value || '')
 					};
 				} else {
 					return {
 						success: false,
-						error: String(result.error || t('chat.dataview.queryFailedShort'))
+						error: String(failure || t('chat.dataview.queryFailedShort'))
 					};
 				}
 			}
@@ -100,7 +164,7 @@ export class DataviewManager {
 			if (result.successful) {
 				return {
 					success: true,
-					data: result.value
+					data: result.value === undefined ? '' : String(result.value)
 				};
 			} else {
 				return {
