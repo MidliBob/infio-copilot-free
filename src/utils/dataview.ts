@@ -84,7 +84,12 @@ export class DataviewManager {
 	 */
 	private getAPI(): DataviewApi | null {
 		try {
-			return getDataviewApi(this.app.plugins);
+			// App.plugins is a stable but undocumented runtime surface absent
+			// from obsidian's public typings (TS2339 otherwise). Read it
+			// reflectively into unknown: no cast, no global App augmentation,
+			// and getDataviewApi validates the shape before use.
+			const registry: unknown = Reflect.get(this.app, 'plugins')
+			return getDataviewApi(registry)
 		} catch (error) {
 			logger.error('Failed to get the Dataview API:', error);
 			return null;
