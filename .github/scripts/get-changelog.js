@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const yaml = require('js-yaml');
+const yaml = require('yaml');
 
 // Get version from command line argument
 const version = process.argv[2];
@@ -17,7 +17,7 @@ try {
     const content = fs.readFileSync(changelogPath, 'utf8');
     
     // Parse YAML content
-    const changelog = yaml.load(content);
+    const changelog = yaml.parse(content);
     
     if (!changelog || !Array.isArray(changelog.releases)) {
         console.error('Error: Invalid changelog format. Expected array of releases.');
