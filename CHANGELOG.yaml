@@ -1,4 +1,10 @@
 releases:
+  - version: "1.6.14"
+    fixes:
+      - "The WebGPU toggle missing from 1.6.13 is delivered: the settings UI block and the en/ru/zh locale keys never made it into that release (an editing script aborted before them while the commit message claimed otherwise). The toggle now renders in the model-selection section directly below the embedding model combo box, visible whenever the embedding provider is the local one, and persists through the shared settings update path"
+    other:
+      - "Placing the toggle in ModelProviderSettings.tsx consciously adds four no-unsafe-* violations to the frozen debt (the file reads plugin.settings through a legacy @ts-ignore any): the eslint baseline for that one file rises 145 -> 149 with a written obligation to remove them all when the component's props get typed (phase 2 pass 3 burn-down cluster #2); total baseline 1080 errors in 125 files"
+      - "No behavior change beyond the visible toggle; 172 tests, type-check and the production build stay green"
   - version: "1.6.13"
     features:
       - "The local-embeddings GPU toggle is real now: a new opt-in setting 'Use GPU (WebGPU) for local embeddings' (Settings -> provider card of the local provider, default OFF) makes the embed worker attempt a WebGPU fp16 session for the transformers.js model; any session-creation failure falls back to the historically stable WASM CPU q8 path with a warning. The chosen backend is reported in the console ('[Transformers] local embeddings backend: webgpu-fp16 | wasm-q8' and 'Local embeddings backend: ...'), so GPU usage is verifiable without Debug mode"
