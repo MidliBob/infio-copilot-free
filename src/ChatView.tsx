@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ItemView, WorkspaceLeaf } from 'obsidian'
 import React from 'react'
@@ -17,8 +16,8 @@ import { McpHubProvider } from './contexts/McpHubContext'
 import { RAGProvider } from './contexts/RAGContext'
 import { SettingsProvider } from './contexts/SettingsContext'
 import { TransProvider } from './contexts/TransContext'
-import InfioPlugin from './main'
 import { MentionableBlockData } from './types/mentionable'
+import { InfioPluginLike } from './types/plugin'
 import { InfioSettings } from './types/settings'
 import { logger } from './utils/logger'
 
@@ -30,12 +29,10 @@ export class ChatView extends ItemView {
 
 	constructor(
 		leaf: WorkspaceLeaf,
-		private plugin: InfioPlugin,
+		private plugin: InfioPluginLike,
 	) {
 		super(leaf)
-		// @ts-ignore
 		this.settings = plugin.settings
-		// @ts-ignore
 		this.initialChatProps = plugin.initChatProps
 	}
 
@@ -89,10 +86,8 @@ export class ChatView extends ItemView {
 			<AppProvider app={this.app}>
 				<SettingsProvider
 					settings={this.settings}
-					// @ts-ignore
-					setSettings={(newSettings) => this.plugin.setSettings(newSettings)}
+					setSettings={(newSettings) => { void this.plugin.setSettings(newSettings) }}
 					addSettingsChangeListener={(listener) =>
-						// @ts-ignore
 						this.plugin.addSettingsListener(listener)
 					}
 				>

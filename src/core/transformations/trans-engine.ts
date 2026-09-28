@@ -28,7 +28,7 @@ import { logger } from '../../utils/logger'
 type EmbeddingManager = {
 	modelLoaded: boolean
 	currentModel: string | null
-	loadModel(modelId: string, useGpu: boolean): Promise<void>
+	loadModel(modelId: string, useGpu: boolean): Promise<unknown>
 	embed(text: string): Promise<{ vec: number[] }>
 	embedBatch(texts: string[]): Promise<{ vec: number[] }[]>
 }

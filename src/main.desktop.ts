@@ -1,6 +1,3 @@
-// @ts-nocheck
-import { EditorView } from '@codemirror/view'
-// import { PGlite } from '@electric-sql/pglite'
 import { Editor, MarkdownView, Modal, Notice, Plugin, TFile } from 'obsidian'
 
 import { ApplyView } from './ApplyView'
@@ -18,12 +15,11 @@ import { EmbeddingManager } from './embedworker/EmbeddingManager'
 import EventListener from "./event-listener"
 import JsonView from './JsonFileView'
 import { t } from './lang/helpers'
-import { retryAction, showErrorNotice } from './utils/error-notice'
+import { extractErrorMessage, retryAction, showErrorNotice } from './utils/error-notice'
 import { logger, setDebugEnabled } from './utils/logger'
 import { PreviewView } from './PreviewView'
 import CompletionKeyWatcher from "./render-plugin/completion-key-watcher"
 import DocumentChangesListener, {
-	DocumentChanges,
 	getPrefix, getSuffix,
 	hasMultipleCursors,
 	hasSelection
@@ -32,201 +28,194 @@ import RenderSuggestionPlugin from "./render-plugin/render-surgestion-plugin"
 import { InlineSuggestionState } from "./render-plugin/states"
 import { InfioSettingTab } from './settings/SettingTab'
 import StatusBar from "./status-bar"
+import { InfioPluginMembers } from './types/plugin'
 import {
 	InfioSettings,
 	parseInfioSettings,
 } from './types/settings'
-import { createDataviewManager, DataviewManager } from './utils/dataview'
-import { getMentionableBlockData } from './utils/obsidian'
+import { createDataviewManager } from './utils/dataview'
+import { getEditorView, getMentionableBlockData } from './utils/obsidian'
 import './utils/path'
 
-type DesktopAugmented = Plugin & {
-	metadataCacheUnloadFn: (() => void) | null
-	activeLeafChangeUnloadFn: (() => void) | null
+/** Members the desktop bootstrap installs on top of `InfioPluginMembers`. */
+type DesktopExtraMembers = {
+	settingsListeners: ((newSettings: InfioSettings) => void)[]
 	dbManagerInitPromise: Promise<DBManager> | null
 	ragEngineInitPromise: Promise<RAGEngine> | null
 	transEngineInitPromise: Promise<TransEngine> | null
 	mcpHubInitPromise: Promise<McpHub> | null
-	settings: InfioSettings
-	settingTab: InfioSettingTab
-	settingsListeners: ((newSettings: InfioSettings) => void)[]
-	initChatProps?: ChatProps
 	dbManager: DBManager | null
 	mcpHub: McpHub | null
 	ragEngine: RAGEngine | null
 	transEngine: TransEngine | null
 	embeddingManager: EmbeddingManager | null
 	inlineEdit: InlineEdit | null
-	diffStrategy?: DiffStrategy
-	dataviewManager: DataviewManager | null
-
-	// methods (attached below)
-	loadSettings: () => Promise<void>
-	setSettings: (newSettings: InfioSettings) => Promise<void>
-	addSettingsListener: (listener: (newSettings: InfioSettings) => void) => () => void
 	openChatView: (openNewChat?: boolean) => Promise<void>
 	activateChatView: (chatProps?: ChatProps, openNewChat?: boolean) => Promise<void>
 	addSelectionToChat: (editor: Editor, view: MarkdownView) => Promise<void>
-	getDbManager: () => Promise<DBManager>
-	getMcpHub: () => Promise<McpHub | null>
-	getRAGEngine: () => Promise<RAGEngine>
-	getTransEngine: () => Promise<TransEngine>
-	getEmbeddingManager: () => EmbeddingManager | null
 	migrateToJsonStorage: () => Promise<void>
 	reloadChatView: () => Promise<void>
 }
 
-export async function loadDesktop(base: Plugin) {
-	const plugin = base as DesktopAugmented
-	// initialize fields
-	plugin.metadataCacheUnloadFn = null
-	plugin.activeLeafChangeUnloadFn = null
-	plugin.dbManagerInitPromise = null
-	plugin.ragEngineInitPromise = null
-	plugin.transEngineInitPromise = null
-	plugin.mcpHubInitPromise = null
-	plugin.initChatProps = undefined
-	plugin.dbManager = null
-	plugin.mcpHub = null
-	plugin.ragEngine = null
-	plugin.transEngine = null
-	plugin.embeddingManager = null
-	plugin.inlineEdit = null
-	plugin.diffStrategy = undefined
-	plugin.dataviewManager = null
-	plugin.settingsListeners = []
+type DesktopAugmentedMembers = InfioPluginMembers & DesktopExtraMembers
 
-	// attach methods migrated from original class
-	plugin.loadSettings = async function () {
-		this.settings = parseInfioSettings(await this.loadData())
-		setDebugEnabled(this.settings.debugMode)
-		await this.saveData(this.settings)
-	}
-	plugin.setSettings = async function (newSettings: InfioSettings) {
-		this.settings = newSettings
-		setDebugEnabled(newSettings.debugMode)
-		await this.saveData(newSettings)
-		this.ragEngine?.setSettings(newSettings)
-		this.transEngine?.setSettings(newSettings)
-		this.settingsListeners.forEach((listener) => listener(newSettings))
-	}
-	plugin.addSettingsListener = function (listener: (ns: InfioSettings) => void) {
-		this.settingsListeners.push(listener)
-		return () => {
-			this.settingsListeners = this.settingsListeners.filter((l) => l !== listener)
-		}
-	}
-	plugin.openChatView = async function (openNewChat = false) {
-		const view = this.app.workspace.getActiveViewOfType(MarkdownView)
-		const editor = view?.editor
-		if (!view || !editor) {
-			await this.activateChatView(undefined, openNewChat)
-			return
-		}
-		const selectedBlockData = await getMentionableBlockData(editor, view)
-		await this.activateChatView({ selectedBlock: selectedBlockData ?? undefined }, openNewChat)
-	}
-	plugin.activateChatView = async function (chatProps?: ChatProps, openNewChat = false) {
-		this.initChatProps = chatProps
-		const leaf = this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE)[0]
-		await (leaf ?? this.app.workspace.getRightLeaf(false))?.setViewState({ type: CHAT_VIEW_TYPE, active: true })
-		if (openNewChat && leaf && leaf.view instanceof ChatView) {
-			leaf.view.openNewChat(chatProps?.selectedBlock)
-		}
-		this.app.workspace.revealLeaf(this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE)[0])
-	}
-	plugin.addSelectionToChat = async function (editor: Editor, view: MarkdownView) {
-		const data = await getMentionableBlockData(editor, view)
-		if (!data) return
-		const leaves = this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE)
-		if (leaves.length === 0 || !(leaves[0].view instanceof ChatView)) {
-			await this.activateChatView({ selectedBlock: data })
-			return
-		}
-		await this.app.workspace.revealLeaf(leaves[0])
-		const chatView = leaves[0].view
-		chatView.addSelectionToChat(data)
-		chatView.focusMessage()
-	}
-	plugin.getDbManager = async function (): Promise<DBManager> {
-		if (this.dbManager) return this.dbManager
-		if (!this.dbManagerInitPromise) {
-			this.dbManagerInitPromise = (async () => {
-				this.dbManager = await DBManager.create(this.app, this.settings.ragOptions.filesystem, this.manifest?.id ?? 'infio-copilot-free')
-				return this.dbManager
-			})()
-		}
-		return this.dbManagerInitPromise
-	}
-	plugin.getMcpHub = async function (): Promise<McpHub | null> {
-		if (!this.settings.mcpEnabled) return null
-		if (this.mcpHub) return this.mcpHub
-		if (!this.mcpHubInitPromise) {
-			this.mcpHubInitPromise = (async () => {
-				this.mcpHub = new McpHub(this.app, this as unknown as Plugin)
-				await this.mcpHub.onload()
-				return this.mcpHub
-			})()
-		}
-		return this.mcpHubInitPromise
-	}
-	plugin.getRAGEngine = async function (): Promise<RAGEngine> {
-		if (this.ragEngine) return this.ragEngine
-		if (!this.ragEngineInitPromise) {
-			this.ragEngineInitPromise = (async () => {
+/** The bare Obsidian plugin instance plus everything `loadDesktop` installs. */
+type DesktopAugmented = Plugin & DesktopAugmentedMembers
+
+/** Runtime check used by `unloadDesktop` to avoid a blind type assertion. */
+function isDesktopAugmented(plugin: Plugin): plugin is DesktopAugmented {
+	return 'settingsListeners' in plugin && 'getRAGEngine' in plugin
+}
+
+export async function loadDesktop(base: Plugin) {
+	// Settings are loaded first so the members object below can carry them
+	// from the start (same sequence the old `plugin.loadSettings()` boot call
+	// performed: parse -> debug flag -> persist normalized settings).
+	const storedData: unknown = await base.loadData()
+	const initialSettings = parseInfioSettings(storedData)
+	setDebugEnabled(initialSettings.debugMode)
+	await base.saveData(initialSettings)
+
+	// `Object.assign` gives the augmented plugin its type without a single
+	// `as` assertion, and `ThisType` types `this` inside every method.
+	const members: DesktopAugmentedMembers & ThisType<DesktopAugmented> = {
+		settings: initialSettings,
+		settingsListeners: [],
+		initChatProps: undefined,
+		diffStrategy: undefined,
+		dataviewManager: null,
+		dbManager: null,
+		mcpHub: null,
+		ragEngine: null,
+		transEngine: null,
+		embeddingManager: null,
+		inlineEdit: null,
+		dbManagerInitPromise: null,
+		ragEngineInitPromise: null,
+		transEngineInitPromise: null,
+		mcpHubInitPromise: null,
+
+		async setSettings(newSettings) {
+			this.settings = newSettings
+			setDebugEnabled(newSettings.debugMode)
+			await this.saveData(newSettings)
+			this.ragEngine?.setSettings(newSettings)
+			this.transEngine?.setSettings(newSettings)
+			this.settingsListeners.forEach((listener) => listener(newSettings))
+		},
+		addSettingsListener(listener) {
+			this.settingsListeners.push(listener)
+			return () => {
+				this.settingsListeners = this.settingsListeners.filter((l) => l !== listener)
+			}
+		},
+		async openChatView(openNewChat = false) {
+			const view = this.app.workspace.getActiveViewOfType(MarkdownView)
+			const editor = view?.editor
+			if (!view || !editor) {
+				await this.activateChatView(undefined, openNewChat)
+				return
+			}
+			const selectedBlockData = await getMentionableBlockData(editor, view)
+			await this.activateChatView({ selectedBlock: selectedBlockData ?? undefined }, openNewChat)
+		},
+		async activateChatView(chatProps, openNewChat = false) {
+			this.initChatProps = chatProps
+			const leaf = this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE)[0]
+			await (leaf ?? this.app.workspace.getRightLeaf(false))?.setViewState({ type: CHAT_VIEW_TYPE, active: true })
+			if (openNewChat && leaf && leaf.view instanceof ChatView) {
+				leaf.view.openNewChat(chatProps?.selectedBlock)
+			}
+			this.app.workspace.revealLeaf(this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE)[0])
+		},
+		async addSelectionToChat(editor, view) {
+			const data = await getMentionableBlockData(editor, view)
+			if (!data) return
+			const leaves = this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE)
+			if (leaves.length === 0 || !(leaves[0].view instanceof ChatView)) {
+				await this.activateChatView({ selectedBlock: data })
+				return
+			}
+			await this.app.workspace.revealLeaf(leaves[0])
+			const chatView = leaves[0].view
+			chatView.addSelectionToChat(data)
+			chatView.focusMessage()
+		},
+		async getDbManager() {
+			if (this.dbManager) return this.dbManager
+			if (!this.dbManagerInitPromise) {
+				this.dbManagerInitPromise = (async () => {
+					this.dbManager = await DBManager.create(this.app, this.settings.ragOptions.filesystem, this.manifest?.id ?? 'infio-copilot-free')
+					return this.dbManager
+				})()
+			}
+			return this.dbManagerInitPromise
+		},
+		async getMcpHub() {
+			if (!this.settings.mcpEnabled) return null
+			if (this.mcpHub) return this.mcpHub
+			if (!this.mcpHubInitPromise) {
+				this.mcpHubInitPromise = (async () => {
+					this.mcpHub = new McpHub(this.app, this)
+					await this.mcpHub.onload()
+					return this.mcpHub
+				})()
+			}
+			return this.mcpHubInitPromise
+		},
+		async getRAGEngine() {
+			if (this.ragEngine) return this.ragEngine
+			if (!this.ragEngineInitPromise) {
+				this.ragEngineInitPromise = (async () => {
+					const dbManager = await this.getDbManager()
+					this.ragEngine = new RAGEngine(this.app, this.settings, dbManager, this.embeddingManager)
+					return this.ragEngine
+				})()
+			}
+			return this.ragEngineInitPromise
+		},
+		async getTransEngine() {
+			if (this.transEngine) return this.transEngine
+			if (!this.transEngineInitPromise) {
+				this.transEngineInitPromise = (async () => {
+					const dbManager = await this.getDbManager()
+					this.transEngine = new TransEngine(this.app, this.settings, dbManager, this.embeddingManager)
+					return this.transEngine
+				})()
+			}
+			return this.transEngineInitPromise
+		},
+		async migrateToJsonStorage() {
+			try {
 				const dbManager = await this.getDbManager()
-				this.ragEngine = new RAGEngine(this.app, this.settings, dbManager, this.embeddingManager)
-				return this.ragEngine
-			})()
-		}
-		return this.ragEngineInitPromise
+				await migrateToJsonDatabase(this.app, dbManager, async () => {
+					await this.reloadChatView()
+					logger.debug('Migration to JSON storage completed successfully')
+				})
+			} catch (error: unknown) {
+				showErrorNotice({
+					title: t('notifications.migrationFailed'),
+					error,
+					logMessage: 'Failed to migrate to JSON storage:',
+				})
+			}
+		},
+		async reloadChatView() {
+			const leaves = this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE)
+			if (leaves.length === 0 || !(leaves[0].view instanceof ChatView)) return
+			new Notice(t('notifications.reloadingInfio'), 1000)
+			leaves[0].detach()
+			await this.activateChatView()
+		},
 	}
-	plugin.getTransEngine = async function (): Promise<TransEngine> {
-		if (this.transEngine) return this.transEngine
-		if (!this.transEngineInitPromise) {
-			this.transEngineInitPromise = (async () => {
-				const dbManager = await this.getDbManager()
-				this.transEngine = new TransEngine(this.app, this.settings, dbManager, this.embeddingManager)
-				return this.transEngine
-			})()
-		}
-		return this.transEngineInitPromise
-	}
-	plugin.getEmbeddingManager = function (): EmbeddingManager | null {
-		return this.embeddingManager
-	}
-	plugin.migrateToJsonStorage = async function () {
-		try {
-			const dbManager = await this.getDbManager()
-			await migrateToJsonDatabase(this.app, dbManager, async () => {
-				await this.reloadChatView()
-				logger.debug('Migration to JSON storage completed successfully')
-			})
-		} catch (error) {
-			showErrorNotice({
-				title: t('notifications.migrationFailed'),
-				error,
-				logMessage: 'Failed to migrate to JSON storage:',
-			})
-		}
-	}
-	plugin.reloadChatView = async function () {
-		const leaves = this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE)
-		if (leaves.length === 0 || !(leaves[0].view instanceof ChatView)) return
-		new Notice(t('notifications.reloadingInfio'), 1000)
-		leaves[0].detach()
-		await this.activateChatView()
-	}
+	const plugin: DesktopAugmented = Object.assign(base, members)
 
 	// ==== Original onload body starts here (adapted) ====
-	await plugin.loadSettings()
-
 	window.setTimeout(() => {
 		void plugin.migrateToJsonStorage().then(() => { })
 	}, 100)
 
-	plugin.settingTab = new InfioSettingTab(plugin.app, plugin as unknown as any)
-	plugin.addSettingTab(plugin.settingTab)
+	plugin.addSettingTab(new InfioSettingTab(plugin.app, plugin))
 
 	plugin.dataviewManager = createDataviewManager(plugin.app)
 
@@ -235,17 +224,17 @@ export async function loadDesktop(base: Plugin) {
 
 	plugin.addRibbonIcon('wand-sparkles', t('main.openInfioCopilot'), () => plugin.openChatView())
 
-	plugin.registerView(CHAT_VIEW_TYPE, (leaf) => new ChatView(leaf, plugin as unknown as any))
+	plugin.registerView(CHAT_VIEW_TYPE, (leaf) => new ChatView(leaf, plugin))
 	plugin.registerView(APPLY_VIEW_TYPE, (leaf) => new ApplyView(leaf))
 	plugin.registerView(PREVIEW_VIEW_TYPE, (leaf) => new PreviewView(leaf))
-	plugin.registerView(JSON_VIEW_TYPE, (leaf) => new JsonView(leaf, plugin as unknown as any))
+	plugin.registerView(JSON_VIEW_TYPE, (leaf) => new JsonView(leaf, plugin))
 
-	plugin.inlineEdit = new InlineEdit(plugin as unknown as any, plugin.settings);
+	plugin.inlineEdit = new InlineEdit(plugin, plugin.settings);
 	plugin.registerMarkdownCodeBlockProcessor("infioedit", (source, el, ctx) => {
 		plugin.inlineEdit?.Processor(source, el, ctx);
 	});
 
-	const statusBar = StatusBar.fromApp(plugin as unknown as any);
+	const statusBar = StatusBar.fromApp(plugin);
 	const eventListener = EventListener.fromSettings(
 		plugin.settings,
 		statusBar,
@@ -261,7 +250,7 @@ export async function loadDesktop(base: Plugin) {
 	)
 
 	plugin.addSettingsListener((newSettings) => {
-		plugin.inlineEdit = new InlineEdit(plugin as unknown as any, newSettings);
+		plugin.inlineEdit = new InlineEdit(plugin, newSettings);
 		eventListener.handleSettingChanged(newSettings)
 		plugin.diffStrategy = getDiffStrategy(
 			plugin.settings.chatModelId || "",
@@ -282,12 +271,12 @@ export async function loadDesktop(base: Plugin) {
 	plugin.registerEditorExtension([
 		InlineSuggestionState,
 		CompletionKeyWatcher(
-			eventListener.handleAcceptKeyPressed.bind(eventListener) as () => boolean,
-			eventListener.handlePartialAcceptKeyPressed.bind(eventListener) as () => boolean,
-			eventListener.handleCancelKeyPressed.bind(eventListener) as () => boolean,
+			() => eventListener.handleAcceptKeyPressed(),
+			() => eventListener.handlePartialAcceptKeyPressed(),
+			() => eventListener.handleCancelKeyPressed(),
 		),
 		DocumentChangesListener(
-			eventListener.handleDocumentChange.bind(eventListener) as (documentChange: DocumentChanges) => Promise<void>
+			(documentChange) => eventListener.handleDocumentChange(documentChange)
 		),
 		RenderSuggestionPlugin(),
 	]);
@@ -295,18 +284,20 @@ export async function loadDesktop(base: Plugin) {
 	plugin.app.workspace.onLayoutReady(() => {
 		const view = plugin.app.workspace.getActiveViewOfType(MarkdownView);
 		if (view) {
-			// @ts-expect-error, not typed
-			const editorView = view.editor.cm as EditorView;
-			eventListener.onViewUpdate(editorView);
+			const editorView = getEditorView(view.editor);
+			if (editorView) {
+				eventListener.onViewUpdate(editorView);
+			}
 		}
 	});
 
 	plugin.registerEvent(
 		plugin.app.workspace.on("active-leaf-change", (leaf) => {
 			if (leaf?.view instanceof MarkdownView) {
-				// @ts-expect-error, not typed
-				const editorView = leaf.view.editor.cm as EditorView;
-				eventListener.onViewUpdate(editorView);
+				const editorView = getEditorView(leaf.view.editor);
+				if (editorView) {
+					eventListener.onViewUpdate(editorView);
+				}
 				if (leaf.view.file) {
 					eventListener.handleFileChange(leaf.view.file);
 				}
@@ -364,7 +355,7 @@ export async function loadDesktop(base: Plugin) {
 			)
 			notice.setMessage(t('notifications.rebuildComplete'))
 			window.setTimeout(() => { notice.hide() }, 1000)
-		} catch (error) {
+		} catch (error: unknown) {
 			notice.hide()
 			showErrorNotice({
 				title: t('notifications.rebuildFailed'),
@@ -401,7 +392,7 @@ export async function loadDesktop(base: Plugin) {
 			)
 			notice.setMessage(t('notifications.updateComplete'))
 			window.setTimeout(() => { notice.hide() }, 1000)
-		} catch (error) {
+		} catch (error: unknown) {
 			notice.hide()
 			showErrorNotice({
 				title: t('notifications.updateFailed'),
@@ -423,11 +414,7 @@ export async function loadDesktop(base: Plugin) {
 	plugin.addCommand({
 		id: 'autocomplete-accept',
 		name: t('main.autocompleteAccept'),
-		editorCheckCallback: (
-			checking: boolean,
-			editor: Editor,
-			view: MarkdownView
-		) => {
+		editorCheckCallback: (checking: boolean) => {
 			if (checking) {
 				return (
 					eventListener.isSuggesting()
@@ -441,13 +428,11 @@ export async function loadDesktop(base: Plugin) {
 	plugin.addCommand({
 		id: 'autocomplete-predict',
 		name: t('main.autocompletePredict'),
-		editorCheckCallback: (
-			checking: boolean,
-			editor: Editor,
-			view: MarkdownView
-		) => {
-			// @ts-expect-error, not typed
-			const editorView = editor.cm as EditorView;
+		editorCheckCallback: (checking: boolean, editor: Editor) => {
+			const editorView = getEditorView(editor);
+			if (!editorView) {
+				return false;
+			}
 			const state = editorView.state;
 			if (checking) {
 				return eventListener.isIdle() && !hasMultipleCursors(state) && !hasSelection(state);
@@ -537,7 +522,7 @@ export async function loadDesktop(base: Plugin) {
 					new Notice(t('notifications.dataviewQueryFailed', { error: result.error }));
 					logger.error('Query error:', result.error);
 				}
-			} catch (error) {
+			} catch (error: unknown) {
 				logger.error('Failed to execute the test query:', error);
 				new Notice(t('notifications.dataviewQueryError'));
 			}
@@ -564,31 +549,32 @@ export async function loadDesktop(base: Plugin) {
 				modal.titleEl.setText(t('notifications.embeddingTestTitle'));
 				modal.contentEl.createEl('pre', { text: resultMessage });
 				modal.open();
-			} catch (error) {
+			} catch (error: unknown) {
 				logger.error('Embedding test failed:', error);
-				new Notice(t('notifications.embeddingTestFailed', { error: error.message }), 5000);
+				new Notice(t('notifications.embeddingTestFailed', { error: extractErrorMessage(error) }), 5000);
 			}
 		},
 	});
 }
 
 export function unloadDesktop(base: Plugin) {
-	const plugin = base as DesktopAugmented
-	plugin.dbManagerInitPromise = null
-	plugin.ragEngineInitPromise = null
-	plugin.transEngineInitPromise = null
-	plugin.mcpHubInitPromise = null
-	plugin.ragEngine?.cleanup()
-	plugin.ragEngine = null
-	plugin.transEngine?.cleanup()
-	plugin.transEngine = null
-	void plugin.dbManager?.cleanup()
-	plugin.dbManager = null
-	void plugin.mcpHub?.dispose()
-	plugin.mcpHub = null
-	plugin.embeddingManager?.terminate()
-	plugin.embeddingManager = null
-	plugin.dataviewManager = null
+	if (!isDesktopAugmented(base)) {
+		logger.debug('unloadDesktop: desktop members are not installed, nothing to release')
+		return
+	}
+	base.dbManagerInitPromise = null
+	base.ragEngineInitPromise = null
+	base.transEngineInitPromise = null
+	base.mcpHubInitPromise = null
+	base.ragEngine?.cleanup()
+	base.ragEngine = null
+	base.transEngine?.cleanup()
+	base.transEngine = null
+	void base.dbManager?.cleanup()
+	base.dbManager = null
+	void base.mcpHub?.dispose()
+	base.mcpHub = null
+	base.embeddingManager?.terminate()
+	base.embeddingManager = null
+	base.dataviewManager = null
 }
-
-

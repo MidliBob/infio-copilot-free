@@ -22,8 +22,9 @@
    `@ts-expect-error` с описанием причины в комментарии, и только через
    явное обновление baseline отдельным коммитом с обоснованием.
 2. **Blanket `@ts-nocheck` запрещён** в новых файлах и последовательно
-   снимается с core-модулей: `src/main.ts` очищен в 1.6.0; следующий
-   кандидат — `src/main.desktop.ts` (см. план).
+   снимается с core-модулей: `src/main.ts` очищен в 1.6.0,
+   `src/main.desktop.ts` и обёртка `src/ChatView.tsx` — в 1.6.16
+   (следующие кандидаты — по плану ниже).
 3. `@ts-ignore` не добавлять вовсе (eslint-правила `ban-ts-comment` и
    `prefer-ts-expect-error` уже требуют `expect-error`; существующие
    `ignore` — часть замороженного долга).
@@ -77,12 +78,20 @@
 |---|---|---|
 | Парсер ICF-блоков | `src/utils/parse-icf-block.ts` (31) | Крупнейший очаг: expect-error на нетипизированных структурах Lexical/CodeMirror. Заход 3 фазы 2: типизированная модель блока + zod-валидация на границе, подавления убираются пачками |
 | Render-plugin автокомплита | `src/render-plugin/*` (6 nocheck) | Апстримный плагин подсказок целиком под nocheck. Типизируем постепенно, начиная с `types.ts` (он уже только декларативный), затем leaf-файлы (`completion-key-watcher`, `user-event`, …) |
-| Entrypoint | `src/main.desktop.ts` (1 nocheck + 3 expect-error) | Кандидат №2 на снятие nocheck: сначала типизировать аугментации `plugin.getRAGEngine = …` и пр. (интерфейс расширения Plugin), затем снять |
-| Legacy-вью | `src/ChatView.tsx` (1+4), `src/components/chat-view/*` (6) | Обёртки видов; снимаются по ходу типизации render-plugin и чат-компонентов |
-| Legacy-настройки | `src/settings/SettingTab.tsx` (8), `ModelProviderSettings.tsx` (2), `ProviderModelsPicker.tsx` (1) | Привязать к фазе 3 (декларативный Settings API): при миграции вкладки файлы переписываются типизированными |
+| Entrypoint | `src/main.desktop.ts` (1 nocheck + 3 expect-error) | ✅ Выгорело в 1.6.16: бутстрап переведён на `Object.assign` + `ThisType` (ноль `as`), `editor.cm` читается через `getEditorView()` (Reflect.get + структурный guard) вместо expect-error; включён `noImplicitThis` в tsconfig |
+| Legacy-вью | `src/ChatView.tsx` (1+4), `src/components/chat-view/*` (6) | ✅ Обёртка `src/ChatView.tsx` выгорела в 1.6.16 (тип `InfioPluginLike` из `src/types/plugin.ts` закрыл settings/initChatProps/setSettings/addSettingsListener); остались `src/components/chat-view/*` — снимаются по ходу типизации render-plugin и чат-компонентов |
+| Legacy-настройки | `src/settings/SettingTab.tsx` (7), `ModelProviderSettings.tsx` (2), `ProviderModelsPicker.tsx` (1) | В SettingTab один мёртвый `@ts-ignore` (над `super(app, plugin)`) снят в 1.6.16; остальные привязать к фазе 3 (декларативный Settings API): при миграции вкладки файлы переписываются типизированными |
 | Одиночные маркеры | `src/core/*`, `src/database/*`, `src/pgworker/*`, `src/utils/*`, `src/event-listener.ts` (по 1) | Выжигать попутно при любом изменении этих модулей — самые дешёвые победы |
 
 ## История
 
 - 2026-09-27 (1.6.0) — первый замер и заморозка: 78 маркеров / 31 файл;
   снят blanket-`@ts-nocheck` с `src/main.ts` → 77 / 30.
+- 2026-09-28 (1.6.9) — hygiene-серия по рекомендациям валидатора сняла
+  `@ts-expect-error` с `src/database/database-manager.ts` → 76 / 29.
+- 2026-09-28 (1.6.16) — выгорание entrypoint-кластера: снят
+  blanket-`@ts-nocheck` с `src/main.desktop.ts` (−1 nocheck, −3
+  `@ts-expect-error` на `editor.cm`) и с обёртки `src/ChatView.tsx`
+  (−1 nocheck, −4 `@ts-ignore`), снят мёртвый `@ts-ignore` в
+  `SettingTab.tsx` → **66 маркеров / 27 файлов** (nocheck 14, ignore 14,
+  expect-error 38).

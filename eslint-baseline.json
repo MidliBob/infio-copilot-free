@@ -1,16 +1,6 @@
 {
 	"$comment": "Frozen ESLint error debt per file/rule. Regenerate ONLY with: node scripts/lint-ratchet.mjs --update. See scripts/lint-ratchet.mjs header and MAINTAINING.md.",
 	"files": {
-		"src/ChatView.tsx": {
-			"@typescript-eslint/ban-ts-comment": 5,
-			"@typescript-eslint/no-unsafe-assignment": 4,
-			"@typescript-eslint/no-unsafe-call": 6,
-			"@typescript-eslint/no-unsafe-return": 6,
-			"@typescript-eslint/prefer-ts-expect-error": 4
-		},
-		"src/JsonFileView.tsx": {
-			"@typescript-eslint/no-unsafe-argument": 1
-		},
 		"src/components/chat-view/ChatView.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 3,
 			"@typescript-eslint/no-explicit-any": 1,
@@ -264,7 +254,6 @@
 			"@typescript-eslint/no-unsafe-argument": 1
 		},
 		"src/core/rag/embedding.ts": {
-			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-unsafe-call": 12,
 			"@typescript-eslint/no-unsafe-member-access": 20
 		},
@@ -327,23 +316,8 @@
 		"src/hooks/use-custom-mode.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1
 		},
-		"src/main.desktop.ts": {
-			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/consistent-type-assertions": 23,
-			"@typescript-eslint/no-explicit-any": 6,
-			"@typescript-eslint/no-unsafe-argument": 23,
-			"@typescript-eslint/no-unsafe-assignment": 13,
-			"@typescript-eslint/no-unsafe-call": 31,
-			"@typescript-eslint/no-unsafe-member-access": 88,
-			"@typescript-eslint/no-unsafe-return": 14,
-			"@typescript-eslint/no-unused-vars": 3,
-			"sort-imports": 1
-		},
 		"src/main.mobile.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unsafe-argument": 1,
-			"@typescript-eslint/no-unsafe-call": 3,
-			"@typescript-eslint/no-unsafe-member-access": 7,
 			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/pgworker/index.ts": {
@@ -380,12 +354,9 @@
 			"@typescript-eslint/ban-ts-comment": 1
 		},
 		"src/settings/SettingTab.tsx": {
-			"@typescript-eslint/ban-ts-comment": 8,
+			"@typescript-eslint/ban-ts-comment": 7,
 			"@typescript-eslint/consistent-type-assertions": 5,
-			"@typescript-eslint/no-unsafe-argument": 2,
-			"@typescript-eslint/no-unsafe-assignment": 3,
-			"@typescript-eslint/no-unsafe-member-access": 5,
-			"@typescript-eslint/prefer-ts-expect-error": 8
+			"@typescript-eslint/prefer-ts-expect-error": 7
 		},
 		"src/settings/components/CheckBoxSettingItem.tsx": {
 			"@typescript-eslint/unbound-method": 1

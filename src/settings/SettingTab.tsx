@@ -22,11 +22,7 @@ import PostprocessingSettings from './components/PostprocessingSettings';
 import PreprocessingSettings from './components/PreprocessingSettings';
 import PrivacySettings from './components/PrivacySettings';
 import TriggerSettingsSection from './components/TriggerSettingsSection';
-
-type InfioPluginLike = Plugin & {
-	settings: InfioSettings;
-	setSettings: (s: InfioSettings) => Promise<void>;
-}
+import { InfioPluginLike } from '../types/plugin';
 
 export class InfioSettingTab extends PluginSettingTab {
 	plugin: InfioPluginLike;
@@ -37,7 +33,6 @@ export class InfioSettingTab extends PluginSettingTab {
 	private searxngSetting: Setting | null = null;
 
 	constructor(app: App, plugin: InfioPluginLike) {
-		// @ts-ignore
 		super(app, plugin)
 		this.plugin = plugin
 	}

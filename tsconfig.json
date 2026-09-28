@@ -22,6 +22,7 @@
      */
     "strict": false, // Disable strict type checking for flexibility
     "noImplicitAny": false, // Allow variables to have implicit 'any' type
+    "noImplicitThis": true, // Require an explicit this-type where inference fails (enables ThisType<> typing)
     "strictNullChecks": false, // Disable strict null checks for easier development
 
     /* JavaScript and JSX Support

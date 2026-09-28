@@ -1,5 +1,6 @@
 import * as path from 'path'
 
+import type { EditorView } from '@codemirror/view'
 import { App, Editor, MarkdownView, TFile, TFolder, Vault, WorkspaceLeaf, loadPdfJs } from 'obsidian'
 
 import { MentionableBlockData } from '../types/mentionable'
@@ -228,4 +229,36 @@ export async function openOrCreateMarkdownFile(
 		await app.vault.adapter.write(filePath, '')
 	}
 	openMarkdownFile(app, filePath, startLine)
+}
+
+/**
+ * Structural guard for a CodeMirror `EditorView` handle. The public Obsidian
+ * typings do not expose `editor.cm`, so the value is read via `Reflect.get`
+ * and validated with `in`-narrowing instead of type assertions.
+ */
+function isEditorView(value: unknown): value is EditorView {
+	return (
+		typeof value === 'object' &&
+		value !== null &&
+		'state' in value &&
+		typeof value.state === 'object' &&
+		value.state !== null &&
+		'dispatch' in value &&
+		typeof value.dispatch === 'function'
+	)
+}
+
+/**
+ * Returns the CodeMirror `EditorView` backing an Obsidian `Editor`, or null
+ * when the editor is not attached to a live view yet (e.g. during early
+ * layout events). Replaces `editor.cm as EditorView` casts: callers get an
+ * explicit null case instead of a potential undefined dereference.
+ */
+export function getEditorView(editor: Editor): EditorView | null {
+	const cm: unknown = Reflect.get(editor, 'cm')
+	if (isEditorView(cm)) {
+		return cm
+	}
+	logger.debug('getEditorView: no CodeMirror EditorView attached to this editor yet')
+	return null
 }

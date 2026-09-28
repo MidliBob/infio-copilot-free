@@ -3,15 +3,14 @@ import { json } from "@codemirror/lang-json";
 import { Extension } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { basicSetup } from "codemirror";
-import { WorkspaceLeaf } from "obsidian";
+import { Plugin, WorkspaceLeaf } from "obsidian";
 
 import BaseView from "./BaseFileView";
 import { JSON_VIEW_TYPE } from './constants';
-import InfioPlugin from './main';
 import { getIndentByTabExtension } from "./utils/indentation-provider";
 
 export default class JsonView extends BaseView {
-	constructor(leaf: WorkspaceLeaf, plugin: InfioPlugin) {
+	constructor(leaf: WorkspaceLeaf, plugin: Plugin) {
 		super(leaf, plugin);
 	}
 
@@ -24,7 +23,9 @@ export default class JsonView extends BaseView {
 			basicSetup,
 			getIndentByTabExtension(),
 			json(),
-			EditorView.updateListener.of(this.onEditorUpdate.bind(this))
+			// An arrow instead of `.bind(this)`: without strictBindCallApply the
+			// lib typing of Function.bind degrades to `any` (lint debt).
+			EditorView.updateListener.of((update) => { this.onEditorUpdate(update) })
 		];
 
 		return extensions;

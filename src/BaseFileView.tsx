@@ -1,12 +1,11 @@
 import { EditorState, Extension } from "@codemirror/state";
 import { EditorView, ViewUpdate } from "@codemirror/view";
-import { TFile, TextFileView, WorkspaceLeaf } from "obsidian";
+import { Plugin, TFile, TextFileView, WorkspaceLeaf } from "obsidian";
 
-import InfioPlugin from './main';
 import { logger } from './utils/logger'
 
 export default abstract class BaseView extends TextFileView {
-	public plugin: InfioPlugin;
+	public plugin: Plugin;
 	protected cmEditor: EditorView;
 	protected editorEl: HTMLElement;
 	protected state: { filePath?: string } | null = null;
@@ -14,7 +13,7 @@ export default abstract class BaseView extends TextFileView {
 	protected currentFilePath: string | null = null;
 	protected isClosing: boolean = false;
 
-	protected constructor(leaf: WorkspaceLeaf, plugin: InfioPlugin) {
+	protected constructor(leaf: WorkspaceLeaf, plugin: Plugin) {
 		super(leaf);
 		this.plugin = plugin;
 	}

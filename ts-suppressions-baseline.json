@@ -1,10 +1,6 @@
 {
 	"$comment": "Frozen TypeScript suppression debt per file. Regenerate ONLY with: node scripts/ts-suppressions.mjs --update. Enforced by src/ts-suppressions.test.ts; policy and cleanup plan: docs/ts-suppressions.md.",
 	"files": {
-		"src/ChatView.tsx": {
-			"nocheck": 1,
-			"ignore": 4
-		},
 		"src/components/chat-view/ChatView.tsx": {
 			"expectError": 2
 		},
@@ -41,10 +37,6 @@
 		"src/event-listener.ts": {
 			"nocheck": 1
 		},
-		"src/main.desktop.ts": {
-			"nocheck": 1,
-			"expectError": 3
-		},
 		"src/pgworker/index.ts": {
 			"nocheck": 1
 		},
@@ -70,7 +62,7 @@
 			"nocheck": 1
 		},
 		"src/settings/SettingTab.tsx": {
-			"ignore": 8
+			"ignore": 7
 		},
 		"src/settings/components/ModelProviderSettings.tsx": {
 			"ignore": 2

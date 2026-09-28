@@ -115,6 +115,12 @@ Planned. Requirements and steps:
   (the script prints the improvements it saw and reminds you). When a rule
   reaches zero across the baseline, enable it in `.eslintrc.js` and delete it
   from the forced list in `scripts/lint-ratchet.mjs`.
+- `tsconfig.json` has **`noImplicitThis: true`** (since 1.6.16) — do not
+  revert it: `ThisType<>` contextual typing (used by the `Object.assign`
+  bootstrap in `main.desktop.ts`) only works with this flag, and without it
+  `this` in assigned/literal methods degrades to `any`, which the ratchet
+  counts as `no-unsafe-*` regressions. The whole project compiles cleanly
+  with the flag on (`pnpm type:check`).
 - Low-memory machines: a single type-aware ESLint process over the whole
   `src/` needs several GB of heap. Use `pnpm run lint:ratchet -- --batch=14`
   to lint in chunks (slower, but each process stays under ~1 GB).

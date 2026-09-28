@@ -15,7 +15,7 @@ import {
 import chokidar, { FSWatcher } from "chokidar"; // Keep chokidar
 import delay from "delay"; // Keep delay
 import deepEqual from "fast-deep-equal"; // Keep fast-deep-equal
-import { App, EventRef, Notice, TFile, normalizePath } from 'obsidian';
+import { App, EventRef, Notice, Plugin, TFile, normalizePath } from 'obsidian';
 import ReconnectingEventSource from "reconnecting-eventsource"; // Keep reconnecting-eventsource
 import { EnvironmentVariables, shellEnvSync } from 'shell-env';
 import { z } from "zod"; // Keep zod
@@ -23,7 +23,6 @@ import { z } from "zod"; // Keep zod
 // Internal/Project imports
 import { JSON_VIEW_TYPE } from '../../constants';
 import { t } from "../../lang/helpers";
-import InfioPlugin from "../../main";
 import { injectEnv } from "../../utils/config";
 import { ROOT_DIR } from '../prompts/constants';
 
@@ -130,7 +129,7 @@ type ConfigObject = Record<string, unknown> & {
 
 export class McpHub {
 	private app: App
-	private plugin: InfioPlugin
+	private plugin: Plugin
 	private mcpSettingsFilePath: string | null = null
 	// private globalMcpFilePath: string | null = null
 	private fileWatchers: Map<string, FSWatcher[]> = new Map()
@@ -143,7 +142,7 @@ export class McpHub {
 	// private providerRef: any; // TODO: Replace with actual type and initialize properly. Removed for now as it causes issues and its usage is unclear in the current scope.
 	private shellEnv: EnvironmentVariables
 
-	constructor(app: App, plugin: InfioPlugin) {
+	constructor(app: App, plugin: Plugin) {
 		this.app = app
 		this.plugin = plugin
 		this.shellEnv = shellEnvSync()
