@@ -1,4 +1,12 @@
 releases:
+  - version: "1.6.13"
+    features:
+      - "The local-embeddings GPU toggle is real now: a new opt-in setting 'Use GPU (WebGPU) for local embeddings' (Settings -> provider card of the local provider, default OFF) makes the embed worker attempt a WebGPU fp16 session for the transformers.js model; any session-creation failure falls back to the historically stable WASM CPU q8 path with a warning. The chosen backend is reported in the console ('[Transformers] local embeddings backend: webgpu-fp16 | wasm-q8' and 'Local embeddings backend: ...'), so GPU usage is verifiable without Debug mode"
+    fixes:
+      - "The GPU flag stopped being a lie: embedding.ts hardcoded useGpu=true while the worker always stayed on WASM (the v2 library ignored device options entirely, and after the v3 migration the worker was deliberately pinned for stability and vector consistency), which is why the console showed 'GPU: true' next to 'staying on WASM CPU'; the flag now comes from the setting and actually selects the backend"
+    other:
+      - "Vectors produced by WebGPU fp16 and WASM q8 are not numerically identical: rebuild the vault index after switching the toggle (the setting description and the release notes say so); the schema adds localEmbeddingsWebgpu (boolean, default false) to the desktop and mobile schemas in sync, and settings.test.ts covers the new default"
+      - "Unit tests: 172 total; type-check, lint ratchet baselines of the touched files and the production build (main + inline workers, ~16 MB) are green"
   - version: "1.6.12"
     fixes:
       - "The 1.6.11 fetch proxy no longer confuses its own answers with commands: the worker's main message listener ignored fetch-response messages, so every proxied download also ran through processMessage and threw 'Unknown method: undefined' into the console; responses are now routed to the proxy listener only"
