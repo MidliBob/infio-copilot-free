@@ -394,7 +394,7 @@ export default {
 			coreplugin: '核心插件',
 			omnisearch: 'Omnisearch',
 			ripgrepPath: 'ripgrep 路径',
-			ripgrepPathDescription: 'ripgrep 二进制文件的路径。使用 ripgrep 正则搜索时需要此项。',
+			ripgrepPathDescription: 'ripgrep 二进制文件的路径。使用 ripgrep 正则搜索时需要此项。若本机未安装 ripgrep：winget install BurntSushi.ripgrep.MSVC（Windows PowerShell）、brew install ripgrep（macOS）或系统包管理器（Linux）。',
 		},
 		
 		// 聊天行为部分

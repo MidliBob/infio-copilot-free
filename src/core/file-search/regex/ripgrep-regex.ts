@@ -1,4 +1,4 @@
-// import * as vscode from "vscode"
+import { Platform } from 'obsidian'
 import * as childProcess from "child_process"
 import * as fs from "fs"
 import * as path from "path"
@@ -25,6 +25,25 @@ async function pathExists(path: string): Promise<boolean> {
 			resolve(err === null)
 		})
 	})
+}
+
+/**
+ * The most common real-world cause of a spawn failure: ripgrep is simply
+ * not installed (the field case on Windows). Name the install command.
+ */
+function ripgrepInstallHint(): string {
+	if (Platform.isWin) {
+		return (
+			'If ripgrep is not installed on this machine, install it with: ' +
+			'winget install BurntSushi.ripgrep.MSVC (PowerShell), then set the ' +
+			'path again or restart Obsidian.'
+		)
+	}
+	return (
+		'If ripgrep is not installed on this machine, install it with your ' +
+		'package manager (brew install ripgrep on macOS, apt/dnf/pacman install ' +
+		'ripgrep on Linux), then set the path again.'
+	)
 }
 
 async function execRipgrep(bin: string, args: string[]): Promise<string> {
@@ -66,7 +85,8 @@ async function execRipgrep(bin: string, args: string[]): Promise<string> {
 				`ripgrep process error: ${error.message} (binary: ${bin}). ` +
 				'Check Settings -> Infio Copilot Free -> Files search: the ripgrep ' +
 				'path must point to a runnable rg executable, or switch the regex ' +
-				'search backend to the built-in plugin.',
+				'search backend to the built-in plugin. ' +
+				ripgrepInstallHint(),
 			))
 		})
 	})

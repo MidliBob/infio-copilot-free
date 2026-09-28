@@ -393,7 +393,7 @@ export default {
 			coreplugin: 'Core plugin',
 			omnisearch: 'Omnisearch',
 			ripgrepPath: 'ripgrep path',
-			ripgrepPathDescription: 'Path to the ripgrep binary. When using ripgrep regex search, this is required.',
+			ripgrepPathDescription: 'Path to the ripgrep binary. When using ripgrep regex search, this is required. If ripgrep is not installed on this machine: winget install BurntSushi.ripgrep.MSVC (PowerShell on Windows), brew install ripgrep (macOS), or your package manager (Linux).',
 		},
 		
 		// Chat Behavior Section

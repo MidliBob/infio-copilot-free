@@ -686,7 +686,7 @@ export default {
 			"coreplugin": "Встроенный плагин",
 			"omnisearch": "Omnisearch",
 			"ripgrepPath": "Путь к ripgrep",
-			"ripgrepPathDescription": "Путь к исполняемому файлу ripgrep. Обязателен при использовании regex-поиска через ripgrep."
+			"ripgrepPathDescription": "Путь к исполняемому файлу ripgrep. Обязателен при использовании regex-поиска через ripgrep. Если ripgrep не установлен: winget install BurntSushi.ripgrep.MSVC (PowerShell в Windows), brew install ripgrep (macOS) или пакетный менеджер (Linux)."
 		},
 		"ChatBehavior": {
 			"title": "Поведение чата",
