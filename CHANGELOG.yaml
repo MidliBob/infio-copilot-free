@@ -1,4 +1,11 @@
 releases:
+  - version: "1.6.5"
+    fixes:
+      - "Stopping a generation (or sending a new message, switching conversations, starting a new chat, closing the chat tab) no longer reports an error: the OpenAI SDK wraps a caller-aborted stream into APIUserAbortError ('Request was aborted.') whose error name stays the generic 'Error', so the chat mutation's AbortError check missed it and every intentional cancellation surfaced as a 'Request was aborted.' notice plus an error log. Cancellations are now recognized and handled silently - the partially streamed answer stays in the history, exactly like the previous raw-AbortError path"
+    other:
+      - "New src/utils/abort-errors.ts: isCancellation() recognizes the SDK abort wrapper (instanceof, plus name/message fallbacks for cross-realm copies) and raw DOM AbortErrors; SDK timeouts ('Request timed out.') are deliberately NOT cancellations and keep surfacing as failures"
+      - "The chat mutation's onError is guarded by the same predicate as a second line of defense"
+      - "Unit tests: 162 total (4 new for isCancellation); the Jest console output stays clean. Lint ratchet: one violation burned down along the way (the removed implicit-any member access) - debt is now 1153 errors in 128 files"
   - version: "1.6.4"
     fixes:
       - "Autocomplete leaked an unhandled rejection on every keystroke while the chat endpoint was down: the autocomplete LLM client declared a neverthrow Result contract but had no catch, so the thrown transport error escaped past fetchPredictions/predict into 'Uncaught (in promise)'. The client now delegates to a breaker-backed helper that never throws, restoring the declared contract by construction"
