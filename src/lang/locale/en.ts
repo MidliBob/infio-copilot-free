@@ -331,7 +331,7 @@ export default {
 			localProviderFeature2: 'No API costs - runs entirely locally',
 			localProviderFeature3: 'Offline capability - works without internet connection',
 			localEmbeddingsWebgpuTitle: 'Use GPU (WebGPU) for local embeddings',
-			localEmbeddingsWebgpuDescription: 'Experimental: run the local transformers.js embedding model on the GPU via WebGPU (fp16). If a WebGPU session cannot be created, the plugin falls back to WASM CPU (q8). Vectors from different backends are not numerically identical - rebuild the vault index after switching this toggle.',
+			localEmbeddingsWebgpuDescription: 'Experimental: run the local transformers.js embedding model on the GPU via WebGPU (fp16, or fp32 on devices without fp16 support, e.g. Pascal-generation GPUs). If no WebGPU session can be created, the plugin falls back to WASM CPU (q8). Vectors from different backends are not numerically identical - rebuild the vault index after switching this toggle.',
 			testConnection: {
 				testApiConnection: 'Test API Connection',
 				testingConnection: 'Testing connection...',

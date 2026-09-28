@@ -259,27 +259,12 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 		// backends are not numerically identical - rebuild the index after
 		// switching the toggle (documented in the setting description).
 		let backend = 'wasm-q8';
-		if (useGpu && typeof navigator !== 'undefined' && 'gpu' in navigator) {
-			try {
-				console.debug('[Transformers] useGpu: attempting a WebGPU (fp16) session');
-				pipeline = await pipelineFactory('feature-extraction', modelKey, {
-					device: 'webgpu',
-					dtype: 'fp16',
-					progress_callback,
-				});
-				backend = 'webgpu-fp16';
-			} catch (gpuError) {
-				console.warn('[Transformers] WebGPU session failed, falling back to WASM CPU (q8):', gpuError instanceof Error ? gpuError.message : String(gpuError));
-				pipeline = null;
-			}
-		} else if (useGpu) {
-			console.debug('[Transformers] useGpu: navigator.gpu is absent in this environment; using WASM CPU (q8)');
-		}
 		// Hugging Face serves model files with chunked transfer encoding (no
 		// content-length header); transformers.js console.warns with a stack
-		// trace about it on every load. The condition is known-benign (the
-		// buffer grows as needed), so suppress exactly that message while the
-		// model and tokenizer load, and restore the console afterwards.
+		// trace about it on every download. The condition is known-benign (the
+		// buffer grows as needed), so suppress exactly that message for the
+		// whole backend-selection window (every attempt downloads), and
+		// restore the console afterwards.
 		const originalWarn = console.warn
 		console.warn = (...args: unknown[]) => {
 			const first = args[0]
@@ -289,6 +274,36 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 			originalWarn(...args)
 		}
 		try {
+			if (useGpu && typeof navigator !== 'undefined' && 'gpu' in navigator) {
+				// dtype ladder: fp16 needs the shader-f16 feature (absent on
+				// Pascal and older), fp32 runs on any WebGPU device, and the
+				// historical WASM q8 is the last resort.
+				try {
+					console.debug('[Transformers] useGpu: attempting a WebGPU (fp16) session');
+					pipeline = await pipelineFactory('feature-extraction', modelKey, {
+						device: 'webgpu',
+						dtype: 'fp16',
+						progress_callback,
+					});
+					backend = 'webgpu-fp16';
+				} catch (fp16Error) {
+					console.debug('[Transformers] WebGPU fp16 unavailable:', fp16Error instanceof Error ? fp16Error.message : String(fp16Error));
+					try {
+						console.debug('[Transformers] useGpu: attempting a WebGPU (fp32) session');
+						pipeline = await pipelineFactory('feature-extraction', modelKey, {
+							device: 'webgpu',
+							dtype: 'fp32',
+							progress_callback,
+						});
+						backend = 'webgpu-fp32';
+					} catch (fp32Error) {
+						console.warn('[Transformers] WebGPU session failed, falling back to WASM CPU (q8):', fp32Error instanceof Error ? fp32Error.message : String(fp32Error));
+						pipeline = null;
+					}
+				}
+			} else if (useGpu) {
+				console.debug('[Transformers] useGpu: navigator.gpu is absent in this environment; using WASM CPU (q8)');
+			}
 			if (pipeline === null) {
 				pipeline = await pipelineFactory('feature-extraction', modelKey, {
 					device: 'wasm',
