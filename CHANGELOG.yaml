@@ -1,4 +1,12 @@
 releases:
+  - version: "1.6.7"
+    fixes:
+      - "The last eight audit findings are gone (pnpm audit is now completely clean): esbuild 0.17.3 (2023) upgraded to 0.28.2 with the transitive chains (ts-jest, drizzle-kit) overridden - this closes GHSA-67mh-4wv8-2f99 and completes the esbuild-plugin-inline-worker compatibility check planned for phase 4; and the obsidian-dataview devDependency is removed together with its obsidian-calendar-ui/svelte/preact chain (seven svelte advisories), which the Obsidian validator kept flagging"
+      - "Dataview integration no longer bundles third-party compiled code: the API (queryMarkdown/evaluate only) is resolved at runtime through the Obsidian plugin registry with a structural type guard, keeping the previous behavior when Dataview is absent or exposes a different shape; typed result handling replaced the foreign Result any-fields and burned the file's whole eslint debt (21 -> 0, baseline now 1132 in 127 files)"
+    other:
+      - "New unit tests for the Dataview API guard (4): missing plugin, missing api field, incomplete api surface, matching surface; total 166 tests, Jest console clean"
+      - "Bundle size unchanged by this release (~16 MB); the esbuild upgrade is a prerequisite for the phase 4 bundle diet (lazy mermaid, target below 10 MB)"
+      - "Lockfile regenerated with pnpm 12 - pnpm install is required after applying"
   - version: "1.6.6"
     fixes:
       - "Security: every dependency flagged by the Obsidian plugin validator is updated past its advisory - mermaid 11.8.0 -> 11.17.2 (the XSS / prototype-pollution / DoS batch including GHSA-8gwm-58g9-j8pw, the architecture-diagram iconText XSS), handlebars 4.7.8 -> 4.7.9 (two critical JavaScript-injection advisories), simple-git 3.28.0 -> 3.36.0 (critical RCE and unsafe-operations bypass; simple-git ships in the bundle for the diff strategies), uuid -> 11.1.1 (buffer bounds check), lodash-es -> 4.18.1 (code injection and prototype pollution), sharp -> 0.35.4 (inherited libvips/libheif CVEs), postcss -> 8.5.28, path-to-regexp -> 8.4.2, ajv -> 6.15.0 / 8.20.0 and fast-uri -> 3.1.8 (ReDoS and host-confusion advisories)"
