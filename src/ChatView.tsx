@@ -65,7 +65,7 @@ export class ChatView extends ItemView {
 	async render() {
 		// 确保容器元素存在
 		const containerElement = this.containerEl.children[1]
-		if (!containerElement || !(containerElement instanceof HTMLElement)) {
+		if (!containerElement || !containerElement.instanceOf(HTMLElement)) {
 			logger.error('ChatView: Container element not found or invalid')
 			return
 		}

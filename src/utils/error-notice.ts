@@ -97,56 +97,45 @@ export function showErrorNotice(options: ErrorNoticeOptions): Notice {
 
 	logger.error(options.logMessage ?? title, error ?? message ?? '')
 
-	const fragment = document.createDocumentFragment()
-	const container = document.createElement('div')
-	container.className = 'icf-error-notice'
-
-	const titleEl = document.createElement('div')
-	titleEl.className = 'icf-error-notice-title'
-	titleEl.textContent = title
-	container.appendChild(titleEl)
-
-	if (message !== undefined && message !== '') {
-		const messageEl = document.createElement('div')
-		messageEl.className = 'icf-error-notice-message'
-		messageEl.textContent = message
-		container.appendChild(messageEl)
-	}
-
-	const detail = extractErrorMessage(error)
-	if (detail !== '') {
-		const detailEl = document.createElement('div')
-		detailEl.className = 'icf-error-notice-detail'
-		detailEl.textContent =
-			detail.length > DETAIL_MAX_LENGTH
-				? `${detail.slice(0, DETAIL_MAX_LENGTH)}…`
-				: detail
-		container.appendChild(detailEl)
-	}
-
 	const hasActions = actions !== undefined && actions.length > 0
-
-	if (actions !== undefined && actions.length > 0) {
-		const actionsEl = document.createElement('div')
-		actionsEl.className = 'icf-error-notice-actions'
-		for (const action of actions) {
-			const button = document.createElement('button')
-			button.className = 'icf-error-notice-action'
-			button.textContent = action.label
-			button.addEventListener('click', () => {
-				notice.hide()
-				action.onClick()
-			})
-			actionsEl.appendChild(button)
-		}
-		container.appendChild(actionsEl)
-	}
 
 	// Obsidian's Notice ingests a DocumentFragment at construction time
 	// (its nodes are moved into the notice element), so the fragment must be
 	// fully populated BEFORE the constructor runs - a notice built around an
 	// empty fragment renders as an empty black pill (seen in the field).
-	fragment.appendChild(container)
+	// The Obsidian dom helpers (createFragment/createDiv/createEl) are used
+	// per the plugin guidelines instead of document.createElement.
+	const fragment = createFragment((frag) => {
+		const container = createDiv({ cls: 'icf-error-notice' })
+		container.createDiv({ cls: 'icf-error-notice-title', text: title })
+		if (message !== undefined && message !== '') {
+			container.createDiv({ cls: 'icf-error-notice-message', text: message })
+		}
+		const detail = extractErrorMessage(error)
+		if (detail !== '') {
+			container.createDiv({
+				cls: 'icf-error-notice-detail',
+				text:
+					detail.length > DETAIL_MAX_LENGTH
+						? `${detail.slice(0, DETAIL_MAX_LENGTH)}…`
+						: detail,
+			})
+		}
+		if (actions !== undefined && actions.length > 0) {
+			const actionsEl = container.createDiv({ cls: 'icf-error-notice-actions' })
+			for (const action of actions) {
+				const button = actionsEl.createEl('button', {
+					cls: 'icf-error-notice-action',
+					text: action.label,
+				})
+				button.addEventListener('click', () => {
+					notice.hide()
+					action.onClick()
+				})
+			}
+		}
+		frag.appendChild(container)
+	})
 	const notice = new Notice(fragment, timeout ?? (hasActions ? 0 : DEFAULT_TIMEOUT))
 	return notice
 }

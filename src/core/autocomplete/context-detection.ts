@@ -64,7 +64,7 @@ namespace Context {
 
 	export function get(value: string) {
 		for (const context of Context.values()) {
-			if (value === context) {
+			if (value === context.toString()) {
 				return context;
 			}
 		}

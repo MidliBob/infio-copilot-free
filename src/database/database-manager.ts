@@ -1,5 +1,4 @@
-// @ts-expect-error
-import { type PGliteWithLive } from '@electric-sql/pglite/live'
+import { type PGliteWithLive } from '@electric-sql/pglite/dist/live'
 import { App } from 'obsidian'
 
 import { createAndInitDb, PgliteAssets } from '../pgworker'

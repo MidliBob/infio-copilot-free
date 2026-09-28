@@ -164,7 +164,7 @@ class AutoComplete implements AutocompleteService {
 		}
 
 		const examples = this.fewShotExamples.filter(
-			(example) => example.context === context
+			(example) => example.context === context.toString()
 		);
 		const fewShotExamplesChatMessages =
 			fewShotExamplesToChatMessages(examples);

@@ -71,6 +71,7 @@ export async function regexSearchUsingRipgrep(
 	directoryPath: string,
 	regex: string,
 	ripgrepPath: string,
+	configDirName: string,
 ): Promise<string> {
 	const rgPath = await getBinPath(ripgrepPath)
 
@@ -84,7 +85,7 @@ export async function regexSearchUsingRipgrep(
 		"-e", 
 		regex, 
 		"--glob", 
-		"!.obsidian/**", // exclude .obsidian directory and all its subdirectories
+		`!${configDirName}/**`, // exclude the vault config directory (not necessarily .obsidian)
 		"--glob",
 		"!.git/**",
 		"--context", 
@@ -128,10 +129,19 @@ export async function regexSearchUsingRipgrep(
 					const contextText = parsed.data.lines.text
 					const truncatedContext = truncateLine(contextText)
 
-					if (parsed.data.line_number < currentResult.line!) {
-						currentResult.beforeContext!.push(truncatedContext)
-					} else {
-						currentResult.afterContext!.push(truncatedContext)
+					const currentLine = currentResult.line
+					const beforeContext = currentResult.beforeContext
+					const afterContext = currentResult.afterContext
+					if (
+						currentLine !== undefined &&
+						beforeContext !== undefined &&
+						afterContext !== undefined
+					) {
+						if (parsed.data.line_number < currentLine) {
+							beforeContext.push(truncatedContext)
+						} else {
+							afterContext.push(truncatedContext)
+						}
 					}
 				}
 			} catch (error) {

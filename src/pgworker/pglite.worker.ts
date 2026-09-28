@@ -82,13 +82,14 @@ const loadPGliteResources = async (
 }
 
 worker({
-	async init(options: PGliteWorkerOptions, filesystem: string) {
+	async init(
+		options: PGliteWorkerOptions & { pgliteAssets?: PgliteAssets },
+		filesystem: string,
+	) {
 		let db: PGlite;
 		// `pgliteAssets` is our own transport field (structured-cloned by
 		// PGliteWorker); strip it before handing options to PGlite.
-		const { pgliteAssets, ...pgOptions } = (options ?? {}) as PGliteWorkerOptions & {
-			pgliteAssets?: PgliteAssets
-		}
+		const { pgliteAssets, ...pgOptions } = options
 		const { fsBundle, wasmModule, vectorExtensionBundlePath } =
 			await loadPGliteResources(pgliteAssets)
 		if (filesystem === 'idb') {

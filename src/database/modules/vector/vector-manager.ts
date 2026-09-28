@@ -27,6 +27,25 @@ import { VectorRepository } from './vector-repository';
 import { logger } from '../../../utils/logger'
 import { CircuitBreaker, CircuitOpenError, callWithBreaker } from '../../../utils/circuit-breaker'
 
+function isGcFunction(value: unknown): value is () => void {
+	return typeof value === 'function'
+}
+
+/** Node exposes gc() only with --expose-gc; Obsidian desktop never does. */
+function hasExposedGc(): boolean {
+	return typeof window !== 'undefined' && 'gc' in window
+}
+
+function runExposedGc(): void {
+	if (!hasExposedGc()) {
+		return
+	}
+	const candidate: unknown = window.gc
+	if (isGcFunction(candidate)) {
+		candidate()
+	}
+}
+
 export class VectorManager {
 	private app: App
 	private repository: VectorRepository
@@ -202,18 +221,13 @@ export class VectorManager {
 		try {
 			// 强制垃圾回收多次，确保释放资源
 			for (let i = 0; i < 3; i++) {
-				if (typeof global !== 'undefined' && (global as any).gc) {
-					(global as any).gc()
-				} else if (typeof window !== 'undefined' && (window as any).gc) {
-					(window as any).gc()
-				}
+				runExposedGc()
 			}
-			
+
 			// 强制清理一些可能的引用
-			if (typeof global !== 'undefined' && (global as any).gc) {
-				// Node.js 环境
+			if (hasExposedGc()) {
 				window.setTimeout(() => {
-					(global as any).gc?.()
+					runExposedGc()
 				}, 0)
 			}
 		} catch (e) {
@@ -1277,7 +1291,7 @@ export class VectorManager {
 		}
 		
 		// 额外延迟让系统释放资源
-		await new Promise(resolve => setTimeout(resolve, 500))
+		await new Promise(resolve => window.setTimeout(resolve, 500))
 	}
 
 	// 使用事务插入向量的方法

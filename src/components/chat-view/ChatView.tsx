@@ -689,7 +689,12 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						const baseVaultPath = String(app.vault.adapter.getBasePath())
 						const absolutePath = path.join(baseVaultPath, toolArgs.filepath)
 						const ripgrepPath = settings.filesSearchSettings.ripgrepPath
-						results = await regexSearchUsingRipgrep(absolutePath, toolArgs.regex, ripgrepPath)
+						results = await regexSearchUsingRipgrep(
+							absolutePath,
+							toolArgs.regex,
+							ripgrepPath,
+							app.vault.configDir,
+						)
 					}
 					const formattedContent = `[regex_search_files for '${toolArgs.filepath}'] Result:\n${results}\n`;
 					return {

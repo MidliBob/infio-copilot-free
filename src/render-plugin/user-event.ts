@@ -31,11 +31,10 @@ namespace UserEvent {
 		return Object.values(UserEvent).map((event) => event.toString());
 	}
 
-	export function fromString(event: string) {
-		const keys = Object.keys(UserEvent) as Array<keyof typeof UserEvent>;
-		for (const key of keys) {
-			if (event === UserEvent[key]) {
-				return UserEvent[key] as UserEvent;
+	export function fromString(event: string): UserEvent | null {
+		for (const value of Object.values(UserEvent)) {
+			if (event === value.toString()) {
+				return value;
 			}
 		}
 		return null;

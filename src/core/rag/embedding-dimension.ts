@@ -53,7 +53,7 @@ export async function resolveEmbeddingDimension(embeddingModel: EmbeddingModel):
 	if (embeddingModel.dimension > 0) return
 
 	let probe = dimensionProbes.get(embeddingModel.id)
-	if (!probe) {
+	if (probe === undefined) {
 		probe = probeDimension(embeddingModel)
 		dimensionProbes.set(embeddingModel.id, probe)
 		// Evict failed probes so subsequent calls retry instead of reusing the rejection.

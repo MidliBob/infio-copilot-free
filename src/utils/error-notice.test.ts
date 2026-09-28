@@ -52,6 +52,57 @@ import { logger } from './logger'
 
 jest.mock('./logger')
 
+// Minimal Obsidian dom extensions for jsdom: createEl/createDiv on
+// HTMLElement/DocumentFragment and the global createDiv/createFragment.
+type DomInfo = { cls?: string; text?: string }
+
+function applyInfo(el: HTMLElement, info?: DomInfo): void {
+	if (info === undefined) {
+		return
+	}
+	if (info.cls !== undefined) {
+		el.className = info.cls
+	}
+	if (info.text !== undefined) {
+		el.textContent = info.text
+	}
+}
+
+function createElImpl(this: HTMLElement | DocumentFragment, tag: string, info?: DomInfo): HTMLElement {
+	const el = this.ownerDocument.createElement(tag)
+	applyInfo(el, info)
+	this.appendChild(el)
+	return el
+}
+
+function createDivImpl(this: HTMLElement | DocumentFragment, info?: DomInfo): HTMLElement {
+	const el = this.ownerDocument.createElement('div')
+	applyInfo(el, info)
+	this.appendChild(el)
+	return el
+}
+
+beforeAll(() => {
+	for (const proto of [HTMLElement.prototype, DocumentFragment.prototype]) {
+		Object.defineProperty(proto, 'createEl', { value: createElImpl, configurable: true })
+		Object.defineProperty(proto, 'createDiv', { value: createDivImpl, configurable: true })
+	}
+	Object.assign(globalThis, {
+		createDiv: (info?: DomInfo): HTMLElement => {
+			const el = document.createElement('div')
+			applyInfo(el, info)
+			return el
+		},
+		createFragment: (cb?: (frag: DocumentFragment) => void): DocumentFragment => {
+			const frag = document.createDocumentFragment()
+			if (cb !== undefined) {
+				cb(frag)
+			}
+			return frag
+		},
+	})
+})
+
 function lastNotice(): MockNoticeRecord {
 	const record = mockCreatedNotices[mockCreatedNotices.length - 1]
 	if (record === undefined) {
