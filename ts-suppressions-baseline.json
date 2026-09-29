@@ -62,10 +62,7 @@
 			"nocheck": 1
 		},
 		"src/settings/SettingTab.tsx": {
-			"ignore": 7
-		},
-		"src/settings/components/ModelProviderSettings.tsx": {
-			"ignore": 2
+			"ignore": 6
 		},
 		"src/settings/components/ProviderModelsPicker.tsx": {
 			"expectError": 1

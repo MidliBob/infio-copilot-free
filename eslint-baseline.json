@@ -354,24 +354,15 @@
 			"@typescript-eslint/ban-ts-comment": 1
 		},
 		"src/settings/SettingTab.tsx": {
-			"@typescript-eslint/ban-ts-comment": 7,
+			"@typescript-eslint/ban-ts-comment": 6,
 			"@typescript-eslint/consistent-type-assertions": 5,
-			"@typescript-eslint/prefer-ts-expect-error": 7
+			"@typescript-eslint/prefer-ts-expect-error": 6
 		},
 		"src/settings/components/CheckBoxSettingItem.tsx": {
 			"@typescript-eslint/unbound-method": 1
 		},
 		"src/settings/components/FewShotExampleSettings.tsx": {
 			"no-inline-styles/no-inline-styles": 22
-		},
-		"src/settings/components/ModelProviderSettings.tsx": {
-			"@typescript-eslint/ban-ts-comment": 2,
-			"@typescript-eslint/no-unsafe-argument": 12,
-			"@typescript-eslint/no-unsafe-assignment": 56,
-			"@typescript-eslint/no-unsafe-call": 17,
-			"@typescript-eslint/no-unsafe-member-access": 59,
-			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/prefer-ts-expect-error": 2
 		},
 		"src/settings/components/PluginInfoSettings.tsx": {
 			"@typescript-eslint/no-unused-vars": 2

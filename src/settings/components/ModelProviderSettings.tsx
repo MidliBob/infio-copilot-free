@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import { t } from '../../lang/helpers';
-import InfioPlugin from "../../main";
 import { ApiProvider } from '../../types/llm/model';
+import { InfioPluginLike } from '../../types/plugin';
 import { InfioSettings } from '../../types/settings';
 import {
 	GetAllProviders, GetDefaultModelId,
@@ -17,7 +17,7 @@ import { ComboBoxComponent } from './ProviderModelsPicker';
 import { logger } from '../../utils/logger'
 
 type CustomProviderSettingsProps = {
-	plugin: InfioPlugin;
+	plugin: InfioPluginLike;
 	onSettingsUpdate?: () => void;
 }
 
@@ -165,12 +165,10 @@ const OllamaConnectionTest: React.FC<OllamaConnectionTestProps> = ({ baseUrl }) 
 };
 
 const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin, onSettingsUpdate }) => {
-	// @ts-ignore
 	const settings = plugin.settings;
 	const activeTab = settings.activeProviderTab || ApiProvider.Ollama;
 
 	const handleSettingsUpdate = async (newSettings: InfioSettings) => {
-		// @ts-ignore
 		await plugin.setSettings(newSettings);
 		onSettingsUpdate?.();
 	};
@@ -377,33 +375,31 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 			logger.error(`❌ ${provider} connection test failed:`, error);
 
 			// 根据错误类型提供更具体的错误信息
+			// Narrow once: the catch binding is `any`, and non-Error throws
+			// (strings, null) must not crash the handler itself.
+			const failureText = error instanceof Error ? error.message : String(error);
+			const failureName = error instanceof Error ? error.name : '';
 			let errorMessage = t("settings.ModelProvider.testConnection.connectionFailed");
 
-			if (error.message?.includes('API key')) {
+			if (failureText.includes('API key')) {
 				errorMessage = t("settings.ModelProvider.testConnection.invalidApiKey");
-			} else if (error.message?.includes('base URL') || error.message?.includes('baseURL')) {
+			} else if (failureText.includes('base URL') || failureText.includes('baseURL')) {
 				errorMessage = t("settings.ModelProvider.testConnection.invalidBaseUrl");
-			} else if (error.message?.includes('timeout') || error.name === 'AbortError') {
+			} else if (failureText.includes('timeout') || failureName === 'AbortError') {
 				errorMessage = t("settings.ModelProvider.testConnection.requestTimeout");
-			} else if (error.message?.includes('fetch')) {
+			} else if (failureText.includes('fetch')) {
 				errorMessage = t("settings.ModelProvider.testConnection.networkError");
-			} else if (error.message?.includes('401')) {
+			} else if (failureText.includes('401')) {
 				errorMessage = t("settings.ModelProvider.testConnection.unauthorizedError");
-			} else if (error.message?.includes('403')) {
+			} else if (failureText.includes('403')) {
 				errorMessage = t("settings.ModelProvider.testConnection.forbiddenError");
-			} else if (error.message?.includes('429')) {
+			} else if (failureText.includes('429')) {
 				errorMessage = t("settings.ModelProvider.testConnection.rateLimitError");
-			} else if (error.message?.includes('500')) {
+			} else if (failureText.includes('500')) {
 				errorMessage = t("settings.ModelProvider.testConnection.serverError");
-			} else if (error.message) {
+			} else if (failureText) {
 				// 如果错误消息本身已经是翻译过的（比如不支持的提供商），直接使用
-				if (error.message.includes(t("settings.ModelProvider.testConnection.notSupported", { provider: '' }).slice(0, 10))) {
-					errorMessage = error.message;
-				} else if (error.message.includes(t("settings.ModelProvider.testConnection.noDefaultModel", { provider: '' }).slice(0, 10))) {
-					errorMessage = error.message;
-				} else {
-					errorMessage = error.message;
-				}
+				errorMessage = failureText;
 			}
 			void showMessage(plugin.app, { message: errorMessage });
 			// 必须抛出错误，这样ApiKeyComponent才能正确显示失败状态
@@ -411,9 +407,11 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 		}
 	};
 
-	const getProviderSetting = (provider: ApiProvider) => {
+	// The zod schema (.catch defaults) guarantees every provider block exists
+	// on a parsed settings object, so no `|| {}` fallback is needed here.
+	const getProviderSetting = (provider: ApiProvider): InfioSettings[ProviderSettingKey] => {
 		const providerKey = getProviderSettingKey(provider);
-		return settings[providerKey] || {};
+		return settings[providerKey];
 	};
 
 	const updateChatModelId = (
@@ -423,7 +421,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	) => {
 		logger.debug(`updateChatModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
 		const providerSettingKey = getProviderSettingKey(provider);
-		const providerSettings = settings[providerSettingKey] || {};
+		const providerSettings = settings[providerSettingKey];
 		const currentModels = providerSettings.models || [];
 
 		// 如果是自定义模型且不在列表中，则添加
@@ -445,7 +443,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	const updateApplyModelId = (provider: ApiProvider, modelId: string, isCustom: boolean = false) => {
 		logger.debug(`updateApplyModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
 		const providerSettingKey = getProviderSettingKey(provider);
-		const providerSettings = settings[providerSettingKey] || {};
+		const providerSettings = settings[providerSettingKey];
 		const currentModels = providerSettings.models || [];
 
 		// 如果是自定义模型且不在列表中，则添加
@@ -467,7 +465,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	const updateEmbeddingModelId = (provider: ApiProvider, modelId: string, isCustom: boolean = false) => {
 		logger.debug(`updateEmbeddingModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
 		const providerSettingKey = getProviderSettingKey(provider);
-		const providerSettings = settings[providerSettingKey] || {};
+		const providerSettings = settings[providerSettingKey];
 		const currentModels = providerSettings.models || [];
 
 		// 如果是自定义模型且不在列表中，则添加
@@ -489,7 +487,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	const updateInsightModelId = (provider: ApiProvider, modelId: string, isCustom: boolean = false) => {
 		logger.debug(`updateInsightModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
 		const providerSettingKey = getProviderSettingKey(provider);
-		const providerSettings = settings[providerSettingKey] || {};
+		const providerSettings = settings[providerSettingKey];
 		const currentModels = providerSettings.models || [];
 
 		// 如果是自定义模型且不在列表中，则添加

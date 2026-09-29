@@ -55,7 +55,6 @@ export class InfioSettingTab extends PluginSettingTab {
 		const sections = createRoot(div);
 		sections.render(
 			<CustomProviderSettings
-				// @ts-ignore
 				plugin={this.plugin}
 				onSettingsUpdate={() => {
 					if (this.modelsContainer) {
