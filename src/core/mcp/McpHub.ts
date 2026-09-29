@@ -5,6 +5,7 @@ import * as path from "path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import {
 	CallToolResultSchema,
 	ListResourceTemplatesResultSchema,
@@ -34,103 +35,24 @@ import {
 	McpTool,
 	McpToolCallResponse,
 } from "./type";
+import {
+	McpSettingsSchema,
+	ServerConfigSchema,
+	getRecordField,
+	httpFieldsErrorMessage,
+	isRecord,
+	missingFieldsErrorMessage,
+	mixedFieldsErrorMessage,
+	readAlwaysAllowList,
+	stdioFieldsErrorMessage,
+	typeErrorMessage,
+} from "./config-schema";
 import { logger } from '../../utils/logger'
 
 export type McpConnection = {
 	server: McpServer
 	client: Client
-	transport: StdioClientTransport | SSEClientTransport
-}
-
-// Base configuration schema for common settings
-const BaseConfigSchema = z.object({
-	disabled: z.boolean().optional(),
-	timeout: z.number().min(1).max(3600).optional().default(60),
-	alwaysAllow: z.array(z.string()).default([]),
-	watchPaths: z.array(z.string()).optional(), // paths to watch for changes and restart server
-})
-
-// Custom error messages for better user feedback
-const typeErrorMessage = "Server type must be either 'stdio' or 'sse'"
-const stdioFieldsErrorMessage =
-	"For 'stdio' type servers, you must provide a 'command' field and can optionally include 'args' and 'env'"
-const sseFieldsErrorMessage =
-	"For 'sse' type servers, you must provide a 'url' field and can optionally include 'headers'"
-const mixedFieldsErrorMessage =
-	"Cannot mix 'stdio' and 'sse' fields. For 'stdio' use 'command', 'args', and 'env'. For 'sse' use 'url' and 'headers'"
-const missingFieldsErrorMessage = "Server configuration must include either 'command' (for stdio) or 'url' (for sse)"
-
-// Helper function to create a refined schema with better error messages
-const createServerTypeSchema = () => {
-	return z.union([
-		// Stdio config (has command field)
-		BaseConfigSchema.extend({
-			type: z.enum(["stdio"]).optional(),
-			command: z.string().min(1, "Command cannot be empty"),
-			args: z.array(z.string()).optional(),
-			// cwd: z.string().default(() => { // `this` is not available in this context
-			// 	// TODO: Find a better way to set default CWD, perhaps during server initialization
-			// 	// For now, let's make it optional or require it explicitly.
-			// 	// const basePath = this.app?.vault?.adapter?.basePath; // this.app is not defined here
-			// 	// return basePath || process.cwd();
-			// }),
-			cwd: z.string().optional(), // Made optional, to be handled during connection
-			env: z.record(z.string()).optional(),
-			// Ensure no SSE fields are present
-			url: z.undefined().optional(),
-			headers: z.undefined().optional(),
-		})
-			.transform((data) => ({
-				...data,
-				type: "stdio" as const,
-			}))
-			.refine((data) => data.type === undefined || data.type === "stdio", { message: typeErrorMessage }),
-		// SSE config (has url field)
-		BaseConfigSchema.extend({
-			type: z.enum(["sse"]).optional(),
-			url: z.string().url("URL must be a valid URL format"),
-			headers: z.record(z.string()).optional(),
-			// Ensure no stdio fields are present
-			command: z.undefined().optional(),
-			args: z.undefined().optional(),
-			env: z.undefined().optional(),
-		})
-			.transform((data) => ({
-				...data,
-				type: "sse" as const,
-			}))
-			.refine((data) => data.type === undefined || data.type === "sse", { message: typeErrorMessage }),
-	])
-}
-
-// Server configuration schema with automatic type inference and validation
-export const ServerConfigSchema = createServerTypeSchema()
-
-// Settings schema
-const McpSettingsSchema = z.object({
-	mcpServers: z.record(ServerConfigSchema),
-})
-
-// Structural guards for JSON-parsed config files. `JSON.parse` returns `any`;
-// routing it through `unknown` plus these guards keeps the lint gate
-// (no-unsafe-*) at zero without a single type assertion.
-function isRecord(value: unknown): value is Record<string, unknown> {
-	return typeof value === "object" && value !== null && !Array.isArray(value)
-}
-
-function getRecordField(source: Record<string, unknown>, key: string): Record<string, unknown> | undefined {
-	const value = source[key]
-	return isRecord(value) ? value : undefined
-}
-
-/** Reads `mcpServers[serverName].alwaysAllow` out of a raw parsed settings file. */
-function readAlwaysAllowList(root: unknown, serverName: string): string[] {
-	const servers = isRecord(root) ? getRecordField(root, "mcpServers") : undefined
-	const serverEntry = servers ? getRecordField(servers, serverName) : undefined
-	const alwaysAllow = serverEntry ? serverEntry["alwaysAllow"] : undefined
-	return Array.isArray(alwaysAllow)
-		? alwaysAllow.filter((value: unknown): value is string => typeof value === "string")
-		: []
+	transport: StdioClientTransport | SSEClientTransport | StreamableHTTPClientTransport
 }
 
 
@@ -201,28 +123,30 @@ export class McpHub {
 
 		// Detect configuration issues before validation
 		const hasStdioFields = config["command"] !== undefined
-		const hasSseFields = config["url"] !== undefined
+		const hasHttpFields = config["url"] !== undefined
 
 		// Check for mixed fields
-		if (hasStdioFields && hasSseFields) {
+		if (hasStdioFields && hasHttpFields) {
 			throw new Error(mixedFieldsErrorMessage)
 		}
 
 		const mutableConfig: Record<string, unknown> = { ...config } // Create a mutable copy with proper type
 
-		// Check if it's a stdio or SSE config and add type if missing
+		// Check if it's a stdio or HTTP config and add type if missing.
+		// URL-only configs default to Streamable HTTP (MCP spec 2025-03-26);
+		// connectToServer retries over legacy SSE if the server refuses it.
 		let serverType = mutableConfig["type"]
 		if (serverType === undefined) {
 			if (hasStdioFields) {
 				serverType = "stdio"
-			} else if (hasSseFields) {
-				serverType = "sse"
+			} else if (hasHttpFields) {
+				serverType = "streamableHttp"
 			} else {
 				throw new Error(missingFieldsErrorMessage)
 			}
 			mutableConfig["type"] = serverType
 		}
-		if (serverType !== "stdio" && serverType !== "sse") {
+		if (serverType !== "stdio" && serverType !== "sse" && serverType !== "streamableHttp") {
 			throw new Error(typeErrorMessage)
 		}
 
@@ -230,8 +154,8 @@ export class McpHub {
 		if (serverType === "stdio" && !hasStdioFields) {
 			throw new Error(stdioFieldsErrorMessage)
 		}
-		if (serverType === "sse" && !hasSseFields) {
-			throw new Error(sseFieldsErrorMessage)
+		if ((serverType === "sse" || serverType === "streamableHttp") && !hasHttpFields) {
+			throw new Error(httpFieldsErrorMessage)
 		}
 
 		// Validate the config against the schema
@@ -506,17 +430,21 @@ export class McpHub {
 			// Each MCP server requires its own transport connection and has unique capabilities, configurations, and error handling. Having separate clients also allows proper scoping                                  of resources/tools and independent server management like reconnection.
 			const client = new Client(
 				{
-					name: "Roo Code",
-					// version: this.providerRef?.deref ? (this.providerRef.deref()?.context?.extension?.packageJSON?.version ?? "1.0.0") : (this.providerRef?.context?.extension?.packageJSON?.version ?? "1.0.0"),
-					// TODO: Get version properly if needed, e.g., from plugin manifest
-					version: "1.0.0", // Placeholder
+					name: "Infio Copilot",
+					// Advertise the plugin version from the manifest; the optional
+					// chain keeps the dead McpServerManager path (no plugin arg) alive
+					version: this.plugin?.manifest?.version ?? "1.0.0",
 				},
 				{
 					capabilities: {},
 				},
 			)
 
-			let transport: StdioClientTransport | SSEClientTransport
+			let transport: StdioClientTransport | SSEClientTransport | StreamableHTTPClientTransport
+			// For streamableHttp configs: factory that retries a failed initial
+			// connection over legacy HTTP+SSE (the documented MCP compatibility
+			// pattern for servers predating the 2025-03-26 transport spec).
+			let sseFallback: (() => SSEClientTransport) | null = null
 
 			// Inject environment variables to the config
 			let configInjected = { ...config };
@@ -557,15 +485,7 @@ export class McpHub {
 				})
 
 				// Set up stdio specific error handling
-				transport.onerror = async (error) => {
-					logger.error(`Transport error for "${name}":`, error)
-					const connection = this.findConnection(name)
-					if (connection) {
-						connection.server.status = "disconnected"
-						this.appendErrorMessage(connection, error instanceof Error ? error.message : String(error))
-					}
-					// await this.notifyWebviewOfServerChanges()
-				}
+				transport.onerror = this.makeTransportErrorHandler(name, source)
 
 				transport.onclose = async () => {
 					const connection = this.findConnection(name)
@@ -605,32 +525,23 @@ export class McpHub {
 				}
 				transport.start = async () => { } // No-op now, .connect() won't fail
 			} else {
-				// SSE connection
-				const sseOptions = {
-					requestInit: {
-						headers: configInjected.headers,
-					},
-				}
-				// Configure ReconnectingEventSource options
-				const reconnectingEventSourceOptions = {
-					max_retry_time: 5000, // Maximum retry time in milliseconds
-					withCredentials: configInjected.headers?.["Authorization"] ? true : false, // Enable credentials if Authorization header exists
-				}
-				global.EventSource = ReconnectingEventSource
-				transport = new SSEClientTransport(new URL(configInjected.url), {
-					...sseOptions,
-					eventSourceInit: reconnectingEventSourceOptions,
-				})
-
-				// Set up SSE specific error handling
-				transport.onerror = async (error) => {
-					logger.error(`Transport error for "${name}":`, error)
-					const connection = this.findConnection(name, source)
-					if (connection) {
-						connection.server.status = "disconnected"
-						this.appendErrorMessage(connection, error instanceof Error ? error.message : String(error))
-					}
-					// await this.notifyWebviewOfServerChanges()
+				// HTTP-based connection: Streamable HTTP (current MCP transport)
+				// or legacy HTTP+SSE (explicit type: "sse")
+				const serverUrl = new URL(configInjected.url)
+				const headers = configInjected.headers
+				const onTransportError = this.makeTransportErrorHandler(name, source)
+				if (configInjected.type === "streamableHttp") {
+					transport = new StreamableHTTPClientTransport(serverUrl, {
+						requestInit: {
+							headers,
+						},
+					})
+					transport.onerror = onTransportError
+					// Legacy HTTP+SSE servers answer the Streamable HTTP initialize
+					// POST with 4xx; that is the documented signal to retry over SSE.
+					sseFallback = () => this.createSseTransport(serverUrl, headers, onTransportError)
+				} else {
+					transport = this.createSseTransport(serverUrl, headers, onTransportError)
 				}
 			}
 
@@ -650,7 +561,27 @@ export class McpHub {
 			this.connections.push(connection)
 
 			// Connect (this will automatically start the transport)
-			await client.connect(transport)
+			try {
+				await client.connect(transport)
+			} catch (connectError) {
+				if (!sseFallback) {
+					throw connectError
+				}
+				// MCP backwards compatibility: a legacy HTTP+SSE server rejects the
+				// Streamable HTTP handshake, so retry the same URL over SSE.
+				logger.warn(
+					`Streamable HTTP connection to "${name}" failed, falling back to legacy SSE transport:`,
+					connectError,
+				)
+				try {
+					await transport.close()
+				} catch (closeError) {
+					logger.debug(`Ignoring close error of the failed Streamable HTTP transport for "${name}":`, closeError)
+				}
+				transport = sseFallback()
+				connection.transport = transport
+				await client.connect(transport)
+			}
 			connection.server.status = "connected"
 			connection.server.error = ""
 
@@ -667,6 +598,49 @@ export class McpHub {
 			}
 			throw error
 		}
+	}
+
+	/**
+	 * Builds the shared transport error handler: marks the connection
+	 * disconnected and records the message in the server error history.
+	 */
+	private makeTransportErrorHandler(name: string, source: "global" | "project"): (error: Error) => void {
+		return async (error) => {
+			logger.error(`Transport error for "${name}":`, error)
+			const connection = this.findConnection(name, source)
+			if (connection) {
+				connection.server.status = "disconnected"
+				this.appendErrorMessage(connection, error instanceof Error ? error.message : String(error))
+			}
+			// await this.notifyWebviewOfServerChanges()
+		}
+	}
+
+	/**
+	 * Creates the legacy HTTP+SSE transport. ReconnectingEventSource keeps the
+	 * stream alive across brief network drops; the SDK picks the global
+	 * EventSource up when the transport starts. Streamable HTTP does not need
+	 * this shim: the SDK parses SSE payloads with its own eventsource-parser.
+	 */
+	private createSseTransport(
+		url: URL,
+		headers: Record<string, string> | undefined,
+		onerror: (error: Error) => void,
+	): SSEClientTransport {
+		// Configure ReconnectingEventSource options
+		const reconnectingEventSourceOptions = {
+			max_retry_time: 5000, // Maximum retry time in milliseconds
+			withCredentials: headers?.["Authorization"] ? true : false, // Enable credentials if Authorization header exists
+		}
+		global.EventSource = ReconnectingEventSource
+		const transport = new SSEClientTransport(url, {
+			requestInit: {
+				headers,
+			},
+			eventSourceInit: reconnectingEventSourceOptions,
+		})
+		transport.onerror = onerror
+		return transport
 	}
 
 	private appendErrorMessage(connection: McpConnection, error: string, level: "error" | "warn" | "info" = "error") {
