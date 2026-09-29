@@ -15,7 +15,7 @@ import {
 import chokidar, { FSWatcher } from "chokidar"; // Keep chokidar
 import delay from "delay"; // Keep delay
 import deepEqual from "fast-deep-equal"; // Keep fast-deep-equal
-import { App, EventRef, Notice, Plugin, TFile, normalizePath } from 'obsidian';
+import { App, EventRef, Notice, Plugin, TFile, WorkspaceLeaf, normalizePath } from 'obsidian';
 import ReconnectingEventSource from "reconnecting-eventsource"; // Keep reconnecting-eventsource
 import { EnvironmentVariables, shellEnvSync } from 'shell-env';
 import { z } from "zod"; // Keep zod
@@ -111,19 +111,26 @@ const McpSettingsSchema = z.object({
 	mcpServers: z.record(ServerConfigSchema),
 })
 
-// Add type definitions for better type safety
-type ConfigObject = Record<string, unknown> & {
-	command?: string
-	url?: string
-	type?: string
-	args?: string[]
-	env?: Record<string, string>
-	headers?: Record<string, string>
-	disabled?: boolean
-	timeout?: number
-	alwaysAllow?: string[]
-	watchPaths?: string[]
-	cwd?: string
+// Structural guards for JSON-parsed config files. `JSON.parse` returns `any`;
+// routing it through `unknown` plus these guards keeps the lint gate
+// (no-unsafe-*) at zero without a single type assertion.
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === "object" && value !== null && !Array.isArray(value)
+}
+
+function getRecordField(source: Record<string, unknown>, key: string): Record<string, unknown> | undefined {
+	const value = source[key]
+	return isRecord(value) ? value : undefined
+}
+
+/** Reads `mcpServers[serverName].alwaysAllow` out of a raw parsed settings file. */
+function readAlwaysAllowList(root: unknown, serverName: string): string[] {
+	const servers = isRecord(root) ? getRecordField(root, "mcpServers") : undefined
+	const serverEntry = servers ? getRecordField(servers, serverName) : undefined
+	const alwaysAllow = serverEntry ? serverEntry["alwaysAllow"] : undefined
+	return Array.isArray(alwaysAllow)
+		? alwaysAllow.filter((value: unknown): value is string => typeof value === "string")
+		: []
 }
 
 
@@ -187,47 +194,43 @@ export class McpHub {
 	 * @throws Error if the configuration is invalid
 	 */
 	private validateServerConfig(config: unknown, serverName?: string): z.infer<typeof ServerConfigSchema> {
-		if (typeof config !== 'object' || config === null) {
+		// Type guard instead of an assertion: rejects null, arrays and primitives
+		if (!isRecord(config)) {
 			throw new Error("Server configuration must be an object.");
 		}
-
-		// Use type guard to ensure config is an object
-		if (typeof config !== 'object' || config === null || Array.isArray(config)) {
-			throw new Error("Server configuration must be an object.");
-		}
-		
-		// Use proper type assertion with better typing
-		const configObj = config as ConfigObject;
 
 		// Detect configuration issues before validation
-		const hasStdioFields = configObj.command !== undefined
-		const hasSseFields = configObj.url !== undefined
+		const hasStdioFields = config["command"] !== undefined
+		const hasSseFields = config["url"] !== undefined
 
 		// Check for mixed fields
 		if (hasStdioFields && hasSseFields) {
 			throw new Error(mixedFieldsErrorMessage)
 		}
 
-		const mutableConfig: ConfigObject = { ...configObj }; // Create a mutable copy with proper type
+		const mutableConfig: Record<string, unknown> = { ...config } // Create a mutable copy with proper type
 
 		// Check if it's a stdio or SSE config and add type if missing
-		if (!mutableConfig.type) {
+		let serverType = mutableConfig["type"]
+		if (serverType === undefined) {
 			if (hasStdioFields) {
-				mutableConfig.type = "stdio"
+				serverType = "stdio"
 			} else if (hasSseFields) {
-				mutableConfig.type = "sse"
+				serverType = "sse"
 			} else {
 				throw new Error(missingFieldsErrorMessage)
 			}
-		} else if (mutableConfig.type !== "stdio" && mutableConfig.type !== "sse") {
+			mutableConfig["type"] = serverType
+		}
+		if (serverType !== "stdio" && serverType !== "sse") {
 			throw new Error(typeErrorMessage)
 		}
 
 		// Check for type/field mismatch
-		if (mutableConfig.type === "stdio" && !hasStdioFields) {
+		if (serverType === "stdio" && !hasStdioFields) {
 			throw new Error(stdioFieldsErrorMessage)
 		}
-		if (mutableConfig.type === "sse" && !hasSseFields) {
+		if (serverType === "sse" && !hasSseFields) {
 			throw new Error(sseFieldsErrorMessage)
 		}
 
@@ -273,7 +276,7 @@ export class McpHub {
 	private async handleConfigFileChange(filePath: string): Promise<void> {
 		try {
 			const content = await this.app.vault.adapter.read(filePath);
-			const config = JSON.parse(content)
+			const config: unknown = JSON.parse(content)
 			const result = McpSettingsSchema.safeParse(config)
 
 			if (!result.success) {
@@ -402,17 +405,14 @@ export class McpHub {
 
 			logger.debug('Attempting to open MCP settings file:', filePath);
 
-			// 检查文件是否已经打开
-			let existingLeaf: any = null;
+			// Check whether the settings file is already open in a JSON view
+			let existingLeaf: WorkspaceLeaf | null = null;
 			this.app.workspace.iterateAllLeaves((leaf) => {
 				if (leaf.view.getViewType() === JSON_VIEW_TYPE) {
-					// 检查视图状态中的文件路径
-					const viewState = leaf.view.getState();
-					if (viewState && typeof viewState === 'object' && 'filePath' in viewState && 
-						viewState !== null && !Array.isArray(viewState) &&
-						(viewState as { filePath: unknown }).filePath === filePath) {
+					// Match on the file path stored in the view state
+					const viewState: unknown = leaf.view.getState();
+					if (isRecord(viewState) && viewState["filePath"] === filePath) {
 						existingLeaf = leaf;
-						return false; // 停止遍历
 					}
 				}
 			});
@@ -462,7 +462,7 @@ export class McpHub {
 			}
 
 			const content = await this.app.vault.adapter.read(this.mcpSettingsFilePath);
-			const config = JSON.parse(content);
+			const config: unknown = JSON.parse(content);
 			const result = McpSettingsSchema.safeParse(config);
 
 			if (result.success) {
@@ -475,19 +475,10 @@ export class McpHub {
 				new Notice(String(t("common:errors.invalid_mcp_settings_validation")) + ": " + errorMessages);
 				// Still try to connect with the raw config for global, but show warnings
 				try {
-					// 安全地处理未验证的配置
-					const serversToConnect = config.mcpServers;
-					if (serversToConnect && typeof serversToConnect === 'object' && 
-						!Array.isArray(serversToConnect) && serversToConnect !== null) {
-						// Use type guard to ensure it's a proper record
-						const servers: Record<string, unknown> = {};
-						for (const [key, value] of Object.entries(serversToConnect)) {
-							servers[key] = value;
-						}
-						await this.updateServerConnections(servers);
-					} else {
-						await this.updateServerConnections({});
-					}
+					// Safely handle the unvalidated config: per-server validation
+					// happens in updateServerConnections anyway
+					const serversToConnect = isRecord(config) ? getRecordField(config, "mcpServers") : undefined;
+					await this.updateServerConnections(serversToConnect ?? {});
 				} catch (error) {
 					this.showErrorMessage(`Failed to initialize MCP servers with raw config`, error);
 				}
@@ -754,15 +745,13 @@ export class McpHub {
 					if (await this.app.vault.adapter.exists(projectMcpPath)) {
 						configPath = projectMcpPath
 						const content = await this.app.vault.adapter.read(configPath)
-						const config = JSON.parse(content)
-						alwaysAllowConfig = config.mcpServers?.[serverName]?.alwaysAllow || []
+						alwaysAllowConfig = readAlwaysAllowList(JSON.parse(content), serverName)
 					}
 				} else {
 					// Get global MCP settings path
 					configPath = this.mcpSettingsFilePath
 					const content = await this.app.vault.adapter.read(configPath)
-					const config = JSON.parse(content)
-					alwaysAllowConfig = config.mcpServers?.[serverName]?.alwaysAllow || []
+					alwaysAllowConfig = readAlwaysAllowList(JSON.parse(content), serverName)
 				}
 			} catch (error) {
 				logger.error(`Failed to read alwaysAllow config for ${serverName}:`, error)
@@ -985,7 +974,7 @@ export class McpHub {
 			try {
 				await this.deleteConnection(serverName, connection.server.source)
 				// Parse the config to validate it
-				const parsedConfig = JSON.parse(config)
+				const parsedConfig: unknown = JSON.parse(config)
 				try {
 					// Validate the config
 					const validatedConfig = this.validateServerConfig(parsedConfig, serverName)
@@ -1072,37 +1061,36 @@ export class McpHub {
 
 		// Read and parse the config file
 		const content = await this.app.vault.adapter.read(configPath)
-		const config = JSON.parse(content)
+		const parsed: unknown = JSON.parse(content)
 
 		// Validate the config structure
-		if (!config || typeof config !== "object") {
+		if (!isRecord(parsed)) {
 			throw new Error("Invalid config structure")
 		}
 
-		if (!config.mcpServers || typeof config.mcpServers !== "object") {
-			config.mcpServers = {}
-		}
-
-		if (!config.mcpServers[serverName]) {
-			config.mcpServers[serverName] = {}
+		let servers = getRecordField(parsed, "mcpServers")
+		if (!servers) {
+			servers = {}
+			parsed["mcpServers"] = servers
 		}
 
 		// Create a new server config object to ensure clean structure
-		const serverConfig = {
-			...config.mcpServers[serverName],
+		const existingServerConfig = getRecordField(servers, serverName)
+		const serverConfig: Record<string, unknown> = {
+			...(existingServerConfig ?? {}),
 			...configUpdate,
 		}
 
 		// Ensure required fields exist
-		if (!serverConfig.alwaysAllow) {
-			serverConfig.alwaysAllow = []
+		if (!Array.isArray(serverConfig["alwaysAllow"])) {
+			serverConfig["alwaysAllow"] = []
 		}
 
-		config.mcpServers[serverName] = serverConfig
+		servers[serverName] = serverConfig
 
 		// Write the entire config back
 		const updatedConfig = {
-			mcpServers: config.mcpServers,
+			mcpServers: servers,
 		}
 
 		await this.app.vault.adapter.write(configPath, JSON.stringify(updatedConfig, null, 2))
@@ -1156,39 +1144,35 @@ export class McpHub {
 			}
 
 			const content = await this.app.vault.adapter.read(configPath)
-			const config = JSON.parse(content)
+			const parsed: unknown = JSON.parse(content)
 
 			// Validate the config structure
-			if (!config || typeof config !== "object") {
+			if (!isRecord(parsed)) {
 				throw new Error("Invalid config structure")
 			}
 
-			if (!config.mcpServers || typeof config.mcpServers !== "object") {
-				config.mcpServers = {}
-			}
+			const servers = getRecordField(parsed, "mcpServers") ?? {}
 
 			// Remove the server from the settings
-			if (config.mcpServers[serverName]) {
-				// Use delete operator safely with type guard
-				if (config.mcpServers && typeof config.mcpServers === 'object' && !Array.isArray(config.mcpServers)) {
-					delete config.mcpServers[serverName];
+			if (servers[serverName]) {
+				// Rebuild the record without the deleted key: computed `delete`
+				// is banned by the lint gate (no-dynamic-delete)
+				const remainingServers: Record<string, unknown> = {}
+				for (const [key, value] of Object.entries(servers)) {
+					if (key !== serverName) {
+						remainingServers[key] = value
+					}
 				}
 
 				// Write the entire config back
 				const updatedConfig = {
-					mcpServers: config.mcpServers,
+					mcpServers: remainingServers,
 				}
 
 				await this.app.vault.adapter.write(configPath, JSON.stringify(updatedConfig, null, 2))
 
 				// Update server connections with the correct source
-				const servers: Record<string, unknown> = {};
-				if (config.mcpServers && typeof config.mcpServers === 'object' && !Array.isArray(config.mcpServers)) {
-					for (const [key, value] of Object.entries(config.mcpServers)) {
-						servers[key] = value;
-					}
-				}
-				await this.updateServerConnections(servers, serverSource)
+				await this.updateServerConnections(remainingServers, serverSource)
 
 				// vscode.window.showInformationMessage(t("common:info.mcp_server_deleted", { serverName }))
 			} else {
@@ -1241,41 +1225,32 @@ export class McpHub {
 
 			// Read current config
 			const content = await this.app.vault.adapter.read(configPath)
-			const currentConfig = JSON.parse(content)
+			const parsed: unknown = JSON.parse(content)
 
 			// Validate the config structure
-			if (!currentConfig || typeof currentConfig !== "object") {
+			if (!isRecord(parsed)) {
 				throw new Error("Invalid config file structure")
 			}
 
 			// Ensure mcpServers object exists
-			if (!currentConfig.mcpServers || typeof currentConfig.mcpServers !== "object") {
-				currentConfig.mcpServers = {}
-			}
+			const servers = getRecordField(parsed, "mcpServers") ?? {}
 
 			// Check if server already exists
-			if (currentConfig.mcpServers[name]) {
+			if (servers[name]) {
 				throw new Error(`Server "${name}" already exists. Use updateServerConfig to modify existing servers.`)
 			}
 
 			// Add the new server to the config
-			currentConfig.mcpServers[name] = validatedConfig
+			servers[name] = validatedConfig
 
 			// Write the updated config back to file
 			const updatedConfig = {
-				mcpServers: currentConfig.mcpServers,
+				mcpServers: servers,
 			}
 
 			await this.app.vault.adapter.write(configPath, JSON.stringify(updatedConfig, null, 2))
 
 			// Update server connections to connect to the new server
-			const servers: Record<string, unknown> = {};
-			if (currentConfig.mcpServers && typeof currentConfig.mcpServers === 'object' && 
-				!Array.isArray(currentConfig.mcpServers)) {
-				for (const [key, value] of Object.entries(currentConfig.mcpServers)) {
-					servers[key] = value;
-				}
-			}
 			await this.updateServerConnections(servers, source)
 
 			logger.debug(`Successfully created and connected to MCP server: ${name}`)
@@ -1380,28 +1355,36 @@ export class McpHub {
 
 			// Read the appropriate config file
 			const content = await this.app.vault.adapter.read(configPath)
-			const config = JSON.parse(content)
+			const parsed: unknown = JSON.parse(content)
+			if (!isRecord(parsed)) {
+				throw new Error("Invalid config file structure")
+			}
 
 			// Initialize mcpServers if it doesn't exist
-			if (!config.mcpServers) {
-				config.mcpServers = {}
+			let servers = getRecordField(parsed, "mcpServers")
+			if (!servers) {
+				servers = {}
+				parsed["mcpServers"] = servers
 			}
 
 			// Initialize server config if it doesn't exist
-			if (!config.mcpServers[serverName]) {
-				config.mcpServers[serverName] = {
+			let serverEntry = getRecordField(servers, serverName)
+			if (!serverEntry) {
+				serverEntry = {
 					type: "stdio",
 					command: "node",
 					args: [], // Default to an empty array; can be set later if needed
 				}
+				servers[serverName] = serverEntry
 			}
 
-			// Initialize alwaysAllow if it doesn't exist
-			if (!config.mcpServers[serverName].alwaysAllow) {
-				config.mcpServers[serverName].alwaysAllow = []
-			}
+			// Normalize alwaysAllow to a string array (raw JSON may hold anything)
+			const rawAlwaysAllow = serverEntry["alwaysAllow"]
+			const alwaysAllow: string[] = Array.isArray(rawAlwaysAllow)
+				? rawAlwaysAllow.filter((value: unknown): value is string => typeof value === "string")
+				: []
+			serverEntry["alwaysAllow"] = alwaysAllow
 
-			const alwaysAllow = config.mcpServers[serverName].alwaysAllow
 			const toolIndex = alwaysAllow.indexOf(toolName)
 
 			if (shouldAllow && toolIndex === -1) {
@@ -1413,7 +1396,7 @@ export class McpHub {
 			}
 
 			// Write updated config back to file
-			await this.app.vault.adapter.write(configPath, JSON.stringify(config, null, 2))
+			await this.app.vault.adapter.write(configPath, JSON.stringify(parsed, null, 2))
 
 			// Update the tools list to reflect the change
 			if (connection) {
