@@ -55,6 +55,15 @@ Notes:
   and `PGLITE_VERSION` in `scripts/copy-pglite-assets.mjs`.
 - Locales live in `src/lang/locale/*.ts` and are compiled into the bundle
   (no runtime locale files).
+- `scripts/mcp-stdio-unref-patch.js` is a build-time vendor patch wired into
+  `esbuild.config.mjs`: MCP SDK 1.30.0 closes stdio transports with an
+  unguarded `setTimeout(...).unref()`, which throws in the Obsidian renderer
+  (DOM `setTimeout` returns a number), aborting the child-process kill
+  sequence and orphaning processes on every restart. The plugin rewrites the
+  unguarded call sites in the bundled `client/stdio.js` to a typeof-guarded
+  helper and prints a build warning if a future SDK changes the call shape.
+  Once the SDK guards the call itself the plugin no-ops and can be deleted.
+  Regression suite: `scripts/mcp-stdio-unref-patch.test.js`.
 - `pnpm test` output must stay free of `● Console` blocks. Suites that exercise
   an error path on purpose (bad HTTP status, unreachable YaCy peer, corrupt
   stored settings, ...) mock the logging facade with

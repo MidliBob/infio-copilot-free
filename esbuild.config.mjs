@@ -4,6 +4,7 @@ import process from 'process'
 import { builtinModules as builtins } from 'node:module'
 import inlineWorkerPlugin from "esbuild-plugin-inline-worker"
 import { visualizer } from "esbuild-visualizer";
+import mcpStdioUnrefPatch from './scripts/mcp-stdio-unref-patch.js'
 const nodeBuiltins = [...builtins, ...builtins.map((mod) => `node:${mod}`)]
 
 const banner = `/*
@@ -21,6 +22,7 @@ const context = await esbuild.context({
 	entryPoints: ['src/main.ts'],
 	bundle: true,
 	plugins: [
+		mcpStdioUnrefPatch.mcpStdioUnrefPlugin(),
 		inlineWorkerPlugin({
 			define: {
 				'process': '{}', // 继承主配置

@@ -786,11 +786,18 @@ export class McpHub {
 			: this.connections.filter((conn) => conn.server.name === name)
 
 		for (const connection of connections) {
+			// Close transport and client independently: a transport close failure
+			// (e.g. an already-dead stdio child process) must not skip the client
+			// teardown, or its session state leaks.
 			try {
 				await connection.transport.close()
-				await connection.client.close()
 			} catch (error) {
 				logger.error(`Failed to close transport for ${name}:`, error)
+			}
+			try {
+				await connection.client.close()
+			} catch (error) {
+				logger.error(`Failed to close client for ${name}:`, error)
 			}
 			this.connections = this.connections.filter((conn) => conn.server.name !== name)
 		}
