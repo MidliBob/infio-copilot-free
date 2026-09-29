@@ -469,6 +469,7 @@ describe('manage_files', () => {
 					{ action: 'move', source_path: 'x.md', destination_path: 'y.md' },
 					{ action: 'rename', path: 'z.md', new_name: 'w.md' },
 				],
+				droppedOperations: 0,
 				finish: true,
 			},
 		])
@@ -476,7 +477,7 @@ describe('manage_files', () => {
 
 	it('parses a JSON array written directly as the tag body', () => {
 		expect(parseMsgBlocks('<manage_files>\n[{"action":"create_folder","path":"dir"}]\n</manage_files>')).toEqual([
-			{ type: 'manage_files', operations: [{ action: 'create_folder', path: 'dir' }], finish: true },
+			{ type: 'manage_files', operations: [{ action: 'create_folder', path: 'dir' }], droppedOperations: 0, finish: true },
 		])
 	})
 
@@ -486,6 +487,7 @@ describe('manage_files', () => {
 			{
 				type: 'manage_files',
 				operations: [{ action: 'copy', source_path: 's', destination_path: 'd' }],
+				droppedOperations: 2,
 				finish: true,
 			},
 		])
@@ -494,15 +496,47 @@ describe('manage_files', () => {
 
 	it('degrades a non-array body to empty operations (regression: non-arrays crashed the renderer)', () => {
 		expect(parseMsgBlocks('<manage_files>{"action":"delete"}</manage_files>')).toEqual([
-			{ type: 'manage_files', operations: [], finish: true },
+			{ type: 'manage_files', operations: [], droppedOperations: 1, finish: true },
 		])
 	})
 
 	it('logs and degrades malformed operations JSON', () => {
 		expect(parseMsgBlocks('<manage_files><operations>[{bad</operations></manage_files>')).toEqual([
-			{ type: 'manage_files', operations: [], finish: true },
+			{ type: 'manage_files', operations: [], droppedOperations: 1, finish: true },
 		])
 		expect(loggerMock.error).toHaveBeenCalledTimes(1)
+	})
+
+	it('reports a content-creation attempt as a dropped operation (field bug 1.6.22)', () => {
+		// manage_files has no content-creating action: a model asked to create
+		// a file emits e.g. action "create_file", the validator rejects it and
+		// the block must carry the reason instead of silently showing zero
+		// operations with a clickable Execute button.
+		const opsJson = '[{"action":"create_file","path":"test.tsx","content":"const a = <div>hi</div>"}]'
+		expect(parseMsgBlocks(`<manage_files><operations>${opsJson}</operations></manage_files>`)).toEqual([
+			{ type: 'manage_files', operations: [], droppedOperations: 1, finish: true },
+		])
+	})
+
+	it('counts dropped entries alongside accepted ones', () => {
+		const opsJson = '[{"action":"create_file","path":"a.md"},{"action":"delete","path":"b.md"}]'
+		expect(parseMsgBlocks(`<manage_files><operations>${opsJson}</operations></manage_files>`)).toEqual([
+			{
+				type: 'manage_files',
+				operations: [{ action: 'delete', path: 'b.md' }],
+				droppedOperations: 1,
+				finish: true,
+			},
+		])
+	})
+
+	it('reports zero dropped operations for an empty array and an empty block', () => {
+		expect(parseMsgBlocks('<manage_files><operations>[]</operations></manage_files>')).toEqual([
+			{ type: 'manage_files', operations: [], droppedOperations: 0, finish: true },
+		])
+		expect(parseMsgBlocks('<manage_files></manage_files>')).toEqual([
+			{ type: 'manage_files', operations: [], droppedOperations: 0, finish: true },
+		])
 	})
 })
 

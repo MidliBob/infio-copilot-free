@@ -843,5 +843,8 @@ export default {
 		"copyOk": "✅ Файл скопирован: {source} → {destination}",
 		"copyFolderUnsupported": "❌ Копирование папок пока не реализовано: {path}",
 		"renameOk": "✅ Переименовано ({type}): {path} → {newPath}",
+		"emptyWarning": "В блоке нет ни одной поддерживаемой операции: manage_files умеет только создавать папки, перемещать, копировать, переименовывать и удалять. Выполнять нечего.",
+		"droppedOperations": "Пропущено неподдерживаемых операций: {count}",
+		"noValidOperations": "[manage_files] Ошибка: в запросе нет ни одной корректной файловой операции. Поддерживаемые действия: create_folder, move, copy, rename, delete. Важно: manage_files не создаёт файлы с содержимым и не изменяет содержимое - используйте write_to_file, insert_content или search_and_replace.",
 	}
 }

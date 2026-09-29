@@ -2821,6 +2821,15 @@ button.icf-chat-input-model-select {
   margin-bottom: var(--size-2-1);
 }
 
+.operation-warning {
+  padding: var(--size-2-1) var(--size-4-1);
+  border-radius: var(--radius-s);
+  font-size: var(--font-ui-small);
+  color: var(--text-error);
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-error);
+}
+
 .operation-item {
   display: flex;
   align-items: center;

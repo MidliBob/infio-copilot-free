@@ -3,7 +3,7 @@ import * as path from 'path'
 import { BaseSerializedNode } from '@lexical/clipboard/clipboard'
 import { useMutation } from '@tanstack/react-query'
 import { Box, Lightbulb, CircleStop, History, NotebookPen, Plus, Search, Server, SquareSlash, Undo } from 'lucide-react'
-import { App, Notice, TFile, TFolder, WorkspaceLeaf } from 'obsidian'
+import { App, Notice, TFile, WorkspaceLeaf } from 'obsidian'
 import {
 	forwardRef,
 	useCallback,
@@ -53,6 +53,7 @@ import {
 import { isCancellation } from '../../utils/abort-errors'
 import { ApplyEditToFile, SearchAndReplace } from '../../utils/apply'
 import { listFilesAndFolders, semanticSearchFiles } from '../../utils/glob-utils'
+import { runManageFilesOperations } from '../../utils/manage-files'
 import {
 	getMentionableKey,
 	serializeMentionable,
@@ -936,146 +937,23 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						};
 					}
 				} else if (toolArgs.type === 'manage_files') {
-					try {
-						const results: string[] = [];
-
-						// 处理每个文件操作
-						for (const operation of toolArgs.operations) {
-							switch (operation.action) {
-								case 'create_folder':
-									if (operation.path) {
-										const folderExists = await app.vault.adapter.exists(operation.path);
-										if (!folderExists) {
-											await app.vault.adapter.mkdir(operation.path);
-											results.push(t('fileOps.createFolderOk', { path: operation.path }));
-										} else {
-											results.push(t('fileOps.folderExists', { path: operation.path }));
-										}
-									}
-									break;
-
-								case 'move':
-									if (operation.source_path && operation.destination_path) {
-										// 使用 getAbstractFileByPath 而不是 getFileByPath，这样可以获取文件和文件夹
-										const sourceFile = app.vault.getAbstractFileByPath(operation.source_path);
-										if (sourceFile) {
-											// 确保目标目录存在
-											const destDir = path.dirname(operation.destination_path);
-											if (destDir && destDir !== '.' && destDir !== '/') {
-												const dirExists = await app.vault.adapter.exists(destDir);
-												if (!dirExists) {
-													await app.vault.adapter.mkdir(destDir);
-												}
-											}
-											await app.vault.rename(sourceFile, operation.destination_path);
-											const itemType = sourceFile instanceof TFile ? t('fileOps.typeFile') : t('fileOps.typeFolder');
-											results.push(t('fileOps.moveOk', { type: itemType, source: operation.source_path, destination: operation.destination_path }));
-										} else {
-											results.push(t('fileOps.sourceMissing', { path: operation.source_path }));
-										}
-									}
-									break;
-
-								case 'delete':
-									if (operation.path) {
-										// 使用 getAbstractFileByPath 而不是 getFileByPath
-										const fileOrFolder = app.vault.getAbstractFileByPath(operation.path);
-										if (fileOrFolder) {
-											try {
-												const isFolder = fileOrFolder instanceof TFolder;
-												// 使用 trash 方法将文件/文件夹移到回收站，更安全
-												// system: true 尝试使用系统回收站，失败则使用 Obsidian 本地回收站
-												await app.fileManager.trashFile(fileOrFolder);
-												const itemType = isFolder ? t('fileOps.typeFolder') : t('fileOps.typeFile');
-												results.push(t('fileOps.trashOk', { type: itemType, path: operation.path }));
-											} catch (error) {
-												logger.error('Delete failed:', error);
-												results.push(t('fileOps.deleteFailed', { path: operation.path, error: error.message }));
-											}
-										} else {
-											results.push(t('fileOps.notFound', { path: operation.path }));
-										}
-									}
-									break;
-
-								case 'copy':
-									if (operation.source_path && operation.destination_path) {
-										// 文件夹复制比较复杂，需要递归处理
-										const sourceFile = app.vault.getAbstractFileByPath(operation.source_path);
-										if (sourceFile) {
-											if (sourceFile instanceof TFile) {
-												// 文件复制
-												const destDir = path.dirname(operation.destination_path);
-												if (destDir && destDir !== '.' && destDir !== '/') {
-													const dirExists = await app.vault.adapter.exists(destDir);
-													if (!dirExists) {
-														await app.vault.adapter.mkdir(destDir);
-													}
-												}
-												const content = await app.vault.read(sourceFile);
-												await app.vault.create(operation.destination_path, content);
-												results.push(t('fileOps.copyOk', { source: operation.source_path, destination: operation.destination_path }));
-											} else if (sourceFile instanceof TFolder) {
-												// 文件夹复制需要递归处理
-												results.push(t('fileOps.copyFolderUnsupported', { path: operation.source_path }));
-											}
-										} else {
-											results.push(t('fileOps.sourceMissing', { path: operation.source_path }));
-										}
-									}
-									break;
-
-								case 'rename':
-									if (operation.path && operation.new_name) {
-										// 使用 getAbstractFileByPath 而不是 getFileByPath
-										const file = app.vault.getAbstractFileByPath(operation.path);
-										if (file) {
-											const newPath = path.join(path.dirname(operation.path), operation.new_name);
-											await app.vault.rename(file, newPath);
-											const itemType = file instanceof TFile ? t('fileOps.typeFile') : t('fileOps.typeFolder');
-											results.push(t('fileOps.renameOk', { type: itemType, path: operation.path, newPath }));
-										} else {
-											results.push(t('fileOps.notFound', { path: operation.path }));
-										}
-									}
-									break;
-
-								default:
-									results.push(t('fileOps.opUnsupported', { action: String(operation.action) }));
-							}
+					// The executor owns the applied/failed decision (1.6.22): an
+					// operation list that validated to zero entries must fail loudly,
+					// otherwise the model reads the no-op as a successful file creation.
+					const run = await runManageFilesOperations(app, toolArgs.operations);
+					return {
+						type: 'manage_files',
+						applyMsgId,
+						applyStatus: run.status === 'applied' ? ApplyStatus.Applied : ApplyStatus.Failed,
+						returnMsg: {
+							role: 'user',
+							applyStatus: ApplyStatus.Idle,
+							content: null,
+							promptContent: run.message,
+							id: uuidv4(),
+							mentionables: [],
 						}
-
-						const formattedContent = t('fileOps.resultHeader', { results: results.join('\n') });
-
-						return {
-							type: 'manage_files',
-							applyMsgId,
-							applyStatus: ApplyStatus.Applied,
-							returnMsg: {
-								role: 'user',
-								applyStatus: ApplyStatus.Idle,
-								content: null,
-								promptContent: formattedContent,
-								id: uuidv4(),
-								mentionables: [],
-							}
-						};
-					} catch (error) {
-						logger.error('File management operation failed:', error);
-						return {
-							type: 'manage_files',
-							applyMsgId,
-							applyStatus: ApplyStatus.Failed,
-							returnMsg: {
-								role: 'user',
-								applyStatus: ApplyStatus.Idle,
-								content: null,
-								promptContent: t('fileOps.resultFailed', { error: error instanceof Error ? error.message : String(error) }),
-								id: uuidv4(),
-								mentionables: [],
-							}
-						};
-					}
+					};
 				} else {
 					// 处理未知的工具类型
 					throw new Error(`Unsupported tool type: ${(toolArgs as any).type || 'unknown'}`);

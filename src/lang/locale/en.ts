@@ -871,5 +871,8 @@ export default {
 		copyOk: '✅ Copied file: {source} → {destination}',
 		copyFolderUnsupported: '❌ Folder copying is not implemented yet: {path}',
 		renameOk: '✅ Renamed {type}: {path} → {newPath}',
+		emptyWarning: 'No supported operations in this block: manage_files can only create folders, move, copy, rename and delete items. Nothing to execute.',
+		droppedOperations: 'Skipped unsupported operations: {count}',
+		noValidOperations: '[manage_files] Failed: the request contained no valid file operations. Supported actions: create_folder, move, copy, rename, delete. Note: manage_files cannot create files with content or edit file contents - use write_to_file, insert_content or search_and_replace instead.',
 	}
 }

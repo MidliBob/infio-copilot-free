@@ -229,6 +229,7 @@ function ReactMarkdown({
 						applyStatus={applyStatus}
 						onApply={onApply}
 						operations={block.operations}
+						droppedOperations={block.droppedOperations}
 						finish={block.finish}
 					/>
 				) : block.type === 'tool_result' ? (

@@ -150,6 +150,13 @@ export type ParsedMsgBlock =
 			destination_path?: string
 			new_name?: string
 		}>
+		/**
+		 * How many presented operation entries the validator rejected (unknown
+		 * action, non-object entry, non-array or malformed JSON payload). Lets
+		 * the chat UI explain an empty or shortened operation list instead of
+		 * silently offering "execute" over nothing (field bug, 1.6.22).
+		 */
+		droppedOperations: number
 		finish: boolean
 	} | {
 		type: 'tool_result'
@@ -319,6 +326,26 @@ function toManageFilesOperations(value: unknown): ManageFilesOperation[] {
 		operations.push(operation)
 	}
 	return operations
+}
+
+/**
+ * Parses a manage_files JSON payload slice into validated operations plus
+ * the count of presented entries the validator rejected (a non-array payload
+ * counts as one rejected entry). Returns undefined when the JSON is
+ * malformed, so the caller can still report "something was presented but
+ * unusable" via droppedOperations.
+ */
+function parseManageFilesJson(slice: string): { operations: ManageFilesOperation[]; dropped: number } | undefined {
+	let parsedOperations: unknown
+	try {
+		parsedOperations = JSON5.parse(slice.trim())
+	} catch (error) {
+		logger.error('Failed to parse manage_files operations JSON', error)
+		return undefined
+	}
+	const operations = toManageFilesOperations(parsedOperations)
+	const presented = Array.isArray(parsedOperations) ? parsedOperations.length : 1
+	return { operations, dropped: presented - operations.length }
 }
 
 /**
@@ -798,39 +825,38 @@ export function parseMsgBlocks(
 			} else if (node.nodeName === 'manage_files') {
 				const endOffset = emitPrecedingText(parsedResult, input, lastEndOffset, node)
 				let operations: ManageFilesOperation[] = []
+				let droppedOperations = 0
 
 				// Preferred shape: an <operations> sub-tag with the JSON payload
 				for (const childNode of node.childNodes) {
 					if (childNode.nodeName === 'operations' && childNode.childNodes.length > 0) {
-						try {
-							const operationsSlice = innerSourceSlice(input, childNode)
-							if (operationsSlice !== undefined) {
-								const parsedOperations: unknown = JSON5.parse(operationsSlice.trim())
-								operations = toManageFilesOperations(parsedOperations)
-							}
-						} catch (error) {
-							logger.error('Failed to parse operations JSON', error)
+						const slice = innerSourceSlice(input, childNode)
+						const parsed = slice === undefined ? undefined : parseManageFilesJson(slice)
+						if (parsed !== undefined) {
+							operations = parsed.operations
+							droppedOperations = parsed.dropped
+						} else {
+							droppedOperations = 1
 						}
 						break
 					}
 				}
 
 				// Fallback: the JSON array written directly as the tag content
-				if (operations.length === 0) {
-					const children = node.childNodes
-					if (children.length > 0) {
-						try {
-							const innerSlice = innerSourceSlice(input, node)
-							if (innerSlice !== undefined) {
-								const jsonContent = innerSlice.trim()
-								// only treat the body as JSON when it looks like an array
-								if (jsonContent.startsWith('[')) {
-									const parsedOperations: unknown = JSON5.parse(jsonContent)
-									operations = toManageFilesOperations(parsedOperations)
-								}
+				if (operations.length === 0 && droppedOperations === 0 && node.childNodes.length > 0) {
+					const innerSlice = innerSourceSlice(input, node)
+					if (innerSlice !== undefined) {
+						const jsonContent = innerSlice.trim()
+						// only treat the body as JSON when it looks like an array
+						// or a single operation object; prose stays "no payload"
+						if (jsonContent.startsWith('[') || jsonContent.startsWith('{')) {
+							const parsed = parseManageFilesJson(jsonContent)
+							if (parsed !== undefined) {
+								operations = parsed.operations
+								droppedOperations = parsed.dropped
+							} else {
+								droppedOperations = 1
 							}
-						} catch (error) {
-							logger.error('Failed to parse manage_files JSON', error)
 						}
 					}
 				}
@@ -838,6 +864,7 @@ export function parseMsgBlocks(
 				parsedResult.push({
 					type: 'manage_files',
 					operations,
+					droppedOperations,
 					finish: node.sourceCodeLocation.endTag !== undefined,
 				})
 				lastEndOffset = endOffset

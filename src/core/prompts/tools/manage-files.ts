@@ -3,6 +3,7 @@ import { ToolArgs } from "./types"
 export function getManageFilesDescription(args: ToolArgs): string {
 	return `## manage_files
 Description: Request to perform file and folder management operations like moving, renaming, deleting, and creating folders. This tool can execute multiple operations in a single call, making it efficient for organizing the vault structure.
+IMPORTANT: manage_files never creates files with content and never modifies file contents - it only creates empty folders and moves, copies, renames or deletes existing items. For creating or editing file contents use write_to_file, insert_content or search_and_replace instead; if none of those tools is available to you, say that the requested change cannot be done rather than emulating it with manage_files. Operations whose action is not one of the supported ones are rejected, and a call left with no valid operation fails without changing anything.
 Parameters:
 - operations: (required) A JSON array of file management operations. Each operation is an object with:
     * action: (required) The type of operation. Can be "move", "delete", or "create_folder".

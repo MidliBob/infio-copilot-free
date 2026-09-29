@@ -16,11 +16,13 @@ export default function MarkdownManageFilesBlock({
 	applyStatus,
 	onApply,
 	operations,
+	droppedOperations,
 	finish
 }: {
 	applyStatus: ApplyStatus
 	onApply: (args: ManageFilesToolArgs) => void
 	operations: ManageFilesOperation[]
+	droppedOperations?: number
 	finish: boolean
 }) {
 	const [applying, setApplying] = useState(false)
@@ -81,7 +83,7 @@ export default function MarkdownManageFilesBlock({
 					<button
 						onClick={handleApply}
 						className="icf-apply-button"
-						disabled={applyStatus !== ApplyStatus.Idle || applying || !finish}
+						disabled={applyStatus !== ApplyStatus.Idle || applying || !finish || operations.length === 0}
 					>
 						{
 							!finish ? (
@@ -109,6 +111,16 @@ export default function MarkdownManageFilesBlock({
 				</div>
 			</div>
 			<div className="icf-chat-code-block-content">
+				{operations.length === 0 ? (
+					<div className="manage-files-operation operation-warning">
+						{t('fileOps.emptyWarning')}
+					</div>
+				) : null}
+				{droppedOperations !== undefined && droppedOperations > 0 ? (
+					<div className="manage-files-operation operation-warning">
+						{t('fileOps.droppedOperations', { count: droppedOperations })}
+					</div>
+				) : null}
 				{operations.map((operation, index) => (
 					<div key={index} className="manage-files-operation">
 						<div className="operation-item">

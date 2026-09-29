@@ -872,5 +872,8 @@ export default {
 		copyOk: '✅ 成功复制文件：{source} → {destination}',
 		copyFolderUnsupported: '❌ 文件夹复制功能暂未实现：{path}',
 		renameOk: '✅ 成功重命名{type}：{path} → {newPath}',
+		emptyWarning: '此块中没有受支持的操作：manage_files 只能创建文件夹、移动、复制、重命名和删除项目，没有可执行的内容。',
+		droppedOperations: '已跳过不支持的操作：{count}',
+		noValidOperations: '[manage_files] 失败：请求中不包含有效的文件操作。支持的操作：create_folder、move、copy、rename、delete。注意：manage_files 不能创建带内容的文件，也不能修改文件内容——请改用 write_to_file、insert_content 或 search_and_replace。',
 	}
 }
