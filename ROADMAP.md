@@ -261,14 +261,20 @@ en/ru/zh-cn синхронны (~652 ключа).
 > с 1.5.5 — «трещотка»; пункт 4 уточнён: stylelint-гейт добавляется
 > отдельно, eslint-правила включаются по мере выгорания baseline
 > (фаза 2, заход 3).
+>
+> **Обновление (1.6.19):** пункт 2 (MCP-транспорт) выполнен досрочно —
+> в рамках выгорания `McpHub.ts` (−79 нарушений линта): StreamableHTTP
+> стал основным транспортом, SSE — автоматическим fallback'ом.
 
 1. **Декларативный Settings API (`getSettingDefinitions`)** для поиска
    настроек 1.13+ (сейчас 0 вхождений). Конфликт: `minAppVersion` в
    манифесте — 0.15.0 → делаем feature-detect с fallback на текущий рендер
    вкладки (или осознанно поднимаем minAppVersion — отдельное решение).
-2. **MCP: StreamableHTTP основной, SSE fallback.** Сейчас в `McpHub.ts`
-   только `SSEClientTransport`; установленный SDK 1.30 StreamableHTTP
-   уже поддерживает.
+2. **MCP: StreamableHTTP основной, SSE fallback** — ✅ 1.6.19:
+   `StreamableHTTPClientTransport` (SDK 1.30) — транспорт по умолчанию
+   для серверов с `url`; при 4xx от legacy-сервера автоматический
+   fallback на `SSEClientTransport` с предупреждением в лог, явный
+   `"type": "sse"` сохраняет legacy-поведение без fallback'а.
 3. **CSS без `!important`** (сейчас 311 штук в `styles.css`): специфичность +
    CSS-переменные, проверка тем (Minimal, Things, светлая/тёмная).
 4. **Ужесточение ESLint-гейта** (гейт в CI уже есть — ci.yml гоняет lint):
