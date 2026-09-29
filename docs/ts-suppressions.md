@@ -80,7 +80,7 @@
 | Render-plugin автокомплита | `src/render-plugin/*` (6 nocheck) | Апстримный плагин подсказок целиком под nocheck. Типизируем постепенно, начиная с `types.ts` (он уже только декларативный), затем leaf-файлы (`completion-key-watcher`, `user-event`, …) |
 | Entrypoint | `src/main.desktop.ts` (1 nocheck + 3 expect-error) | ✅ Выгорело в 1.6.16: бутстрап переведён на `Object.assign` + `ThisType` (ноль `as`), `editor.cm` читается через `getEditorView()` (Reflect.get + структурный guard) вместо expect-error; включён `noImplicitThis` в tsconfig |
 | Legacy-вью | `src/ChatView.tsx` (1+4), `src/components/chat-view/*` (6) | ✅ Обёртка `src/ChatView.tsx` выгорела в 1.6.16 (тип `InfioPluginLike` из `src/types/plugin.ts` закрыл settings/initChatProps/setSettings/addSettingsListener); остались `src/components/chat-view/*` — снимаются по ходу типизации render-plugin и чат-компонентов |
-| Legacy-настройки | `src/settings/SettingTab.tsx` (7), `ModelProviderSettings.tsx` (2), `ProviderModelsPicker.tsx` (1) | В SettingTab один мёртвый `@ts-ignore` (над `super(app, plugin)`) снят в 1.6.16; остальные привязать к фазе 3 (декларативный Settings API): при миграции вкладки файлы переписываются типизированными |
+| Legacy-настройки | `src/settings/SettingTab.tsx` (6), `ProviderModelsPicker.tsx` (1) | ✅ `ModelProviderSettings.tsx` (2 `@ts-ignore` на plugin.settings/setSettings) выгорел в 1.6.18 переводом пропа на `InfioPluginLike`; там же снят `@ts-ignore` передачи plugin в `SettingTab.tsx` (осталось 6). Остальное привязать к фазе 3 (декларативный Settings API): при миграции вкладки файлы переписываются типизированными |
 | Одиночные маркеры | `src/core/*`, `src/database/*`, `src/pgworker/*`, `src/utils/*`, `src/event-listener.ts` (по 1) | Выжигать попутно при любом изменении этих модулей — самые дешёвые победы |
 
 ## История
@@ -95,3 +95,10 @@
   (−1 nocheck, −4 `@ts-ignore`), снят мёртвый `@ts-ignore` в
   `SettingTab.tsx` → **66 маркеров / 27 файлов** (nocheck 14, ignore 14,
   expect-error 38).
+- 2026-09-29 (1.6.18) — выгорание кластера #2 захода 3 фазы 2
+  (`ModelProviderSettings.tsx`): оба `@ts-ignore` (plugin.settings /
+  plugin.setSettings) сняты переводом пропа компонента на
+  `InfioPluginLike`, плюс `@ts-ignore` передачи plugin в `SettingTab.tsx`
+  → **63 маркера / 26 файлов** (nocheck 14, ignore 11, expect-error 38).
+  Тот же коммит обнулил eslint-долг файла: 149 → 0 (baseline 826/122 →
+  675/121).
