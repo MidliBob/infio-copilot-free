@@ -448,16 +448,6 @@
 		"src/utils/open-settings-modal.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2
 		},
-		"src/utils/parse-icf-block.ts": {
-			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/consistent-type-assertions": 6,
-			"@typescript-eslint/no-explicit-any": 1,
-			"@typescript-eslint/no-unnecessary-type-assertion": 1,
-			"@typescript-eslint/no-unsafe-assignment": 36,
-			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-unsafe-member-access": 4,
-			"@typescript-eslint/no-unsafe-return": 1
-		},
 		"src/utils/prompt-generator.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/no-unsafe-assignment": 5,

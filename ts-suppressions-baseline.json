@@ -74,10 +74,6 @@
 		"src/utils/extract-text.ts": {
 			"ignore": 1
 		},
-		"src/utils/parse-icf-block.ts": {
-			"nocheck": 1,
-			"expectError": 30
-		},
 		"src/utils/prompt-generator.ts": {
 			"ignore": 1
 		}

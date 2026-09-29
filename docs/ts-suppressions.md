@@ -76,7 +76,7 @@
 
 | Категория | Файлы | Что делаем |
 |---|---|---|
-| Парсер ICF-блоков | `src/utils/parse-icf-block.ts` (31) | Крупнейший очаг: expect-error на нетипизированных структурах Lexical/CodeMirror. Заход 3 фазы 2: типизированная модель блока + zod-валидация на границе, подавления убираются пачками |
+| Парсер ICF-блоков | `src/utils/parse-icf-block.ts` (31) | ✅ Выгорел в 1.6.21: `@ts-nocheck` и все 30 `@ts-expect-error` сняты — дерево parse5 обрабатывается дискриминантами `nodeName` и type guards (`isTextNode`/`isRecord`), JSON5-payload'ы (operations/parameters/urls) валидируются ручными guard-функциями (zod не понадобился: формы payload'ов плоские), ноль кастов. Попутно исправлены порча Apply-контента (вложенная разметка в `<content>`/`<diff>` терялась при join текстовых узлов) и краш рендера на не-массиве `operations` |
 | Render-plugin автокомплита | `src/render-plugin/*` (6 nocheck) | Апстримный плагин подсказок целиком под nocheck. Типизируем постепенно, начиная с `types.ts` (он уже только декларативный), затем leaf-файлы (`completion-key-watcher`, `user-event`, …) |
 | Entrypoint | `src/main.desktop.ts` (1 nocheck + 3 expect-error) | ✅ Выгорело в 1.6.16: бутстрап переведён на `Object.assign` + `ThisType` (ноль `as`), `editor.cm` читается через `getEditorView()` (Reflect.get + структурный guard) вместо expect-error; включён `noImplicitThis` в tsconfig |
 | Legacy-вью | `src/ChatView.tsx` (1+4), `src/components/chat-view/*` (6) | ✅ Обёртка `src/ChatView.tsx` выгорела в 1.6.16 (тип `InfioPluginLike` из `src/types/plugin.ts` закрыл settings/initChatProps/setSettings/addSettingsListener); остались `src/components/chat-view/*` — снимаются по ходу типизации render-plugin и чат-компонентов |
@@ -102,3 +102,19 @@
   → **63 маркера / 26 файлов** (nocheck 14, ignore 11, expect-error 38).
   Тот же коммит обнулил eslint-долг файла: 149 → 0 (baseline 826/122 →
   675/121).
+- 2026-09-29 (1.6.21) — выгорание кластера «Парсер ICF-блоков»
+  (`src/utils/parse-icf-block.ts`): сняты blanket-`@ts-nocheck` и все 30
+  `@ts-expect-error` («parse5 node value type»). Парсер переведён на
+  типизированную обработку дерева parse5 без подавлений и кастов:
+  дискриминанты `nodeName`, guards `isTextNode`/`isRecord`, raw-slice
+  контента через source-оффсеты, runtime-валидаторы JSON5-payload'ов
+  (`toSearchReplaceOperations`, `toManageFilesOperations`,
+  `toStringArray`, `toStartLine`). Попутно исправлены: тихая потеря
+  вложенной разметки в `<content>`/`<diff>`/`<result>` (порча файла при
+  Apply), краш рендера сообщения на не-массиве `operations`
+  (`operations.map`), не-строковые элементы `urls`, `NaN` в `lineCount`,
+  строковый `start_line` в insert_content. → **32 маркера / 25 файлов**
+  (nocheck 13, ignore 11, expect-error 8). Тот же коммит обнулил
+  eslint-долг файла: 51 → 0 (baseline 596/120 → 545/119); добавлен
+  `src/utils/parse-icf-block.test.ts` — 66 тестов на все 22 тега,
+  стриминг и каждую регрессию.
