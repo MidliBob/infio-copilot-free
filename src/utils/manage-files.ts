@@ -1,5 +1,3 @@
-import * as path from 'path'
-
 import { TAbstractFile, TFile, TFolder } from 'obsidian'
 
 import { t } from '../lang/helpers'
@@ -9,6 +7,35 @@ import { logger } from './logger'
 
 /** One validated manage_files operation, as emitted by parse-icf-block. */
 export type ManageFilesOperation = ManageFilesToolArgs['operations'][number]
+
+/**
+ * Parent directory of an Obsidian vault path.
+ *
+ * Vault paths are vault-relative and always use forward slashes on every
+ * platform, so the platform `path` module must not be used for vault path
+ * arithmetic: on Windows `path.join` emits backslashes, which produced
+ * destinations like `Notes\b.md` that match nothing in the vault (field bug
+ * 1.6.23: rename/move/copy computed wrong vault paths on Windows). Returns
+ * an empty string for root-level paths.
+ */
+export function vaultDirname(vaultPath: string): string {
+	const lastSlash = vaultPath.lastIndexOf('/')
+	return lastSlash === -1 ? '' : vaultPath.slice(0, lastSlash)
+}
+
+/**
+ * Joins a vault directory and a trailing segment into a single vault path,
+ * always with forward slashes. An empty directory (or `.`/`/`) means the
+ * vault root, so the segment alone is the result.
+ */
+export function vaultJoinPath(dir: string, segment: string): string {
+	const trimmedDir = dir === '.' || dir === '/' ? '' : dir.replace(/\/+$/, '')
+	const trimmedSegment = segment.replace(/^\/+/, '')
+	if (!trimmedDir) {
+		return trimmedSegment
+	}
+	return `${trimmedDir}/${trimmedSegment}`
+}
 
 /**
  * Minimal structural slice of the Obsidian App needed by the manage_files
@@ -77,8 +104,9 @@ export async function runManageFilesOperations(
 						const sourceFile = app.vault.getAbstractFileByPath(operation.source_path)
 						if (sourceFile) {
 							// make sure the destination directory exists
-							const destDir = path.dirname(operation.destination_path)
-							if (destDir && destDir !== '.' && destDir !== '/') {
+							// (slash-only arithmetic: vault paths are not OS paths)
+							const destDir = vaultDirname(operation.destination_path)
+							if (destDir) {
 								const dirExists = await app.vault.adapter.exists(destDir)
 								if (!dirExists) {
 									await app.vault.adapter.mkdir(destDir)
@@ -129,8 +157,9 @@ export async function runManageFilesOperations(
 						const sourceFile = app.vault.getAbstractFileByPath(operation.source_path)
 						if (sourceFile) {
 							if (sourceFile instanceof TFile) {
-								const destDir = path.dirname(operation.destination_path)
-								if (destDir && destDir !== '.' && destDir !== '/') {
+								// slash-only arithmetic: vault paths are not OS paths
+								const destDir = vaultDirname(operation.destination_path)
+								if (destDir) {
 									const dirExists = await app.vault.adapter.exists(destDir)
 									if (!dirExists) {
 										await app.vault.adapter.mkdir(destDir)
@@ -158,7 +187,8 @@ export async function runManageFilesOperations(
 					if (operation.path && operation.new_name) {
 						const file = app.vault.getAbstractFileByPath(operation.path)
 						if (file) {
-							const newPath = path.join(path.dirname(operation.path), operation.new_name)
+							// slash-only arithmetic: path.join would emit `Notes\b.md` on Windows
+							const newPath = vaultJoinPath(vaultDirname(operation.path), operation.new_name)
 							await app.vault.rename(file, newPath)
 							const itemType = file instanceof TFile ? t('fileOps.typeFile') : t('fileOps.typeFolder')
 							results.push(t('fileOps.renameOk', { type: itemType, path: operation.path, newPath }))

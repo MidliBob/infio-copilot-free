@@ -13,13 +13,15 @@
  * 2. Per-action vault semantics (create_folder/move/delete/copy/rename),
  *    including missing sources and the unimplemented folder copy.
  * 3. Vault exceptions degrade to a failed result instead of escaping.
+ * 4. Vault path arithmetic is slash-only on every OS (Windows field bug
+ *    1.6.23: the platform `path` module emitted backslashes).
  */
 import { TAbstractFile, TFile, TFolder } from 'obsidian'
 
 import { t } from '../lang/helpers'
 
 import { logger } from './logger'
-import { ManageFilesApp, ManageFilesOperation, runManageFilesOperations } from './manage-files'
+import { ManageFilesApp, ManageFilesOperation, runManageFilesOperations, vaultDirname, vaultJoinPath } from './manage-files'
 
 jest.mock('./logger')
 
@@ -228,6 +230,65 @@ describe('manage_files executor: rename', () => {
 		expect(result.status).toBe('applied')
 		expect(fake.files.has('Notes/b.md')).toBe(true)
 		expect(fake.files.has('Notes/a.md')).toBe(false)
+	})
+})
+
+/**
+ * Windows-only field bug (1.6.23): the executor used the platform `path`
+ * module for vault path arithmetic. On Windows `path.join` emits backslashes,
+ * so renaming `Notes/a.md` to `b.md` computed `Notes\b.md` - a path that
+ * matches nothing in the vault (jest on Windows failed with
+ * `files.has('Notes/b.md') === false`, and real vaults got wrong rename /
+ * move / copy destinations). Obsidian vault paths always use forward
+ * slashes; these tests pin slash-only computation on any OS.
+ */
+describe('manage_files executor: slash-only vault paths (Windows bug 1.6.23)', () => {
+	it('vaultDirname returns the slash parent, empty for root-level paths', () => {
+		expect(vaultDirname('Notes/a.md')).toBe('Notes')
+		expect(vaultDirname('A/B/C.md')).toBe('A/B')
+		expect(vaultDirname('a.md')).toBe('')
+		expect(vaultDirname('')).toBe('')
+	})
+
+	it('vaultJoinPath always joins with forward slashes', () => {
+		expect(vaultJoinPath('Notes', 'b.md')).toBe('Notes/b.md')
+		expect(vaultJoinPath('Notes', 'Sub/b.md')).toBe('Notes/Sub/b.md')
+		expect(vaultJoinPath('', 'b.md')).toBe('b.md')
+		expect(vaultJoinPath('.', 'b.md')).toBe('b.md')
+		expect(vaultJoinPath('Notes/', 'b.md')).toBe('Notes/b.md')
+	})
+
+	it('never produces platform separators in computed vault paths', () => {
+		const computed = [vaultDirname('Notes/a.md'), vaultJoinPath('Notes', 'b.md'), vaultJoinPath('A/B', 'c.md')]
+		for (const sample of computed) {
+			expect(sample.includes('\\')).toBe(false)
+		}
+	})
+
+	it('renames a root-level file without inventing a directory', async () => {
+		const fake = makeFakeApp()
+		fake.seedFile('a.md', 'x')
+		const result = await runManageFilesOperations(fake.app, op({ action: 'rename', path: 'a.md', new_name: 'b.md' }))
+		expect(result.status).toBe('applied')
+		expect(fake.files.has('b.md')).toBe(true)
+		expect(fake.files.has('a.md')).toBe(false)
+	})
+
+	it('renames into a nested new_name relative to the file directory', async () => {
+		const fake = makeFakeApp()
+		fake.seedFile('Notes/a.md', 'x')
+		const result = await runManageFilesOperations(fake.app, op({ action: 'rename', path: 'Notes/a.md', new_name: 'Sub/b.md' }))
+		expect(result.status).toBe('applied')
+		expect(fake.files.has('Notes/Sub/b.md')).toBe(true)
+		expect(fake.files.has('Notes/a.md')).toBe(false)
+	})
+
+	it('hands vault.rename only forward-slash paths (Windows pre-fix computed `Notes\\b.md`)', async () => {
+		const fake = makeFakeApp()
+		fake.seedFile('Notes/a.md', 'x')
+		await runManageFilesOperations(fake.app, op({ action: 'rename', path: 'Notes/a.md', new_name: 'b.md' }))
+		const renameCalls = fake.calls.filter((call) => call.startsWith('rename:'))
+		expect(renameCalls).toEqual(['rename:Notes/a.md->Notes/b.md'])
 	})
 })
 
