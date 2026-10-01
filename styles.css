@@ -390,7 +390,7 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
   position: relative;
 }
 
-.icf-chat-edit-cancel-button {
+.icf-chat-edit-container button.icf-chat-edit-cancel-button {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -398,18 +398,16 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
   display: flex;
   align-items: center;
   justify-content: center;
-	color: var(--text-on-accent-hover);
-	background-color: var(--interactive-accent-hover);
-	border: none !important;
-	box-shadow: none !important;
-	padding: 0 !important;
-	margin: 0 !important;
-	width: 24px !important;
-	height: 24px !important;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  width: 24px;
+  height: 24px;
 
-	&:hover {
-		background-color: var(--interactive-accent-hover) !important;
-	}
+  &:hover {
+    background-color: var(--interactive-accent-hover);
+  }
 }
 
 /*
@@ -1139,23 +1137,17 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
 	box-shadow: none;
 }
 
-.icf-llm-setting-item-search {
+input.icf-llm-setting-item-search {
 	width: 74%;
-	border: none;
 	margin: 0;
-	padding: 0;
 	/* background-color: var(--background-secondary); */
 	outline: none;
-	border-radius: 0 !important;
-	-webkit-border-radius: 0 !important;
-	-moz-border-radius: 0 !important;
-	-ms-border-radius: 0 !important;
+	border-radius: 0;
 }
 
-.icf-llm-setting-item-search:focus {
+input.icf-llm-setting-item-search:focus {
 	border: none;
 	outline: none;
-	box-shadow: none;
 }
 
 .icf-llm-setting-combobox-option {
@@ -1812,17 +1804,15 @@ button.icf-chat-input-model-select {
   font-weight: var(--font-medium);
   margin: var(--size-2-2) 0;
 }
-.icf-commands-input {
-  background-color: var(--background-primary) !important;
-  border: none !important;
-  border-radius: var(--radius-s) !important;
+.icf-commands-container .icf-commands-new input.icf-commands-input {
+  background-color: var(--background-primary);
+  border: none;
+  border-radius: var(--radius-s);
   color: var(--text-normal);
-  padding: var(--size-2-2);
-	margin-bottom: var(--size-2-2);
   font-size: var(--font-ui-small);
+  margin-bottom: var(--size-2-2);
   width: 100%;
   box-sizing: border-box;
-  height: 36px;
 }
 
 .icf-commands-textarea {
@@ -1883,19 +1873,16 @@ button.icf-chat-input-model-select {
   opacity: 0.8;
 }
 
-.icf-commands-search-input {
-  background-color: transparent !important;
-  border: none !important;
+.icf-commands-container .icf-commands-search input.icf-commands-search-input {
+  background-color: transparent;
+  border: none;
   color: var(--text-normal);
-  padding: 4px 0;
-  font-size: 14px;
   width: 100%;
   outline: none;
-  height: 24px;
   &:focus {
-    outline: none !important;
-    border: none !important;
-    box-shadow: none !important;
+    outline: none;
+    border: none;
+    box-shadow: none;
   }
 }
 
@@ -1958,21 +1945,20 @@ button.icf-chat-input-model-select {
   z-index: 10;
 }
 
-.icf-commands-btn {
+.icf-commands-container button.icf-commands-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  color: var(--text-muted);
-  padding: 0 !important;
-  margin: 0 !important;
-  width: 24px !important;
-  height: 24px !important;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  width: 24px;
+  height: 24px;
 
   &:hover {
-    background-color: var(--background-modifier-hover) !important;
+    background-color: var(--background-modifier-hover);
   }
 }
 
@@ -1982,20 +1968,25 @@ button.icf-chat-input-model-select {
   gap: var(--size-4-2);
 }
 
-.icf-commands-edit-name {
+.icf-commands-container .icf-commands-edit-mode input.icf-commands-edit-name {
   display: flex;
   align-items: center;
-  justify-content: center !important;
-  background-color: var(--background-primary) !important;
+  background-color: var(--background-primary);
   border: 1px solid var(--background-modifier-border);
-  border-radius: var(--radius-s);
   color: var(--text-normal);
-  padding: var(--size-4-2);
-  font-size: var(--font-ui-medium);
   font-weight: var(--font-medium);
   width: 100%;
-  height: 36px;
   box-sizing: border-box;
+
+  /* точное сохранение сегодняшних состояний: их рисовало ядро
+     (hover/focus border-color из app.css), а не это правило */
+  &:hover {
+    border-color: var(--background-modifier-border-hover);
+  }
+
+  &:focus {
+    border-color: var(--background-modifier-border-focus);
+  }
 }
 
 .icf-commands-view-mode {
