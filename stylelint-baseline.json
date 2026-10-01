@@ -3,8 +3,8 @@
 	"files": {
 		"styles.css": {
 			"block-no-empty": 1,
-			"declaration-no-important": 311,
-			"no-duplicate-selectors": 4
+			"declaration-no-important": 204,
+			"no-duplicate-selectors": 3
 		}
 	}
 }
