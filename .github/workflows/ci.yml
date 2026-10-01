@@ -30,5 +30,7 @@ jobs:
         run: pnpm run type:check
       - name: Lint ratchet (no new ESLint violations)
         run: pnpm run lint:ratchet
+      - name: CSS lint ratchet (no new stylelint violations)
+        run: pnpm run lint:css:ratchet
       - name: Test
         run: pnpm test

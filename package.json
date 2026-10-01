@@ -13,7 +13,9 @@
     "type:check": "tsc --noEmit -skipLibCheck",
     "test": "jest",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "lint:ratchet": "node scripts/lint-ratchet.mjs"
+    "lint:ratchet": "node scripts/lint-ratchet.mjs",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:css:ratchet": "node scripts/stylelint-ratchet.mjs"
   },
   "keywords": [],
   "author": "MidliBob",
