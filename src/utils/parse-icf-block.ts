@@ -329,23 +329,164 @@ function toManageFilesOperations(value: unknown): ManageFilesOperation[] {
 }
 
 /**
+ * Removes a markdown code fence wrapped around a JSON payload.
+ *
+ * Models routinely emit ```json ... ``` inside a tool tag even when the tool
+ * description shows bare JSON. Without this the payload never parses and the
+ * block silently degrades to "no operations" (field report 1.6.24: a
+ * manage_files block rendered as "File operations (0)" with nothing to run).
+ * Handles the streaming case too: an opening fence without its closing pair.
+ */
+function stripCodeFence(text: string): string {
+	let out = text.trim()
+	const open = /^```[^\n]*\n?/.exec(out)
+	if (open !== null) {
+		out = out.slice(open[0].length)
+	}
+	const close = /\n?```\s*$/.exec(out)
+	if (close !== null) {
+		out = out.slice(0, close.index)
+	}
+	return out.trim()
+}
+
+/**
+ * Best-effort completion of a truncated JSON payload.
+ *
+ * While a block streams, the payload slice is cut at an arbitrary character -
+ * including inside the closing tag, which parse5 keeps as text (`...]\n<` when
+ * the buffer ends between `]` and `</operations>`). Feeding that to JSON5
+ * throws on every single render (~30 console errors for one small
+ * manage_files block).
+ *
+ * The scan tracks open brackets and string state, remembers the end of the
+ * last *complete* value and appends the missing closers, so a partially
+ * streamed array already yields the operations that arrived in full:
+ * `[{"action":"delete","path":"a.md"` -> `[{"action":"delete","path":"a.md"}]`.
+ * An unterminated trailing token (a half-written string, number or key) is
+ * dropped rather than guessed. Returns `undefined` when nothing complete has
+ * arrived yet.
+ */
+function closeTruncatedJson(text: string): string | undefined {
+	const closers: string[] = []
+	let safeEnd = 0
+	let runStart = -1
+	let inString = false
+	let escaped = false
+
+	const flushRun = (end: number): void => {
+		if (runStart >= 0) {
+			safeEnd = end
+			runStart = -1
+		}
+	}
+	const isValueChar = (char: string): boolean =>
+		(char >= '0' && char <= '9') || char === '-' || char === '+' || char === '.' || char === 'e' || char === 'E'
+		|| (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')
+
+	for (let index = 0; index < text.length; index += 1) {
+		const char = text.charAt(index)
+		if (inString) {
+			if (escaped) {
+				escaped = false
+			} else if (char === '\\') {
+				escaped = true
+			} else if (char === '"') {
+				inString = false
+				safeEnd = index + 1
+			}
+			continue
+		}
+		if (char === '"') {
+			flushRun(index)
+			inString = true
+		} else if (char === '[' || char === '{') {
+			flushRun(index)
+			closers.push(char === '[' ? ']' : '}')
+			safeEnd = index + 1
+		} else if (char === ']' || char === '}') {
+			flushRun(index)
+			closers.pop()
+			safeEnd = index + 1
+		} else if (char === ',' || char === ':' || char === ' ' || char === '\t' || char === '\n' || char === '\r') {
+			flushRun(index)
+		} else if (isValueChar(char)) {
+			if (runStart < 0) {
+				runStart = index
+			}
+		} else {
+			// markup or junk outside a string (`<` of a half-streamed closing
+			// tag): stop extending the safe prefix here
+			flushRun(index)
+		}
+	}
+
+	if (safeEnd <= 0) {
+		return undefined
+	}
+	return text.slice(0, safeEnd) + closers.reverse().join('')
+}
+
+/**
+ * Parses a JSON payload that may still be streaming.
+ *
+ * `finished` is the block's `finish` flag (closing tag arrived). An
+ * unparseable payload in an unfinished block is an expected, transient state
+ * and is logged at debug level only - it used to be logged with
+ * `logger.error` on every render, which flooded the console with
+ * "JSON5: invalid end of input" / "invalid character '<'" stack traces for a
+ * perfectly normal stream. A payload that is still unparseable once the block
+ * IS finished is a real defect and keeps the error log.
+ *
+ * Returns `undefined` when nothing usable could be parsed.
+ */
+function parseJsonPayload(slice: string, finished: boolean, label: string): unknown {
+	const cleaned = stripCodeFence(slice)
+	const candidates: string[] = cleaned.length > 0 ? [cleaned] : []
+	if (!finished) {
+		const completed = closeTruncatedJson(cleaned)
+		if (completed !== undefined && completed !== cleaned && !candidates.includes(completed)) {
+			candidates.push(completed)
+		}
+	}
+	let lastError: unknown
+	for (const candidate of candidates) {
+		try {
+			const parsed: unknown = JSON5.parse(candidate)
+			return parsed
+		} catch (error) {
+			lastError = error
+		}
+	}
+	if (finished && candidates.length > 0) {
+		logger.error(`Failed to parse ${label} JSON`, lastError)
+	} else {
+		logger.debug(`${label}: no complete JSON payload yet (streaming)`)
+	}
+	return undefined
+}
+
+/** Result of a manage_files payload parse; `parsed` is false when the JSON itself was unusable. */
+type ManageFilesParseResult = { operations: ManageFilesOperation[]; dropped: number; parsed: boolean }
+
+/**
  * Parses a manage_files JSON payload slice into validated operations plus
  * the count of presented entries the validator rejected (a non-array payload
- * counts as one rejected entry). Returns undefined when the JSON is
- * malformed, so the caller can still report "something was presented but
- * unusable" via droppedOperations.
+ * counts as one rejected entry).
+ *
+ * `finished` mirrors the block's `finish` flag: while the block is still
+ * streaming nothing is reported as dropped, because the payload is by
+ * definition incomplete - counting it used to flash a bogus
+ * "Skipped unsupported operations: 1" row in the chat block on every render.
  */
-function parseManageFilesJson(slice: string): { operations: ManageFilesOperation[]; dropped: number } | undefined {
-	let parsedOperations: unknown
-	try {
-		parsedOperations = JSON5.parse(slice.trim())
-	} catch (error) {
-		logger.error('Failed to parse manage_files operations JSON', error)
-		return undefined
+function parseManageFilesJson(slice: string, finished: boolean): ManageFilesParseResult {
+	const parsedOperations = parseJsonPayload(slice, finished, 'manage_files operations')
+	if (parsedOperations === undefined) {
+		return { operations: [], dropped: finished ? 1 : 0, parsed: false }
 	}
 	const operations = toManageFilesOperations(parsedOperations)
 	const presented = Array.isArray(parsedOperations) ? parsedOperations.length : 1
-	return { operations, dropped: presented - operations.length }
+	return { operations, dropped: finished ? presented - operations.length : 0, parsed: true }
 }
 
 /**
@@ -559,6 +700,7 @@ export function parseMsgBlocks(
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'insert_content') {
 				const endOffset = emitPrecedingText(parsedResult, input, lastEndOffset, node)
+				const finished = node.sourceCodeLocation.endTag !== undefined
 				let path: string | undefined
 				let content = ''
 				let startLine = 0
@@ -568,21 +710,17 @@ export function parseMsgBlocks(
 					if (childNode.nodeName === 'path' && childNode.childNodes.length > 0) {
 						path = firstChildText(childNode)
 					} else if (childNode.nodeName === 'operations' && childNode.childNodes.length > 0) {
-						try {
-							const operationsJson = innerSourceSlice(input, childNode)
-							if (operationsJson !== undefined) {
-								const parsedOperations: unknown = JSON5.parse(operationsJson)
-								if (Array.isArray(parsedOperations) && parsedOperations.length > 0) {
-									const operation: unknown = parsedOperations[0]
-									if (isRecord(operation)) {
-										startLine = toStartLine(operation.start_line)
-										const operationContent: unknown = operation.content
-										content = typeof operationContent === 'string' ? operationContent : ''
-									}
+						const operationsJson = innerSourceSlice(input, childNode)
+						if (operationsJson !== undefined) {
+							const parsedOperations = parseJsonPayload(operationsJson, finished, 'insert_content operations')
+							if (Array.isArray(parsedOperations) && parsedOperations.length > 0) {
+								const operation: unknown = parsedOperations[0]
+								if (isRecord(operation)) {
+									startLine = toStartLine(operation.start_line)
+									const operationContent: unknown = operation.content
+									content = typeof operationContent === 'string' ? operationContent : ''
 								}
 							}
-						} catch (error) {
-							logger.error('Failed to parse operations JSON', error)
 						}
 					}
 				}
@@ -596,6 +734,7 @@ export function parseMsgBlocks(
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'search_and_replace') {
 				const endOffset = emitPrecedingText(parsedResult, input, lastEndOffset, node)
+				const finished = node.sourceCodeLocation.endTag !== undefined
 				let path: string | undefined
 				let operations: SearchReplaceOperation[] = []
 				let content = ''
@@ -605,13 +744,9 @@ export function parseMsgBlocks(
 					if (childNode.nodeName === 'path' && childNode.childNodes.length > 0) {
 						path = firstChildText(childNode)
 					} else if (childNode.nodeName === 'operations' && childNode.childNodes.length > 0) {
-						try {
-							content = innerSourceSlice(input, childNode) ?? ''
-							const parsedOperations: unknown = JSON5.parse(content)
-							operations = toSearchReplaceOperations(parsedOperations)
-						} catch (error) {
-							logger.error('Failed to parse operations JSON', error)
-						}
+						content = innerSourceSlice(input, childNode) ?? ''
+						const parsedOperations = parseJsonPayload(content, finished, 'search_and_replace operations')
+						operations = toSearchReplaceOperations(parsedOperations)
 					}
 				}
 
@@ -620,7 +755,7 @@ export function parseMsgBlocks(
 					path,
 					content,
 					operations,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: finished,
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'apply_diff') {
@@ -824,39 +959,37 @@ export function parseMsgBlocks(
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'manage_files') {
 				const endOffset = emitPrecedingText(parsedResult, input, lastEndOffset, node)
+				const finished = node.sourceCodeLocation.endTag !== undefined
 				let operations: ManageFilesOperation[] = []
 				let droppedOperations = 0
+				let sawPayload = false
 
 				// Preferred shape: an <operations> sub-tag with the JSON payload
 				for (const childNode of node.childNodes) {
 					if (childNode.nodeName === 'operations' && childNode.childNodes.length > 0) {
 						const slice = innerSourceSlice(input, childNode)
-						const parsed = slice === undefined ? undefined : parseManageFilesJson(slice)
-						if (parsed !== undefined) {
+						if (slice !== undefined) {
+							const parsed = parseManageFilesJson(slice, finished)
 							operations = parsed.operations
 							droppedOperations = parsed.dropped
-						} else {
-							droppedOperations = 1
+							sawPayload = parsed.parsed
 						}
 						break
 					}
 				}
 
 				// Fallback: the JSON array written directly as the tag content
-				if (operations.length === 0 && droppedOperations === 0 && node.childNodes.length > 0) {
+				if (!sawPayload && operations.length === 0 && droppedOperations === 0 && node.childNodes.length > 0) {
 					const innerSlice = innerSourceSlice(input, node)
 					if (innerSlice !== undefined) {
 						const jsonContent = innerSlice.trim()
-						// only treat the body as JSON when it looks like an array
-						// or a single operation object; prose stays "no payload"
-						if (jsonContent.startsWith('[') || jsonContent.startsWith('{')) {
-							const parsed = parseManageFilesJson(jsonContent)
-							if (parsed !== undefined) {
-								operations = parsed.operations
-								droppedOperations = parsed.dropped
-							} else {
-								droppedOperations = 1
-							}
+						// only treat the body as JSON when it looks like an array,
+						// a single operation object or a fenced JSON block; prose
+						// stays "no payload"
+						if (jsonContent.startsWith('[') || jsonContent.startsWith('{') || jsonContent.startsWith('```')) {
+							const parsed = parseManageFilesJson(jsonContent, finished)
+							operations = parsed.operations
+							droppedOperations = parsed.dropped
 						}
 					}
 				}
@@ -865,7 +998,7 @@ export function parseMsgBlocks(
 					type: 'manage_files',
 					operations,
 					droppedOperations,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: finished,
 				})
 				lastEndOffset = endOffset
 			}

@@ -277,6 +277,15 @@ describe('search_and_replace', () => {
 		expect(parseMsgBlocks('<search_and_replace><path>p.md</path><operations>[{"search":"a"')).toEqual([
 			{ type: 'search_and_replace', path: 'p.md', content: '[{"search":"a"', operations: [], finish: false },
 		])
+		// a truncated payload in an unfinished block is an expected streaming
+		// state, not a defect: it must not reach the console as an error
+		// (field report: one streamed block produced ~30 red stack traces).
+		expect(loggerMock.error).not.toHaveBeenCalled()
+		expect(loggerMock.debug).toHaveBeenCalled()
+	})
+
+	it('still logs an error for a malformed payload in a FINISHED block', () => {
+		parseMsgBlocks('<search_and_replace><path>p.md</path><operations>[{bad]</operations></search_and_replace>')
 		expect(loggerMock.error).toHaveBeenCalledTimes(1)
 	})
 })
@@ -536,6 +545,82 @@ describe('manage_files', () => {
 		])
 		expect(parseMsgBlocks('<manage_files></manage_files>')).toEqual([
 			{ type: 'manage_files', operations: [], droppedOperations: 0, finish: true },
+		])
+	})
+
+	/**
+	 * Field report (1.6.23): renaming a file in Write mode worked, but the
+	 * console filled with "Failed to parse manage_files operations JSON /
+	 * JSON5: invalid end of input" - one error per streamed chunk, because
+	 * every render fed the truncated payload to JSON5 and logged the failure
+	 * at error level. The last two errors of that report were
+	 * "invalid character '<'": the buffer had reached `]</`, and parse5 keeps
+	 * a partial closing tag as text, so the slice was a complete array
+	 * followed by markup.
+	 */
+	it('logs nothing at error level while the block streams', () => {
+		const message = [
+			'<manage_files>',
+			'<operations>[',
+			'  {',
+			'    "action": "rename",',
+			'    "path": "Notes/old.md",',
+			'    "new_name": "new.md"',
+			'  }',
+			']</operations>',
+			'</manage_files>',
+		].join('\n')
+
+		let errorCalls = 0
+		for (let cut = 1; cut <= message.length; cut += 1) {
+			loggerMock.error.mockClear()
+			parseMsgBlocks(message.slice(0, cut))
+			errorCalls += loggerMock.error.mock.calls.length
+		}
+		expect(errorCalls).toBe(0)
+	})
+
+	it('parses the trailing partial closing tag ("...]</") instead of failing', () => {
+		const partial = '<manage_files>\n<operations>[{"action":"delete","path":"a.md"}]\n<'
+		expect(parseMsgBlocks(partial)).toEqual([
+			{
+				type: 'manage_files',
+				operations: [{ action: 'delete', path: 'a.md' }],
+				droppedOperations: 0,
+				finish: false,
+			},
+		])
+		expect(loggerMock.error).not.toHaveBeenCalled()
+	})
+
+	it('does not report dropped operations for an unfinished payload', () => {
+		const blocks = parseMsgBlocks('<manage_files><operations>[{"action":"cre')
+		expect(blocks).toEqual([
+			{ type: 'manage_files', operations: [], droppedOperations: 0, finish: false },
+		])
+	})
+
+	it('accepts a JSON payload wrapped in a markdown code fence', () => {
+		const fenced = '<manage_files>\n<operations>\n```json\n[{"action":"create_folder","path":"Inbox"}]\n```\n</operations>\n</manage_files>'
+		expect(parseMsgBlocks(fenced)).toEqual([
+			{
+				type: 'manage_files',
+				operations: [{ action: 'create_folder', path: 'Inbox' }],
+				droppedOperations: 0,
+				finish: true,
+			},
+		])
+	})
+
+	it('accepts a fenced JSON array written directly as the tag body', () => {
+		const fenced = '<manage_files>\n```json\n[{"action":"create_folder","path":"Inbox"}]\n```\n</manage_files>'
+		expect(parseMsgBlocks(fenced)).toEqual([
+			{
+				type: 'manage_files',
+				operations: [{ action: 'create_folder', path: 'Inbox' }],
+				droppedOperations: 0,
+				finish: true,
+			},
 		])
 	})
 })

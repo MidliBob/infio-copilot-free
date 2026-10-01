@@ -53,7 +53,7 @@ import {
 import { isCancellation } from '../../utils/abort-errors'
 import { ApplyEditToFile, SearchAndReplace } from '../../utils/apply'
 import { listFilesAndFolders, semanticSearchFiles } from '../../utils/glob-utils'
-import { runManageFilesOperations } from '../../utils/manage-files'
+import { checkManageFilesPermission, runManageFilesOperations } from '../../utils/manage-files'
 import {
 	getMentionableKey,
 	serializeMentionable,
@@ -84,6 +84,7 @@ import WebsiteReadResults from './WebsiteReadResults'
 import WorkspaceSelect from './WorkspaceSelect'
 import WorkspaceView from './WorkspaceView'
 import { logger } from '../../utils/logger'
+import { showConfirm } from '../../utils/modal-dialogs'
 
 // Add an empty line here
 const getNewInputMessage = (app: App, defaultMention: string): ChatUserMessage => {
@@ -937,9 +938,63 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						};
 					}
 				} else if (toolArgs.type === 'manage_files') {
+					// Runtime mode gate: the tool availability used to be enforced
+					// only while the system prompt was assembled, so a block the model
+					// emitted anyway (or one left over from a conversation started in
+					// another mode) could still mutate the vault with a single click in
+					// a read-only mode. The refusal goes back to the model as a
+					// tool_result, so it stops re-emitting the block and can explain
+					// itself to the user.
+					const permission = checkManageFilesPermission(settings.mode, customModeList)
+					if (permission.allowed === false) {
+						return {
+							type: 'manage_files',
+							applyMsgId,
+							applyStatus: ApplyStatus.Failed,
+							returnMsg: {
+								role: 'user',
+								applyStatus: ApplyStatus.Idle,
+								content: null,
+								promptContent: permission.message,
+								id: uuidv4(),
+								mentionables: [],
+							}
+						};
+					}
+					// Deleting is the one manage_files action that removes user data,
+					// and unlike write_to_file / apply_diff this block has no preview
+					// step: the Execute button runs the whole batch immediately. Ask first.
+					const deletions = toolArgs.operations
+						.filter((operation) => operation.action === 'delete' && operation.path)
+						.map((operation) => operation.path ?? '')
+					if (deletions.length > 0) {
+						const confirmed = await showConfirm(app, {
+							title: String(t('fileOps.header', { count: toolArgs.operations.length })),
+							message: String(t('fileOps.deleteConfirm', { count: deletions.length, paths: deletions.join('\n') })),
+							danger: true,
+						})
+						if (!confirmed) {
+							return {
+								type: 'manage_files',
+								applyMsgId,
+								applyStatus: ApplyStatus.Rejected,
+								returnMsg: {
+									role: 'user',
+									applyStatus: ApplyStatus.Idle,
+									content: null,
+									promptContent: t('fileOps.userRejected'),
+									id: uuidv4(),
+									mentionables: [],
+								}
+							};
+						}
+					}
 					// The executor owns the applied/failed decision (1.6.22): an
 					// operation list that validated to zero entries must fail loudly,
 					// otherwise the model reads the no-op as a successful file creation.
+					// 'partial' (some operations failed) maps to Failed as well: the
+					// block must not look like a clean success, and the tool_result
+					// carries the per-operation report the model needs to react to.
 					const run = await runManageFilesOperations(app, toolArgs.operations);
 					return {
 						type: 'manage_files',

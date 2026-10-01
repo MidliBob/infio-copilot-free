@@ -117,6 +117,7 @@ ${getCapabilitiesSection(
 			mode,
 			cwd,
 			filesSearchMethod,
+			customModeConfigs,
 		)}
 
 ${modesSection}

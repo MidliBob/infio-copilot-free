@@ -111,12 +111,20 @@ export default function MarkdownManageFilesBlock({
 				</div>
 			</div>
 			<div className="icf-chat-code-block-content">
-				{operations.length === 0 ? (
+				{!finish ? (
+					// while the block streams, the operation list is by definition
+					// incomplete: no warnings (they used to flash "no supported
+					// operations" / "skipped: 1" on every chunk), just the state
+					<div className="manage-files-operation operation-warning">
+						{t('fileOps.streaming')}
+					</div>
+				) : null}
+				{finish && operations.length === 0 ? (
 					<div className="manage-files-operation operation-warning">
 						{t('fileOps.emptyWarning')}
 					</div>
 				) : null}
-				{droppedOperations !== undefined && droppedOperations > 0 ? (
+				{finish && droppedOperations !== undefined && droppedOperations > 0 ? (
 					<div className="manage-files-operation operation-warning">
 						{t('fileOps.droppedOperations', { count: droppedOperations })}
 					</div>
