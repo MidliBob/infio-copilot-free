@@ -112,7 +112,7 @@ Planned. Requirements and steps:
 ## CI
 
 - `ci.yml` runs on pull requests into `master` **and on pushes to `master`**:
-  type-check, lint ratchet, jest tests.
+  type-check, ESLint ratchet, CSS ratchet, jest tests.
 - Lint gate = **ratchet** (`pnpm run lint:ratchet`,
   `scripts/lint-ratchet.mjs`): the pre-existing upstream style debt is frozen
   in `eslint-baseline.json` (per file, per rule; error severity only, with the
@@ -124,6 +124,22 @@ Planned. Requirements and steps:
   (the script prints the improvements it saw and reminds you). When a rule
   reaches zero across the baseline, enable it in `.eslintrc.js` and delete it
   from the forced list in `scripts/lint-ratchet.mjs`.
+- CSS gate = the same **ratchet** pattern (`pnpm run lint:css:ratchet`,
+  `scripts/stylelint-ratchet.mjs`, since 1.7.0): the rule set lives in
+  `.stylelintrc.json` — correctness rules (invalid hex, duplicate selectors,
+  empty blocks, unknown units/properties/pseudo-classes/at-rules, calc
+  spacing, duplicate properties with fallback tolerance, …) plus
+  `declaration-no-important`, the phase-3 target. The pre-existing debt is
+  frozen in `stylelint-baseline.json` (per file, per rule; 316 violations in
+  `styles.css` at the freeze: 311 `!important`, 4 `no-duplicate-selectors`,
+  1 `block-no-empty` — every other enabled rule is at zero). New violations
+  fail CI; burn-downs shrink the baseline in the same commit
+  (`node scripts/stylelint-ratchet.mjs --update`). `pnpm run lint:css` shows
+  the raw stylelint picture with line numbers (red until the debt burns
+  down — that is expected). Note: the stylelint CLI prints its report to
+  stderr when run through `pnpm exec`; the ratchet script uses the Node API
+  and is not affected. When `declaration-no-important` reaches zero, the
+  phase-3 CSS item is done — do not disable the rule, keep the gate.
 - `tsconfig.json` has **`noImplicitThis: true`** (since 1.6.16) — do not
   revert it: `ThisType<>` contextual typing (used by the `Object.assign`
   bootstrap in `main.desktop.ts`) only works with this flag, and without it
