@@ -2,7 +2,7 @@
 	"$comment": "Frozen stylelint error debt per file/rule. Regenerate ONLY with: node scripts/stylelint-ratchet.mjs --update. See scripts/stylelint-ratchet.mjs header and MAINTAINING.md.",
 	"files": {
 		"styles.css": {
-			"declaration-no-important": 88,
+			"declaration-no-important": 44,
 			"no-duplicate-selectors": 2
 		}
 	}
