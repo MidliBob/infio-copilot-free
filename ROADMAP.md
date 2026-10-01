@@ -324,6 +324,17 @@ en/ru/zh-cn синхронны (~652 ключа).
 > inline-edit, apply-view cm-editor/cm-scroller, JSON-view cm-gutters
 > → **1.7.5**). Темы Minimal/Things проверены скачиванием: ни одного
 > `!important` на кнопках/инпутах — конкуренты только в app.css ядра.
+>
+> **Обновление (1.7.4):** input/button-кластер выгорел (−29): правила
+> переведены на скоуп-селекторы (0,2,1)–(0,4,1) с точным
+> по-свойственным расчётом каскада против app.css 1.13.7 (извлечён из
+> официального `obsidian-1.13.7.asar.gz`): декларации, которые ядро
+> всегда перебивало (padding/height/font-size/radius у инпутов,
+> color/background у кнопок), удалены — вид сохраняется побайтово;
+> hover/focus-микросостояния edit-name реплицированы явными правилами.
+> Отслеживаемый долг: **15** `!important` (+2 дубликата, baseline 17) —
+> весь остаток это CodeMirror-кластер (ai-block 9, select option 2,
+> apply-view 4, gutters 2) → **1.7.5**.
 
 1. **Декларативный Settings API (`getSettingDefinitions`)** для поиска
    настроек 1.13+ (сейчас 0 вхождений). Конфликт: `minAppVersion` в
