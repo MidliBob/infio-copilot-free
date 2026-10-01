@@ -140,6 +140,17 @@ Planned. Requirements and steps:
   stderr when run through `pnpm exec`; the ratchet script uses the Node API
   and is not affected. When `declaration-no-important` reaches zero, the
   phase-3 CSS item is done — do not disable the rule, keep the gate.
+- stylelint exceptions with written justification (scoped
+  `stylelint-disable` comments inside `styles.css`; policy: a new exception
+  is allowed only as a scoped disable + an entry in this list, everything
+  else stays ratchet debt):
+  - KaTeX math overrides (`.icf-markdown .katex …`, 20 declarations,
+    reclassified in 1.7.3): they must beat KaTeX's own stylesheet, which
+    Obsidian bundles inside `app.css`, for the accessible HTML/MathML
+    split — the clip/hide pattern is KaTeX's standard technique, and
+    dropping the `!important` flags there would require per-engine math
+    rendering tests for no user-visible gain. The disable is scoped to
+    `declaration-no-important` around the KaTeX region only.
 - `tsconfig.json` has **`noImplicitThis: true`** (since 1.6.16) — do not
   revert it: `ThisType<>` contextual typing (used by the `Object.assign`
   bootstrap in `main.desktop.ts`) only works with this flag, and without it
