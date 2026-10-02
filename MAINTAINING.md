@@ -138,8 +138,10 @@ Planned. Requirements and steps:
   the raw stylelint picture with line numbers (red until the debt burns
   down — that is expected). Note: the stylelint CLI prints its report to
   stderr when run through `pnpm exec`; the ratchet script uses the Node API
-  and is not affected. When `declaration-no-important` reaches zero, the
-  phase-3 CSS item is done — do not disable the rule, keep the gate.
+  and is not affected. `declaration-no-important` reached **zero** in 1.7.5
+  (burn-down history: ROADMAP.md, phase 3): the only `!important` left in
+  `styles.css` are the documented exceptions below — do not disable the
+  rule, keep the gate; new flags are allowed only via this registry.
 - stylelint exceptions with written justification (scoped
   `stylelint-disable` comments inside `styles.css`; policy: a new exception
   is allowed only as a scoped disable + an entry in this list, everything
