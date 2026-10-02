@@ -317,8 +317,8 @@ importers:
         specifier: ^11.4.2
         version: 11.4.2
       obsidian:
-        specifier: ^1.8.7
-        version: 1.8.7(@codemirror/state@6.5.2)(@codemirror/view@6.38.0)
+        specifier: ^1.13.1
+        version: 1.13.1(@codemirror/state@6.5.2)(@codemirror/view@6.38.0)
       prettier:
         specifier: ^3.4.2
         version: 3.6.2
@@ -4397,11 +4397,11 @@ packages:
     resolution: {integrity: sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==}
     engines: {node: '>= 0.4'}
 
-  obsidian@1.8.7:
-    resolution: {integrity: sha512-h4bWwNFAGRXlMlMAzdEiIM2ppTGlrh7uGOJS6w4gClrsjc+ei/3YAtU2VdFUlCiPuTHpY4aBpFJJW75S1Tl/JA==}
+  obsidian@1.13.1:
+    resolution: {integrity: sha512-qtTEA2pmhJzhuhJqzbBFRYhpIOqvW+krDYjtFynv66KbxBbumHBlsJfWw3I4jtnK/6fZwbQhCrmmDdRwXmX56w==}
     peerDependencies:
-      '@codemirror/state': ^6.0.0
-      '@codemirror/view': ^6.0.0
+      '@codemirror/state': 6.5.0
+      '@codemirror/view': 6.38.6
 
   on-finished@2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
@@ -10229,7 +10229,7 @@ snapshots:
 
   object-keys@1.1.1: {}
 
-  obsidian@1.8.7(@codemirror/state@6.5.2)(@codemirror/view@6.38.0):
+  obsidian@1.13.1(@codemirror/state@6.5.2)(@codemirror/view@6.38.0):
     dependencies:
       '@codemirror/state': 6.5.2
       '@codemirror/view': 6.38.0
