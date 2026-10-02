@@ -347,11 +347,29 @@ en/ru/zh-cn синхронны (~652 ключа).
 > селекторов `.icf-popover` — janitorial-релиз). Единственные оставшиеся
 > `!important` — 20 KaTeX-деклараций в scoped-disable с обоснованием
 > (реестр MAINTAINING.md). Стилей стало 88.4 → ~47.7 КБ (−46%).
+>
+> **Обновление (1.7.6):** пункт 1 — wave 1: вкладка настроек отдаёт
+> `getSettingDefinitions()` (dual-support: <1.13 рендерят `display()`),
+> Model parameters и Chat behavior — нативные контролы, 6 секций —
+> страницы с существующими рендерерами; типы `obsidian` 1.8.7 → 1.13.1;
+> запись через zod-гейт. Подробности и план волн — пункт 1 и
+> MAINTAINING.md «Declarative settings migration».
 
-1. **Декларативный Settings API (`getSettingDefinitions`)** для поиска
-   настроек 1.13+ (сейчас 0 вхождений). Конфликт: `minAppVersion` в
-   манифесте — 0.15.0 → делаем feature-detect с fallback на текущий рендер
-   вкладки (или осознанно поднимаем minAppVersion — отдельное решение).
+1. **Декларативный Settings API (`getSettingDefinitions`)** — в работе,
+   **wave 1 ✅ 1.7.6**. Реальность API: это полный декларативный рендерер
+   вкладки для Obsidian **1.13.0+**, и на 1.13+ он ПОЛНОСТЬЮ заменяет
+   `display()`. Принят официальный dual-support (Path B из migration
+   guide): хосты <1.13 не вызывают definitions и рендерят `display()` как
+   раньше — feature-detect не нужен, `minAppVersion` остаётся 0.15.0.
+   Wave 1: дерево из 8 секций в порядке `display()`; Model parameters
+   (5 number-контролов на dotted-ключах `modelOptions.*`) и Chat behavior
+   (dropdown `defaultMention`) — нативные контролы, индексируются
+   глобальным поиском настроек; остальные 6 секций — `page`-элементы c
+   `SectionPage`, монтирующей существующие рендереры без изменений.
+   Запись контролов идёт через zod-гейт (`safeParse`): невалидное
+   значение отклоняется, а не сохраняется. Волны 2+: перевод секций в
+   нативные определения по гайду MAINTAINING.md («Declarative settings
+   migration»), затем удаление React из настроек.
 2. **MCP: StreamableHTTP основной, SSE fallback** — ✅ 1.6.19:
    `StreamableHTTPClientTransport` (SDK 1.30) — транспорт по умолчанию
    для серверов с `url`; при 4xx от legacy-сервера автоматический
@@ -466,6 +484,9 @@ release.yml), публичная roadmap в репозитории (пункт 3
 
 ## Изменения документа
 
+- 2026-10-01 (1.7.6) — пункт 1 фазы 3 переписан по факту API (1.13.0+,
+  заменяет display(), dual-support Path B), wave 1 отмечена выполненной,
+  добавлено обновление статуса 1.7.6; гайд по волнам — в MAINTAINING.md.
 - 2026-10-01 (1.7.1–1.7.5) — выгорание `!important` завершено: пункт 3
   фазы 3 отмечен выполненным (311 → 0 отслеживаемых; KaTeX — исключение
   в реестре MAINTAINING.md), добавлены обновления статусов 1.7.4/1.7.5

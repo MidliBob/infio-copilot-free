@@ -159,6 +159,53 @@ Planned. Requirements and steps:
   `this` in assigned/literal methods degrades to `any`, which the ratchet
   counts as `no-unsafe-*` regressions. The whole project compiles cleanly
   with the flag on (`pnpm type:check`).
+
+## Declarative settings migration (phase 3, item 1)
+
+Since 1.7.6 the settings tab supports the Obsidian 1.13+ declarative
+Settings API (`getSettingDefinitions()`), in the dual-support mode of the
+official migration guide (Path B):
+
+- On 1.13+ the host calls `InfioSettingTab.getSettingDefinitions()` and
+  **skips `display()`**; on older hosts the definitions are never called
+  and `display()` renders exactly as before. No runtime version detection
+  is needed — do not add any.
+- The definition tree lives in `src/settings/declarative.ts`
+  (`buildSettingDefinitions(host)`), built against a structural host
+  interface so it unit-tests without the React tree. Order of items MUST
+  match the order of `display()` sections.
+- Migrated sections are emitted as native `group` items with `control`
+  definitions (wave 1: Model parameters — five number controls on dotted
+  keys `modelOptions.*`; Chat behavior — the `defaultMention` dropdown).
+  Everything else is a `page` item whose `SectionPage` factory mounts the
+  existing section renderer unchanged.
+- Controls bind **dotted paths**: `getControlValue`/`setControlValue`
+  resolve them with `readSettingPath`/`writeSettingPath`, and every write
+  goes through `InfioSettingsSchema.safeParse` (`parseSettingsCandidate`)
+  before `plugin.setSettings` — an invalid value is rejected with a
+  `logger.warn`, never persisted. Keep this guard: it is the only thing
+  standing between the host UI and the zod contract.
+- Control `min`/`max`/`step` MUST mirror `modelOptionsSchema` (and future
+  schemas) exactly — adding a stricter bound than the schema is a behavior
+  change, adding a looser one lets the safeParse guard reject silently.
+- New i18n keys: page/group/ control names reuse existing
+  `settings.*` keys; wave 1 added `settings.PluginInfo.title` and
+  `settings.Models.title` (en/ru/zh-cn in sync, the completeness test
+  enforces it).
+- Migrating the next section (wave 2+): replace its `legacyPage(...)`
+  entry with a `group` of `control`/`render` definitions, extend the unit
+  tests (structure + keys + bounds), and check whether the section's
+  renderer becomes dead code (then delete it and its React component).
+  `render` callbacks receive an Obsidian `Setting` row and may return a
+  cleanup function — use them for React-mounted rows until the section is
+  fully native.
+- Known wave-1 limitation (same as the legacy path, tracked): React
+  section renderers create a fresh `createRoot` per mount and never
+  unmount previous roots; `SectionPage.display()/hide()` empty the
+  container like the tab always did. Root lifecycle gets proper cleanup
+  as sections go native.
+- `obsidian` devDependency carries the API types (1.13.1+); bumping it
+  further is safe only with a full `pnpm type:check` pass.
 - Low-memory machines: a single type-aware ESLint process over the whole
   `src/` needs several GB of heap. Use `pnpm run lint:ratchet -- --batch=14`
   to lint in chunks (slower, but each process stays under ~1 GB).
