@@ -597,7 +597,11 @@ export default {
 			"enterApiKeyDescription": "API-ключ можно получить на официальном сайте{provider_api_url}",
 			"enterCustomUrl": "Введите URL вашего API-эндпоинта"
 		},
+		"PluginInfo": {
+			"title": "О плагине"
+		},
 		"Models": {
+			"title": "Модели",
 			"chatModel": "Модель чата:",
 			"chatModelDescription": "Модель для повседневных диалогов и вопросов-ответов; выполняет большинство задач чата",
 			"autocompleteModel": "Модель автодополнения:",

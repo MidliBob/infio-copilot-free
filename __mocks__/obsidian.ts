@@ -11,3 +11,15 @@ export const htmlToMarkdown = jest.fn((html: string) => html)
 export const moment = {
 	locale: jest.fn((): string => 'en'),
 }
+// SettingPage: abstract base of the declarative-settings sub-pages
+// (obsidian 1.13+). Suites construct SectionPage subclasses and may call
+// display()/hide(), so containerEl carries the Obsidian DOM extension
+// empty() as an inert stub.
+export class SettingPage {
+	rootEl: HTMLElement = {} as HTMLElement
+	titlebarEl: HTMLElement = {} as HTMLElement
+	containerEl: HTMLElement = { empty: jest.fn() } as unknown as HTMLElement
+	title = ''
+	display(): void {}
+	hide(): void {}
+}

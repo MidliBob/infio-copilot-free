@@ -5,6 +5,7 @@ import {
 	Setting,
 	TFile
 } from 'obsidian';
+import type { SettingDefinitionItem } from 'obsidian';
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 
@@ -12,6 +13,7 @@ import { DEFAULT_SEARXNG_BASE_URL, DEFAULT_YACY_BASE_URL } from '../constants';
 import { t } from '../lang/helpers';
 import { InfioSettings } from '../types/settings';
 import { findFilesMatchingPatterns } from '../utils/glob-utils';
+import { buildSettingDefinitions, parseSettingsCandidate, readSettingPath, writeSettingPath } from './declarative';
 
 // import AdvancedSettings from './components/AdvancedSettings';
 import BasicAutoCompleteSettings from './components/BasicAutoCompleteSettings';
@@ -48,6 +50,29 @@ export class InfioSettingTab extends PluginSettingTab {
 		this.renderDeepResearchSection(containerEl)
 		this.renderRAGSection(containerEl)
 		this.renderAutoCompleteSection(containerEl)
+	}
+
+	// --- Declarative Settings API (Obsidian 1.13+; phase 3 item 1, wave 1).
+	// On 1.13+ the host calls getSettingDefinitions() and skips display();
+	// older hosts never call these overrides and render display() as before
+	// (dual support, see src/settings/declarative.ts header).
+	getSettingDefinitions(): SettingDefinitionItem[] {
+		return buildSettingDefinitions(this)
+	}
+
+	getControlValue(key: string): unknown {
+		return readSettingPath(this.plugin.settings, key)
+	}
+
+	async setControlValue(key: string, value: unknown): Promise<void> {
+		const next = parseSettingsCandidate(
+			writeSettingPath(this.plugin.settings, key, value),
+			key,
+		)
+		if (next === null) {
+			return
+		}
+		await this.plugin.setSettings(next)
 	}
 
 	private renderModelsContent(containerEl: HTMLElement): void {
@@ -150,7 +175,7 @@ export class InfioSettingTab extends PluginSettingTab {
 			});
 	}
 
-	private renderFilesSearchSection(containerEl: HTMLElement): void {
+	renderFilesSearchSection(containerEl: HTMLElement): void {
 		new Setting(containerEl).setHeading().setName(t('settings.FilesSearch.title'))
 		new Setting(containerEl)
 			.setName(t('settings.FilesSearch.method'))

@@ -297,7 +297,11 @@ export default {
 			enterApiKeyDescription: 'API Key can be obtained from their official website{provider_api_url}',
 			enterCustomUrl: 'Enter your custom api endpoint url',
 		},
+		PluginInfo: {
+			title: 'About',
+		},
 		Models: {
+			title: 'Models',
 			chatModel: 'Chat model:',
 			chatModelDescription: 'Model used for daily conversations and Q&A, handling most chat interactions',
 			autocompleteModel: 'Autocomplete model:',

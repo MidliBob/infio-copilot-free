@@ -298,7 +298,11 @@ export default {
 			enterApiKeyDescription: 'API Key 可以从官方网站{provider_api_url}获取',
 			enterCustomUrl: '输入您的自定义 API 端点 URL',
 		},
+		PluginInfo: {
+			title: '关于',
+		},
 		Models: {
+			title: '模型',
 			chatModel: '聊天模型：',
 			chatModelDescription: '用于日常对话和问答的模型，处理大部分聊天交互',
 			autocompleteModel: '自动补全模型：',
