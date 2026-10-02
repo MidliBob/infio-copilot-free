@@ -1284,10 +1284,14 @@ input.icf-llm-setting-item-search:focus {
 * ai block, use edit inline
 */
 
-.icf-ai-block {
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
+/* Тройной класс = (0,3,0): гарантированно перебивает app.css
+   (.markdown-rendered pre, .cm-embed-block ≤ (0,3,0)) и CM6 base-theme
+   ((0,2,0)) без !important; класс навешивается post-процессором на
+   родителя секции (inline-edit-processor.ts) */
+.icf-ai-block.icf-ai-block.icf-ai-block {
+  padding: 0;
+  background: transparent;
+  border: none;
 }
 
 .icf-ai-block-container {
@@ -1302,10 +1306,10 @@ input.icf-llm-setting-item-search:focus {
   margin-bottom: 0;
 }
 
-.icf-ai-block-content {
+.icf-ai-block-input-wrapper textarea.icf-ai-block-content {
   width: 100%;
   background: transparent;
-  border: none !important;
+  border: none;
   padding: 8px;
   padding-right: 20px;
   height: 60px;
@@ -1316,9 +1320,9 @@ input.icf-llm-setting-item-search:focus {
   outline: none;
   &:hover,
   &:focus {
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
+    border: none;
+    outline: none;
+    box-shadow: none;
   }
 }
 
@@ -1385,8 +1389,8 @@ input.icf-llm-setting-item-search:focus {
   appearance: none;
 
   & option {
-    background: none !important;
-    background-color: transparent !important;
+    background: none;
+    background-color: transparent;
     color: var(--text-normal);
     border: none;
     outline: none;
@@ -1436,19 +1440,22 @@ select.icf-ai-block-model-select::-ms-expand {
   contain: layout style;
 
   /* 限制作用域：只应用于 ApplyView 内部的编辑器元素 */
+  /* position: relative и display: flex здесь больше не объявляются:
+     CM6 base-theme инжектит их сам с !important и с теми же значениями
+     (position: relative !important; display: flex !important на корне
+     редактора) — объявления без флагов всё равно бы проиграли, а с
+     флагами были избыточны (значения идентичны) */
   > .view-content .cm-editor {
     flex: 1 1 0;
     min-height: 0;
-    position: relative !important;
     box-sizing: border-box;
-    display: flex !important;
     flex-direction: column;
   }
 
+  /* display: flex и align-items: flex-start аналогично инжектит CM6
+     base-theme с !important (.cm-scroller), значения идентичны */
   > .view-content .cm-scroller {
     padding: var(--file-margins);
-    display: flex !important;
-    align-items: flex-start !important;
     line-height: 1.4;
     height: 100%;
     overflow-x: auto;
@@ -2173,8 +2180,8 @@ button.icf-chat-input-model-select {
 .datafile-source-view.mod-cm6 .cm-gutters {
 	flex: 0 0 auto;
 	background-color: transparent;
-	color: var(--text-faint) !important;
-	border-right: none !important;
+	color: var(--text-faint);
+	border-right: none;
 	margin-inline-end: var(--file-folding-offset);
 	font-size: var(--font-ui-smaller);
 	z-index: 1;
