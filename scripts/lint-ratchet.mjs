@@ -18,10 +18,13 @@
  *                                            with OOM (NODE_OPTIONS applies
  *                                            to the children as well)
  *
- * Rules that are switched off in .eslintrc.js but tracked here (the phase-2
- * ratchet scope): no-unsafe-assignment, no-unsafe-member-access,
- * no-unsafe-call. They are force-enabled for this run only, so the baseline
- * already accounts for them and enabling a rule in .eslintrc.js later is a
+ * Rules that are switched off in eslint.config.mjs but tracked here (the
+ * phase-2/phase-3 ratchet scope): no-unsafe-assignment,
+ * no-unsafe-member-access, no-unsafe-call (frozen since 1.5.5) plus
+ * no-floating-promises, no-misused-promises and no-unnecessary-condition
+ * (added to the freeze in 1.7.9 — they had never been measured before).
+ * They are force-enabled for this run only, so the baseline already
+ * accounts for them and enabling a rule in eslint.config.mjs later is a
  * no-op for the ratchet.
  *
  * Only error-severity violations are tracked (warnings never failed CI and
@@ -44,6 +47,9 @@ const TRACKED_FORCED_RULES = {
 	'@typescript-eslint/no-unsafe-assignment': 'error',
 	'@typescript-eslint/no-unsafe-member-access': 'error',
 	'@typescript-eslint/no-unsafe-call': 'error',
+	'@typescript-eslint/no-floating-promises': 'error',
+	'@typescript-eslint/no-misused-promises': 'error',
+	'@typescript-eslint/no-unnecessary-condition': 'error',
 }
 
 function parseArgs(argv) {
