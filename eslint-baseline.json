@@ -3,65 +3,47 @@
 	"files": {
 		"src/ApplyView.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 6
 		},
 		"src/BaseFileView.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 6
 		},
 		"src/ChatView.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 7,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 7
 		},
 		"src/JsonFileView.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/PreviewView.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 10,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 10
 		},
 		"src/components/apply-view/ApplyViewRoot.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 4,
 			"@typescript-eslint/no-misused-promises": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 11,
-			"@typescript-eslint/no-unnecessary-type-conversion": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-type-conversion": 1
 		},
 		"src/components/chat-view/AssistantMessageActions.tsx": {
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 8
 		},
 		"src/components/chat-view/ChatHistoryView.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-misused-promises": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 7,
-			"@typescript-eslint/no-unnecessary-type-conversion": 26,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-type-conversion": 26
 		},
 		"src/components/chat-view/ChatView.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 3,
 			"@typescript-eslint/no-confusing-void-expression": 6,
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-misused-promises": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 2,
 			"@typescript-eslint/no-unnecessary-condition": 40,
 			"@typescript-eslint/no-unnecessary-type-conversion": 7,
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-enum-assignment": 1,
 			"@typescript-eslint/no-unsafe-member-access": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 3,
 			"@typescript-eslint/return-await": 4,
 			"sort-imports": 1
@@ -69,206 +51,142 @@
 		"src/components/chat-view/CommandsView.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-misused-promises": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-unnecessary-type-conversion": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-type-conversion": 4
 		},
 		"src/components/chat-view/CustomModeView.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-confusing-void-expression": 5,
 			"@typescript-eslint/no-misused-promises": 4,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/components/chat-view/FileReadResults.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2,
 			"no-inline-styles/no-inline-styles": 2
 		},
 		"src/components/chat-view/HelloInfo.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/InsightView.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-misused-promises": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 18,
 			"@typescript-eslint/no-unnecessary-type-conversion": 4,
 			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 6
 		},
 		"src/components/chat-view/LLMResponseInfoPopover.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/components/chat-view/Markdown/MarkdownApplyDiffBlock.tsx": {
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownDataviewQueryBlock.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownEditFileBlock.tsx": {
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/no-base-to-string": 3,
 			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownFetchUrlsContentBlock.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/Markdown/MarkdownListFilesBlock.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownManageFilesBlock.tsx": {
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownMatchSearchFilesBlock.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownPlanBlock.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/Markdown/MarkdownReadFileBlock.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownReasoningBlock.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/Markdown/MarkdownReferenceBlock.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/Markdown/MarkdownRegexSearchFilesBlock.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownSearchAndReplace.tsx": {
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownSearchWebBlock.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownSemanticSearchFilesBlock.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownSwitchModeBlock.tsx": {
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownToolResult.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/components/chat-view/Markdown/MarkdownTransformationToolBlock.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownWithIcon.tsx": {
 			"@typescript-eslint/no-misused-promises": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
 			"@typescript-eslint/no-unnecessary-template-expression": 2,
-			"@typescript-eslint/no-useless-default-assignment": 3,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/Markdown/MermaidBlock.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/use-unknown-in-catch-callback-variable": 1
 		},
 		"src/components/chat-view/Markdown/RawMarkdownBlock.tsx": {
 			"@typescript-eslint/no-base-to-string": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 2
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/Markdown/SyntaxHighlighterWrapper.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 2
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/UseMcpToolBlock.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/McpHubView.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 4,
 			"@typescript-eslint/no-misused-promises": 6,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 25,
 			"@typescript-eslint/no-unnecessary-type-conversion": 2,
 			"@typescript-eslint/no-unsafe-assignment": 2,
 			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/components/chat-view/QueryProgress.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 3
 		},
 		"src/components/chat-view/ReactMarkdown.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-plus-operands": 22
 		},
 		"src/components/chat-view/SearchView.tsx": {
@@ -276,29 +194,21 @@
 			"@typescript-eslint/no-confusing-void-expression": 7,
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-misused-promises": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 28,
 			"@typescript-eslint/no-unnecessary-type-conversion": 4,
 			"@typescript-eslint/no-unsafe-argument": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 3
 		},
 		"src/components/chat-view/SimilaritySearchResults.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2,
 			"no-inline-styles/no-inline-styles": 2
 		},
 		"src/components/chat-view/UserMessageView.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 7,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 7
 		},
 		"src/components/chat-view/WebsiteReadResults.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2,
 			"no-inline-styles/no-inline-styles": 2
 		},
@@ -307,1623 +217,1086 @@
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-confusing-void-expression": 6,
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 13,
 			"@typescript-eslint/no-unnecessary-type-conversion": 3,
 			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/components/chat-view/WorkspaceSelect.tsx": {
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/components/chat-view/WorkspaceView.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-misused-promises": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 10,
 			"@typescript-eslint/no-unnecessary-type-conversion": 23,
 			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2,
 			"@typescript-eslint/use-unknown-in-catch-callback-variable": 1
 		},
 		"src/components/chat-view/chat-input/ImageUploadButton.tsx": {
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/chat-input/LexicalContentEditable.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 9,
-			"@typescript-eslint/no-useless-default-assignment": 2,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/chat-input/MentionableBadge.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 13,
-			"@typescript-eslint/no-useless-default-assignment": 2,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/components/chat-view/chat-input/ModeSelect.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/components/chat-view/chat-input/ModelSelect.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 3,
 			"@typescript-eslint/no-confusing-void-expression": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 24,
 			"@typescript-eslint/no-unnecessary-type-assertion": 1,
-			"@typescript-eslint/no-unsafe-enum-assignment": 1,
-			"@typescript-eslint/no-useless-default-assignment": 2
+			"@typescript-eslint/no-unsafe-enum-assignment": 1
 		},
 		"src/components/chat-view/chat-input/PromptInputWithActions.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 18,
-			"@typescript-eslint/no-unused-expressions": 1,
-			"@typescript-eslint/no-useless-default-assignment": 2
+			"@typescript-eslint/no-unused-expressions": 1
 		},
 		"src/components/chat-view/chat-input/SearchButton.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/chat-input/SearchInputWithActions.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-explicit-any": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 13,
 			"@typescript-eslint/no-unsafe-member-access": 3,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 5
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/components/chat-view/chat-input/SearchModeSelect.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"sort-imports": 1
 		},
 		"src/components/chat-view/chat-input/SubmitButton.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/chat-input/plugins/command/CommandPlugin.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 1,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/chat-input/plugins/command/CreateCommandPopoverPlugin.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 11,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/chat-input/plugins/image/DragDropPastePlugin.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/chat-input/plugins/image/ImagePastePlugin.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/components/chat-view/chat-input/plugins/mention/AutoLinkMentionPlugin.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unsafe-argument": 1,
 			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-unsafe-member-access": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-member-access": 1
 		},
 		"src/components/chat-view/chat-input/plugins/mention/MentionNode.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-assignment": 1
 		},
 		"src/components/chat-view/chat-input/plugins/mention/MentionPlugin.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 3,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/chat-input/plugins/no-format/NoFormatPlugin.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/chat-input/plugins/on-enter/OnEnterPlugin.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/chat-input/plugins/on-mutation/OnMutationPlugin.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/chat-input/plugins/shared/LexicalMenu.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 12,
 			"@typescript-eslint/no-unsafe-assignment": 1,
 			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/no-useless-default-assignment": 3,
 			"@typescript-eslint/restrict-template-expressions": 8
 		},
 		"src/components/chat-view/chat-input/plugins/typeahead-menu/LexicalTypeaheadMenuPlugin.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
 			"@typescript-eslint/no-unsafe-return": 1,
 			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 4,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/components/chat-view/chat-input/utils/editor-state-to-plain-text.test.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/chat-input/utils/editor-state-to-plain-text.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/chat-input/utils/get-metionable-icon.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/common/ErrorBoundary.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/inline-edit/InlineEdit.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 3,
 			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-misused-promises": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 13,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/components/modals/ImageSelectorModal.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/prefer-regexp-exec": 1,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/preview-view/PreviewViewRoot.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 5,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 5
 		},
 		"src/constants.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/contexts/AppContext.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/contexts/DarkModeContext.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/contexts/DatabaseContext.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/contexts/DataviewContext.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/contexts/DialogContext.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/contexts/DiffStrategyContext.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/contexts/LLMContext.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/contexts/McpHubContext.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/contexts/RAGContext.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/contexts/SettingsContext.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/contexts/TransContext.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/core/autocomplete/context-detection.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unnecessary-template-expression": 1,
-			"@typescript-eslint/no-unnecessary-type-assertion": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-type-assertion": 1
 		},
 		"src/core/autocomplete/index.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/core/autocomplete/post-processors/remove-code-indicators.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/post-processors/remove-math-indicators.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/post-processors/remove-overlap.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/core/autocomplete/post-processors/remove-whitespace.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/pre-processors/data-view-remover.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unnecessary-template-expression": 1,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/core/autocomplete/pre-processors/length-limiter.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 3
 		},
 		"src/core/autocomplete/states/disabled-file-specific-state.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/core/autocomplete/states/disabled-invalid-settings-state.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/disabled-manual-state.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/core/autocomplete/states/idle-state.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/init-state.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 3
 		},
 		"src/core/autocomplete/states/predicting-state.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/core/autocomplete/states/queued-state.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/core/autocomplete/states/state.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/no-unused-vars": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/core/autocomplete/states/suggesting-state.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/types.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/types.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/utils.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"@typescript-eslint/no-unsafe-call": 2,
-			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-member-access": 2
 		},
 		"src/core/diff/DiffStrategy.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/core/diff/insert-groups.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"prefer-const": 1
 		},
 		"src/core/diff/strategies/multi-search-replace.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 8,
 			"@typescript-eslint/no-unused-vars": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 16
 		},
 		"src/core/diff/strategies/new-unified/edit-strategies.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/prefer-regexp-exec": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/core/diff/strategies/new-unified/index.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 9
 		},
 		"src/core/diff/strategies/new-unified/search-strategies.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unsafe-assignment": 1,
 			"@typescript-eslint/no-unsafe-call": 2,
-			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/core/diff/strategies/new-unified/types.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/diff/strategies/search-replace.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 7,
 			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/prefer-regexp-exec": 4,
 			"@typescript-eslint/restrict-template-expressions": 16
 		},
 		"src/core/diff/strategies/unified.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/no-unsafe-member-access": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/core/diff/types.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/edit/inline-edit-processor.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/core/file-search/match/coreplugin-match.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/consistent-type-assertions": 3,
 			"@typescript-eslint/no-explicit-any": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"@typescript-eslint/no-unnecessary-type-assertion": 1,
 			"@typescript-eslint/no-unsafe-argument": 2,
 			"@typescript-eslint/no-unsafe-assignment": 3,
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-member-access": 5,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"sort-imports": 1
 		},
 		"src/core/file-search/match/omnisearch-match.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"sort-imports": 1
 		},
 		"src/core/file-search/regex/coreplugin-regex.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/file-search/regex/ripgrep-regex.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
 			"@typescript-eslint/no-unsafe-argument": 2,
 			"@typescript-eslint/no-unsafe-assignment": 6,
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-member-access": 9,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-plus-operands": 1,
 			"sort-imports": 1
 		},
 		"src/core/file-search/search-common.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/core/llm/base.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/llm/exception.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/llm/manager.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/llm/ollama.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-useless-default-assignment": 2
+			"@typescript-eslint/no-unsafe-assignment": 1
 		},
 		"src/core/llm/openai-compatible.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/core/llm/openai-message-adapter.ts": {
 			"@typescript-eslint/consistent-type-assertions": 4,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/core/mcp/McpHub.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
 			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-deprecated": 5,
 			"@typescript-eslint/no-misused-promises": 6,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 58,
 			"@typescript-eslint/no-unnecessary-type-conversion": 4,
 			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/core/mcp/McpServerManager.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/core/mcp/config-schema.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/core/mcp/config-schema.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 9,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 9
 		},
 		"src/core/mcp/type.ts": {
 			"@typescript-eslint/no-explicit-any": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/constants.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/sections/capabilities.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/sections/capabilities.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/core/prompts/sections/custom-instructions.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/sections/custom-system-prompt.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/no-unsafe-argument": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/core/prompts/sections/index.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/sections/mcp-servers.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 6,
 			"@typescript-eslint/no-unnecessary-template-expression": 1,
 			"@typescript-eslint/no-unsafe-assignment": 1,
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-member-access": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/core/prompts/sections/modes.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/sections/objective.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/sections/rules.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 3
 		},
 		"src/core/prompts/sections/tool-use-guidelines.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/core/prompts/sections/tool-use.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/system.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/no-unnecessary-template-expression": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-template-expression": 1
 		},
 		"src/core/prompts/tools/access-mcp-resource.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/core/prompts/tools/ask-followup-question.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/attempt-completion.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/call-insights.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/dataview-query.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/fetch-url-content.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/core/prompts/tools/index.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-assignment": 1
 		},
 		"src/core/prompts/tools/insert-content.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/list-files.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/manage-files.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/core/prompts/tools/read-file.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/search-and-replace.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/search-files.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/search-web.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/core/prompts/tools/switch-mode.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/tool-groups.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/types.ts": {
 			"@typescript-eslint/no-explicit-any": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/use-mcp-tool.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/core/prompts/tools/write-to-file.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/transformations/analyze-paper.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/transformations/dense-summary.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/transformations/hierarchical-summary.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/transformations/key-insights.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/transformations/reflections.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/transformations/simple-summary.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/transformations/table-of-contents.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/rag/embedding-dimension.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unsafe-argument": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-argument": 1
 		},
 		"src/core/rag/embedding-dimension.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/core/rag/embedding.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 5,
 			"@typescript-eslint/no-unsafe-call": 12,
 			"@typescript-eslint/no-unsafe-member-access": 20,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/core/rag/rag-engine.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 26,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/core/transformations/trans-engine.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 3,
 			"@typescript-eslint/no-unnecessary-condition": 59,
-			"@typescript-eslint/no-useless-default-assignment": 3,
 			"@typescript-eslint/restrict-template-expressions": 5
 		},
 		"src/database/database-manager.ts": {
-			"@typescript-eslint/no-floating-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"sort-imports": 1
 		},
 		"src/database/exception.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/base.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/chat/ChatManager.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 10,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/prefer-regexp-exec": 2,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/database/json/chat/types.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/command/CommandManager.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/prefer-regexp-exec": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/database/json/command/types.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/constants.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/convert-data/ConvertDataManager.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 7,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 7
 		},
 		"src/database/json/convert-data/index.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/convert-data/types.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/custom-mode/CustomModeManager.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/prefer-regexp-exec": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/database/json/custom-mode/types.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/exception.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/migrateToJsonDatabase.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 7,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 7
 		},
 		"src/database/json/utils.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/workspace/WorkspaceManager.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 9,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 3
 		},
 		"src/database/json/workspace/index.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/workspace/types.ts": {
 			"@typescript-eslint/no-explicit-any": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/modules/command/command-manager.ts": {
-			"@typescript-eslint/no-floating-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/database/modules/command/command-repository.ts": {
 			"@typescript-eslint/no-explicit-any": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 3
 		},
 		"src/database/modules/conversation/conversation-manager.ts": {
-			"@typescript-eslint/no-floating-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 8,
 			"@typescript-eslint/no-unsafe-argument": 1,
 			"@typescript-eslint/no-unsafe-assignment": 5,
 			"@typescript-eslint/no-unsafe-call": 2,
 			"@typescript-eslint/no-unsafe-enum-assignment": 2,
-			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-member-access": 2
 		},
 		"src/database/modules/conversation/conversation-repository.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 12,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 3
 		},
 		"src/database/modules/insight/index.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/modules/insight/insight-manager.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2,
 			"@typescript-eslint/no-non-null-assertion": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 7,
-			"@typescript-eslint/no-unnecessary-type-assertion": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-type-assertion": 2
 		},
 		"src/database/modules/insight/insight-repository.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 17,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 19
 		},
 		"src/database/modules/vector/vector-manager.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-base-to-string": 2,
 			"@typescript-eslint/no-explicit-any": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 16,
 			"@typescript-eslint/no-unnecessary-type-assertion": 1,
 			"@typescript-eslint/no-unsafe-argument": 1,
 			"@typescript-eslint/no-unsafe-assignment": 8,
 			"@typescript-eslint/no-unsafe-member-access": 26,
 			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 18
 		},
 		"src/database/modules/vector/vector-repository.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 22,
 			"@typescript-eslint/no-unnecessary-type-conversion": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 12
 		},
 		"src/database/schema.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 6
 		},
 		"src/database/sql.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/embedworker/EmbeddingManager.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/embedworker/EmbeddingManager.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
 			"@typescript-eslint/no-unsafe-assignment": 1,
 			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 5
 		},
 		"src/embedworker/embed.worker.ts": {
 			"@typescript-eslint/consistent-type-assertions": 8,
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 7,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 12
 		},
 		"src/embedworker/fetch-proxy-protocol.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/embedworker/fetch-proxy-protocol.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/embedworker/index.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/event-listener.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/hooks/use-chat-history.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-unnecessary-type-assertion": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-type-assertion": 1
 		},
 		"src/hooks/use-commands.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/hooks/use-custom-mode.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/prefer-reduce-type-parameter": 1
 		},
 		"src/lang/helpers.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/lang/locale-completeness.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/lang/locale/en.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/lang/locale/ru.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/lang/locale/zh-cn.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/main.desktop.ts": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-floating-promises": 1,
 			"@typescript-eslint/no-misused-promises": 5,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 41,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 41
 		},
 		"src/main.mobile.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/no-unnecessary-type-conversion": 1,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/main.ts": {
 			"@typescript-eslint/no-confusing-void-expression": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/open-settings-modal.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/pgworker/index.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/no-unsafe-assignment": 3,
 			"@typescript-eslint/no-unsafe-call": 2,
 			"@typescript-eslint/no-unsafe-member-access": 1,
-			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/pgworker/pglite.worker.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
 			"@typescript-eslint/no-redundant-type-constituents": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unsafe-argument": 1,
 			"@typescript-eslint/no-unsafe-assignment": 3,
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 3
 		},
 		"src/pgworker/worker.d.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/render-plugin/completion-key-watcher.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/render-plugin/document-changes-listener.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/render-plugin/render-surgestion-plugin.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/render-plugin/states.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/render-plugin/types.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/render-plugin/user-event.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/settings/SettingTab.tsx": {
 			"@typescript-eslint/ban-ts-comment": 6,
 			"@typescript-eslint/consistent-type-assertions": 5,
 			"@typescript-eslint/no-misused-promises": 7,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/settings/components/AdvancedSettings.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 4,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/BasicAutoCompleteSettings.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/CheckBoxSettingItem.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/unbound-method": 1
 		},
 		"src/settings/components/DangerZoneSettings.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/DropDownSettingItem.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/FewShotExampleSettings.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 5,
 			"no-inline-styles/no-inline-styles": 22
 		},
 		"src/settings/components/FormComponents.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 5,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 3
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/settings/components/ModelParametersSettings.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 5,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/ModelProviderSettings.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 5,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 20,
 			"@typescript-eslint/no-unnecessary-type-conversion": 6,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 4
 		},
 		"src/settings/components/PluginInfoSettings.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/settings/components/PostprocessingSettings.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/PreprocessingSettings.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/PrivacySettings.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/ProviderModelsPicker.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-confusing-void-expression": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 11,
 			"@typescript-eslint/no-unnecessary-type-conversion": 2,
 			"@typescript-eslint/no-unsafe-enum-assignment": 1,
-			"@typescript-eslint/no-useless-default-assignment": 3,
 			"@typescript-eslint/restrict-template-expressions": 5
 		},
 		"src/settings/components/SettingsItem.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 2
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/SliderSettingsItem.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 4,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-plus-operands": 1
 		},
 		"src/settings/components/TextSettingItem.tsx": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/unbound-method": 1
 		},
 		"src/settings/components/TriggerSettings.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/no-unnecessary-type-assertion": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 7,
 			"@typescript-eslint/unbound-method": 1,
 			"no-inline-styles/no-inline-styles": 3
 		},
 		"src/settings/components/TriggerSettingsSection.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/declarative.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 13,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 13
 		},
 		"src/settings/declarative.ts": {
 			"@typescript-eslint/no-confusing-void-expression": 5,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/index.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/migration.ts": {
 			"@typescript-eslint/no-explicit-any": 5,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/no-unsafe-argument": 1,
 			"@typescript-eslint/no-unsafe-assignment": 1,
 			"@typescript-eslint/no-unsafe-call": 3,
-			"@typescript-eslint/no-unsafe-member-access": 12,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-member-access": 12
 		},
 		"src/settings/versions/shared.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 8
 		},
 		"src/settings/versions/v0/few-shot-examples/block-qoute-example.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/codeblock-function-completion.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/codeblock-function-parameters.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/header-example-relu.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/header-example.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/math-block-inline.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/math-block-multi-line.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/numbered-list-example.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/sub-task-list-example.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/task-list-example.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/text-completion-end.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/text-completion-middle.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/unordered-list-pro-and-con-list.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/unordered-list-solid.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/v0.ts": {
 			"@typescript-eslint/no-base-to-string": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 4
 		},
 		"src/settings/versions/v1/few-shot-examples/block-qoute-example.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/codeblock-function-completion.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/codeblock-function-parameters.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/header-example-relu.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/header-example.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/math-block-inline.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/math-block-multiline.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/numbered-list-example.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/subtask-list-example.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/task-list-example.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/text-completion-end.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/text-completion-middle.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/unordered-list-pro-and-con-list.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/unordered-list-solid.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/v1.ts": {
 			"@typescript-eslint/no-base-to-string": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 4
 		},
 		"src/status-bar.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/ts-suppressions.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 4
 		},
 		"src/types/apply.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/types/chat.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/types/embedding.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/types/llm/model.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/types/llm/request.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/types/llm/response.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/types/mentionable.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/types/plugin.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/types/settings-mobile.ts": {
 			"@typescript-eslint/consistent-type-assertions": 3,
 			"@typescript-eslint/no-explicit-any": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"@typescript-eslint/no-unsafe-member-access": 2,
 			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 8
 		},
 		"src/types/settings.test.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/types/settings.ts": {
 			"@typescript-eslint/consistent-type-assertions": 3,
 			"@typescript-eslint/no-explicit-any": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 8
 		},
 		"src/utils/__mocks__/logger.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/abort-errors.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/abort-errors.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/api.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/no-unsafe-assignment": 5,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-assignment": 5
 		},
 		"src/utils/apply.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/utils/auto-complete.ts": {
 			"@typescript-eslint/ban-ts-comment": 2,
 			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-explicit-any": 7,
 			"@typescript-eslint/no-redundant-type-constituents": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/no-unnecessary-type-parameters": 3,
 			"@typescript-eslint/no-unsafe-argument": 11,
@@ -1932,331 +1305,226 @@
 			"@typescript-eslint/no-unsafe-member-access": 1,
 			"@typescript-eslint/no-unsafe-return": 1,
 			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/only-throw-error": 1,
 			"@typescript-eslint/restrict-template-expressions": 3
 		},
 		"src/utils/circuit-breaker.test.ts": {
 			"@typescript-eslint/no-confusing-void-expression": 8,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/circuit-breaker.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/utils/clipboard.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 6
 		},
 		"src/utils/config.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-explicit-any": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unsafe-member-access": 2,
 			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/utils/content-filter.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/dataview.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/dataview.ts": {
 			"@typescript-eslint/no-base-to-string": 5,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/utils/error-notice.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 6
 		},
 		"src/utils/error-notice.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/utils/extract-text.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/prefer-regexp-exec": 1
 		},
 		"src/utils/fs.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/fuzzy-search.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/utils/glob-utils.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-explicit-any": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 14,
 			"@typescript-eslint/no-unnecessary-template-expression": 1,
 			"@typescript-eslint/no-unsafe-argument": 2,
 			"@typescript-eslint/no-unsafe-enum-assignment": 1,
 			"@typescript-eslint/no-unsafe-member-access": 6,
 			"@typescript-eslint/no-unused-vars": 9,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 6
 		},
 		"src/utils/icon.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/image.ts": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/utils/indentation-provider.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/llm-circuit.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/llm-circuit.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/utils/lodash-lite.ts": {
 			"@typescript-eslint/consistent-type-assertions": 16,
 			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-dynamic-delete": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"@typescript-eslint/no-unnecessary-type-assertion": 1,
-			"@typescript-eslint/no-unnecessary-type-parameters": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-type-parameters": 1
 		},
 		"src/utils/logger.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/manage-files.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 6
 		},
 		"src/utils/manage-files.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 5,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 5
 		},
 		"src/utils/md5.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/md5.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/mentionable.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 9,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 5
 		},
 		"src/utils/modal-dialogs.ts": {
 			"@typescript-eslint/no-deprecated": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unnecessary-type-conversion": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-type-conversion": 3
 		},
 		"src/utils/modes.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-explicit-any": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 20,
 			"@typescript-eslint/no-unnecessary-type-conversion": 1,
 			"@typescript-eslint/no-unsafe-argument": 3,
 			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/utils/network-errors.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/network-errors.ts": {
 			"@typescript-eslint/no-base-to-string": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/obsidian.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/obsidian.ts": {
 			"@typescript-eslint/no-explicit-any": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 6,
 			"@typescript-eslint/no-unsafe-assignment": 6,
 			"@typescript-eslint/no-unsafe-call": 5,
 			"@typescript-eslint/no-unsafe-member-access": 9,
 			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-plus-operands": 1,
 			"@typescript-eslint/restrict-template-expressions": 1
 		},
 		"src/utils/ollama.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-assignment": 1
 		},
 		"src/utils/ollama.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 2
 		},
 		"src/utils/open-settings-modal.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/parse-icf-block.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/parse-icf-block.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 10,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 10
 		},
 		"src/utils/path.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/price-calculator.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/utils/prompt-generator.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 35,
 			"@typescript-eslint/no-unsafe-assignment": 5,
 			"@typescript-eslint/no-unsafe-call": 3,
 			"@typescript-eslint/no-unsafe-member-access": 8,
 			"@typescript-eslint/no-unused-vars": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 15
 		},
 		"src/utils/provider-schemas.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/provider-schemas.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/utils/provider-urls.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/text-splitter.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/utils/text-splitter.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 16,
-			"@typescript-eslint/no-useless-default-assignment": 4,
 			"@typescript-eslint/restrict-template-expressions": 3
 		},
 		"src/utils/token.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/tool-groups.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-explicit-any": 3,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/useDebounceEffect.ts": {
 			"@typescript-eslint/no-explicit-any": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unsafe-assignment": 1
 		},
 		"src/utils/video-detector.test.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/video-detector.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/utils/web-search.test.ts": {
 			"@typescript-eslint/no-base-to-string": 2,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/web-search.ts": {
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
 			"@typescript-eslint/no-unnecessary-condition": 5,
-			"@typescript-eslint/no-useless-default-assignment": 1,
 			"@typescript-eslint/restrict-template-expressions": 5,
 			"@typescript-eslint/use-unknown-in-catch-callback-variable": 1
 		},
 		"src/utils/youtube-transcript.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 1,
-			"@typescript-eslint/no-unnecessary-condition": 13,
-			"@typescript-eslint/no-useless-default-assignment": 1
+			"@typescript-eslint/no-unnecessary-condition": 13
 		}
 	}
 }
