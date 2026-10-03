@@ -119,12 +119,19 @@ Planned. Requirements and steps:
   *new* violation fails CI. Since 1.7.9 the toolchain is **ESLint 9 (flat
   config `eslint.config.mjs`) + typescript-eslint 8** (`strictTypeChecked` +
   `projectService`; the old eslintrc, the "unsupported TypeScript" banner and
-  the dead css-modules/neverthrow plugin deps are gone). Six debt rules are
+  the dead css-modules/neverthrow plugin deps are gone). Five debt rules are
   switched off in the config but force-tracked by the ratchet:
   `no-unsafe-assignment/member-access/call` (frozen since 1.5.5) and
-  `no-floating-promises`, `no-misused-promises`, `no-unnecessary-condition`
-  (frozen in 1.7.9). `pnpm run lint` still shows the raw ESLint picture (it
-  is red until the debt is burned down — that is expected).
+  `no-misused-promises`, `no-unnecessary-condition` (frozen in 1.7.9).
+  `no-floating-promises` graduated in 1.7.10: its last four findings were
+  fixed and the rule is enabled in the config — the intended lifecycle for
+  every tracked rule. Two v8 rules (`no-useless-default-assignment`,
+  `no-unnecessary-boolean-literal-compare`) are disabled until a
+  `strictNullChecks` migration: without it they emit only per-file
+  "rule requires strictNullChecks" meta-errors (frozen as debt in 1.7.9 by
+  mistake, unfrozen in 1.7.10 — they would have flagged every new file).
+  `pnpm run lint` still shows the raw ESLint picture (it is red until the
+  debt is burned down — that is expected).
 - Burning down the debt: fix violations in a file/module, then shrink the
   baseline in the same commit: `node scripts/lint-ratchet.mjs --update`
   (the script prints the improvements it saw and reminds you). When a rule
@@ -251,21 +258,25 @@ ones that cannot be fixed by construction are recorded here:
   (CORS) blocks; `requestUrl` bypasses CORS and cannot detect them.
 
 Deliberately deferred to planned releases (the burn-down register; all
-counts are the frozen 1.7.9 baseline): `no-unnecessary-condition` (1370 —
-the largest single pool, mostly defensive checks that the strict types
-already guarantee), the v8-strict newcomers `no-useless-default-assignment`
-(392), `no-unnecessary-boolean-literal-compare` (367),
-`restrict-template-expressions` (296), `no-confusing-void-expression` (130)
-and `no-unnecessary-type-conversion` (95), `no-misused-promises`
-void-wrapping of async JSX handlers (65), the `no-unsafe-*`/`any` debt
-(232 across member-access/assignment/call/argument/return, phase 2 pass 3,
-module by module), and `no-floating-promises` (4 — nearly clean, a quick
-win). Done and struck from this register: the declarative Settings API
-(1.7.6–1.7.8) and the typescript-eslint v8 / ESLint 9 flat-config
-migration (1.7.9 — the "unsupported TypeScript version" banner is gone).
+counts are the frozen 1.7.10 baseline, 2587 total): `no-unnecessary-condition`
+(1370 — the largest single pool, mostly defensive checks that the strict
+types already guarantee), `restrict-template-expressions` (296),
+`no-confusing-void-expression` (130), `no-unnecessary-type-conversion` (95),
+`no-misused-promises` void-wrapping of async JSX handlers (65), the
+`no-unsafe-*`/`any` debt (232 across member-access/assignment/call/argument/
+return, phase 2 pass 3, module by module), `no-base-to-string` (27),
+`no-unused-vars` (57) and the small-rule tail. Disabled until a
+`strictNullChecks` migration (not debt — they cannot function without it):
+`no-useless-default-assignment`, `no-unnecessary-boolean-literal-compare`.
+Done and struck from this register: the declarative Settings API
+(1.7.6–1.7.8), the typescript-eslint v8 / ESLint 9 flat-config migration
+(1.7.9) and `no-floating-promises` — the first graduated rule: its last
+four findings were fixed and it is enabled in `eslint.config.mjs` (1.7.10).
 Remaining phase-3 lint work: enable rules in `eslint.config.mjs` as their
-baseline counters reach zero, and evaluate `eslint-plugin-obsidianmd`
-(the catalog review set) as a separate tracked increment.
+baseline counters reach zero (next quick wins: `prefer-reduce-type-parameter`
+1, `only-throw-error` 1, `no-unused-expressions` 1), and evaluate
+`eslint-plugin-obsidianmd` (the catalog review set) as a separate tracked
+increment.
 
 ## Roadmap
 
