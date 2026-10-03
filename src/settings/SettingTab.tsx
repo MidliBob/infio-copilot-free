@@ -175,8 +175,10 @@ export class InfioSettingTab extends PluginSettingTab {
 			});
 	}
 
-	renderFilesSearchSection(containerEl: HTMLElement): void {
-		new Setting(containerEl).setHeading().setName(t('settings.FilesSearch.title'))
+	renderFilesSearchSection(containerEl: HTMLElement, embedded = false): void {
+		if (!embedded) {
+			new Setting(containerEl).setHeading().setName(t('settings.FilesSearch.title'))
+		}
 		new Setting(containerEl)
 			.setName(t('settings.FilesSearch.method'))
 			.setDesc(t('settings.FilesSearch.methodDescription'))
@@ -284,10 +286,12 @@ export class InfioSettingTab extends PluginSettingTab {
 		this.renderModelsContent(modelsDiv);
 	}
 
-	renderDeepResearchSection(containerEl: HTMLElement): void {
-		new Setting(containerEl)
-			.setHeading()
-			.setName(t('settings.WebSearch.title'))
+	renderDeepResearchSection(containerEl: HTMLElement, embedded = false): void {
+		if (!embedded) {
+			new Setting(containerEl)
+				.setHeading()
+				.setName(t('settings.WebSearch.title'))
+		}
 
 		new Setting(containerEl)
 			.setName(t('settings.WebSearch.provider'))
@@ -366,29 +370,37 @@ export class InfioSettingTab extends PluginSettingTab {
 		}
 	}
 
-	renderRAGSection(containerEl: HTMLElement): void {
-		// 创建一个折叠区域的容器
-		const ragContainer = containerEl.createDiv("rag-settings-container");
+	renderRAGSection(containerEl: HTMLElement, embedded = false): void {
+		let contentContainer: HTMLElement
+		if (embedded) {
+			// Inside a declarative page (1.13+): the page navigation row is
+			// the heading — no internal collapsible chrome (double-spoiler
+			// fix from the wave-1 field report).
+			contentContainer = containerEl
+		} else {
+			// 创建一个折叠区域的容器
+			const ragContainer = containerEl.createDiv("rag-settings-container");
 
-		// 创建标题元素，添加折叠控件
-		const headerEl = ragContainer.createDiv({ cls: "icf-collapsible-heading" });
+			// 创建标题元素，添加折叠控件
+			const headerEl = ragContainer.createDiv({ cls: "icf-collapsible-heading" });
 
-		// 添加展开/折叠指示器
-		const toggleIcon = headerEl.createSpan({ cls: "icf-toggle-icon" });
-		toggleIcon.textContent = "▶"; // 默认为折叠状态，使用右箭头
+			// 添加展开/折叠指示器
+			const toggleIcon = headerEl.createSpan({ cls: "icf-toggle-icon" });
+			toggleIcon.textContent = "▶"; // 默认为折叠状态，使用右箭头
 
-		// 添加标题文本
-		headerEl.createDiv({ cls: "icf-collapsible-title", text: t('settings.RAG.title') });
+			// 添加标题文本
+			headerEl.createDiv({ cls: "icf-collapsible-title", text: t('settings.RAG.title') });
 
-		// 创建内容容器
-		const contentContainer = ragContainer.createDiv({ cls: "icf-collapsible-content icf-collapsed" });
+			// 创建内容容器
+			contentContainer = ragContainer.createDiv({ cls: "icf-collapsible-content icf-collapsed" });
 
-		// 添加点击事件处理
-		headerEl.addEventListener("click", () => {
-			const wasCollapsed = contentContainer.hasClass("icf-collapsed");
-			contentContainer.toggleClass("icf-collapsed", !wasCollapsed);
-			toggleIcon.textContent = wasCollapsed ? "▼" : "▶";
-		});
+			// 添加点击事件处理
+			headerEl.addEventListener("click", () => {
+				const wasCollapsed = contentContainer.hasClass("icf-collapsed");
+				contentContainer.toggleClass("icf-collapsed", !wasCollapsed);
+				toggleIcon.textContent = wasCollapsed ? "▼" : "▶";
+			});
+		}
 
 
 		// 以下是原有的设置内容，移动到内容容器中
@@ -599,33 +611,39 @@ export class InfioSettingTab extends PluginSettingTab {
 			)
 	}
 
-	renderAutoCompleteSection(containerEl: HTMLElement): void {
-		// 创建一个折叠区域的容器
-		const autoCompleteContainer = containerEl.createDiv("auto-complete-settings-container");
+	renderAutoCompleteSection(containerEl: HTMLElement, embedded = false): void {
+		let contentContainer: HTMLElement
+		if (embedded) {
+			// Inside a declarative page (1.13+): no internal collapsible
+			// chrome — the page navigation row is the heading.
+			contentContainer = containerEl
+		} else {
+			// 创建一个折叠区域的容器
+			const autoCompleteContainer = containerEl.createDiv("auto-complete-settings-container");
 
-		// 创建标题元素，添加折叠控件
-		const headerEl = autoCompleteContainer.createDiv({ cls: "icf-collapsible-heading" });
+			// 创建标题元素，添加折叠控件
+			const headerEl = autoCompleteContainer.createDiv({ cls: "icf-collapsible-heading" });
 
-		// 添加展开/折叠指示器
-		const toggleIcon = headerEl.createSpan({ cls: "icf-toggle-icon" });
-		toggleIcon.textContent = "▶"; // 默认为折叠状态，使用右箭头
+			// 添加展开/折叠指示器
+			const toggleIcon = headerEl.createSpan({ cls: "icf-toggle-icon" });
+			toggleIcon.textContent = "▶"; // 默认为折叠状态，使用右箭头
 
-		// 添加标题文本
-		headerEl.createDiv({ cls: "icf-collapsible-title", text: t('settings.AutoComplete.title') });
+			// 添加标题文本
+			headerEl.createDiv({ cls: "icf-collapsible-title", text: t('settings.AutoComplete.title') });
 
-		// 创建内容容器
-		const contentContainer = autoCompleteContainer.createDiv({ cls: "icf-collapsible-content icf-collapsed" });
+			// 创建内容容器
+			contentContainer = autoCompleteContainer.createDiv({ cls: "icf-collapsible-content icf-collapsed" });
+
+			// 添加点击事件处理
+			headerEl.addEventListener("click", () => {
+				const wasCollapsed = contentContainer.hasClass("icf-collapsed");
+				contentContainer.toggleClass("icf-collapsed", !wasCollapsed);
+				toggleIcon.textContent = wasCollapsed ? "▼" : "▶";
+			});
+		}
 
 		// 保存容器引用
 		this.autoCompleteContainer = contentContainer;
-
-		// 添加点击事件处理
-		headerEl.addEventListener("click", () => {
-			const wasCollapsed = contentContainer.hasClass("icf-collapsed");
-			contentContainer.toggleClass("icf-collapsed", !wasCollapsed);
-			toggleIcon.textContent = wasCollapsed ? "▼" : "▶";
-		});
-
 
 		// 在内容容器中渲染AutoComplete设置
 		this.renderAutoCompleteContent(contentContainer);

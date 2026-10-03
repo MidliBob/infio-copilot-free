@@ -1,23 +1,37 @@
 /**
- * Declarative Settings API bridge (phase 3, item 1 — wave 1).
+ * Declarative Settings API bridge (phase 3, item 1 — wave 1.1).
  *
  * Obsidian 1.13+ calls `PluginSettingTab.getSettingDefinitions()` and
  * SKIPS `display()` when the tab provides definitions. This module builds
  * the definition tree for `InfioSettingTab`:
  *
- *   - sections already migrated to native declarative controls are emitted
- *     as `group` items (Model parameters, Chat behavior): their values are
- *     indexed by Obsidian's global settings search and edited with native
- *     controls bound through getControlValue/setControlValue;
- *   - every other section is emitted as a `page` item whose factory mounts
- *     the existing (React / imperative Setting-row) section renderer
- *     unchanged, so the familiar UI survives inside the declarative shell.
+ *   - the About banner is a `render` definition at the top of the tab, so
+ *     the plugin identity stays visible the moment settings are opened
+ *     (field feedback on wave 1: a page row hid it behind a click);
+ *   - sections migrated to native declarative controls are emitted as
+ *     `group`/`page items` (Model parameters — a page with five native
+ *     number controls for a uniform look; Chat behavior — an inline
+ *     group): their values are indexed by Obsidian's global settings
+ *     search and edited with native controls bound through
+ *     getControlValue/setControlValue;
+ *   - every other section is a `page` item whose factory mounts the
+ *     existing (React / imperative Setting-row) section renderer with
+ *     `embedded = true`: inside a declarative page the section skips its
+ *     own heading/collapsible chrome — the page navigation row IS the
+ *     heading (fixes the double-spoiler of RAG/AutoComplete in wave 1).
  *
  * Hosts older than 1.13 never call getSettingDefinitions() and render
  * display() exactly as before — the dual-support pattern from the official
  * migration guide (Path B), no runtime version detection needed.
  *
- * Controls bind dotted settings paths (e.g. 'modelOptions.temperature').
+ * CRITICAL for <1.13 hosts: `SettingPage` does not exist there, so no
+ * top-level `class ... extends SettingPage` may be evaluated at import
+ * time (it would throw "Class extends value undefined" and break plugin
+ * load). createSectionPage() therefore declares the subclass INSIDE the
+ * factory function, which only 1.13+ hosts ever invoke.
+ *
+ * Controls bind dotted settings paths (e.g. 'modelOptions.temperature') —
+ * the officially documented recipe for nested settings.
  * InfioSettingTab.getControlValue/setControlValue resolve those paths with
  * readSettingPath/writeSettingPath below; every write is re-validated with
  * InfioSettingsSchema.safeParse before reaching plugin.setSettings, so an
@@ -25,15 +39,16 @@
  *
  * Wave-1 known limitation (identical to the legacy display() path, so not a
  * regression): the React section renderers create a fresh createRoot per
- * mount and never unmount previous ones; SectionPage empties its container
- * on display()/hide() like the tab always did. Proper root lifecycle
- * arrives as sections turn native in the following waves.
+ * mount and never unmount previous ones; pages empty their container on
+ * display()/hide() like the tab always did. Proper root lifecycle arrives
+ * as sections turn native in the following waves.
  */
 import { SettingPage } from 'obsidian'
 import type {
 	SettingDefinitionGroup,
 	SettingDefinitionItem,
 	SettingDefinitionPage,
+	SettingDefinitionRender,
 } from 'obsidian'
 
 import { t } from '../lang/helpers'
@@ -55,6 +70,10 @@ import {
  * Structural host contract satisfied by InfioSettingTab. Keeping this
  * structural (instead of importing the tab class) avoids an import cycle
  * and keeps the unit tests free of the React component tree.
+ *
+ * `embedded` on the four imperative renderers: when true the section is
+ * being mounted inside a declarative page and must skip its own
+ * heading/collapsible chrome.
  */
 export interface DeclarativeSettingsHost {
 	plugin: {
@@ -63,10 +82,10 @@ export interface DeclarativeSettingsHost {
 	}
 	renderPluginInfoSection(el: HTMLElement): void
 	renderModelsSection(el: HTMLElement): void
-	renderFilesSearchSection(el: HTMLElement): void
-	renderDeepResearchSection(el: HTMLElement): void
-	renderRAGSection(el: HTMLElement): void
-	renderAutoCompleteSection(el: HTMLElement): void
+	renderFilesSearchSection(el: HTMLElement, embedded?: boolean): void
+	renderDeepResearchSection(el: HTMLElement, embedded?: boolean): void
+	renderRAGSection(el: HTMLElement, embedded?: boolean): void
+	renderAutoCompleteSection(el: HTMLElement, embedded?: boolean): void
 }
 
 /** Parsed once at import: the schema-validated default settings object. */
@@ -137,25 +156,32 @@ export function parseSettingsCandidate(
 	return parsed.data
 }
 
-/** A SettingPage hosting one legacy section renderer, unchanged. */
-export class SectionPage extends SettingPage {
-	private readonly renderSection: (el: HTMLElement) => void
+/**
+ * Builds a SettingPage hosting one legacy section renderer.
+ *
+ * The subclass is created INSIDE this factory on purpose: evaluating
+ * `extends SettingPage` at module scope would crash plugin load on
+ * pre-1.13 hosts where the base class does not exist. The factory itself
+ * is only ever invoked by 1.13+ hosts.
+ */
+export function createSectionPage(
+	title: string,
+	renderSection: (el: HTMLElement) => void,
+): SettingPage {
+	class SectionPageImpl extends SettingPage {
+		display(): void {
+			this.containerEl.empty()
+			renderSection(this.containerEl)
+		}
 
-	constructor(title: string, renderSection: (el: HTMLElement) => void) {
-		super()
-		this.title = title
-		this.renderSection = renderSection
+		hide(): void {
+			super.hide()
+			this.containerEl.empty()
+		}
 	}
-
-	display(): void {
-		this.containerEl.empty()
-		this.renderSection(this.containerEl)
-	}
-
-	hide(): void {
-		super.hide()
-		this.containerEl.empty()
-	}
+	const page = new SectionPageImpl()
+	page.title = title
+	return page
 }
 
 function legacyPage(
@@ -167,16 +193,32 @@ function legacyPage(
 		type: 'page',
 		name: t(nameKey),
 		page: () =>
-			new SectionPage(t(nameKey), (el) => {
+			createSectionPage(t(nameKey), (el) => {
 				renderSection(host, el)
 			}),
 	}
 }
 
-function modelParametersGroup(): SettingDefinitionGroup {
+/**
+ * The About banner as a full-width render row at the top of the tab:
+ * visible immediately when settings open (wave-1 field feedback),
+ * excluded from the settings search (it is not a setting).
+ */
+function aboutDefinition(host: DeclarativeSettingsHost): SettingDefinitionRender {
 	return {
-		type: 'group',
-		heading: t('settings.ModelParameters.title'),
+		name: t('settings.PluginInfo.title'),
+		searchable: false,
+		render: (setting) => {
+			setting.setClass('icf-defs-fullwidth')
+			host.renderPluginInfoSection(setting.controlEl)
+		},
+	}
+}
+
+function modelParametersPage(): SettingDefinitionPage {
+	return {
+		type: 'page',
+		name: t('settings.ModelParameters.title'),
 		items: [
 			{
 				name: t('settings.ModelParameters.temperature'),
@@ -273,13 +315,13 @@ export function buildSettingDefinitions(
 	host: DeclarativeSettingsHost,
 ): SettingDefinitionItem[] {
 	return [
-		legacyPage('settings.PluginInfo.title', (h, el) => h.renderPluginInfoSection(el), host),
+		aboutDefinition(host),
 		legacyPage('settings.Models.title', (h, el) => h.renderModelsSection(el), host),
-		modelParametersGroup(),
-		legacyPage('settings.FilesSearch.title', (h, el) => h.renderFilesSearchSection(el), host),
+		modelParametersPage(),
+		legacyPage('settings.FilesSearch.title', (h, el) => h.renderFilesSearchSection(el, true), host),
 		chatBehaviorGroup(),
-		legacyPage('settings.WebSearch.title', (h, el) => h.renderDeepResearchSection(el), host),
-		legacyPage('settings.RAG.title', (h, el) => h.renderRAGSection(el), host),
-		legacyPage('settings.AutoComplete.title', (h, el) => h.renderAutoCompleteSection(el), host),
+		legacyPage('settings.WebSearch.title', (h, el) => h.renderDeepResearchSection(el, true), host),
+		legacyPage('settings.RAG.title', (h, el) => h.renderRAGSection(el, true), host),
+		legacyPage('settings.AutoComplete.title', (h, el) => h.renderAutoCompleteSection(el, true), host),
 	]
 }

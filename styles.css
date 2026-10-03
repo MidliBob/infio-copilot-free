@@ -2270,3 +2270,15 @@ button.icf-chat-input-model-select {
 	font-size: var(--font-ui-small);
 	padding: 2px 12px;
 }
+
+/* Declarative settings (Obsidian 1.13+): the About banner is mounted
+   through a render definition; hide the empty name/description column
+   and let the control span the row so the banner renders full-width */
+.icf-defs-fullwidth .setting-item-info {
+  display: none;
+}
+
+.icf-defs-fullwidth .setting-item-control {
+  width: 100%;
+  justify-content: flex-start;
+}

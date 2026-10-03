@@ -1,11 +1,10 @@
 /**
  * Unit tests for the declarative Settings API bridge (phase 3, item 1,
- * wave 1): definition-tree structure, dotted-path plumbing behind
+ * wave 1.1): definition-tree structure, dotted-path plumbing behind
  * getControlValue/setControlValue, and the zod guard on writes.
  */
 import { SettingPage } from 'obsidian'
 import type {
-	SettingDefinitionGroup,
 	SettingDefinitionItem,
 	SettingDefinitionPage,
 } from 'obsidian'
@@ -14,7 +13,6 @@ import { t } from '../lang/helpers'
 import { type InfioSettings, InfioSettingsSchema } from '../types/settings'
 import {
 	type DeclarativeSettingsHost,
-	SectionPage,
 	buildSettingDefinitions,
 	parseSettingsCandidate,
 	readSettingPath,
@@ -72,16 +70,12 @@ function itemName(item: SettingDefinitionItem): string | undefined {
 	return 'name' in item ? item.name : item.heading
 }
 
-function isGroup(item: SettingDefinitionItem): item is SettingDefinitionGroup {
-	return 'type' in item && item.type === 'group'
-}
-
 function isPage(item: SettingDefinitionItem): item is SettingDefinitionPage {
 	return 'type' in item && item.type === 'page'
 }
 
-function controlKeys(group: SettingDefinitionGroup): string[] {
-	return (group.items ?? []).map((item) =>
+function controlKeysOfItems(items: SettingDefinitionItem[]): string[] {
+	return items.map((item) =>
 		'control' in item && item.control ? item.control.key : '',
 	)
 }
@@ -102,20 +96,32 @@ describe('buildSettingDefinitions', () => {
 		])
 	})
 
-	it('migrates Model parameters to five native number controls on dotted keys', () => {
+	it('renders the About banner as a non-searchable render row at the top', () => {
 		const defs = buildSettingDefinitions(makeHost().host)
-		const group = defs[2]
-		if (!group || !isGroup(group)) {
-			throw new Error('expected the Model parameters group at index 2')
+		const about = defs[0]
+		if (!about || !('render' in about) || typeof about.render !== 'function') {
+			throw new Error('expected a render definition at index 0')
 		}
-		expect(controlKeys(group)).toEqual([
+		expect(about.searchable).toBe(false)
+		expect(about.name).toBe(t('settings.PluginInfo.title'))
+	})
+
+	it('migrates Model parameters to a page of five native number controls on dotted keys', () => {
+		const defs = buildSettingDefinitions(makeHost().host)
+		const page = defs[2]
+		if (!page || !isPage(page)) {
+			throw new Error('expected the Model parameters page at index 2')
+		}
+		expect(page.page).toBeUndefined()
+		const items = page.items ?? []
+		expect(items).toHaveLength(5)
+		expect(controlKeysOfItems(items)).toEqual([
 			'modelOptions.temperature',
 			'modelOptions.top_p',
 			'modelOptions.frequency_penalty',
 			'modelOptions.presence_penalty',
 			'modelOptions.max_tokens',
 		])
-		const items = group.items ?? []
 		const ranges: Array<[number | undefined, number | undefined, number | 'any' | undefined]> = []
 		for (const item of items) {
 			if ('control' in item && item.control && item.control.type === 'number') {
@@ -134,7 +140,7 @@ describe('buildSettingDefinitions', () => {
 	it('migrates Chat behavior to a native dropdown with the exact legacy options', () => {
 		const defs = buildSettingDefinitions(makeHost().host)
 		const group = defs[4]
-		if (!group || !isGroup(group)) {
+		if (!group || !('type' in group) || group.type !== 'group') {
 			throw new Error('expected the Chat behavior group at index 4')
 		}
 		const items = group.items ?? []
@@ -154,31 +160,35 @@ describe('buildSettingDefinitions', () => {
 		expect(item.control.options['vault']).toBe(t('settings.ChatBehavior.vault'))
 	})
 
-	it('wraps the six legacy sections in pages that mount the existing renderers', () => {
+	it('wraps the five remaining legacy sections in pages mounting the renderers (embedded, no double chrome)', () => {
 		const { host, renderers } = makeHost()
 		const defs = buildSettingDefinitions(host)
-		const pages = defs.filter(isPage)
-		expect(pages).toHaveLength(6)
-		const cases: Array<[string, jest.Mock]> = [
-			[t('settings.PluginInfo.title'), renderers.pluginInfo],
-			[t('settings.Models.title'), renderers.models],
-			[t('settings.FilesSearch.title'), renderers.filesSearch],
-			[t('settings.WebSearch.title'), renderers.deepResearch],
-			[t('settings.RAG.title'), renderers.rag],
-			[t('settings.AutoComplete.title'), renderers.autoComplete],
+		const factoryPages = defs.filter((item): item is SettingDefinitionPage =>
+			isPage(item) && item.page !== undefined,
+		)
+		expect(factoryPages).toHaveLength(5)
+		const cases: Array<[string, jest.Mock, boolean]> = [
+			[t('settings.Models.title'), renderers.models, false],
+			[t('settings.FilesSearch.title'), renderers.filesSearch, true],
+			[t('settings.WebSearch.title'), renderers.deepResearch, true],
+			[t('settings.RAG.title'), renderers.rag, true],
+			[t('settings.AutoComplete.title'), renderers.autoComplete, true],
 		]
-		for (const [name, renderer] of cases) {
-			const def = pages.find((page) => page.name === name)
+		for (const [name, renderer, embedded] of cases) {
+			const def = factoryPages.find((page) => page.name === name)
 			if (!def || !def.page) {
 				throw new Error(`missing page definition for ${name}`)
 			}
 			const page = def.page()
-			expect(page).toBeInstanceOf(SectionPage)
 			expect(page).toBeInstanceOf(SettingPage)
 			expect(page.title).toBe(name)
 			page.display()
 			expect(renderer).toHaveBeenCalledTimes(1)
-			expect(renderer).toHaveBeenCalledWith(page.containerEl)
+			if (embedded) {
+				expect(renderer).toHaveBeenCalledWith(page.containerEl, true)
+			} else {
+				expect(renderer).toHaveBeenCalledWith(page.containerEl)
+			}
 		}
 	})
 })
