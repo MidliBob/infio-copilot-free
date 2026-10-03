@@ -15,7 +15,7 @@ import { ApiProvider } from '../types/llm/model';
 import { isRegexValid, isValidIgnorePattern } from '../utils/auto-complete';
 import { logger } from '../utils/logger'
 
-export const SETTINGS_SCHEMA_VERSION = 0.9
+export const SETTINGS_SCHEMA_VERSION = 1.0
 
 const SiliconFlowProviderSchema = z.object({
 	name: z.literal('SiliconFlow'),
@@ -532,7 +532,44 @@ const MIGRATIONS: Migration[] = [
 			return newData
 		},
 	},
+	{
+		fromVersion: 0.9,
+		toVersion: 1.0,
+		migrate: (data) => {
+			const newData = { ...data }
+			newData.version = 1.0
+
+			// top_p / frequency_penalty / presence_penalty had never been
+			// sent in LLM requests before 1.7.8 (both request builders had
+			// them commented out). Every user who never touched the fields
+			// carries the upstream legacy defaults (top_p 0.1,
+			// frequency_penalty 0.25); activating the parameters as-is would
+			// silently narrow everyone's sampling. Replace the exact legacy
+			// defaults with neutral values (top_p 1 = full nucleus,
+			// frequency_penalty 0 = off); deliberately chosen non-default
+			// values are preserved.
+			const modelOptions = newData.modelOptions
+			if (isRecordObject(modelOptions)) {
+				const options: Record<string, unknown> = { ...modelOptions }
+				if (options.top_p === 0.1) {
+					options.top_p = 1
+					logger.debug('Settings migration 1.0: legacy inert default top_p 0.1 -> 1')
+				}
+				if (options.frequency_penalty === 0.25) {
+					options.frequency_penalty = 0
+					logger.debug('Settings migration 1.0: legacy inert default frequency_penalty 0.25 -> 0')
+				}
+				newData.modelOptions = options
+			}
+
+			return newData
+		},
+	},
 ]
+
+function isRecordObject(value: unknown): value is Record<string, unknown> {
+	return typeof value === 'object' && value !== null
+}
 
 function migrateSettings(
 	data: Record<string, unknown>,

@@ -45,7 +45,7 @@ describe('parseSmartCopilotSettings', () => {
 			debugMode: false,
 		})
 		expect(result).toEqual({
-			version: 0.9,
+			version: 1.0,
 			workspace: '',
 			activeModels: DEFAULT_MODELS,
 			activeProviderTab: 'Ollama',
@@ -231,7 +231,7 @@ describe('settings migration', () => {
 
 		const result = parseInfioSettings(oldSettings)
 		expect(result).toEqual({
-			version: 0.9,
+			version: 1.0,
 			workspace: '',
 			activeModels: DEFAULT_MODELS,
 			activeProviderTab: 'Ollama',
@@ -404,7 +404,7 @@ describe('settings migration', () => {
 		
 		// Should successfully parse and migrate max_tokens to 4096
 		expect(result.modelOptions.max_tokens).toBe(4096)
-		expect(result.version).toBe(0.9)
+		expect(result.version).toBe(1.0)
 	})
 
 	it('should not change max_tokens if it is already above minimum', () => {
@@ -443,7 +443,62 @@ describe('settings migration', () => {
 		
 		// Should keep the existing max_tokens value since it's already valid
 		expect(result.modelOptions.max_tokens).toBe(6000)
-		expect(result.version).toBe(0.9)
+		expect(result.version).toBe(1.0)
+	})
+})
+
+describe('model parameter activation migration (0.9 -> 1.0)', () => {
+	const baseSettings = {
+		version: 0.9,
+		modelOptions: {
+			temperature: 1,
+			top_p: 0.1,
+			frequency_penalty: 0.25,
+			presence_penalty: 0,
+			max_tokens: 4096,
+		},
+		autocompleteEnabled: true,
+		advancedMode: false,
+		apiProvider: 'openai',
+		triggers: DEFAULT_SETTINGS.triggers,
+		delay: 500,
+		systemMessage: DEFAULT_SETTINGS.systemMessage,
+		fewShotExamples: DEFAULT_SETTINGS.fewShotExamples,
+		userMessageTemplate: '{{prefix}}<mask/>{{suffix}}',
+		chainOfThoughRemovalRegex: '(.|\\n)*ANSWER:',
+		dontIncludeDataviews: true,
+		maxPrefixCharLimit: 4000,
+		maxSuffixCharLimit: 4000,
+		removeDuplicateMathBlockIndicator: true,
+		removeDuplicateCodeBlockIndicator: true,
+		ignoredFilePatterns: '**/secret/**\n',
+		ignoredTags: '',
+		cacheSuggestions: true,
+		debugMode: false,
+	}
+
+	it('neutralizes the legacy inert defaults (top_p 0.1, frequency_penalty 0.25)', () => {
+		const result = parseInfioSettings({ ...baseSettings })
+		expect(result.version).toBe(1.0)
+		expect(result.modelOptions.top_p).toBe(1)
+		expect(result.modelOptions.frequency_penalty).toBe(0)
+		// untouched parameters survive
+		expect(result.modelOptions.temperature).toBe(1)
+		expect(result.modelOptions.max_tokens).toBe(4096)
+	})
+
+	it('preserves deliberately chosen non-default values', () => {
+		const result = parseInfioSettings({
+			...baseSettings,
+			modelOptions: {
+				...baseSettings.modelOptions,
+				top_p: 0.9,
+				frequency_penalty: 1.5,
+			},
+		})
+		expect(result.modelOptions.top_p).toBe(0.9)
+		expect(result.modelOptions.frequency_penalty).toBe(1.5)
+		expect(result.version).toBe(1.0)
 	})
 })
 
@@ -499,7 +554,7 @@ describe('Infio provider removal migration (0.5 -> 0.9)', () => {
 
 		const result = parseInfioSettings(infioEraSettings)
 
-		expect(result.version).toBe(0.9)
+		expect(result.version).toBe(1.0)
 		expect(result.defaultProvider).toBe('Ollama')
 		expect(result.activeProviderTab).toBe('Ollama')
 		expect(result.chatModelProvider).toBe('Ollama')
@@ -574,7 +629,7 @@ describe('Serper/Jina removal migration (0.6 -> 0.9)', () => {
 		expect(loggerMock.error).not.toHaveBeenCalled()
 		expect(result.deepseekApiKey).toBe('dk-survives-migration')
 		expect(result.chatModelId).toBe('qwen2.5:7b')
-		expect(result.version).toBe(0.9)
+		expect(result.version).toBe(1.0)
 		expect('serperApiKey' in result).toBe(false)
 		expect('serperSearchEngine' in result).toBe(false)
 		expect('jinaApiKey' in result).toBe(false)
@@ -594,7 +649,7 @@ describe('Serper/Jina removal migration (0.6 -> 0.9)', () => {
 		expect(String(loggerMock.error.mock.calls[0][0])).toContain(
 			'using default settings instead',
 		)
-		expect(result.version).toBe(0.9)
+		expect(result.version).toBe(1.0)
 		expect('serperApiKey' in result).toBe(false)
 		expect(result.webSearchProvider).toBe('searxng')
 		expect('tavilyApiKey' in result).toBe(false)
@@ -715,7 +770,7 @@ describe('Tavily removal migration (0.7 -> 0.9)', () => {
 		expect(loggerMock.error).not.toHaveBeenCalled()
 		expect(result.deepseekApiKey).toBe('dk-survives-migration')
 		expect(result.chatModelId).toBe('qwen2.5:7b')
-		expect(result.version).toBe(0.9)
+		expect(result.version).toBe(1.0)
 		expect(result.webSearchProvider).toBe('searxng')
 		expect('tavilyApiKey' in result).toBe(false)
 		expect(result.searxngBaseUrl).toBe('http://localhost:8080')
@@ -729,7 +784,7 @@ describe('Tavily removal migration (0.7 -> 0.9)', () => {
 		})
 
 		expect(loggerMock.error).not.toHaveBeenCalled()
-		expect(result.version).toBe(0.9)
+		expect(result.version).toBe(1.0)
 		expect(result.webSearchProvider).toBe('yacy')
 		expect(result.yacyBaseUrl).toBe('http://mypeer.example:8090')
 		expect('tavilyApiKey' in result).toBe(false)
@@ -807,7 +862,7 @@ describe('Cloud provider removal migration (0.8 -> 0.9)', () => {
 
 		// the migration must have run on a valid parse, not on the fallback
 		expect(loggerMock.error).not.toHaveBeenCalled()
-		expect(result.version).toBe(0.9)
+		expect(result.version).toBe(1.0)
 		expect(result.defaultProvider).toBe('Ollama')
 		expect(result.activeProviderTab).toBe('Ollama')
 		expect(result.chatModelProvider).toBe('Ollama')
@@ -864,7 +919,7 @@ describe('Cloud provider removal migration (0.8 -> 0.9)', () => {
 		})
 
 		expect(loggerMock.error).not.toHaveBeenCalled()
-		expect(result.version).toBe(0.9)
+		expect(result.version).toBe(1.0)
 		expect(result.defaultProvider).toBe('OpenAICompatible')
 		expect(result.activeProviderTab).toBe('OpenAICompatible')
 		expect(result.chatModelProvider).toBe('OpenAICompatible')
@@ -895,7 +950,7 @@ describe('Cloud provider removal migration (0.8 -> 0.9)', () => {
 		})
 
 		expect(loggerMock.error).not.toHaveBeenCalled()
-		expect(result.version).toBe(0.9)
+		expect(result.version).toBe(1.0)
 		expect(result.chatModelProvider).toBe('Ollama')
 		expect(result.chatModelId).toBe('qwen2.5:7b')
 		expect(result.embeddingModelProvider).toBe('LocalProvider')

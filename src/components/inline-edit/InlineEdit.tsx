@@ -227,9 +227,9 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 					model: chatModel.modelId,
 					max_tokens: settings.modelOptions.max_tokens,
 					temperature: settings.modelOptions.temperature,
-					// top_p: settings.modelOptions.top_p,
-					// frequency_penalty: settings.modelOptions.frequency_penalty,
-					// presence_penalty: settings.modelOptions.presence_penalty,
+					top_p: settings.modelOptions.top_p,
+					frequency_penalty: settings.modelOptions.frequency_penalty,
+					presence_penalty: settings.modelOptions.presence_penalty,
 					stream: true,
 				}
 			)

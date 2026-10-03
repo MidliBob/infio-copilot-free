@@ -149,8 +149,8 @@ export const DEFAULT_SETTINGS = {
 	// Request settings
 	modelOptions: {
 		temperature: 1,
-		top_p: 0.1,
-		frequency_penalty: 0.25,
+		top_p: 1,
+		frequency_penalty: 0,
 		presence_penalty: 0,
 		max_tokens: MIN_MAX_TOKENS,
 	},

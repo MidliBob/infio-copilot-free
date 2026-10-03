@@ -63,8 +63,8 @@ export const DEFAULT_SETTINGS = {
 	// Request settings
 	modelOptions: {
 		temperature: 1,
-		top_p: 0.1,
-		frequency_penalty: 0.25,
+		top_p: 1,
+		frequency_penalty: 0,
 		presence_penalty: 0,
 		max_tokens: MIN_MAX_TOKENS,
 	},
@@ -142,7 +142,7 @@ export function isValidIgnorePattern(value: string): boolean {
 
 	return stack.length === 0;
 }
-export const SETTINGS_SCHEMA_VERSION = 0.9
+export const SETTINGS_SCHEMA_VERSION = 1.0
 
 const SiliconFlowProviderSchema = z.object({
 	name: z.literal('SiliconFlow'),
@@ -658,7 +658,38 @@ const MIGRATIONS: Migration[] = [
 			return newData
 		},
 	},
+	{
+		fromVersion: 0.9,
+		toVersion: 1.0,
+		migrate: (data) => {
+			const newData = { ...data }
+			newData.version = 1.0
+
+			// See the desktop twin (settings.ts): neutralize the legacy
+			// inert defaults now that top_p/frequency_penalty/presence_penalty
+			// are actually sent in chat requests (1.7.8).
+			const modelOptions = newData.modelOptions
+			if (isRecordObject(modelOptions)) {
+				const options: Record<string, unknown> = { ...modelOptions }
+				if (options.top_p === 0.1) {
+					options.top_p = 1
+					logger.debug('Settings migration 1.0: legacy inert default top_p 0.1 -> 1')
+				}
+				if (options.frequency_penalty === 0.25) {
+					options.frequency_penalty = 0
+					logger.debug('Settings migration 1.0: legacy inert default frequency_penalty 0.25 -> 0')
+				}
+				newData.modelOptions = options
+			}
+
+			return newData
+		},
+	},
 ]
+
+function isRecordObject(value: unknown): value is Record<string, unknown> {
+	return typeof value === 'object' && value !== null
+}
 
 function migrateSettings(
 	data: Record<string, unknown>,
