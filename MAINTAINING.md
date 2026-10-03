@@ -169,7 +169,11 @@ official migration guide (Path B):
 - On 1.13+ the host calls `InfioSettingTab.getSettingDefinitions()` and
   **skips `display()`**; on older hosts the definitions are never called
   and `display()` renders exactly as before. No runtime version detection
-  is needed — do not add any.
+  is needed — do not add any. Since 1.7.8 the manifest declares
+  `minAppVersion: 1.13.0` (the honest floor: the catalog validator's
+  `obsidianmd/no-unsupported-api` compared ~170 API sites against the
+  fictional upstream 0.15.0), so the dual-support `display()` path is a
+  defensive legacy, not an installable configuration.
 - The definition tree lives in `src/settings/declarative.ts`
   (`buildSettingDefinitions(host)`), built against a structural host
   interface so it unit-tests without the React tree. Order of items MUST
