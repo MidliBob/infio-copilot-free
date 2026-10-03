@@ -115,10 +115,16 @@ Planned. Requirements and steps:
   type-check, ESLint ratchet, CSS ratchet, jest tests.
 - Lint gate = **ratchet** (`pnpm run lint:ratchet`,
   `scripts/lint-ratchet.mjs`): the pre-existing upstream style debt is frozen
-  in `eslint-baseline.json` (per file, per rule; error severity only, with the
-  three disabled `no-unsafe-*` rules force-tracked), and any *new* violation
-  fails CI. `pnpm run lint` still shows the raw ESLint picture (it is red
-  until the debt is burned down — that is expected).
+  in `eslint-baseline.json` (per file, per rule; error severity only), and any
+  *new* violation fails CI. Since 1.7.9 the toolchain is **ESLint 9 (flat
+  config `eslint.config.mjs`) + typescript-eslint 8** (`strictTypeChecked` +
+  `projectService`; the old eslintrc, the "unsupported TypeScript" banner and
+  the dead css-modules/neverthrow plugin deps are gone). Six debt rules are
+  switched off in the config but force-tracked by the ratchet:
+  `no-unsafe-assignment/member-access/call` (frozen since 1.5.5) and
+  `no-floating-promises`, `no-misused-promises`, `no-unnecessary-condition`
+  (frozen in 1.7.9). `pnpm run lint` still shows the raw ESLint picture (it
+  is red until the debt is burned down — that is expected).
 - Burning down the debt: fix violations in a file/module, then shrink the
   baseline in the same commit: `node scripts/lint-ratchet.mjs --update`
   (the script prints the improvements it saw and reminds you). When a rule
@@ -220,8 +226,13 @@ official migration guide (Path B):
 - `obsidian` devDependency carries the API types (1.13.1+); bumping it
   further is safe only with a full `pnpm type:check` pass.
 - Low-memory machines: a single type-aware ESLint process over the whole
-  `src/` needs several GB of heap. Use `pnpm run lint:ratchet -- --batch=14`
-  to lint in chunks (slower, but each process stays under ~1 GB).
+  `src/` needs several GB of heap (with typescript-eslint 8 + projectService
+  even a 4 GB heap can be killed on constrained machines). Use
+  `pnpm run lint:ratchet -- --batch=14` to lint in chunks; if child batches
+  still die, drop to `--batch=4..8`. For a one-off full re-measure on a small
+  box, drive the ratchet's child mode (`--files-from`/`--emit-json`) over
+  consecutive ~30-file slices of the sorted `src/` list and merge the JSONs —
+  that is how the 1.7.9 baseline (3350/364) was produced.
 
 ## Validator warnings with written justification
 
@@ -239,13 +250,22 @@ ones that cannot be fixed by construction are recorded here:
   reproduction of the renderer transport to detect OLLAMA_ORIGINS
   (CORS) blocks; `requestUrl` bypasses CORS and cannot detect them.
 
-Deliberately deferred to planned releases: `no-misused-promises`
-void-wrapping of async JSX handlers, the `no-unsafe-*`/`any` debt
-(phase 2 pass 3, module by module), the declarative Settings API
-(phase 3), and the typescript-eslint
-"unsupported TypeScript version" banner on `pnpm lint*` (migration to
-@typescript-eslint v8, which supports TS 5.9, is part of the phase-3
-ESLint gate hardening; the banner does not affect results).
+Deliberately deferred to planned releases (the burn-down register; all
+counts are the frozen 1.7.9 baseline): `no-unnecessary-condition` (1370 —
+the largest single pool, mostly defensive checks that the strict types
+already guarantee), the v8-strict newcomers `no-useless-default-assignment`
+(392), `no-unnecessary-boolean-literal-compare` (367),
+`restrict-template-expressions` (296), `no-confusing-void-expression` (130)
+and `no-unnecessary-type-conversion` (95), `no-misused-promises`
+void-wrapping of async JSX handlers (65), the `no-unsafe-*`/`any` debt
+(232 across member-access/assignment/call/argument/return, phase 2 pass 3,
+module by module), and `no-floating-promises` (4 — nearly clean, a quick
+win). Done and struck from this register: the declarative Settings API
+(1.7.6–1.7.8) and the typescript-eslint v8 / ESLint 9 flat-config
+migration (1.7.9 — the "unsupported TypeScript version" banner is gone).
+Remaining phase-3 lint work: enable rules in `eslint.config.mjs` as their
+baseline counters reach zero, and evaluate `eslint-plugin-obsidianmd`
+(the catalog review set) as a separate tracked increment.
 
 ## Roadmap
 

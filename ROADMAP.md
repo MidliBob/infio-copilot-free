@@ -380,6 +380,16 @@ en/ru/zh-cn синхронны (~652 ключа).
 > — они никогда не отправлялись, и их активация «как есть» сузила бы
 > сэмплинг всем пользователям; осознанные нестандартные значения
 > сохраняются. Дефолты v1 и i18n-описания приведены в соответствие.
+>
+> **Обновление (1.7.9):** пункт 4 — миграция ESLint 9 (flat config) +
+> typescript-eslint v8 выполнена: существующий замороженный долг не
+> дрейфовал (per-rule дифф: все правила старой базы (544) совпали счёт-в-счёт,
+> кроме удалённого в v8 `prefer-ts-expect-error` 10 → 0); трещотка
+> расширена на `no-floating-promises` (4), `no-misused-promises` (65) и
+> `no-unnecessary-condition` (1370) плюс новичков v8-strict — baseline
+> честно переморожен на **3350 нарушений в 364 файлах**, реестр
+> выгорания — в MAINTAINING.md. Замер на малопаметных машинах — чанками
+> через child-режим рэтчета (методика там же).
 
 1. **Декларативный Settings API (`getSettingDefinitions`)** — в работе,
    **wave 1 ✅ 1.7.6**. Реальность API: это полный декларативный рендерер
@@ -413,10 +423,20 @@ en/ru/zh-cn синхронны (~652 ключа).
    исключение в реестре MAINTAINING.md). Остаток baseline — 2 дубликата
    селекторов (janitorial).
 4. **Ужесточение ESLint-гейта** (гейт в CI уже есть — ci.yml гоняет lint):
-   привести конфиг к ревью-набору Obsidian, включив правила, отключённые
-   в фазе 2; stylelint-гейт — ✅ 1.7.0 (`stylelint-baseline.json` + шаг
-   в ci.yml); осталось: миграция на typescript-eslint v8 и включение
-   eslint-правил с обнулёнными счётчиками baseline.
+   stylelint-гейт — ✅ 1.7.0 (`stylelint-baseline.json` + шаг в ci.yml);
+   миграция на typescript-eslint v8 + ESLint 9 — ✅ 1.7.9 (flat config
+   `eslint.config.mjs`, `projectService`, баннер «unsupported TypeScript»
+   исчез, мёртвые плагины css-modules/neverthrow удалены; существующий
+   замороженный долг НЕ дрейфовал: 121=121, 90=90, 62=62…;
+   `prefer-ts-expect-error` удалён из v8: 10 → 0). Трещотка расширена на
+   ранее не замеренные правила фазы 2 и новичков v8-strict: baseline
+   переморожен **544 → 3350 в 364 файлах** (no-unnecessary-condition
+   1370, no-useless-default-assignment 392, boolean-literal-compare 367,
+   restrict-template-expressions 296, no-confusing-void-expression 130,
+   no-misused-promises 65, no-floating-promises 4, …; реестр выгорания —
+   MAINTAINING.md). Осталось: включение правил в `eslint.config.mjs` по
+   мере обнуления счётчиков + `eslint-plugin-obsidianmd` (ревью-набор
+   каталога) отдельным инкрементом со своей заморозкой.
 5. Доступность: клавиатура, фокус, aria, контраст.
 
 ---
