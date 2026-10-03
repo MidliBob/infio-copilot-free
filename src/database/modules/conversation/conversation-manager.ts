@@ -83,7 +83,10 @@ export class ConversationManager {
 
 	getAllConversations(callback: (conversations: ChatConversationMeta[]) => void): void {
 		const db = this.dbManager.getPgClient()
-		db?.live.query('SELECT * FROM conversations ORDER BY updated_at DESC', [], (results: { rows: Array<SelectConversation> }) => {
+		// fire-and-forget live subscription (PGlite resolves it once and then
+		// pushes updates into the callback); explicitly void-marked since
+		// 1.7.10 (no-floating-promises is enabled)
+		void db?.live.query('SELECT * FROM conversations ORDER BY updated_at DESC', [], (results: { rows: Array<SelectConversation> }) => {
 			callback(results.rows.map(conv => ({
 				schemaVersion: 2,
 				id: conv.id,

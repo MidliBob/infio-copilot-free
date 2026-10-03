@@ -126,7 +126,7 @@ export async function loadDesktop(base: Plugin) {
 			if (openNewChat && leaf && leaf.view instanceof ChatView) {
 				leaf.view.openNewChat(chatProps?.selectedBlock)
 			}
-			this.app.workspace.revealLeaf(this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE)[0])
+			await this.app.workspace.revealLeaf(this.app.workspace.getLeavesOfType(CHAT_VIEW_TYPE)[0])
 		},
 		async addSelectionToChat(editor, view) {
 			const data = await getMentionableBlockData(editor, view)

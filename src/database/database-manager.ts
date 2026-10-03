@@ -95,7 +95,7 @@ export class DBManager {
 	}
 
 	async cleanup() {
-		this.db?.close()
+		await this.db?.close()
 		this.db = null
 	}
 }
