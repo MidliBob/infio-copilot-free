@@ -173,12 +173,21 @@ official migration guide (Path B):
 - The definition tree lives in `src/settings/declarative.ts`
   (`buildSettingDefinitions(host)`), built against a structural host
   interface so it unit-tests without the React tree. Order of items MUST
-  match the order of `display()` sections.
-- Migrated sections are emitted as native `group` items with `control`
-  definitions (wave 1: Model parameters — five number controls on dotted
-  keys `modelOptions.*`; Chat behavior — the `defaultMention` dropdown).
-  Everything else is a `page` item whose `SectionPage` factory mounts the
-  existing section renderer unchanged.
+  match the order of `display()` sections. Wave 1.1 shape: About =
+  full-width `render` row at the top (not searchable — it is not a
+  setting); Model parameters = `page` with five inline native controls;
+  Chat behavior = inline `group`; the other five sections = `page` items
+  whose factory mounts the legacy renderers with `embedded = true`.
+- **Lazy inheritance contract (critical):** `SettingPage` does not exist
+  on pre-1.13 hosts, so `class ... extends SettingPage` MUST NEVER be
+  evaluated at module scope — only inside `createSectionPage()`'s
+  factory body, which pre-1.13 hosts never invoke. A top-level extends
+  crashed plugin load on older hosts (fixed in 1.7.7).
+- The four imperative section renderers take `embedded?: boolean`: when
+  true (declarative pages) they skip their own heading rows and the
+  `icf-collapsible-*` fold chrome — the page navigation row is the
+  heading; the legacy `display()` path calls them without the flag and
+  keeps the folds.
 - Controls bind **dotted paths**: `getControlValue`/`setControlValue`
   resolve them with `readSettingPath`/`writeSettingPath`, and every write
   goes through `InfioSettingsSchema.safeParse` (`parseSettingsCandidate`)
