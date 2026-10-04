@@ -39,13 +39,13 @@ export function useCustomModes(): UseCustomModes {
 	}, [customModeManager])
 
 	const customModePrompts = useMemo(() => {
-		return customModeList.reduce((acc, customMode) => {
+		return customModeList.reduce<CustomModePrompts>((acc, customMode) => {
 			acc[customMode.slug] = {
 				roleDefinition: customMode.roleDefinition,
 				customInstructions: customMode.customInstructions,
 			}
 			return acc
-		}, {} as CustomModePrompts)
+		}, {})
 	}, [customModeList])
 
 	useEffect(() => {

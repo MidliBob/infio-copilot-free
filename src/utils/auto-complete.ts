@@ -23,7 +23,10 @@ export function checkForErrors(settings: InfioSettings) {
 			errors.set(issue.path.join('.'), issue.message);
 		}
 	} else {
-		throw parsingResult.error;
+		// statically unreachable: parseWithSchema types the error as ZodError.
+		// Kept as a defensive wrap so nothing non-Error is ever thrown
+		// (only-throw-error, burned in 1.7.11).
+		throw new Error('Settings validation failed with an unexpected error shape');
 	}
 
 	return errors;

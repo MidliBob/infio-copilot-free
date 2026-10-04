@@ -245,7 +245,9 @@ const PromptInputWithActions = forwardRef<ChatUserInputRef, ChatUserInputProps>(
 
 		const handleSubmit = (options: { useVaultSearch?: boolean } = {}) => {
 			const content = editorRef.current?.getEditorState()?.toJSON()
-			content && onSubmit(content, options.useVaultSearch)
+			if (content) {
+				onSubmit(content, options.useVaultSearch)
+			}
 		}
 
 		return (
