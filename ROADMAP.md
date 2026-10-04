@@ -404,6 +404,16 @@ en/ru/zh-cn синхронны (~652 ключа).
 > выключены до миграции на strict-режим; baseline очищен: **3350 → 2587**
 > (хирургический дифф: изменились только эти три правила, остальные
 > счётчики байт-в-байт).
+>
+> **Обновление (1.7.11):** ещё три правила выгорели до нуля чистыми
+> фиксами (в конфиге они активны с 1.7.9 через `strictTypeChecked` —
+> теперь просто сняты с baseline): `prefer-reduce-type-parameter`
+> (use-custom-mode — попутно ушла замороженная assertion на той же
+> строке), `no-unused-expressions` (short-circuit → if-гард в
+> PromptInputWithActions), `only-throw-error` (статически мёртвая ветка
+> `throw parsingResult.error` в checkForErrors → защитный
+> `throw new Error`). Baseline **2587 → 2583**; следующие кандидаты —
+> `no-misused-promises` (65) и крупные пулы.
 
 1. **Декларативный Settings API (`getSettingDefinitions`)** — в работе,
    **wave 1 ✅ 1.7.6**. Реальность API: это полный декларативный рендерер
