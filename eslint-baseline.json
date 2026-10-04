@@ -40,7 +40,6 @@
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-enum-assignment": 1,
 			"@typescript-eslint/no-unsafe-member-access": 1,
-			"@typescript-eslint/restrict-template-expressions": 3,
 			"@typescript-eslint/return-await": 4,
 			"sort-imports": 1
 		},
@@ -56,7 +55,6 @@
 		},
 		"src/components/chat-view/FileReadResults.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 2,
 			"no-inline-styles/no-inline-styles": 2
 		},
 		"src/components/chat-view/HelloInfo.tsx": {
@@ -67,8 +65,7 @@
 			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 18,
 			"@typescript-eslint/no-unnecessary-type-conversion": 4,
-			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/restrict-template-expressions": 6
+			"@typescript-eslint/no-unsafe-call": 1
 		},
 		"src/components/chat-view/LLMResponseInfoPopover.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 3
@@ -163,12 +160,10 @@
 			"@typescript-eslint/no-unnecessary-condition": 25,
 			"@typescript-eslint/no-unnecessary-type-conversion": 2,
 			"@typescript-eslint/no-unsafe-assignment": 2,
-			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/no-unsafe-member-access": 2
 		},
 		"src/components/chat-view/QueryProgress.tsx": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 3
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/ReactMarkdown.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1,
@@ -180,12 +175,10 @@
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-unnecessary-condition": 28,
 			"@typescript-eslint/no-unnecessary-type-conversion": 4,
-			"@typescript-eslint/no-unsafe-argument": 1,
-			"@typescript-eslint/restrict-template-expressions": 3
+			"@typescript-eslint/no-unsafe-argument": 1
 		},
 		"src/components/chat-view/SimilaritySearchResults.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 2,
 			"no-inline-styles/no-inline-styles": 2
 		},
 		"src/components/chat-view/UserMessageView.tsx": {
@@ -193,7 +186,6 @@
 		},
 		"src/components/chat-view/WebsiteReadResults.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/restrict-template-expressions": 2,
 			"no-inline-styles/no-inline-styles": 2
 		},
 		"src/components/chat-view/WorkspaceEditModal.tsx": {
@@ -202,8 +194,7 @@
 			"@typescript-eslint/no-confusing-void-expression": 6,
 			"@typescript-eslint/no-unnecessary-condition": 13,
 			"@typescript-eslint/no-unnecessary-type-conversion": 3,
-			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/no-unsafe-call": 1
 		},
 		"src/components/chat-view/WorkspaceSelect.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 4
@@ -213,7 +204,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 10,
 			"@typescript-eslint/no-unnecessary-type-conversion": 23,
 			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/restrict-template-expressions": 2,
 			"@typescript-eslint/use-unknown-in-catch-callback-variable": 1
 		},
 		"src/components/chat-view/chat-input/ImageUploadButton.tsx": {
@@ -224,8 +214,7 @@
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/chat-input/MentionableBadge.tsx": {
-			"@typescript-eslint/no-unnecessary-condition": 13,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/no-unnecessary-condition": 13
 		},
 		"src/components/chat-view/chat-input/ModeSelect.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 4
@@ -261,7 +250,6 @@
 		"src/components/chat-view/chat-input/plugins/command/CommandPlugin.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/restrict-template-expressions": 1,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/chat-input/plugins/command/CreateCommandPopoverPlugin.tsx": {
@@ -288,7 +276,6 @@
 		"src/components/chat-view/chat-input/plugins/mention/MentionPlugin.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/restrict-template-expressions": 3,
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/chat-input/plugins/no-format/NoFormatPlugin.tsx": {
@@ -305,15 +292,13 @@
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-unnecessary-condition": 12,
 			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/restrict-template-expressions": 8
+			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/components/chat-view/chat-input/plugins/typeahead-menu/LexicalTypeaheadMenuPlugin.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
 			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/components/chat-view/chat-input/utils/editor-state-to-plain-text.test.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
@@ -435,13 +420,11 @@
 			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/core/autocomplete/states/queued-state.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/state.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 4,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/no-unused-vars": 4
 		},
 		"src/core/autocomplete/states/suggesting-state.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -468,18 +451,15 @@
 		},
 		"src/core/diff/strategies/multi-search-replace.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/no-unused-vars": 3,
-			"@typescript-eslint/restrict-template-expressions": 16
+			"@typescript-eslint/no-unused-vars": 3
 		},
 		"src/core/diff/strategies/new-unified/edit-strategies.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/prefer-regexp-exec": 1,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/prefer-regexp-exec": 1
 		},
 		"src/core/diff/strategies/new-unified/index.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/restrict-template-expressions": 9
+			"@typescript-eslint/no-unnecessary-condition": 8
 		},
 		"src/core/diff/strategies/new-unified/search-strategies.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 2,
@@ -493,13 +473,11 @@
 		"src/core/diff/strategies/search-replace.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 7,
 			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/prefer-regexp-exec": 4,
-			"@typescript-eslint/restrict-template-expressions": 16
+			"@typescript-eslint/prefer-regexp-exec": 4
 		},
 		"src/core/diff/strategies/unified.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unsafe-member-access": 1,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/no-unsafe-member-access": 1
 		},
 		"src/core/diff/types.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -537,8 +515,7 @@
 			"sort-imports": 1
 		},
 		"src/core/file-search/search-common.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/core/llm/base.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -568,8 +545,7 @@
 			"@typescript-eslint/no-deprecated": 5,
 			"@typescript-eslint/no-unnecessary-condition": 58,
 			"@typescript-eslint/no-unnecessary-type-conversion": 4,
-			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/core/mcp/McpServerManager.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
@@ -601,8 +577,7 @@
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/consistent-type-assertions": 2,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unsafe-argument": 1,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/no-unsafe-argument": 1
 		},
 		"src/core/prompts/sections/index.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -612,8 +587,7 @@
 			"@typescript-eslint/no-unnecessary-template-expression": 1,
 			"@typescript-eslint/no-unsafe-assignment": 1,
 			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-unsafe-member-access": 4,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/no-unsafe-member-access": 4
 		},
 		"src/core/prompts/sections/modes.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -725,22 +699,18 @@
 			"@typescript-eslint/no-unsafe-argument": 1
 		},
 		"src/core/rag/embedding-dimension.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/core/rag/embedding.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 5,
 			"@typescript-eslint/no-unsafe-call": 12,
-			"@typescript-eslint/no-unsafe-member-access": 20,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/no-unsafe-member-access": 20
 		},
 		"src/core/rag/rag-engine.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 26,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/no-unnecessary-condition": 26
 		},
 		"src/core/transformations/trans-engine.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 59,
-			"@typescript-eslint/restrict-template-expressions": 5
+			"@typescript-eslint/no-unnecessary-condition": 59
 		},
 		"src/database/database-manager.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 2,
@@ -756,16 +726,14 @@
 		},
 		"src/database/json/chat/ChatManager.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 10,
-			"@typescript-eslint/prefer-regexp-exec": 2,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/prefer-regexp-exec": 2
 		},
 		"src/database/json/chat/types.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/command/CommandManager.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/prefer-regexp-exec": 1,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/prefer-regexp-exec": 1
 		},
 		"src/database/json/command/types.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -784,8 +752,7 @@
 		},
 		"src/database/json/custom-mode/CustomModeManager.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/prefer-regexp-exec": 1,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/prefer-regexp-exec": 1
 		},
 		"src/database/json/custom-mode/types.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -800,8 +767,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/json/workspace/WorkspaceManager.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 9,
-			"@typescript-eslint/restrict-template-expressions": 3
+			"@typescript-eslint/no-unnecessary-condition": 9
 		},
 		"src/database/json/workspace/index.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -815,8 +781,7 @@
 		},
 		"src/database/modules/command/command-repository.ts": {
 			"@typescript-eslint/no-explicit-any": 1,
-			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/restrict-template-expressions": 3
+			"@typescript-eslint/no-unnecessary-condition": 6
 		},
 		"src/database/modules/conversation/conversation-manager.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 8,
@@ -827,8 +792,7 @@
 			"@typescript-eslint/no-unsafe-member-access": 2
 		},
 		"src/database/modules/conversation/conversation-repository.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 12,
-			"@typescript-eslint/restrict-template-expressions": 3
+			"@typescript-eslint/no-unnecessary-condition": 12
 		},
 		"src/database/modules/insight/index.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -840,8 +804,7 @@
 			"@typescript-eslint/no-unnecessary-type-assertion": 2
 		},
 		"src/database/modules/insight/insight-repository.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 17,
-			"@typescript-eslint/restrict-template-expressions": 19
+			"@typescript-eslint/no-unnecessary-condition": 17
 		},
 		"src/database/modules/vector/vector-manager.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
@@ -852,17 +815,14 @@
 			"@typescript-eslint/no-unsafe-argument": 1,
 			"@typescript-eslint/no-unsafe-assignment": 8,
 			"@typescript-eslint/no-unsafe-member-access": 26,
-			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/restrict-template-expressions": 18
+			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/database/modules/vector/vector-repository.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 22,
-			"@typescript-eslint/no-unnecessary-type-conversion": 4,
-			"@typescript-eslint/restrict-template-expressions": 12
+			"@typescript-eslint/no-unnecessary-type-conversion": 4
 		},
 		"src/database/schema.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 6
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/database/sql.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -875,20 +835,17 @@
 			"@typescript-eslint/consistent-type-assertions": 2,
 			"@typescript-eslint/no-unnecessary-condition": 4,
 			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/restrict-template-expressions": 5
+			"@typescript-eslint/no-unsafe-call": 1
 		},
 		"src/embedworker/embed.worker.ts": {
 			"@typescript-eslint/consistent-type-assertions": 8,
-			"@typescript-eslint/no-unnecessary-condition": 7,
-			"@typescript-eslint/restrict-template-expressions": 12
+			"@typescript-eslint/no-unnecessary-condition": 7
 		},
 		"src/embedworker/fetch-proxy-protocol.test.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/embedworker/fetch-proxy-protocol.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/embedworker/index.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -956,8 +913,7 @@
 			"@typescript-eslint/no-unsafe-argument": 1,
 			"@typescript-eslint/no-unsafe-assignment": 3,
 			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/restrict-template-expressions": 3
+			"@typescript-eslint/no-unsafe-member-access": 2
 		},
 		"src/pgworker/worker.d.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -990,8 +946,7 @@
 		"src/settings/SettingTab.tsx": {
 			"@typescript-eslint/ban-ts-comment": 6,
 			"@typescript-eslint/consistent-type-assertions": 5,
-			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/settings/components/AdvancedSettings.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 4,
@@ -1014,7 +969,6 @@
 		},
 		"src/settings/components/FewShotExampleSettings.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 5,
 			"no-inline-styles/no-inline-styles": 22
 		},
 		"src/settings/components/FormComponents.tsx": {
@@ -1029,8 +983,7 @@
 		"src/settings/components/ModelProviderSettings.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 5,
 			"@typescript-eslint/no-unnecessary-condition": 20,
-			"@typescript-eslint/no-unnecessary-type-conversion": 6,
-			"@typescript-eslint/restrict-template-expressions": 4
+			"@typescript-eslint/no-unnecessary-type-conversion": 6
 		},
 		"src/settings/components/PluginInfoSettings.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 3,
@@ -1053,8 +1006,7 @@
 			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 11,
 			"@typescript-eslint/no-unnecessary-type-conversion": 2,
-			"@typescript-eslint/no-unsafe-enum-assignment": 1,
-			"@typescript-eslint/restrict-template-expressions": 5
+			"@typescript-eslint/no-unsafe-enum-assignment": 1
 		},
 		"src/settings/components/SettingsItem.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1072,7 +1024,6 @@
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/no-unnecessary-type-assertion": 1,
-			"@typescript-eslint/restrict-template-expressions": 7,
 			"@typescript-eslint/unbound-method": 1,
 			"no-inline-styles/no-inline-styles": 3
 		},
@@ -1099,8 +1050,7 @@
 			"@typescript-eslint/no-unsafe-member-access": 12
 		},
 		"src/settings/versions/shared.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 8
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/few-shot-examples/block-qoute-example.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1146,8 +1096,7 @@
 		},
 		"src/settings/versions/v0/v0.ts": {
 			"@typescript-eslint/no-base-to-string": 2,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 4
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/block-qoute-example.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1193,15 +1142,13 @@
 		},
 		"src/settings/versions/v1/v1.ts": {
 			"@typescript-eslint/no-base-to-string": 2,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 4
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/status-bar.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/ts-suppressions.test.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/restrict-template-expressions": 4
+			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/types/apply.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1232,8 +1179,7 @@
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/no-unused-vars": 1,
-			"@typescript-eslint/restrict-template-expressions": 8
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/types/settings.test.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
@@ -1243,8 +1189,7 @@
 			"@typescript-eslint/consistent-type-assertions": 3,
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/restrict-template-expressions": 8
+			"@typescript-eslint/no-unsafe-member-access": 2
 		},
 		"src/utils/__mocks__/logger.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1274,16 +1219,14 @@
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-member-access": 1,
 			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/restrict-template-expressions": 3
+			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/utils/circuit-breaker.test.ts": {
 			"@typescript-eslint/no-confusing-void-expression": 8,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/circuit-breaker.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/clipboard.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 6
@@ -1293,8 +1236,7 @@
 			"@typescript-eslint/no-explicit-any": 2,
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/utils/content-filter.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1330,8 +1272,7 @@
 			"@typescript-eslint/no-unsafe-argument": 2,
 			"@typescript-eslint/no-unsafe-enum-assignment": 1,
 			"@typescript-eslint/no-unsafe-member-access": 6,
-			"@typescript-eslint/no-unused-vars": 9,
-			"@typescript-eslint/restrict-template-expressions": 6
+			"@typescript-eslint/no-unused-vars": 9
 		},
 		"src/utils/icon.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1374,8 +1315,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/mentionable.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 9,
-			"@typescript-eslint/restrict-template-expressions": 5
+			"@typescript-eslint/no-unnecessary-condition": 9
 		},
 		"src/utils/modal-dialogs.ts": {
 			"@typescript-eslint/no-deprecated": 1,
@@ -1408,8 +1348,7 @@
 			"@typescript-eslint/no-unsafe-call": 5,
 			"@typescript-eslint/no-unsafe-member-access": 9,
 			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/restrict-plus-operands": 1,
-			"@typescript-eslint/restrict-template-expressions": 1
+			"@typescript-eslint/restrict-plus-operands": 1
 		},
 		"src/utils/ollama.test.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1,
@@ -1418,8 +1357,7 @@
 		"src/utils/ollama.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/restrict-template-expressions": 2
+			"@typescript-eslint/no-unsafe-assignment": 1
 		},
 		"src/utils/open-settings-modal.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2,
@@ -1443,8 +1381,7 @@
 			"@typescript-eslint/no-unsafe-assignment": 5,
 			"@typescript-eslint/no-unsafe-call": 3,
 			"@typescript-eslint/no-unsafe-member-access": 8,
-			"@typescript-eslint/no-unused-vars": 3,
-			"@typescript-eslint/restrict-template-expressions": 15
+			"@typescript-eslint/no-unused-vars": 3
 		},
 		"src/utils/provider-schemas.test.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1459,8 +1396,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/utils/text-splitter.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 16,
-			"@typescript-eslint/restrict-template-expressions": 3
+			"@typescript-eslint/no-unnecessary-condition": 16
 		},
 		"src/utils/token.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1488,7 +1424,6 @@
 		},
 		"src/utils/web-search.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 5,
-			"@typescript-eslint/restrict-template-expressions": 5,
 			"@typescript-eslint/use-unknown-in-catch-callback-variable": 1
 		},
 		"src/utils/youtube-transcript.ts": {

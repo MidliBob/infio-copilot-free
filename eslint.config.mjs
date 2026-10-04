@@ -108,6 +108,11 @@ export default tseslint.config(
 			// (void-wrapped JSX handlers, sync callbacks with inner
 			// void-IIFE/.catch, explicit null checks instead of Promise
 			// truthiness): '@typescript-eslint/no-misused-promises'
+			// graduated in 1.7.13 after fixing all 296 findings of
+			// '@typescript-eslint/restrict-template-expressions' (String()
+			// wraps of non-string interpolations; whole-expression `${x}`
+			// templates became String(x)) - it was already active through
+			// strictTypeChecked since 1.7.9, its baseline counters are gone
 		},
 	},
 )
