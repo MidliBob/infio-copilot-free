@@ -1264,6 +1264,12 @@
 		"src/utils/fuzzy-search.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 3
 		},
+		"src/utils/glob-patterns.test.ts": {
+			"@typescript-eslint/no-unnecessary-condition": 1
+		},
+		"src/utils/glob-patterns.ts": {
+			"@typescript-eslint/no-unnecessary-condition": 1
+		},
 		"src/utils/glob-utils.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-explicit-any": 2,
