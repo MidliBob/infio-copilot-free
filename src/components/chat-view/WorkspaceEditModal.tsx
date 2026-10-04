@@ -25,7 +25,7 @@ const WorkspaceEditModal = ({
   // 生成默认工作区名称
   const getDefaultWorkspaceName = (): string => {
     const now = new Date()
-    const date = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`
+    const date = `${String(now.getFullYear())}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`
     return String(t('workspace.editModal.defaultName', { date }))
   }
   

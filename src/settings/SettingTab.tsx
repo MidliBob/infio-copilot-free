@@ -778,7 +778,7 @@ class ExcludedFilesModal extends Modal {
 		const { contentEl } = this
 		contentEl.empty()
 
-		this.titleEl.setText(`Excluded Files (${this.files.length})`)
+		this.titleEl.setText(`Excluded Files (${String(this.files.length)})`)
 
 		if (this.files.length === 0) {
 			contentEl.createEl('p', { text: t('settings.RAG.noExcludedFiles') })
@@ -811,7 +811,7 @@ class IncludedFilesModal extends Modal {
 		const { contentEl } = this
 		contentEl.empty()
 
-		this.titleEl.setText(`Included Files (${this.files.length})`)
+		this.titleEl.setText(`Included Files (${String(this.files.length)})`)
 
 		if (this.patterns.length === 0) {
 			contentEl.createEl('p', {

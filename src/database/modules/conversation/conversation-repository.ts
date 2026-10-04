@@ -96,13 +96,13 @@ export class ConversationRepository {
 		let paramIndex = 1
 
 		if (data.title !== undefined) {
-			setClauses.push(`title = $${paramIndex}`)
+			setClauses.push(`title = $${String(paramIndex)}`)
 			values.push(data.title)
 			paramIndex++
 		}
 
 		// Always update updated_at
-		setClauses.push(`updated_at = $${paramIndex}`)
+		setClauses.push(`updated_at = $${String(paramIndex)}`)
 		values.push(new Date())
 		paramIndex++
 
@@ -112,7 +112,7 @@ export class ConversationRepository {
 		const result = await (tx ?? this.db).query<SelectConversation>(
 			`UPDATE conversations 
        SET ${setClauses.join(', ')} 
-       WHERE id = $${paramIndex}
+       WHERE id = $${String(paramIndex)}
        RETURNING *`,
 			values
 		)

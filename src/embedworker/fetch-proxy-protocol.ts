@@ -85,7 +85,7 @@ export async function performFetchProxyRequest(
 /** Worker side: rebuild a Response from the proxy answer, or throw. */
 export function responseFromFetchProxy(msg: FetchResponseMessage): Response {
 	if (msg.error !== undefined || msg.body === undefined) {
-		throw new Error(msg.error ?? `Proxied fetch failed with status ${msg.status}`)
+		throw new Error(msg.error ?? `Proxied fetch failed with status ${String(msg.status)}`)
 	}
 	return new Response(msg.body, {
 		status: msg.status > 0 ? msg.status : 200,

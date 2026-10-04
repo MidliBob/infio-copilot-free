@@ -438,8 +438,8 @@ export const InfioSettingsSchema = z.object({
 	userMessageTemplate: z.string().min(3, { message: "User message template must be at least 3 characters long" }),
 	chainOfThoughRemovalRegex: z.string().refine((regex) => isRegexValid(regex), { message: "Invalid regex" }),
 	dontIncludeDataviews: z.boolean(),
-	maxPrefixCharLimit: z.number().int().min(MIN_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at least ${MIN_MAX_CHAR_LIMIT}` }).max(MAX_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at most ${MAX_MAX_CHAR_LIMIT}` }),
-	maxSuffixCharLimit: z.number().int().min(MIN_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at least ${MIN_MAX_CHAR_LIMIT}` }).max(MAX_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at most ${MAX_MAX_CHAR_LIMIT}` }),
+	maxPrefixCharLimit: z.number().int().min(MIN_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at least ${String(MIN_MAX_CHAR_LIMIT)}` }).max(MAX_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at most ${String(MAX_MAX_CHAR_LIMIT)}` }),
+	maxSuffixCharLimit: z.number().int().min(MIN_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at least ${String(MIN_MAX_CHAR_LIMIT)}` }).max(MAX_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at most ${String(MAX_MAX_CHAR_LIMIT)}` }),
 	removeDuplicateMathBlockIndicator: z.boolean(),
 	removeDuplicateCodeBlockIndicator: z.boolean(),
 	ignoredFilePatterns: z.string().refine((value) => value
@@ -492,7 +492,7 @@ const MIGRATIONS: Migration[] = [
 			if (newData.modelOptions && typeof newData.modelOptions === 'object') {
 				const modelOptions = newData.modelOptions as Record<string, any>
 				if (typeof modelOptions.max_tokens === 'number' && modelOptions.max_tokens < MIN_MAX_TOKENS) {
-					logger.debug(`Updating max_tokens from ${modelOptions.max_tokens} to ${MIN_MAX_TOKENS} due to minimum value change`)
+					logger.debug(`Updating max_tokens from ${String(modelOptions.max_tokens)} to ${String(MIN_MAX_TOKENS)} due to minimum value change`)
 					modelOptions.max_tokens = MIN_MAX_TOKENS
 				}
 			}
@@ -705,7 +705,7 @@ function migrateSettings(
 			migration.toVersion <= SETTINGS_SCHEMA_VERSION
 		) {
 			logger.debug(
-				`Migrating settings from ${migration.fromVersion} to ${migration.toVersion}`,
+				`Migrating settings from ${String(migration.fromVersion)} to ${String(migration.toVersion)}`,
 			)
 			currentData = migration.migrate(currentData)
 		}

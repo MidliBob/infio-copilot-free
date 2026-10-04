@@ -61,11 +61,11 @@ export function normalizeYacyBaseUrl(baseUrl: string): string {
  */
 export async function yacySearch(query: string, baseUrl: string): Promise<SearchResult[]> {
 	const peer = normalizeYacyBaseUrl(baseUrl);
-	const url = `${peer}/yacysearch.json?query=${encodeURIComponent(query)}&maximumRecords=${MAX_SEARCH_RESULTS}`;
+	const url = `${peer}/yacysearch.json?query=${encodeURIComponent(query)}&maximumRecords=${String(MAX_SEARCH_RESULTS)}`;
 	try {
 		const response = await requestUrl({ url, throw: false });
 		if (response.status < 200 || response.status >= 300) {
-			logger.error(`yacy search failed with HTTP ${response.status}`);
+			logger.error(`yacy search failed with HTTP ${String(response.status)}`);
 			return [];
 		}
 		let json: unknown;
@@ -110,7 +110,7 @@ export async function searxngSearch(query: string, baseUrl: string): Promise<Sea
 			const hint = response.status === 403
 				? ' (SearXNG returns 403 when the JSON output format is not enabled in its settings.yml)'
 				: '';
-			logger.error(`searxng search failed with HTTP ${response.status}${hint}`);
+			logger.error(`searxng search failed with HTTP ${String(response.status)}${hint}`);
 			return [];
 		}
 		let json: unknown;
@@ -201,7 +201,7 @@ async function fetchByLocalTool(url: string): Promise<string> {
 
 				return `Title: ${title}
 Video Transcript:
-${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`
+${transcript.map((t) => `${String(t.offset)}: ${t.text}`).join('\n')}`
 			} catch (error) {
 				logger.warn('Failed to extract YouTube transcript:', error)
 				// Extraction failed - at least tell the model it is a video
@@ -271,7 +271,7 @@ export async function fetchUrlsContent(urls: string[]): Promise<string> {
 				return `<url_content url="${url}">\n${content ?? 'fetch content error: empty response'}\n</url_content>`;
 			} catch (error) {
 				logger.error(`Failed to fetch URL content: ${url}`, error);
-				return `<url_content url="${url}">\n fetch content error: ${error}\n</url_content>`;
+				return `<url_content url="${url}">\n fetch content error: ${String(error)}\n</url_content>`;
 			}
 		});
 

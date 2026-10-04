@@ -191,7 +191,7 @@ This demonstrates what NOT to do. A diff block of this size MUST BE REJECTED.
 			if (searchLines.length === 0 && startLine && endLine && startLine !== endLine) {
 				diffResults.push({
 					success: false,
-					error: `Empty search content requires start_line and end_line to be the same (got ${startLine}-${endLine})\n\nDebug Info:\n- Empty search content is only valid for insertions at a specific line\n- For insertions, use the same line number for both start_line and end_line`,
+					error: `Empty search content requires start_line and end_line to be the same (got ${String(startLine)}-${String(endLine)})\n\nDebug Info:\n- Empty search content is only valid for insertions at a specific line\n- For insertions, use the same line number for both start_line and end_line`,
 				})
 				continue
 			}
@@ -215,7 +215,7 @@ This demonstrates what NOT to do. A diff block of this size MUST BE REJECTED.
 				if (exactStartIndex < 0 || exactEndIndex > resultLines.length || exactStartIndex > exactEndIndex) {
 					diffResults.push({
 						success: false,
-						error: `Line range ${startLine}-${endLine} is invalid (file has ${resultLines.length} lines)\n\nDebug Info:\n- Requested Range: lines ${startLine}-${endLine}\n- File Bounds: lines 1-${resultLines.length}`,
+						error: `Line range ${String(startLine)}-${String(endLine)} is invalid (file has ${String(resultLines.length)} lines)\n\nDebug Info:\n- Requested Range: lines ${String(startLine)}-${String(endLine)}\n- File Bounds: lines 1-${String(resultLines.length)}`,
 					})
 					continue
 				}
@@ -290,12 +290,12 @@ This demonstrates what NOT to do. A diff block of this size MUST BE REJECTED.
 
 				const lineRange =
 					startLine || endLine
-						? ` at ${startLine ? `start: ${startLine}` : "start"} to ${endLine ? `end: ${endLine}` : "end"}`
+						? ` at ${startLine ? `start: ${String(startLine)}` : "start"} to ${endLine ? `end: ${String(endLine)}` : "end"}`
 						: ""
 
 				diffResults.push({
 					success: false,
-					error: `No sufficiently similar match found${lineRange} (${Math.floor(bestMatchScore * 100)}% similar, needs ${Math.floor(this.fuzzyThreshold * 100)}%)\n\nDebug Info:\n- Similarity Score: ${Math.floor(bestMatchScore * 100)}%\n- Required Threshold: ${Math.floor(this.fuzzyThreshold * 100)}%\n- Search Range: ${startLine && endLine ? `lines ${startLine}-${endLine}` : "start to end"}\n- Tip: Use read_file to get the latest content of the file before attempting the diff again, as the file content may have changed\n\nSearch Content:\n${searchChunk}${bestMatchSection}${originalContentSection}`,
+					error: `No sufficiently similar match found${lineRange} (${String(Math.floor(bestMatchScore * 100))}% similar, needs ${String(Math.floor(this.fuzzyThreshold * 100))}%)\n\nDebug Info:\n- Similarity Score: ${String(Math.floor(bestMatchScore * 100))}%\n- Required Threshold: ${String(Math.floor(this.fuzzyThreshold * 100))}%\n- Search Range: ${startLine && endLine ? `lines ${String(startLine)}-${String(endLine)}` : "start to end"}\n- Tip: Use read_file to get the latest content of the file before attempting the diff again, as the file content may have changed\n\nSearch Content:\n${searchChunk}${bestMatchSection}${originalContentSection}`,
 				})
 				continue
 			}

@@ -137,11 +137,11 @@ export function getMentionableKey(mentionable: SerializedMentionable): string {
 		case 'current-file':
 			return `current-file:${mentionable.file ?? 'current'}`
 		case 'block':
-			return `block:${mentionable.file}:${mentionable.startLine}:${mentionable.endLine}:${mentionable.content}`
+			return `block:${mentionable.file}:${String(mentionable.startLine)}:${String(mentionable.endLine)}:${mentionable.content}`
 		case 'url':
 			return `url:${mentionable.url}`
 		case 'image':
-			return `image:${mentionable.name}:${mentionable.data.length}:${mentionable.data.slice(-32)}`
+			return `image:${mentionable.name}:${String(mentionable.data.length)}:${mentionable.data.slice(-32)}`
 	}
 }
 
@@ -156,7 +156,7 @@ export function getMentionableName(mentionable: Mentionable): string {
 		case 'current-file':
 			return mentionable.file?.name ?? 'Current file'
 		case 'block':
-			return `${mentionable.file.name} (${mentionable.startLine}:${mentionable.endLine})`
+			return `${mentionable.file.name} (${String(mentionable.startLine)}:${String(mentionable.endLine)})`
 		case 'url':
 			return mentionable.url
 		case 'image':

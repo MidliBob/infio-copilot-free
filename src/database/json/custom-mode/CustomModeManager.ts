@@ -22,12 +22,12 @@ export class CustomModeManager extends AbstractJsonRepository<
 	protected generateFileName(mode: CustomMode): string {
 		// Format: v{schemaVersion}_name_id.json (with name encoded)
 		const encodedName = encodeURIComponent(mode.name)
-		return `v${CUSTOM_MODE_SCHEMA_VERSION}_${encodedName}_${mode.id}.json`
+		return `v${String(CUSTOM_MODE_SCHEMA_VERSION)}_${encodedName}_${mode.id}.json`
 	}
 
 	protected parseFileName(fileName: string): CustomModeMetadata | null {
 		const match = fileName.match(
-			new RegExp(`^v${CUSTOM_MODE_SCHEMA_VERSION}_(.+)_([0-9a-f-]+)\\.json$`),
+			new RegExp(`^v${String(CUSTOM_MODE_SCHEMA_VERSION)}_(.+)_([0-9a-f-]+)\\.json$`),
 		)
 		if (!match) return null
 

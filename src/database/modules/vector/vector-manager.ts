@@ -357,7 +357,7 @@ export class VectorManager {
 		try {
 			for (let i = 0; i < filesToIndex.length; i += FILE_BATCH_SIZE) {
 				const fileBatch = filesToIndex.slice(i, Math.min(i + FILE_BATCH_SIZE, filesToIndex.length))
-				logger.debug(`Processing file batch ${Math.floor(i / FILE_BATCH_SIZE) + 1}/${Math.ceil(filesToIndex.length / FILE_BATCH_SIZE)} (${fileBatch.length} files)`)
+				logger.debug(`Processing file batch ${String(Math.floor(i / FILE_BATCH_SIZE) + 1)}/${String(Math.ceil(filesToIndex.length / FILE_BATCH_SIZE))} (${String(fileBatch.length)} files)`)
 				
 				// 第一步：分块处理
 				const batchChunks = (
@@ -412,7 +412,7 @@ export class VectorManager {
 				}
 				
 				// 第二步：嵌入处理
-				logger.debug(`Embedding ${batchChunks.length} chunks for current file batch`)
+				logger.debug(`Embedding ${String(batchChunks.length)} chunks for current file batch`)
 				if (embeddingModel.supportsBatch) {
 					// 支持批量处理的提供商
 					for (let j = 0; j < batchChunks.length; j += embeddingBatchSize) {
@@ -458,7 +458,7 @@ export class VectorManager {
 						// 第三步：立即存储
 						if (embeddedBatch.length > 0) {
 							await this.insertVectorsWithTransaction(embeddedBatch, embeddingModel)
-							logger.debug(`Stored ${embeddedBatch.length} embedded chunks`)
+							logger.debug(`Stored ${String(embeddedBatch.length)} embedded chunks`)
 						}
 
 						embeddingProgress.completed += embeddingBatch.length
@@ -529,7 +529,7 @@ export class VectorManager {
 						// 第三步：立即存储
 						if (embeddedBatch.length > 0) {
 							await this.insertVectorsWithTransaction(embeddedBatch, embeddingModel)
-							logger.debug(`Stored ${embeddedBatch.length} embedded chunks`)
+							logger.debug(`Stored ${String(embeddedBatch.length)} embedded chunks`)
 						}
 
 						embeddingProgress.completed += embeddingBatch.length
@@ -566,7 +566,7 @@ export class VectorManager {
 		}
 
 		if (skippedFiles.length > 0) {
-			logger.warn(`Skipped ${skippedFiles.length} problematic files:`, skippedFiles)
+			logger.warn(`Skipped ${String(skippedFiles.length)} problematic files:`, skippedFiles)
 			new Notice(t('notifications.indexSkippedFiles', { count: skippedFiles.length }))
 		}
 	}
@@ -689,7 +689,7 @@ export class VectorManager {
 		try {
 			for (let i = 0; i < filesToIndex.length; i += FILE_BATCH_SIZE) {
 				const fileBatch = filesToIndex.slice(i, Math.min(i + FILE_BATCH_SIZE, filesToIndex.length))
-				logger.debug(`Processing workspace file batch ${Math.floor(i / FILE_BATCH_SIZE) + 1}/${Math.ceil(filesToIndex.length / FILE_BATCH_SIZE)} (${fileBatch.length} files)`)
+				logger.debug(`Processing workspace file batch ${String(Math.floor(i / FILE_BATCH_SIZE) + 1)}/${String(Math.ceil(filesToIndex.length / FILE_BATCH_SIZE))} (${String(fileBatch.length)} files)`)
 				
 				// 第一步：分块处理
 				const batchChunks = (
@@ -744,7 +744,7 @@ export class VectorManager {
 				}
 				
 				// 第二步：嵌入处理
-				logger.debug(`Embedding ${batchChunks.length} chunks for current workspace file batch`)
+				logger.debug(`Embedding ${String(batchChunks.length)} chunks for current workspace file batch`)
 				
 				if (embeddingModel.supportsBatch) {
 					// 支持批量处理的提供商
@@ -795,7 +795,7 @@ export class VectorManager {
 						// 第三步：立即存储
 						if (embeddedBatch.length > 0) {
 							await this.insertVectorsWithTransaction(embeddedBatch, embeddingModel)
-							logger.debug(`Stored ${embeddedBatch.length} embedded chunks for workspace`)
+							logger.debug(`Stored ${String(embeddedBatch.length)} embedded chunks for workspace`)
 						}
 
 						embeddingProgress.completed += embeddingBatch.length
@@ -866,7 +866,7 @@ export class VectorManager {
 						// 第三步：立即存储
 						if (embeddedBatch.length > 0) {
 							await this.insertVectorsWithTransaction(embeddedBatch, embeddingModel)
-							logger.debug(`Stored ${embeddedBatch.length} embedded chunks for workspace`)
+							logger.debug(`Stored ${String(embeddedBatch.length)} embedded chunks for workspace`)
 						}
 
 						embeddingProgress.completed += embeddingBatch.length
@@ -903,7 +903,7 @@ export class VectorManager {
 		}
 
 		if (skippedFiles.length > 0) {
-			logger.warn(`Skipped ${skippedFiles.length} problematic files:`, skippedFiles)
+			logger.warn(`Skipped ${String(skippedFiles.length)} problematic files:`, skippedFiles)
 			new Notice(t('notifications.indexSkippedFiles', { count: skippedFiles.length }))
 		}
 	}
@@ -988,7 +988,7 @@ export class VectorManager {
 					// 支持批量处理的提供商：使用流式处理逻辑
 					for (let i = 0; i < contentChunks.length; i += batchSize) {
 						batchCount++
-						logger.debug(`Embedding batch ${batchCount} of ${Math.ceil(contentChunks.length / batchSize)}`)
+						logger.debug(`Embedding batch ${String(batchCount)} of ${String(Math.ceil(contentChunks.length / batchSize))}`)
 						const batchChunks = contentChunks.slice(i, Math.min(i + batchSize, contentChunks.length))
 
 						const embeddedBatch: InsertVector[] = []
@@ -1314,7 +1314,7 @@ export class VectorManager {
 			const embeddingVector = `[${vector.embedding.join(',')}]`
 			const escapedMetadata = JSON.stringify(vector.metadata).replace(/'/g, "''")
 			
-			return `INSERT INTO "${tableName}" (path, mtime, content, embedding, metadata) VALUES ('${escapedPath}', ${vector.mtime}, '${escapedContent}', '${embeddingVector}', '${escapedMetadata}');`
+			return `INSERT INTO "${tableName}" (path, mtime, content, embedding, metadata) VALUES ('${escapedPath}', ${String(vector.mtime)}, '${escapedContent}', '${embeddingVector}', '${escapedMetadata}');`
 		}).join('\n')
 
 		// 使用事务包装批量插入
@@ -1332,7 +1332,7 @@ export class VectorManager {
 	private getTableName(embeddingModel: EmbeddingModel): string {
 		const tableDefinition = vectorTables[embeddingModel.dimension]
 		if (!tableDefinition) {
-			throw new Error(`No table definition found for model: ${embeddingModel.id} (dimension ${embeddingModel.dimension}; supported: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')})`)
+			throw new Error(`No table definition found for model: ${embeddingModel.id} (dimension ${String(embeddingModel.dimension)}; supported: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')})`)
 		}
 		return tableDefinition.name
 	}

@@ -123,10 +123,10 @@ export default function QueryProgress({
 			return (
 				<div className="icf-query-progress">
 					<p>
-						{`${t('chat.queryProgress.indexing')} ${state.indexProgress.totalFiles} ${t('chat.queryProgress.file')}`}
+						{`${t('chat.queryProgress.indexing')} ${String(state.indexProgress.totalFiles)} ${t('chat.queryProgress.file')}`}
 						<DotLoader />
 					</p>
-					<p className="icf-query-progress-detail">{`${state.indexProgress.completedChunks}/${state.indexProgress.totalChunks} ${t('chat.queryProgress.chunkIndexed')}`}</p>
+					<p className="icf-query-progress-detail">{`${String(state.indexProgress.completedChunks)}/${String(state.indexProgress.totalChunks)} ${t('chat.queryProgress.chunkIndexed')}`}</p>
 				</div>
 			)
 		case 'querying':

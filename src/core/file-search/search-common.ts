@@ -54,7 +54,7 @@ export function formatResults(results: SearchResult[], cwd: string): string {
 
 	let output = ""
 	if (results.length >= MAX_RESULTS) {
-		output += `Showing first ${MAX_RESULTS} of ${MAX_RESULTS}+ results. Use a more specific search if necessary.\n\n`
+		output += `Showing first ${String(MAX_RESULTS)} of ${String(MAX_RESULTS)}+ results. Use a more specific search if necessary.\n\n`
 	} else {
 		output += `Found ${results.length === 1 ? "1 result" : `${results.length.toLocaleString()} results`}.\n\n`
 	}

@@ -307,15 +307,15 @@ Your diff here
 				const totalLines = hunk.changes.length
 				const contextRatio = contextLines / totalLines
 
-				let errorMsg = `Failed to find a matching location in the file (${Math.floor(
+				let errorMsg = `Failed to find a matching location in the file (${String(Math.floor(
 					confidence * 100,
-				)}% confidence, needs ${Math.floor(this.confidenceThreshold * 100)}%)\n\n`
+				))}% confidence, needs ${String(Math.floor(this.confidenceThreshold * 100))}%)\n\n`
 				errorMsg += "Debug Info:\n"
 				errorMsg += `- Search Strategy Used: ${strategy}\n`
-				errorMsg += `- Context Lines: ${contextLines} out of ${totalLines} total lines (${Math.floor(
+				errorMsg += `- Context Lines: ${String(contextLines)} out of ${String(totalLines)} total lines (${String(Math.floor(
 					contextRatio * 100,
-				)}%)\n`
-				errorMsg += `- Attempted to split into ${subHunks.length} sub-hunks but still failed\n`
+				))}%)\n`
+				errorMsg += `- Attempted to split into ${String(subHunks.length)} sub-hunks but still failed\n`
 
 				if (contextRatio < 0.2) {
 					errorMsg += "\nPossible Issues:\n"
@@ -333,7 +333,7 @@ Your diff here
 				}
 
 				if (startLine && endLine) {
-					errorMsg += `\nSearch Range: lines ${startLine}-${endLine}\n`
+					errorMsg += `\nSearch Range: lines ${String(startLine)}-${String(endLine)}\n`
 				}
 
 				return { success: false, error: errorMsg }
@@ -351,9 +351,9 @@ Your diff here
 				result = editResult.result
 			} else {
 				// Edit failure - likely due to content mismatch
-				let errorMsg = `Failed to apply the edit using ${editResult.strategy} strategy (${Math.floor(
+				let errorMsg = `Failed to apply the edit using ${editResult.strategy} strategy (${String(Math.floor(
 					editResult.confidence * 100,
-				)}% confidence)\n\n`
+				))}% confidence)\n\n`
 				errorMsg += "Debug Info:\n"
 				errorMsg += "- The location was found but the content didn't match exactly\n"
 				errorMsg += "- This usually means the file has been modified since the diff was created\n"

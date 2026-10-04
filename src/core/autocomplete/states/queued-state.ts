@@ -77,7 +77,7 @@ class QueuedState extends State {
   }
 
   getStatusBarText(): string {
-    return `Queued (${this.context.settings.delay} ms)`;
+    return `Queued (${String(this.context.settings.delay)} ms)`;
   }
 }
 

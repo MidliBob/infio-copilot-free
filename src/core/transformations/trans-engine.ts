@@ -1405,7 +1405,7 @@ export class TransEngine {
 				// 对于 vault 工作区，删除所有洞察
 				await this.insightManager.clearAllInsights(this.embeddingModel)
 
-				logger.debug(`Deleted all ${allInsights.length} transformations of the vault workspace`)
+				logger.debug(`Deleted all ${String(allInsights.length)} transformations of the vault workspace`)
 
 				return {
 					success: true,
@@ -1426,7 +1426,7 @@ export class TransEngine {
 			// 批量删除洞察
 			if (uniquePaths.length > 0) {
 				await this.insightManager.deleteInsightsBySourcePaths(uniquePaths, this.embeddingModel)
-				logger.debug(`Deleted ${deletedCount} transformations of workspace "${workspaceName}" across ${uniquePaths.length} paths`)
+				logger.debug(`Deleted ${String(deletedCount)} transformations of workspace "${workspaceName}" across ${String(uniquePaths.length)} paths`)
 			}
 
 			return {
@@ -1475,7 +1475,7 @@ export class TransEngine {
 
 			if (workspaceInsights.length > 0) {
 				await this.insightManager.deleteInsightsBySourcePath(workspaceInsightPath, this.embeddingModel)
-				logger.debug(`Deleted ${workspaceInsights.length} transformations of workspace "${workspaceName}"`)
+				logger.debug(`Deleted ${String(workspaceInsights.length)} transformations of workspace "${workspaceName}"`)
 			}
 
 			return {
@@ -1514,7 +1514,7 @@ export class TransEngine {
 			// 直接按ID删除洞察
 			await this.insightManager.deleteInsightById(insightId, this.embeddingModel)
 
-			logger.debug(`Deleted insight ID: ${insightId}`)
+			logger.debug(`Deleted insight ID: ${String(insightId)}`)
 
 			return {
 				success: true

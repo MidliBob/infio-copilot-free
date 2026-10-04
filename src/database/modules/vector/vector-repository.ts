@@ -68,7 +68,7 @@ export class VectorRepository {
 	private getTableName(embeddingModel: EmbeddingModel): string {
 		const tableDefinition = vectorTables[embeddingModel.dimension]
 		if (!tableDefinition) {
-			throw new Error(`No table definition found for model: ${embeddingModel.id} (dimension ${embeddingModel.dimension}; supported: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')})`)
+			throw new Error(`No table definition found for model: ${embeddingModel.id} (dimension ${String(embeddingModel.dimension)}; supported: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')})`)
 		}
 		return tableDefinition.name
 	}
@@ -158,7 +158,7 @@ export class VectorRepository {
 		// 构建批量插入的 SQL
 		const values = data.map((vector, index) => {
 			const offset = index * 5
-			return `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5})`
+			return `($${String(offset + 1)}, $${String(offset + 2)}, $${String(offset + 3)}, $${String(offset + 4)}, $${String(offset + 5)})`
 		}).join(',')
 
 		const params = data.flatMap(vector => [
@@ -205,7 +205,7 @@ export class VectorRepository {
 			const conditions: string[] = []
 
 			if (options.scope.files.length > 0) {
-				conditions.push(`path = ANY($${paramIndex})`)
+				conditions.push(`path = ANY($${String(paramIndex)})`)
 				params.push(options.scope.files)
 				paramIndex++
 			}
@@ -213,7 +213,7 @@ export class VectorRepository {
 			if (options.scope.folders.length > 0) {
 				const folderConditions = options.scope.folders.map((folder, idx) => {
 					params.push(`${folder}/%`)
-					return `path LIKE $${paramIndex + idx}`
+					return `path LIKE $${String(paramIndex + idx)}`
 				})
 				conditions.push(`(${folderConditions.join(' OR ')})`)
 				paramIndex += options.scope.folders.length
@@ -275,7 +275,7 @@ export class VectorRepository {
 			const conditions: string[] = []
 
 			if (options.scope.files.length > 0) {
-				conditions.push(`path = ANY($${paramIndex})`)
+				conditions.push(`path = ANY($${String(paramIndex)})`)
 				params.push(options.scope.files)
 				paramIndex++
 			}
@@ -283,7 +283,7 @@ export class VectorRepository {
 			if (options.scope.folders.length > 0) {
 				const folderConditions = options.scope.folders.map((folder, idx) => {
 					params.push(`${folder}/%`)
-					return `path LIKE $${paramIndex + idx}`
+					return `path LIKE $${String(paramIndex + idx)}`
 				})
 				conditions.push(`(${folderConditions.join(' OR ')})`)
 				paramIndex += options.scope.folders.length
@@ -424,7 +424,7 @@ export class VectorRepository {
 			const conditions: string[] = []
 
 			if (scope.files.length > 0) {
-				conditions.push(`path = ANY($${paramIndex})`)
+				conditions.push(`path = ANY($${String(paramIndex)})`)
 				params.push(scope.files)
 				paramIndex++
 			}
@@ -432,7 +432,7 @@ export class VectorRepository {
 			if (scope.folders.length > 0) {
 				const folderConditions = scope.folders.map((folder, idx) => {
 					params.push(`${folder}/%`)
-					return `path LIKE $${paramIndex + idx}`
+					return `path LIKE $${String(paramIndex + idx)}`
 				})
 				conditions.push(`(${folderConditions.join(' OR ')})`)
 				paramIndex += scope.folders.length

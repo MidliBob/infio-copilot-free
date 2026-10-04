@@ -22,7 +22,7 @@ function WebsiteReadItem({
 
 	const getContentSize = (content: string) => {
 		const bytes = new Blob([content]).size
-		if (bytes < 1024) return `${bytes} B`
+		if (bytes < 1024) return `${String(bytes)} B`
 		if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
 		return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 	}
@@ -86,7 +86,7 @@ export default function WebsiteReadResults({
 					}}
 				>
 					{websiteContents.map((websiteResult, index) => (
-						<WebsiteReadItem key={`${websiteResult.url}-${index}`} websiteResult={websiteResult} />
+						<WebsiteReadItem key={`${websiteResult.url}-${String(index)}`} websiteResult={websiteResult} />
 					))}
 				</div>
 			)}

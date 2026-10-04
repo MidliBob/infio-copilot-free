@@ -26,7 +26,7 @@ type TableDefinition = {
 
 /* Vector Table */
 const createVectorTable = (dimension: number): TableDefinition => {
-	const tableName = `embeddings_${dimension}`
+	const tableName = `embeddings_${String(dimension)}`
 
 	const table: TableDefinition = {
 		name: tableName,
@@ -42,7 +42,7 @@ const createVectorTable = (dimension: number): TableDefinition => {
 
 	if (dimension <= 2000) {
 		table.indices = {
-			[`embeddingIndex_${dimension}`]: {
+			[`embeddingIndex_${String(dimension)}`]: {
 				type: 'HNSW',
 				columns: ['embedding'],
 				options: 'vector_cosine_ops'
@@ -193,7 +193,7 @@ export type SelectSourceInsight = SourceInsightRecord
 export type InsertSourceInsight = Omit<SourceInsightRecord, 'id' | 'created_at' | 'updated_at'>
 
 const createSourceInsightTable = (dimension: number): TableDefinition => {
-	const tableName = `source_insight_${dimension}`
+	const tableName = `source_insight_${String(dimension)}`
 
 	const table: TableDefinition = {
 		name: tableName,
@@ -212,16 +212,16 @@ const createSourceInsightTable = (dimension: number): TableDefinition => {
 
 	if (dimension <= 2000) {
 		table.indices = {
-			[`insightEmbeddingIndex_${dimension}`]: {
+			[`insightEmbeddingIndex_${String(dimension)}`]: {
 				type: 'HNSW',
 				columns: ['embedding'],
 				options: 'vector_cosine_ops'
 			},
-			[`insightSourceIndex_${dimension}`]: {
+			[`insightSourceIndex_${String(dimension)}`]: {
 				type: 'BTREE',
 				columns: ['source_path']
 			},
-			[`insightTypeIndex_${dimension}`]: {
+			[`insightTypeIndex_${String(dimension)}`]: {
 				type: 'BTREE',
 				columns: ['insight_type']
 			}

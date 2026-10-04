@@ -64,7 +64,7 @@ export class TextSplitter {
 	}
 
 	async splitText(text: string): Promise<string[]> {
-		throw new Error(`splitText not implemented for base TextSplitter: ${text.length} chars`)
+		throw new Error(`splitText not implemented for base TextSplitter: ${String(text.length)} chars`)
 	}
 
 	splitOnSeparator(text: string, separator: string): string[] {
@@ -104,7 +104,7 @@ export class TextSplitter {
 			) {
 				if (total > this.chunkSize) {
 					logger.warn(
-						`Created a chunk of size ${total}, +\nwhich is longer than the specified ${this.chunkSize}`
+						`Created a chunk of size ${String(total)}, +\nwhich is longer than the specified ${String(this.chunkSize)}`
 					)
 				}
 				if (currentDoc.length > 0) {

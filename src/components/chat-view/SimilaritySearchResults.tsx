@@ -29,7 +29,7 @@ function SimiliartySearchItem({
 				{path.basename(chunk.path)}
 			</div>
 			<div className="icf-similarity-search-item__line-numbers">
-				{`${chunk.metadata.startLine} - ${chunk.metadata.endLine}`}
+				{`${String(chunk.metadata.startLine)} - ${String(chunk.metadata.endLine)}`}
 			</div>
 		</div>
 	)

@@ -106,7 +106,7 @@ export class CircuitBreaker {
 
 	describe(): string {
 		return (
-			`Stopped after ${this.consecutiveFailures} consecutive connection failures. ` +
+			`Stopped after ${String(this.consecutiveFailures)} consecutive connection failures. ` +
 			`${this.lastMessage} ` +
 			'(No further embedding requests were attempted while the server is unreachable.)'
 		)

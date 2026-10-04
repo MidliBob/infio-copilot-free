@@ -148,7 +148,7 @@ export function useBasicTypeaheadTriggerMatch(
     (text: string) => {
       const validChars = '[^' + trigger + PUNCTUATION + '\\s]'
       const TypeaheadTriggerRegex = new RegExp(
-        `(^|\\s|\\()([${trigger}]((?:${validChars}){0,${maxLength}}))$`,
+        `(^|\\s|\\()([${trigger}]((?:${validChars}){0,${String(maxLength)}}))$`,
       )
       const match = TypeaheadTriggerRegex.exec(text)
       if (match !== null) {

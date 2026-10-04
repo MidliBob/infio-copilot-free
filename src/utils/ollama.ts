@@ -65,7 +65,7 @@ export async function checkOllamaHealth(rawBaseUrl: string): Promise<OllamaHealt
 	try {
 		const response = await requestUrl({ url: `${baseUrl}/api/version` })
 		if (response.status < 200 || response.status >= 300) {
-			return { status: 'unreachable', detail: `HTTP ${response.status}` }
+			return { status: 'unreachable', detail: `HTTP ${String(response.status)}` }
 		}
 		const data: { version?: unknown } = response.json
 		if (data && typeof data.version === 'string') {
@@ -88,7 +88,7 @@ export async function checkOllamaHealth(rawBaseUrl: string): Promise<OllamaHealt
 			signal: AbortSignal.timeout(5000),
 		})
 		if (!probe.ok) {
-			return { status: 'origins-blocked', version, detail: `HTTP ${probe.status}` }
+			return { status: 'origins-blocked', version, detail: `HTTP ${String(probe.status)}` }
 		}
 	} catch (error) {
 		return {

@@ -33,7 +33,7 @@ export async function parsePdfContent(file: TFile, app: App): Promise<string> {
 		return cleanText
 	} catch (error: any) {
 		logger.error('Error parsing PDF:', error)
-		return `(Error reading PDF file: ${error?.message || 'Unknown error'})`
+		return `(Error reading PDF file: ${String(error?.message || 'Unknown error')})`
 	}
 }
 

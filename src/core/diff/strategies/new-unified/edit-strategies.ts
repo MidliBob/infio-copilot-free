@@ -289,7 +289,7 @@ export async function applyEdit(
 	// Don't attempt regular edits if confidence is too low
 	if (confidence < confidenceThreshold) {
 		logger.warn(
-			`Search confidence (${confidence}) below minimum threshold (${confidenceThreshold}), trying git fallback...`,
+			`Search confidence (${String(confidence)}) below minimum threshold (${String(confidenceThreshold)}), trying git fallback...`,
 		)
 		return applyGitFallback(app, hunk, content)
 	}

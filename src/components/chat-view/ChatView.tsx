@@ -905,7 +905,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						let formattedContent = `[${toolArgs.transformation}] transformation complete:\n\n${transformationResult.result}`;
 
 						if (transformationResult.truncated) {
-							formattedContent += `\n\n*Note: The original content was too long (${transformationResult.originalTokens} tokens) and was truncated to ${transformationResult.processedTokens} tokens for processing.*`;
+							formattedContent += `\n\n*Note: The original content was too long (${String(transformationResult.originalTokens)} tokens) and was truncated to ${String(transformationResult.processedTokens)} tokens for processing.*`;
 						}
 
 						return {
@@ -1011,7 +1011,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					};
 				} else {
 					// 处理未知的工具类型
-					throw new Error(`Unsupported tool type: ${(toolArgs as any).type || 'unknown'}`);
+					throw new Error(`Unsupported tool type: ${String((toolArgs as any).type || 'unknown')}`);
 				}
 			} catch (error) {
 				logger.error('Failed to apply changes', error)

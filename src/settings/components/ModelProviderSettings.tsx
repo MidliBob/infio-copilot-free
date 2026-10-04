@@ -419,7 +419,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 		modelId: string,
 		isCustom: boolean = false
 	) => {
-		logger.debug(`updateChatModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
+		logger.debug(`updateChatModelId: ${provider} -> ${modelId}, isCustom: ${String(isCustom)}`)
 		const providerSettingKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerSettingKey];
 		const currentModels = providerSettings.models || [];
@@ -441,7 +441,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	};
 
 	const updateApplyModelId = (provider: ApiProvider, modelId: string, isCustom: boolean = false) => {
-		logger.debug(`updateApplyModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
+		logger.debug(`updateApplyModelId: ${provider} -> ${modelId}, isCustom: ${String(isCustom)}`)
 		const providerSettingKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerSettingKey];
 		const currentModels = providerSettings.models || [];
@@ -463,7 +463,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	};
 
 	const updateEmbeddingModelId = (provider: ApiProvider, modelId: string, isCustom: boolean = false) => {
-		logger.debug(`updateEmbeddingModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
+		logger.debug(`updateEmbeddingModelId: ${provider} -> ${modelId}, isCustom: ${String(isCustom)}`)
 		const providerSettingKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerSettingKey];
 		const currentModels = providerSettings.models || [];
@@ -485,7 +485,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	};
 
 	const updateInsightModelId = (provider: ApiProvider, modelId: string, isCustom: boolean = false) => {
-		logger.debug(`updateInsightModelId: ${provider} -> ${modelId}, isCustom: ${isCustom}`)
+		logger.debug(`updateInsightModelId: ${provider} -> ${modelId}, isCustom: ${String(isCustom)}`)
 		const providerSettingKey = getProviderSettingKey(provider);
 		const providerSettings = settings[providerSettingKey];
 		const currentModels = providerSettings.models || [];

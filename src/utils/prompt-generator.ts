@@ -68,7 +68,7 @@ async function getFolderTreeContent(path: TFolder): Promise<string> {
 		})
 		return folderContent
 	} catch (error) {
-		throw new Error(`Failed to access path "${path.path}": ${error.message}`)
+		throw new Error(`Failed to access path "${path.path}": ${String(error.message)}`)
 	}
 }
 
@@ -132,7 +132,7 @@ async function getFileOrFolderContent(
 			return `(Failed to read contents of ${path.path})`
 		}
 	} catch (error) {
-		throw new Error(`Failed to access path "${path.path}": ${error.message}`)
+		throw new Error(`Failed to access path "${path.path}": ${String(error.message)}`)
 	}
 }
 
@@ -442,7 +442,7 @@ export class PromptGenerator {
 		})
 		const timeZone = formatter.resolvedOptions().timeZone
 		const timeZoneOffset = -now.getTimezoneOffset() / 60
-		const timeZoneOffsetStr = `${timeZoneOffset >= 0 ? "+" : ""}${timeZoneOffset}:00`
+		const timeZoneOffsetStr = `${timeZoneOffset >= 0 ? "+" : ""}${String(timeZoneOffset)}:00`
 		const timeDetails = `${formatter.format(now)} (${timeZone}, UTC${timeZoneOffsetStr})`
 		state += `\n## Current Time\n${timeDetails}`
 
@@ -613,7 +613,7 @@ export class PromptGenerator {
 			? blocks
 				.map(({ file, content, startLine, endLine }) => {
 					const content_with_line_numbers = addLineNumbers(content, startLine)
-					return `<user_mention_blocks location="${file.path}#L${startLine}-${endLine}">\n${content_with_line_numbers}\n</user_mention_blocks>`
+					return `<user_mention_blocks location="${file.path}#L${String(startLine)}-${String(endLine)}">\n${content_with_line_numbers}\n</user_mention_blocks>`
 				})
 				.join('\n')
 			: undefined
@@ -796,10 +796,10 @@ export class PromptGenerator {
 					content,
 					startLine: metadata.startLine,
 				})
-				return `<file_block_content location="${path}#L${metadata.startLine}-${metadata.endLine}">\n${contentWithLineNumbers}\n</file_block_content>`
+				return `<file_block_content location="${String(path)}#L${String(metadata.startLine)}-${String(metadata.endLine)}">\n${contentWithLineNumbers}\n</file_block_content>`
 			}).join('\n')
 			similaritySearchContents = snippets.length > 0
-				? `<similarity_search_results>\n${snippets}\n</similarity_search_results>`
+				? `<similarity_search_results>\n${String(snippets)}\n</similarity_search_results>`
 				: '<similarity_search_results>\n(No relevant results found)\n</similarity_search_results>'
 		} else {
 			similaritySearchContents = undefined
@@ -1031,7 +1031,7 @@ ${fileContent}
 		const context = await this.getContextForEdit(currentFile, startLine, endLine);
 
 		let userPrompt = `<task>\n${instruction}\n</task>\n\n
-<selected_content location="${currentFile.path}#L${startLine}-${endLine}">\n${selectedContent}\n</selected_content>`;
+<selected_content location="${currentFile.path}#L${String(startLine)}-${String(endLine)}">\n${selectedContent}\n</selected_content>`;
 
 		// 只有当上下文不为null时才添加
 		if (context !== null) {
@@ -1067,7 +1067,7 @@ When writing out new markdown blocks, remember not to include "line_number|" at 
 	}): string {
 		const lines = content.split('\n')
 		const linesWithNumbers = lines.map((line, index) => {
-			return `${startLine + index}|${line}`
+			return `${String(startLine + index)}|${line}`
 		})
 		return linesWithNumbers.join('\n')
 	}
@@ -1088,7 +1088,7 @@ When writing out new markdown blocks, remember not to include "line_number|" at 
 			return [
 				`Title: ${title}
 Video Transcript:
-${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
+${transcript.map((t) => `${String(t.offset)}: ${t.text}`).join('\n')}`,
 				''
 			]
 		}
@@ -1180,7 +1180,7 @@ ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
 		let uniquePath: string
 
 		do {
-			uniquePath = `${basePath}-${counter}.${extension}`
+			uniquePath = `${basePath}-${String(counter)}.${extension}`
 			counter++
 		} while (this.app.vault.getAbstractFileByPath(uniquePath))
 
@@ -1298,7 +1298,7 @@ ${transcript.map((t) => `${t.offset}: ${t.text}`).join('\n')}`,
 		const staticResourceDir = this.app.vault.getConfig("attachmentFolderPath")
 
 		// 构建完整的文件路径
-		const targetPath = staticResourceDir ? normalizePath(`${staticResourceDir}/${filename}`) : filename
+		const targetPath = staticResourceDir ? normalizePath(`${String(staticResourceDir)}/${filename}`) : filename
 
 		// 处理文件名冲突
 		// const uniquePath = await this.getUniqueFilePath(targetPath)

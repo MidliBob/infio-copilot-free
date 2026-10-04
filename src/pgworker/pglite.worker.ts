@@ -35,7 +35,7 @@ async function fetchAssetsFromCdn(): Promise<PgliteAssets> {
 			])
 			if (!wasmRes.ok || !dataRes.ok || !vectorRes.ok) {
 				throw new Error(
-					`HTTP ${wasmRes.status}/${dataRes.status}/${vectorRes.status} from ${base}`,
+					`HTTP ${String(wasmRes.status)}/${String(dataRes.status)}/${String(vectorRes.status)} from ${base}`,
 				)
 			}
 			return {

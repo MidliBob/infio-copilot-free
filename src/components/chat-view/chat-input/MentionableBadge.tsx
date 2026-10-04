@@ -180,7 +180,7 @@ function BlockBadge({
 				<span>{mentionable.file?.name || 'Unknown File'}</span>
 			</div>
 			<div className="icf-chat-user-input-file-badge-name-block-suffix">
-				{` (${mentionable.startLine}:${mentionable.endLine})`}
+				{` (${String(mentionable.startLine)}:${String(mentionable.endLine)})`}
 			</div>
 		</BadgeBase>
 	)

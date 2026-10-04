@@ -22,7 +22,7 @@ abstract class State implements EventHandler {
       this.context.transitionToDisabledManualState()
     } else if (settingErrors.size > 0) {
       new Notice(
-        `Copilot: There are ${settingErrors.size} errors in your settings. The plugin will be disabled until they are fixed.`
+        `Copilot: There are ${String(settingErrors.size)} errors in your settings. The plugin will be disabled until they are fixed.`
       );
       this.context.transitionToDisabledInvalidSettingsState();
     } else if (this.context.isCurrentFilePathIgnored() || this.context.currentFileContainsIgnoredTag()) {

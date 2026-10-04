@@ -31,7 +31,7 @@ export class ChatManager extends AbstractJsonRepository<
 		const sanitizedTitle = sanitize(chat.title, { maxLength: 100 })
 		// 如果没有工作区，使用 'vault' 作为默认值
 		const workspaceId = chat.workspace || 'vault'
-		return `v${chat.schemaVersion}_${sanitizedTitle}_${chat.updatedAt}_${chat.id}_${workspaceId}.json`
+		return `v${String(chat.schemaVersion)}_${sanitizedTitle}_${String(chat.updatedAt)}_${chat.id}_${workspaceId}.json`
 	}
 
 	protected parseFileName(fileName: string): ChatConversationMeta | null {

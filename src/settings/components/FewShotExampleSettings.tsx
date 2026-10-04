@@ -120,7 +120,7 @@ export default function FewShotExampleSettings(
 			</div>
 			{props.fewShotExamples.map((example, index) => (
 				<div
-					key={`few-shot-example-${index}`}
+					key={`few-shot-example-${String(index)}`}
 					style={{
 						borderBottom:
 							"1px solid var(--background-modifier-border)",
@@ -189,10 +189,10 @@ export default function FewShotExampleSettings(
 							>
 								Human message
 							</div>
-							{props.errorMessages.get(`fewShotExamples.${index}.input`) !== undefined && (
+							{props.errorMessages.get(`fewShotExamples.${String(index)}.input`) !== undefined && (
 								<div className="setting-item-description" style={{ width: "100%", textAlign: "left" }}>
 									<span className={"mod-warning"}>
-										{props.errorMessages.get(`fewShotExamples.${index}.input`)}
+										{props.errorMessages.get(`fewShotExamples.${String(index)}.input`)}
 									</span>
 								</div>
 							)}
@@ -209,10 +209,10 @@ export default function FewShotExampleSettings(
 							>
 								Assistant message
 							</div>
-							{props.errorMessages.get(`fewShotExamples.${index}.answer`) !== undefined && (
+							{props.errorMessages.get(`fewShotExamples.${String(index)}.answer`) !== undefined && (
 								<div className="setting-item-description" style={{ width: "100%", textAlign: "left" }}>
 									<span className={"mod-warning"}>
-										{props.errorMessages.get(`fewShotExamples.${index}.answer`)}
+										{props.errorMessages.get(`fewShotExamples.${String(index)}.answer`)}
 									</span>
 								</div>
 							)}

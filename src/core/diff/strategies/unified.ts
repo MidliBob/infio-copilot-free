@@ -133,7 +133,7 @@ Your diff here
 		} catch (error) {
 			return {
 				success: false,
-				error: `Error applying unified diff: ${error.message}`,
+				error: `Error applying unified diff: ${String(error.message)}`,
 				details: {
 					searchContent: diffContent,
 				},

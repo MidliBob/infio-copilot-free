@@ -21,13 +21,13 @@ export class WorkspaceManager extends AbstractJsonRepository<
 	protected generateFileName(workspace: Workspace): string {
 		// Format: v{schemaVersion}_{name}_{updatedAt}_{id}.json
 		const encodedName = encodeURIComponent(workspace.name)
-		return `v${workspace.schemaVersion}_${encodedName}_${workspace.updatedAt}_${workspace.id}.json`
+		return `v${String(workspace.schemaVersion)}_${encodedName}_${String(workspace.updatedAt)}_${workspace.id}.json`
 	}
 
 	protected parseFileName(fileName: string): WorkspaceMetadata | null {
 		// Parse: v{schemaVersion}_{name}_{updatedAt}_{id}.json
 		const regex = new RegExp(
-			`^v${WORKSPACE_SCHEMA_VERSION}_(.+)_(\\d+)_([0-9a-f-]+)\\.json$`,
+			`^v${String(WORKSPACE_SCHEMA_VERSION)}_(.+)_(\\d+)_([0-9a-f-]+)\\.json$`,
 		)
 		const match = fileName.match(regex)
 		if (!match) return null

@@ -106,7 +106,7 @@ export const listFilesAndFolders = async (
 			for (const tagItem of tags) {
 				const files = getFilesWithTag(tagItem.content, app)
 				if (files.length > 0) {
-					result.push(`${tagItem.content} (${files.length} files):`)
+					result.push(`${tagItem.content} (${String(files.length)} files):`)
 
 					// 使用简单的列表格式显示文件
 					files.forEach((file) => {
@@ -284,7 +284,7 @@ export const semanticSearchFiles = async (
 			resultSections.push('## 📝 Original note content')
 			const ragSnippets = ragResults.map(({ path, content, metadata }: any) => {
 				const contentWithLineNumbers = addLineNumbers(content, metadata.startLine)
-				return `<file_block_content location="${path}#L${metadata.startLine}-${metadata.endLine}">\n${contentWithLineNumbers}\n</file_block_content>`
+				return `<file_block_content location="${String(path)}#L${String(metadata.startLine)}-${String(metadata.endLine)}">\n${contentWithLineNumbers}\n</file_block_content>`
 			}).join('\n\n')
 			resultSections.push(ragSnippets)
 		}
@@ -325,7 +325,7 @@ export const semanticSearchFiles = async (
 					insights.forEach((insight, index) => {
 						const similarity = (insight.similarity * 100).toFixed(1)
 						resultSections.push(
-							`<insight_block source="${insight.source_path}" type="${insightType}" similarity="${similarity}%">\n${insight.insight}\n</insight_block>`
+							`<insight_block source="${String(insight.source_path)}" type="${insightType}" similarity="${similarity}%">\n${String(insight.insight)}\n</insight_block>`
 						)
 					})
 				}

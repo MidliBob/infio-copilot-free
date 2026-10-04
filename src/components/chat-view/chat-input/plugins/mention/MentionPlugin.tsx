@@ -58,7 +58,7 @@ const VALID_JOINS =
 const LENGTH_LIMIT = 75
 
 const AtSignMentionsRegex = new RegExp(
-	`(^|\\s|\\()([${TRIGGERS}]((?:${VALID_CHARS}${VALID_JOINS}){0,${LENGTH_LIMIT}}))$`,
+	`(^|\\s|\\()([${TRIGGERS}]((?:${VALID_CHARS}${VALID_JOINS}){0,${String(LENGTH_LIMIT)}}))$`,
 )
 
 // 50 is the longest alias length limit.
@@ -66,7 +66,7 @@ const ALIAS_LENGTH_LIMIT = 50
 
 // Regex used to match alias.
 const AtSignMentionsRegexAliasRegex = new RegExp(
-	`(^|\\s|\\()([${TRIGGERS}]((?:${VALID_CHARS}){0,${ALIAS_LENGTH_LIMIT}}))$`,
+	`(^|\\s|\\()([${TRIGGERS}]((?:${VALID_CHARS}){0,${String(ALIAS_LENGTH_LIMIT)}}))$`,
 )
 
 // At most, 20 suggestions are shown in the popup.
@@ -155,7 +155,7 @@ function MentionsTypeaheadMenuItem({
 			ref={(el) => option.setRefElement(el)}
 			role="option"
 			aria-selected={isSelected}
-			id={`typeahead-item-${index}`}
+			id={`typeahead-item-${String(index)}`}
 			onMouseEnter={onMouseEnter}
 			onClick={onClick}
 		>

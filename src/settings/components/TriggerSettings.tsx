@@ -91,18 +91,18 @@ function TriggerSettings(props: IProps): React.JSX.Element {
 			{triggers.map((trigger: Trigger, index: number) => (
 				<div
 					className="icf-autocomplete-setting-list-item"
-					key={`setting-list-item-${name.replace(" ", "-")}-${index}`}
+					key={`setting-list-item-${name.replace(" ", "-")}-${String(index)}`}
 				>
-					{(props.errorMessages.get(`triggers.${index}.value`) !== undefined || props.errorMessages.get(`triggers.${index}.type`) !== undefined) && (
+					{(props.errorMessages.get(`triggers.${String(index)}.value`) !== undefined || props.errorMessages.get(`triggers.${String(index)}.type`) !== undefined) && (
 						<div className="setting-item-description" style={{ width: "100%", textAlign: "left" }}>
-							{props.errorMessages.get(`triggers.${index}.value`) !== undefined && (
+							{props.errorMessages.get(`triggers.${String(index)}.value`) !== undefined && (
 								<span className={"mod-warning"}>
-									{props.errorMessages.get(`triggers.${index}.value`)}
+									{props.errorMessages.get(`triggers.${String(index)}.value`)}
 								</span>
 							)}
-							{props.errorMessages.get(`triggers.${index}.type`) !== undefined && (
+							{props.errorMessages.get(`triggers.${String(index)}.type`) !== undefined && (
 								<span className={"mod-warning"}>
-									{props.errorMessages.get(`triggers.${index}.type`)}
+									{props.errorMessages.get(`triggers.${String(index)}.type`)}
 								</span>
 							)}
 						</div>

@@ -34,18 +34,18 @@ export const ollamaApiSettingsSchema = z.object({
 
 export const modelOptionsSchema = z.object({
 	temperature: z.number()
-		.min(MIN_TEMPERATURE, { message: `Temperature must be at least ${MIN_TEMPERATURE}` }),
+		.min(MIN_TEMPERATURE, { message: `Temperature must be at least ${String(MIN_TEMPERATURE)}` }),
 	top_p: z.number()
-		.min(MIN_TOP_P, { message: `top_p must be greater than ${MIN_TOP_P}` })
-		.max(MAX_TOP_P, { message: `top_p must be at most ${MAX_TOP_P}` }),
+		.min(MIN_TOP_P, { message: `top_p must be greater than ${String(MIN_TOP_P)}` })
+		.max(MAX_TOP_P, { message: `top_p must be at most ${String(MAX_TOP_P)}` }),
 	frequency_penalty: z.number()
-		.min(MIN_FREQUENCY_PENALTY, { message: `Frequency penalty must be at least ${MIN_FREQUENCY_PENALTY}` })
-		.max(MAX_FREQUENCY_PENALTY, { message: `Frequency penalty must be at most ${MAX_FREQUENCY_PENALTY}` }),
+		.min(MIN_FREQUENCY_PENALTY, { message: `Frequency penalty must be at least ${String(MIN_FREQUENCY_PENALTY)}` })
+		.max(MAX_FREQUENCY_PENALTY, { message: `Frequency penalty must be at most ${String(MAX_FREQUENCY_PENALTY)}` }),
 	presence_penalty: z.number()
-		.min(MIN_PRESENCE_PENALTY, { message: `Presence penalty must be at least ${MIN_PRESENCE_PENALTY}` })
-		.max(MAX_PRESENCE_PENALTY, { message: `Presence penalty must be at most ${MAX_PRESENCE_PENALTY}` }),
+		.min(MIN_PRESENCE_PENALTY, { message: `Presence penalty must be at least ${String(MIN_PRESENCE_PENALTY)}` })
+		.max(MAX_PRESENCE_PENALTY, { message: `Presence penalty must be at most ${String(MAX_PRESENCE_PENALTY)}` }),
 	max_tokens: z.number().int()
-		.min(MIN_MAX_TOKENS, { message: `max_tokens must be at least than ${MIN_MAX_TOKENS}` }),
+		.min(MIN_MAX_TOKENS, { message: `max_tokens must be at least than ${String(MIN_MAX_TOKENS)}` }),
 }).strict();
 
 export const fewShotExampleSchema = z.object({

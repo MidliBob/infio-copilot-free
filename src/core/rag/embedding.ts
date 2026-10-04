@@ -58,7 +58,7 @@ export const getEmbeddingModel = (
 						return result.vec
 					} catch (error) {
 						logger.error('LocalProvider embedding error:', error)
-						throw new Error(`LocalProvider embedding failed: ${error.message}`)
+						throw new Error(`LocalProvider embedding failed: ${String(error.message)}`)
 					}
 				},
 				getBatchEmbeddings: async (texts: string[]) => {
@@ -71,7 +71,7 @@ export const getEmbeddingModel = (
 						return results.map(result => result.vec)
 					} catch (error) {
 						logger.error('LocalProvider batch embedding error:', error)
-						throw new Error(`LocalProvider batch embedding failed: ${error.message}`)
+						throw new Error(`LocalProvider batch embedding failed: ${String(error.message)}`)
 					}
 				},
 			}

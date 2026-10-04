@@ -146,13 +146,13 @@ export class EmbeddingManager {
 	}
 
 	private async performLoadModel(modelId: string, useGpu: boolean): Promise<ModelLoadResult> {
-		logger.debug(`Loading embedding model: ${modelId}, GPU: ${useGpu}`);
+		logger.debug(`Loading embedding model: ${modelId}, GPU: ${String(useGpu)}`);
 
 		try {
 			// A different model or a different backend (GPU toggle) is
 			// loaded: unload first, then load the requested configuration.
 			if (this.isModelLoaded && (this.currentModelId !== modelId || this.currentUseGpu !== useGpu)) {
-				logger.debug(`Unloading previous model: ${this.currentModelId} (GPU: ${this.currentUseGpu})`);
+				logger.debug(`Unloading previous model: ${this.currentModelId} (GPU: ${String(this.currentUseGpu)})`);
 				await this.unloadModel();
 			}
 
@@ -166,7 +166,7 @@ export class EmbeddingManager {
 			this.currentUseGpu = result.model_loaded ? useGpu : null;
 
 			if (result.model_loaded) {
-				logger.debug(`Model ${modelId} loaded successfully (GPU: ${useGpu}, backend: ${result.backend ?? 'unknown'})`);
+				logger.debug(`Model ${modelId} loaded successfully (GPU: ${String(useGpu)}, backend: ${result.backend ?? 'unknown'})`);
 			}
 
 			return result;
@@ -193,13 +193,13 @@ export class EmbeddingManager {
 			return [];
 		}
 
-		logger.debug(`Generating embeddings for ${texts.length} texts`);
+		logger.debug(`Generating embeddings for ${String(texts.length)} texts`);
 
 		try {
 			const inputs = texts.map(text => ({ embed_input: text }));
 			const results = await this.postRequest<EmbedResult[]>('embed_batch', { inputs });
 
-			logger.debug(`Generated ${results.length} embeddings`);
+			logger.debug(`Generated ${String(results.length)} embeddings`);
 			return results;
 		} catch (error) {
 			logger.error('Failed to generate embeddings:', error);

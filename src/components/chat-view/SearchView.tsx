@@ -702,7 +702,7 @@ const SearchView = () => {
 									<div
 										className="obsidian-rag-progress-fill"
 										style={{
-											width: `${(ragInitProgress.indexProgress.completedChunks / Math.max(ragInitProgress.indexProgress.totalChunks, 1)) * 100}%`
+											width: `${String((ragInitProgress.indexProgress.completedChunks / Math.max(ragInitProgress.indexProgress.totalChunks, 1)) * 100)}%`
 										}}
 									></div>
 								</div>
@@ -1015,7 +1015,7 @@ const SearchView = () => {
 											{/* AI 洞察 */}
 											{fileGroup.insights.map((insight, insightIndex) => (
 												<div
-													key={`insight-${insight.id}`}
+													key={`insight-${String(insight.id)}`}
 													className="obsidian-result-item obsidian-result-insight"
 												>
 													<div className="obsidian-result-header">
@@ -1037,7 +1037,7 @@ const SearchView = () => {
 											{/* 原始笔记块 */}
 											{fileGroup.blocks.map((result, blockIndex) => (
 												<div
-													key={`block-${result.id}`}
+													key={`block-${String(result.id)}`}
 													className="obsidian-result-item obsidian-result-block"
 													onClick={() => handleResultClick(result)}
 												>

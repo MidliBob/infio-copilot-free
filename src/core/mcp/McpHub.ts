@@ -594,7 +594,7 @@ export class McpHub {
 			const connection = this.findConnection(name, source)
 			if (connection) {
 				connection.server.status = "disconnected"
-				this.appendErrorMessage(connection, error instanceof Error ? error.message : `${error}`)
+				this.appendErrorMessage(connection, error instanceof Error ? error.message : String(error))
 			}
 			throw error
 		}

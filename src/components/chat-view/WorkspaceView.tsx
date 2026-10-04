@@ -210,8 +210,8 @@ const WorkspaceView = () => {
 		const tags = content.filter(c => c.type === 'tag').length
 		
 		const parts = []
-		if (folders > 0) parts.push(`${folders} ${String(t('workspace.folders'))}`)
-		if (tags > 0) parts.push(`${tags} ${String(t('workspace.tags'))}`)
+		if (folders > 0) parts.push(`${String(folders)} ${String(t('workspace.folders'))}`)
+		if (tags > 0) parts.push(`${String(tags)} ${String(t('workspace.tags'))}`)
 		
 		return parts.join(', ') || String(t('workspace.noContent'))
 	}

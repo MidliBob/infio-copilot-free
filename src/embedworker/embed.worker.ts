@@ -33,7 +33,7 @@ console.debug('Embedding worker loaded');
 		}
 	}
 	const after: { process?: unknown } = globalThis;
-	console.debug(`[worker] Electron process shim: present=${shimPresent} neutralized=${after.process === undefined}`);
+	console.debug(`[worker] Electron process shim: present=${String(shimPresent)} neutralized=${String(after.process === undefined)}`);
 })();
 
 interface EmbedInput {
@@ -214,7 +214,7 @@ async function loadTransformers(): Promise<void> {
 		console.debug('Transformers.js loaded successfully');
 	} catch (error) {
 		console.error('Failed to load Transformers.js:', error);
-		throw new Error(`Failed to load Transformers.js: ${error}`);
+		throw new Error(`Failed to load Transformers.js: ${String(error)}`);
 	}
 }
 
@@ -245,7 +245,7 @@ async function disposePipelineValue(value: unknown): Promise<void> {
 
 async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ model_loaded: boolean; backend: string }> {
 	try {
-		console.debug(`Loading model: ${modelKey}, GPU: ${useGpu}`);
+		console.debug(`Loading model: ${modelKey}, GPU: ${String(useGpu)}`);
 
 		// A reload can target a different device (the GPU toggle flipped at
 		// runtime) or a different model: release the previous session first.
@@ -368,7 +368,7 @@ async function loadModel(modelKey: string, useGpu: boolean = false): Promise<{ m
 
 	} catch (error) {
 		console.error('Error loading model:', error);
-		throw new Error(`Failed to load model: ${error}`);
+		throw new Error(`Failed to load model: ${String(error)}`);
 	}
 }
 
@@ -389,7 +389,7 @@ async function unloadModel(): Promise<{ model_unloaded: boolean }> {
 
 	} catch (error) {
 		console.error('Error unloading model:', error);
-		throw new Error(`Failed to unload model: ${error}`);
+		throw new Error(`Failed to unload model: ${String(error)}`);
 	}
 }
 
@@ -405,7 +405,7 @@ async function countTokens(input: string): Promise<{ tokens: number }> {
 
 	} catch (error) {
 		console.error('Error counting tokens:', error);
-		throw new Error(`Failed to count tokens: ${error}`);
+		throw new Error(`Failed to count tokens: ${String(error)}`);
 	}
 }
 
@@ -415,7 +415,7 @@ async function embedBatch(inputs: EmbedInput[]): Promise<EmbedResult[]> {
 			throw new Error('Model not loaded');
 		}
 
-		console.debug(`Processing ${inputs.length} inputs`);
+		console.debug(`Processing ${String(inputs.length)} inputs`);
 
 		// 过滤空输入
 		const filteredInputs = inputs.filter(item => item.embed_input && item.embed_input.length > 0);
@@ -428,7 +428,7 @@ async function embedBatch(inputs: EmbedInput[]): Promise<EmbedResult[]> {
 		const batchSize = 1;
 
 		if (filteredInputs.length > batchSize) {
-			console.debug(`Processing ${filteredInputs.length} inputs in batches of ${batchSize}`);
+			console.debug(`Processing ${String(filteredInputs.length)} inputs in batches of ${String(batchSize)}`);
 			const results: EmbedResult[] = [];
 
 			for (let i = 0; i < filteredInputs.length; i += batchSize) {
@@ -444,7 +444,7 @@ async function embedBatch(inputs: EmbedInput[]): Promise<EmbedResult[]> {
 
 	} catch (error) {
 		console.error('Error in embed batch:', error);
-		throw new Error(`Failed to generate embeddings: ${error}`);
+		throw new Error(`Failed to generate embeddings: ${String(error)}`);
 	}
 }
 
@@ -640,7 +640,7 @@ self.addEventListener('unhandledrejection', (event) => {
 	console.error('Worker unhandled promise rejection:', event);
 	self.postMessage({
 		id: -1,
-		error: `Worker unhandled rejection: ${event.reason || 'Unknown error'}`
+		error: `Worker unhandled rejection: ${String(event.reason || 'Unknown error')}`
 	});
 	event.preventDefault(); // 防止默认的控制台错误
 });

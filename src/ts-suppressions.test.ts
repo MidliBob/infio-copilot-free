@@ -109,11 +109,11 @@ describe('TypeScript suppression debt ratchet', () => {
 				const b = base[name] ?? 0
 				if (c > b) {
 					problems.push(
-						`NEW suppression: ${path} ts-${name === 'expectError' ? 'expect-error' : name}: baseline ${b}, now ${c}`,
+						`NEW suppression: ${path} ts-${name === 'expectError' ? 'expect-error' : name}: baseline ${String(b)}, now ${String(c)}`,
 					)
 				} else if (c < b) {
 					problems.push(
-						`stale baseline: ${path} ts-${name === 'expectError' ? 'expect-error' : name}: baseline ${b}, now ${c} - shrink it with: node scripts/ts-suppressions.mjs --update`,
+						`stale baseline: ${path} ts-${name === 'expectError' ? 'expect-error' : name}: baseline ${String(b)}, now ${String(c)} - shrink it with: node scripts/ts-suppressions.mjs --update`,
 					)
 				}
 			}

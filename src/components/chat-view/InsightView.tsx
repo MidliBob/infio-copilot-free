@@ -226,14 +226,14 @@ const InsightView = () => {
 				// 显示成功消息和统计信息
 				logger.debug(t('insights.success.workspaceInitialized', { name: currentWorkspace.name }))
 				logger.debug(`✅ Deep processing statistics:`)
-				logger.debug(`📁 Files processed: ${result.processedFiles}`)
-				logger.debug(`📂 Folders processed: ${result.processedFolders}`)
-				logger.debug(`📊 Total items: ${result.totalItems} (including all sub-items)`)
+				logger.debug(`📁 Files processed: ${String(result.processedFiles)}`)
+				logger.debug(`📂 Folders processed: ${String(result.processedFolders)}`)
+				logger.debug(`📊 Total items: ${String(result.totalItems)} (including all sub-items)`)
 				if (result.skippedItems > 0) {
-					logger.debug(`⚠️  Skipped items: ${result.skippedItems}`)
+					logger.debug(`⚠️  Skipped items: ${String(result.skippedItems)}`)
 				}
 				if (result.insightId) {
-					logger.debug(`🔍 Insight ID: ${result.insightId}`)
+					logger.debug(`🔍 Insight ID: ${String(result.insightId)}`)
 				}
 				logger.debug(`💡 Workspace summary uses only top-level configured items to avoid content overlap`)
 
@@ -634,7 +634,7 @@ const InsightView = () => {
 								<div
 									className="obsidian-insight-progress-fill"
 									style={{
-										width: `${initProgress.percentage !== undefined ? initProgress.percentage : (initProgress.current / Math.max(initProgress.total, 1)) * 100}%`
+										width: `${String(initProgress.percentage !== undefined ? initProgress.percentage : (initProgress.current / Math.max(initProgress.total, 1)) * 100)}%`
 									}}
 								></div>
 							</div>

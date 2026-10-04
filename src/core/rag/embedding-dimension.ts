@@ -34,10 +34,10 @@ async function probeDimension(embeddingModel: EmbeddingModel): Promise<number> {
 	}
 	if (!SUPPORT_EMBEDDING_SIMENTION.includes(dimension)) {
 		throw new Error(
-			`Embedding dimension ${dimension} of model "${embeddingModel.id}" is not supported. Supported dimensions: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')}. Please choose an embedding model with one of these dimensions.`
+			`Embedding dimension ${String(dimension)} of model "${embeddingModel.id}" is not supported. Supported dimensions: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')}. Please choose an embedding model with one of these dimensions.`
 		)
 	}
-	logger.info(`Detected embedding dimension ${dimension} for model "${embeddingModel.id}"`)
+	logger.info(`Detected embedding dimension ${String(dimension)} for model "${embeddingModel.id}"`)
 	return dimension
 }
 

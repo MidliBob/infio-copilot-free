@@ -48,7 +48,7 @@ function CommandMenuItem({
 			ref={(el) => option.setRefElement(el)}
 			role="option"
 			aria-selected={isSelected}
-			id={`typeahead-item-${index}`}
+			id={`typeahead-item-${String(index)}`}
 			onMouseEnter={onMouseEnter}
 			onClick={onClick}
 		>

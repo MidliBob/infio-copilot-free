@@ -20,7 +20,7 @@ export class InsightRepository {
     await resolveEmbeddingDimension(embeddingModel)
     const tableDefinition = sourceInsightTables[embeddingModel.dimension]
     if (!tableDefinition) {
-      throw new Error(`No source insight table definition found for model: ${embeddingModel.id} (dimension ${embeddingModel.dimension}; supported: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')})`)
+      throw new Error(`No source insight table definition found for model: ${embeddingModel.id} (dimension ${String(embeddingModel.dimension)}; supported: ${SUPPORT_EMBEDDING_SIMENTION.join(', ')})`)
     }
     return tableDefinition.name
   }
@@ -157,7 +157,7 @@ export class InsightRepository {
     // 构建批量插入的 SQL
     const values = data.map((insight, index) => {
       const offset = index * 7
-      return `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7})`
+      return `($${String(offset + 1)}, $${String(offset + 2)}, $${String(offset + 3)}, $${String(offset + 4)}, $${String(offset + 5)}, $${String(offset + 6)}, $${String(offset + 7)})`
     }).join(',')
 
     const params = data.flatMap(insight => [
@@ -192,49 +192,49 @@ export class InsightRepository {
     let paramIndex = 1
 
     if (data.insight_type !== undefined) {
-      fields.push(`insight_type = $${paramIndex}`)
+      fields.push(`insight_type = $${String(paramIndex)}`)
       params.push(data.insight_type)
       paramIndex++
     }
 
     if (data.insight !== undefined) {
-      fields.push(`insight = $${paramIndex}`)
+      fields.push(`insight = $${String(paramIndex)}`)
       params.push(data.insight.replace(/\0/g, ''))
       paramIndex++
     }
 
     if (data.source_type !== undefined) {
-      fields.push(`source_type = $${paramIndex}`)
+      fields.push(`source_type = $${String(paramIndex)}`)
       params.push(data.source_type)
       paramIndex++
     }
 
     if (data.source_path !== undefined) {
-      fields.push(`source_path = $${paramIndex}`)
+      fields.push(`source_path = $${String(paramIndex)}`)
       params.push(data.source_path)
       paramIndex++
     }
 
     if (data.source_mtime !== undefined) {
-      fields.push(`source_mtime = $${paramIndex}`)
+      fields.push(`source_mtime = $${String(paramIndex)}`)
       params.push(data.source_mtime)
       paramIndex++
     }
 
     if (data.embedding !== undefined) {
-      fields.push(`embedding = $${paramIndex}`)
+      fields.push(`embedding = $${String(paramIndex)}`)
       params.push(`[${data.embedding.join(',')}]`)
       paramIndex++
     }
 
-    fields.push(`updated_at = $${paramIndex}`)
+    fields.push(`updated_at = $${String(paramIndex)}`)
     params.push(new Date())
     paramIndex++
 
     params.push(id)
 
     await this.db.query(
-      `UPDATE "${tableName}" SET ${fields.join(', ')} WHERE id = $${paramIndex}`,
+      `UPDATE "${tableName}" SET ${fields.join(', ')} WHERE id = $${String(paramIndex)}`,
       params
     )
   }
@@ -264,19 +264,19 @@ export class InsightRepository {
     let paramIndex = 4
 
     if (options.insightTypes && options.insightTypes.length > 0) {
-      whereConditions.push(`insight_type = ANY($${paramIndex})`)
+      whereConditions.push(`insight_type = ANY($${String(paramIndex)})`)
       params.push(options.insightTypes)
       paramIndex++
     }
 
     if (options.sourceTypes && options.sourceTypes.length > 0) {
-      whereConditions.push(`source_type = ANY($${paramIndex})`)
+      whereConditions.push(`source_type = ANY($${String(paramIndex)})`)
       params.push(options.sourceTypes)
       paramIndex++
     }
 
     if (options.sourcePaths && options.sourcePaths.length > 0) {
-      whereConditions.push(`source_path = ANY($${paramIndex})`)
+      whereConditions.push(`source_path = ANY($${String(paramIndex)})`)
       params.push(options.sourcePaths)
       paramIndex++
     }

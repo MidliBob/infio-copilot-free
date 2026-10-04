@@ -28,7 +28,7 @@ async function safeReadFile(filePath: string): Promise<string> {
  * Get the path to a system prompt file for a specific mode
  */
 export function getSystemPromptFilePath(cwd: string, mode: Mode): string {
-	return path.join(cwd, "_infio_prompts", `${mode}_system_prompt`)
+	return path.join(cwd, "_infio_prompts", `${String(mode)}_system_prompt`)
 }
 
 /**

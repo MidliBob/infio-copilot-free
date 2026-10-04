@@ -16,7 +16,7 @@ export async function injectEnv<C extends string | Record<PropertyKey, any>>(con
 		// Check if null or undefined
 		// intentionally using == to match null | undefined
 		if (process.env[name] == null) {
-			logger.warn(`[injectEnv] env variable ${name} referenced but not found in process.env`)
+			logger.warn(`[injectEnv] env variable ${String(name)} referenced but not found in process.env`)
 		}
 
 		return process.env[name] ?? notFoundValue

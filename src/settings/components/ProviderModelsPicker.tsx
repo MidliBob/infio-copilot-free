@@ -198,7 +198,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 			const ids = isEmbedding
 				? await GetEmbeddingProviderModelIdsAsync(modelProvider, settings)
 				: await GetProviderModelIds(modelProvider, settings);
-			logger.debug(`📝 Fetched ${ids.length} official models for ${modelProvider}:`, ids);
+			logger.debug(`📝 Fetched ${String(ids.length)} official models for ${modelProvider}:`, ids);
 			setModelIds(ids);
 		};
 
@@ -211,7 +211,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 		logger.debug(`🔍 Custom models in settings for ${modelProvider}:`, providerModels || 'none')
 		// Ensure providerModels is an array of strings
 		if (!providerModels || !Array.isArray(providerModels)) {
-			logger.debug(`📋 Using only official models (${modelIds.length}):`, modelIds);
+			logger.debug(`📋 Using only official models (${String(modelIds.length)}):`, modelIds);
 			return modelIds;
 		}
 		const additionalModels = providerModels.filter((model): model is string => typeof model === 'string');
@@ -222,10 +222,10 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 		// Free-text entry still works, and custom entries remain listed when
 		// the server list is unavailable (e.g. Ollama stopped).
 		if (isEmbedding && modelProvider === ApiProvider.Ollama && modelIds.length > 0) {
-			logger.debug(`📋 Using only embedding-capable models (${modelIds.length}):`, modelIds);
+			logger.debug(`📋 Using only embedding-capable models (${String(modelIds.length)}):`, modelIds);
 			return modelIds;
 		}
-		logger.debug(`📋 Combined models: ${modelIds.length} official + ${additionalModels.length} custom`);
+		logger.debug(`📋 Combined models: ${String(modelIds.length)} official + ${String(additionalModels.length)} custom`);
 		return [...modelIds, ...additionalModels];
 	}, [modelIds, settings, modelProvider, isEmbedding]);
 

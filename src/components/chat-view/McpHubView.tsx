@@ -403,7 +403,7 @@ const McpHubView = () => {
 												{currentDetailTab === 'errors' && (
 													<div className="icf-mcp-errors-list">
 														{(server.errorHistory && server.errorHistory.length > 0)
-															? [...server.errorHistory].sort((a, b) => b.timestamp - a.timestamp).map((err, idx) => <ErrorRow key={`${err.timestamp}-${idx}`} error={err} />)
+															? [...server.errorHistory].sort((a, b) => b.timestamp - a.timestamp).map((err, idx) => <ErrorRow key={`${String(err.timestamp)}-${String(idx)}`} error={err} />)
 															: <p className="icf-mcp-empty-message">{t('mcpHub.noErrors')}</p>}
 													</div>
 												)}

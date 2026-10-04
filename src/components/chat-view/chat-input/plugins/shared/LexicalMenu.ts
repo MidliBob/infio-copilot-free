@@ -314,7 +314,7 @@ export function LexicalMenu<TOption extends MenuOption>({
       if (rootElem !== null) {
         rootElem.setAttribute(
           'aria-activedescendant',
-          `typeahead-item-${index}`,
+          `typeahead-item-${String(index)}`,
         )
         setHighlightedIndex(index)
       }
@@ -496,16 +496,16 @@ export function useMenuAnchorRef(
     if (rootElement !== null && resolution !== null) {
       const { left, top, width, height } = resolution.getRect()
       const anchorHeight = anchorElementRef.current.offsetHeight // use to position under anchor
-      containerDiv.style.top = `${top +
+      containerDiv.style.top = `${String(top +
         anchorHeight +
         3 +
-        (shouldIncludePageYOffset__EXPERIMENTAL ? window.pageYOffset : 0)
+        (shouldIncludePageYOffset__EXPERIMENTAL ? window.pageYOffset : 0))
         }px`
-      containerDiv.style.left = `${left + window.pageXOffset}px`
-      containerDiv.style.height = `${height}px`
-      containerDiv.style.width = `${width}px`
+      containerDiv.style.left = `${String(left + window.pageXOffset)}px`
+      containerDiv.style.height = `${String(height)}px`
+      containerDiv.style.width = `${String(width)}px`
       if (menuEle !== null) {
-        menuEle.style.top = `${top}`
+        menuEle.style.top = String(top)
         const menuRect = menuEle.getBoundingClientRect()
         const menuHeight = menuRect.height
         const menuWidth = menuRect.width
@@ -513,7 +513,7 @@ export function useMenuAnchorRef(
         const rootElementRect = rootElement.getBoundingClientRect()
 
         if (left + menuWidth > rootElementRect.right) {
-          containerDiv.style.left = `${rootElementRect.right - menuWidth + window.pageXOffset
+          containerDiv.style.left = `${String(rootElementRect.right - menuWidth + window.pageXOffset)
             }px`
         }
         if (
@@ -524,10 +524,10 @@ export function useMenuAnchorRef(
           top + menuHeight >
           window.innerHeight
         ) {
-          containerDiv.style.top = `${top -
+          containerDiv.style.top = `${String(top -
             menuHeight -
             height +
-            (shouldIncludePageYOffset__EXPERIMENTAL ? window.pageYOffset : 0)
+            (shouldIncludePageYOffset__EXPERIMENTAL ? window.pageYOffset : 0))
             }px`
         }
       }

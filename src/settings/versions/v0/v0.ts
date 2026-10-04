@@ -38,8 +38,8 @@ export const settingsSchema = z.object({
 	chainOfThoughRemovalRegex: z.string(),
 	dontIncludeDataviews: z.boolean(),
 	// TODO: see if we can replace this with tokens in the future.
-	maxPrefixCharLimit: z.number().int().min(MIN_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at least ${MIN_MAX_CHAR_LIMIT}` }).max(MAX_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at most ${MAX_MAX_CHAR_LIMIT}` }),
-	maxSuffixCharLimit: z.number().int().min(MIN_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at least ${MIN_MAX_CHAR_LIMIT}` }).max(MAX_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at most ${MAX_MAX_CHAR_LIMIT}` }),
+	maxPrefixCharLimit: z.number().int().min(MIN_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at least ${String(MIN_MAX_CHAR_LIMIT)}` }).max(MAX_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at most ${String(MAX_MAX_CHAR_LIMIT)}` }),
+	maxSuffixCharLimit: z.number().int().min(MIN_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at least ${String(MIN_MAX_CHAR_LIMIT)}` }).max(MAX_MAX_CHAR_LIMIT, { message: `Max prefix char limit must be at most ${String(MAX_MAX_CHAR_LIMIT)}` }),
 	removeDuplicateMathBlockIndicator: z.boolean(),
 	removeDuplicateCodeBlockIndicator: z.boolean()
 }).strict();

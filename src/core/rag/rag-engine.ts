@@ -312,7 +312,7 @@ export class RAGEngine {
 
 		// 处理相似度搜索结果
 		similarityResults.forEach((result, index) => {
-			const key = `${result.path}-${result.id}`
+			const key = `${result.path}-${String(result.id)}`
 			const rank = index + 1
 			const rrfScore = 1 / (k + rank)
 			
@@ -337,7 +337,7 @@ export class RAGEngine {
 
 		// 处理全文搜索结果
 		fulltextResults.forEach((result, index) => {
-			const key = `${result.path}-${result.id}`
+			const key = `${result.path}-${String(result.id)}`
 			const rank = index + 1
 			const rrfScore = 1 / (k + rank)
 			

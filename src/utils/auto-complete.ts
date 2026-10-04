@@ -206,7 +206,7 @@ export function findEqualPaths(obj1: any, obj2: any, basePath = ''): string[] {
 
 	// Function to iterate over keys and compare values
 	function iterateKeys(value: any, key: string | number): void {
-		const path = basePath ? `${basePath}.${key}` : `${key}`;
+		const path = basePath ? `${basePath}.${String(key)}` : String(key);
 		if (isObject(value) && isObject(get(obj2, key))) {
 			// Recursively find paths for nested objects
 			paths = paths.concat(findEqualPaths(value, get(obj2, key), path));
@@ -218,7 +218,7 @@ export function findEqualPaths(obj1: any, obj2: any, basePath = ''): string[] {
 
 	// If both are arrays, iterate using each index
 	if (isArray(obj1) && isArray(obj2)) {
-		each(obj1, (value, index) => iterateKeys(value, `[${index}]`));
+		each(obj1, (value, index) => iterateKeys(value, `[${String(index)}]`));
 	} else {
 		// Iterate over keys of the first object
 		each(obj1, iterateKeys);

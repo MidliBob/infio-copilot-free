@@ -22,12 +22,12 @@ export class CommandManager extends AbstractJsonRepository<
 	protected generateFileName(template: Command): string {
 		// Format: v{schemaVersion}_name_id.json (with name encoded)
 		const encodedName = encodeURIComponent(template.name)
-		return `v${COMMAND_SCHEMA_VERSION}_${encodedName}_${template.id}.json`
+		return `v${String(COMMAND_SCHEMA_VERSION)}_${encodedName}_${template.id}.json`
 	}
 
 	protected parseFileName(fileName: string): CommandMetadata | null {
 		const match = fileName.match(
-			new RegExp(`^v${COMMAND_SCHEMA_VERSION}_(.+)_([0-9a-f-]+)\\.json$`),
+			new RegExp(`^v${String(COMMAND_SCHEMA_VERSION)}_(.+)_([0-9a-f-]+)\\.json$`),
 		)
 		if (!match) return null
 

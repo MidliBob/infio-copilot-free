@@ -61,13 +61,13 @@ export class CommandRepository {
 		let paramIndex = 1
 
 		if (command.name !== undefined) {
-			setClauses.push(`name = $${paramIndex}`)
+			setClauses.push(`name = $${String(paramIndex)}`)
 			params.push(command.name)
 			paramIndex++
 		}
 
 		if (command.content !== undefined) {
-			setClauses.push(`content = $${paramIndex}`)
+			setClauses.push(`content = $${String(paramIndex)}`)
 			params.push(command.content)
 			paramIndex++
 		}
@@ -78,7 +78,7 @@ export class CommandRepository {
 		const result = await this.db.query<SelectTemplate>(
 			`UPDATE "template"
        SET ${setClauses.join(', ')}
-       WHERE id = $${paramIndex}
+       WHERE id = $${String(paramIndex)}
        RETURNING *`,
 			params
 		)
