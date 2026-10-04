@@ -93,7 +93,6 @@ export default tseslint.config(
 			'@typescript-eslint/no-unsafe-member-access': 'off',
 			'@typescript-eslint/no-unsafe-call': 'off',
 			'@typescript-eslint/no-unnecessary-condition': 'off',
-			'@typescript-eslint/no-misused-promises': 'off',
 
 			// require the strictNullChecks compiler option and only emit
 			// "This rule requires strictNullChecks" meta-errors without it
@@ -104,7 +103,11 @@ export default tseslint.config(
 
 			// enabled in 1.7.10 after burning the last 4 findings:
 			// '@typescript-eslint/no-floating-promises' now comes from
-			// strictTypeChecked and is no longer force-tracked/off
+			// strictTypeChecked and is no longer force-tracked/off.
+			// enabled in 1.7.12 the same way after fixing all 65 findings
+			// (void-wrapped JSX handlers, sync callbacks with inner
+			// void-IIFE/.catch, explicit null checks instead of Promise
+			// truthiness): '@typescript-eslint/no-misused-promises'
 		},
 	},
 )

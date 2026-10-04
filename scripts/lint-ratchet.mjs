@@ -21,12 +21,13 @@
  * Rules that are switched off in eslint.config.mjs but tracked here (the
  * phase-2/phase-3 ratchet scope): no-unsafe-assignment,
  * no-unsafe-member-access, no-unsafe-call (frozen since 1.5.5) plus
- * no-misused-promises and no-unnecessary-condition (added to the freeze in
- * 1.7.9 — they had never been measured before). They are force-enabled for
- * this run only, so the baseline already accounts for them and enabling a
- * rule in eslint.config.mjs later is a no-op for the ratchet.
- * (no-floating-promises graduated from this list in 1.7.10: its last four
- * findings were fixed and the rule is enabled in eslint.config.mjs.)
+ * no-unnecessary-condition (added to the freeze in 1.7.9 — it had never
+ * been measured before). They are force-enabled for this run only, so the
+ * baseline already accounts for them and enabling a rule in
+ * eslint.config.mjs later is a no-op for the ratchet.
+ * (no-floating-promises graduated from this list in 1.7.10 and
+ * no-misused-promises in 1.7.12: their last findings were fixed and both
+ * rules are enabled in eslint.config.mjs.)
  *
  * Only error-severity violations are tracked (warnings never failed CI and
  * still don't). Parse errors are tracked under the pseudo-rule "(parse)".
@@ -48,7 +49,6 @@ const TRACKED_FORCED_RULES = {
 	'@typescript-eslint/no-unsafe-assignment': 'error',
 	'@typescript-eslint/no-unsafe-member-access': 'error',
 	'@typescript-eslint/no-unsafe-call': 'error',
-	'@typescript-eslint/no-misused-promises': 'error',
 	'@typescript-eslint/no-unnecessary-condition': 'error',
 }
 
