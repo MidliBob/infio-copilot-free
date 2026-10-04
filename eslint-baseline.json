@@ -260,8 +260,7 @@
 		"src/components/chat-view/chat-input/PromptInputWithActions.tsx": {
 			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-misused-promises": 1,
-			"@typescript-eslint/no-unnecessary-condition": 18,
-			"@typescript-eslint/no-unused-expressions": 1
+			"@typescript-eslint/no-unnecessary-condition": 18
 		},
 		"src/components/chat-view/chat-input/SearchButton.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -931,9 +930,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/hooks/use-custom-mode.ts": {
-			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/prefer-reduce-type-parameter": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/lang/helpers.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
@@ -1305,7 +1302,6 @@
 			"@typescript-eslint/no-unsafe-member-access": 1,
 			"@typescript-eslint/no-unsafe-return": 1,
 			"@typescript-eslint/no-unused-vars": 2,
-			"@typescript-eslint/only-throw-error": 1,
 			"@typescript-eslint/restrict-template-expressions": 3
 		},
 		"src/utils/circuit-breaker.test.ts": {
