@@ -362,10 +362,10 @@ export class InfioSettingTab extends PluginSettingTab {
 
 	// Show only the fields that belong to the selected search provider
 	private toggleWebSearchProviderFields(provider: string): void {
-		if (this.yacySetting) {
+		if (this.yacySetting !== null) {
 			this.yacySetting.settingEl.style.display = provider === 'yacy' ? '' : 'none';
 		}
-		if (this.searxngSetting) {
+		if (this.searxngSetting !== null) {
 			this.searxngSetting.settingEl.style.display = provider === 'searxng' ? '' : 'none';
 		}
 	}
@@ -670,7 +670,7 @@ export class InfioSettingTab extends PluginSettingTab {
 		this.renderComponent(containerEl,
 			<BasicAutoCompleteSettings
 				settings={this.plugin.settings}
-				updateSettings={updateSettings}
+				updateSettings={(update) => void updateSettings(update)}
 			/>
 		);
 
@@ -679,7 +679,7 @@ export class InfioSettingTab extends PluginSettingTab {
 		this.renderComponent(containerEl,
 			<PreprocessingSettings
 				settings={this.plugin.settings}
-				updateSettings={updateSettings}
+				updateSettings={(update) => void updateSettings(update)}
 				errors={errors}
 			/>
 		);
@@ -689,7 +689,7 @@ export class InfioSettingTab extends PluginSettingTab {
 		this.renderComponent(containerEl,
 			<PostprocessingSettings
 				settings={this.plugin.settings}
-				updateSettings={updateSettings}
+				updateSettings={(update) => void updateSettings(update)}
 			/>
 		);
 
@@ -698,7 +698,7 @@ export class InfioSettingTab extends PluginSettingTab {
 		this.renderComponent(containerEl,
 			<TriggerSettingsSection
 				settings={this.plugin.settings}
-				updateSettings={updateSettings}
+				updateSettings={(update) => void updateSettings(update)}
 				errors={errors}
 			/>
 		);
@@ -708,7 +708,7 @@ export class InfioSettingTab extends PluginSettingTab {
 		this.renderComponent(containerEl,
 			<PrivacySettings
 				settings={this.plugin.settings}
-				updateSettings={updateSettings}
+				updateSettings={(update) => void updateSettings(update)}
 				errors={errors}
 			/>
 		);

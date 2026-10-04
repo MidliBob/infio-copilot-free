@@ -208,7 +208,7 @@ const CommandsView = (
 						/>
 					</div>
 					<button
-						onClick={handleAddCommand}
+						onClick={() => void handleAddCommand()}
 						className="icf-commands-add-btn"
 						disabled={!newCommandName.trim()}
 					>
@@ -258,7 +258,7 @@ const CommandsView = (
 									</div>
 									<div className="icf-commands-actions">
 										<button
-											onClick={() => handleSaveEdit(command.id)}
+											onClick={() => void handleSaveEdit(command.id)}
 											className="icf-commands-add-btn"
 										>
 											<span>{t('command.updateCommand')}</span>
@@ -278,7 +278,7 @@ const CommandsView = (
 											<Pencil size={16} />
 										</button>
 										<button
-											onClick={() => handleDeleteCommand(command.id)}
+											onClick={() => void handleDeleteCommand(command.id)}
 											className="icf-commands-btn"
 										>
 											<Trash2 size={16} />

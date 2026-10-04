@@ -280,7 +280,7 @@ const WorkspaceView = () => {
 				</div>
 				<div className="icf-workspace-view-header-actions">
 					<button
-						onClick={refreshWorkspaces}
+						onClick={() => void refreshWorkspaces()}
 						className="icf-workspace-view-refresh-btn"
 						disabled={isLoading}
 						title={t('workspace.refreshTooltip')}
@@ -346,7 +346,7 @@ const WorkspaceView = () => {
 									<div className="icf-workspace-view-item-actions">
 										{!workspace.isCurrent && (
 											<button
-												onClick={() => switchToWorkspace(workspace)}
+												onClick={() => void switchToWorkspace(workspace)}
 												className="icf-workspace-view-action-btn switch-btn"
 												title={t('workspace.switchToTooltip')}
 											>
@@ -364,7 +364,8 @@ const WorkspaceView = () => {
 										)}
 										{!workspace.isCurrent && workspace.name !== 'vault' && (
 											<button
-												onClick={async () => {
+												onClick={() => {
+													void (async () => {
 													const confirmed = await showConfirm(app, {
 														message: String(t('workspace.deleteConfirm', { name: workspace.name })),
 														danger: true,
@@ -372,6 +373,7 @@ const WorkspaceView = () => {
 													if (confirmed) {
 														void deleteWorkspace(workspace)
 													}
+												})()
 												}}
 												className="icf-workspace-view-action-btn danger"
 												title={String(t('workspace.deleteTooltip'))}

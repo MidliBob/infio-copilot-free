@@ -329,7 +329,7 @@ const PromptInputWithActions = forwardRef<ChatUserInputRef, ChatUserInputProps>(
 						<ModelSelect />
 					</div>
 					<div className="icf-chat-user-input-controls__buttons">
-						<ImageUploadButton onUpload={handleUploadImages} />
+						<ImageUploadButton onUpload={(images) => void handleUploadImages(images)} />
 						<SubmitButton onClick={() => handleSubmit()} />
 					</div>
 				</div>

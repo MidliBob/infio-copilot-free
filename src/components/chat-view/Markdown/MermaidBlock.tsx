@@ -302,7 +302,7 @@ function MermaidBlock({ code }: MermaidBlockProps) {
 				</ErrorContainer>
 			) : (
 				<MermaidButton code={code}>
-					<SvgContainer onClick={handleClick} ref={containerRef} $isLoading={isLoading} />
+					<SvgContainer onClick={() => void handleClick()} ref={containerRef} $isLoading={isLoading} />
 				</MermaidButton>
 			)}
 		</MermaidBlockContainer>

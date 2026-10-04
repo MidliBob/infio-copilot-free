@@ -594,7 +594,8 @@ async function processMessage(data: WorkerMessage): Promise<WorkerResponse> {
 	}
 }
 
-self.addEventListener('message', async (event) => {
+self.addEventListener('message', (event) => {
+	void (async () => {
 	try {
 		// Fetch-proxy responses are consumed by the dedicated listener
 		// registered above; they carry no `method` and must never reach
@@ -624,6 +625,7 @@ self.addEventListener('message', async (event) => {
 			error: `Worker error: ${error instanceof Error ? error.message : 'Unknown error'}`
 		});
 	}
+	})()
 });
 
 self.addEventListener('error', (event) => {

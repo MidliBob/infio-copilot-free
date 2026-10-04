@@ -81,7 +81,7 @@ export default function MarkdownManageFilesBlock({
 				</div>
 				<div className={'icf-chat-code-block-header-button'}>
 					<button
-						onClick={handleApply}
+						onClick={() => void handleApply()}
 						className="icf-apply-button"
 						disabled={applyStatus !== ApplyStatus.Idle || applying || !finish || operations.length === 0}
 					>

@@ -1498,12 +1498,15 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 				<div className="icf-chat-commands">
 					<ChatHistoryView
 						currentConversationId={currentConversationId}
-						onSelect={async (conversationId) => {
+						onSelect={(conversationId) => {
+							void (async () => {
 							setTab('chat')
 							if (conversationId === currentConversationId) return
 							await handleLoadConversation(conversationId)
+						})()
 						}}
-						onDelete={async (conversationId) => {
+						onDelete={(conversationId) => {
+							void (async () => {
 							await deleteConversation(conversationId)
 							if (conversationId === currentConversationId) {
 								const nextConversation = chatList.find(
@@ -1515,9 +1518,10 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 									handleNewChat()
 								}
 							}
+						})()
 						}}
-						onUpdateTitle={async (conversationId, newTitle) => {
-							await updateConversationTitle(conversationId, newTitle)
+						onUpdateTitle={(conversationId, newTitle) => {
+							void updateConversationTitle(conversationId, newTitle)
 						}}
 					/>
 				</div>

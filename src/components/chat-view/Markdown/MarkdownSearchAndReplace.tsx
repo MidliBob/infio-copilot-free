@@ -57,7 +57,7 @@ export default function MarkdownSearchAndReplace({
 				</div>
 				<div className={'icf-chat-code-block-header-button'}>
 					<button
-						onClick={handleApply}
+						onClick={() => void handleApply()}
 						disabled={applyStatus !== ApplyStatus.Idle || applying || !finish}
 					>
 						{!finish ? (

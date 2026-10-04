@@ -215,7 +215,7 @@ const McpHubView = () => {
 				<h3 className="icf-mcp-hub-title">{t('mcpHub.title')}</h3>
 				<div className="icf-mcp-hub-actions">
 					<button
-						onClick={fetchServers}
+						onClick={() => void fetchServers()}
 						className="obsidian-insight-refresh-btn"
 					>
 						<RotateCcw size={16} />
@@ -245,7 +245,7 @@ const McpHubView = () => {
 				
 				{/* Configuration File Access */}
 				<button
-					onClick={handleOpenConfigFile}
+					onClick={() => void handleOpenConfigFile()}
 					className="icf-mcp-config-button"
 				>
 					<ExternalLink size={16} />
@@ -285,7 +285,7 @@ const McpHubView = () => {
 									rows={4}
 								/>
 								<button
-									onClick={handleCreate}
+									onClick={() => void handleCreate()}
 									className="icf-mcp-create-btn"
 									disabled={!newServerName.trim() || !newServerConfig.trim()}
 								>
@@ -329,7 +329,7 @@ const McpHubView = () => {
 										<div className="icf-mcp-hub-actions" onClick={(e) => e.stopPropagation()}>
 											<button
 												className={`icf-section-btn ${server.disabled ? 'disabled' : 'enabled'}`}
-												onClick={() => handleToggle(server.name, server.disabled)}
+												onClick={() => void handleToggle(server.name, server.disabled)}
 												title={server.disabled ? t('mcpHub.enable') : t('mcpHub.disable')}
 											>
 												<Power size={16} />
@@ -337,7 +337,7 @@ const McpHubView = () => {
 
 											<button
 												className="icf-section-btn"
-												onClick={() => handleRestart(server.name)}
+												onClick={() => void handleRestart(server.name)}
 												title={t('mcpHub.restart')}
 											>
 												<RotateCcw size={16} />
@@ -345,7 +345,7 @@ const McpHubView = () => {
 
 											<button
 												className="icf-section-btn"
-												onClick={() => handleDelete(server.name)}
+												onClick={() => void handleDelete(server.name)}
 												title={t('mcpHub.delete')}
 											>
 												<Trash2 size={16} />

@@ -29,7 +29,7 @@ export function CopyButton({ message }: { message: string }) {
 								className="icf-chat-message-actions-icon--copied"
 							/>
 						) : (
-							<CopyIcon onClick={handleCopy} size={12} />
+							<CopyIcon onClick={() => void handleCopy()} size={12} />
 						)}
 					</button>
 				</Tooltip.Trigger>
@@ -73,7 +73,7 @@ export function CreateNewFileButton({ message }: { message: string }) {
 								className="icf-chat-message-actions-icon--copied"
 							/>
 						) : (
-							<FilePlus2 onClick={handleCreate} size={12} />
+							<FilePlus2 onClick={() => void handleCreate()} size={12} />
 						)}
 					</button>
 				</Tooltip.Trigger>

@@ -745,7 +745,7 @@ const SearchView = () => {
 						ref={searchInputRef}
 						initialSerializedEditorState={searchEditorState}
 						onChange={setSearchEditorState}
-						onSubmit={handleSearch}
+						onSubmit={(content) => void handleSearch(content)}
 						mentionables={mentionables}
 						setMentionables={setMentionables}
 						placeholder={t('semanticSearch.searchPlaceholder')}
@@ -797,7 +797,7 @@ const SearchView = () => {
 								{t('semanticSearch.deleteConfirm.cancel')}
 							</button>
 							<button
-								onClick={confirmDeleteWorkspaceIndex}
+								onClick={() => void confirmDeleteWorkspaceIndex()}
 								className="obsidian-confirm-dialog-confirm-btn"
 							>
 								{t('semanticSearch.deleteConfirm.confirm')}
@@ -847,7 +847,7 @@ const SearchView = () => {
 								{t('semanticSearch.initConfirm.cancel')}
 							</button>
 							<button
-								onClick={confirmInitWorkspaceRAG}
+								onClick={() => void confirmInitWorkspaceRAG()}
 								className="obsidian-confirm-dialog-confirm-btn"
 							>
 								{statisticsInfo && (statisticsInfo.totalFiles > 0 || statisticsInfo.totalChunks > 0) ? t('semanticSearch.initConfirm.startUpdate') : t('semanticSearch.initConfirm.startInit')}

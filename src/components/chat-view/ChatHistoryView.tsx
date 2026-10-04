@@ -243,7 +243,7 @@ const ChatHistoryView = ({
 				</div>
 				<div className="icf-chat-history-header-actions">
 					<button
-						onClick={handleCleanup}
+						onClick={() => void handleCleanup()}
 						className="icf-chat-history-cleanup-btn"
 						title={String(t('chat.history.cleanupTitle'))}
 					>
@@ -292,7 +292,7 @@ const ChatHistoryView = ({
 					</div>
 					<div className="icf-chat-history-batch-delete">
 						<button
-							onClick={handleBatchDelete}
+							onClick={() => void handleBatchDelete()}
 							disabled={selectedConversations.size === 0}
 							className="icf-chat-history-batch-delete-btn"
 						>
@@ -361,7 +361,7 @@ const ChatHistoryView = ({
 									/>
 									<div className="icf-chat-history-actions">
 										<button
-											onClick={() => handleSaveEdit(conversation.id)}
+											onClick={() => void handleSaveEdit(conversation.id)}
 											className="icf-chat-history-save-btn"
 										>
 											<span>{String(t('chat.history.save'))}</span>

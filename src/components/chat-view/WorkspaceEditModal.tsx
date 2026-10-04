@@ -415,7 +415,7 @@ const WorkspaceEditModal = ({
           </button>
           <button
             className="workspace-edit-btn workspace-edit-btn-save"
-            onClick={handleSave}
+            onClick={() => void handleSave()}
             disabled={isLoading}
           >
             {isLoading 

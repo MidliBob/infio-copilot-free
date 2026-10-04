@@ -49,7 +49,7 @@ export default function MarkdownApplyDiffBlock({
 				)}
 				<div className={'icf-chat-code-block-header-button'}>
 					<button
-						onClick={handleApply}
+						onClick={() => void handleApply()}
 						style={{ color: '#008000' }}
 						disabled={applyStatus !== ApplyStatus.Idle || applying || !finish}
 					>

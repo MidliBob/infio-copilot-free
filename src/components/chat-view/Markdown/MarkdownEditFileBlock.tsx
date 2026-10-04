@@ -85,7 +85,7 @@ export default function MarkdownEditFileBlock({
 						)}
 					</button>
 					<button
-						onClick={handleApply}
+						onClick={() => void handleApply()}
 						className="icf-apply-button"
 						disabled={applyStatus !== ApplyStatus.Idle || applying}
 					>

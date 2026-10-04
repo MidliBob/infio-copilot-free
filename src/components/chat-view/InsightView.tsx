@@ -536,7 +536,7 @@ const InsightView = () => {
 							{isDeleting ? t('insights.deleting') : t('insights.clearInsights')}
 						</button> */}
 						<button
-							onClick={loadInsights}
+							onClick={() => void loadInsights()}
 							disabled={isLoading || isInitializing || isDeleting}
 							className="obsidian-insight-refresh-btn"
 							title={isLoading ? t('insights.loading') : t('insights.refresh')}
@@ -712,7 +712,7 @@ const InsightView = () => {
 								{t('insights.deleteConfirm.cancel')}
 							</button>
 							<button
-								onClick={confirmDeleteWorkspaceInsights}
+								onClick={() => void confirmDeleteWorkspaceInsights()}
 								className="obsidian-confirm-dialog-confirm-btn"
 							>
 								{t('insights.deleteConfirm.confirm')}
@@ -759,7 +759,7 @@ const InsightView = () => {
 								{t('insights.initConfirm.cancel')}
 							</button>
 							<button
-								onClick={confirmInitWorkspaceInsights}
+								onClick={() => void confirmInitWorkspaceInsights()}
 								className="obsidian-confirm-dialog-confirm-btn"
 							>
 								{hasLoaded && insightResults.length > 0 ? t('insights.initConfirm.updateConfirm') : t('insights.initConfirm.initConfirm')}

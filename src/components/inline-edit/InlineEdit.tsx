@@ -303,7 +303,7 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 		<div className="icf-ai-block-container"
 			id="icf-ai-block-container"
 		>
-			<InputArea value={instruction} onChange={setInstruction} handleSubmit={handleSubmit} handleClose={handleClose} />
+			<InputArea value={instruction} onChange={setInstruction} handleSubmit={() => void handleSubmit()} handleClose={handleClose} />
 			<button className="icf-ai-block-close-button" onClick={handleClose}>
 				<svg
 					width="16"
@@ -319,7 +319,7 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 			</button>
 			<ControlArea
 				settings={settings}
-				onSubmit={handleSubmit}
+				onSubmit={() => void handleSubmit()}
 				selectedModel={selectedModel}
 				onModelChange={setSelectedModel}
 				isSubmitting={isSubmitting}

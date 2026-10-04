@@ -152,7 +152,7 @@ const WorkspaceSelect = () => {
 								{workspaces.map((workspace) => (
 									<DropdownMenu.Item
 										key={workspace.id}
-										onSelect={() => switchToWorkspace(workspace)}
+										onSelect={() => void switchToWorkspace(workspace)}
 										asChild
 									>
 										<li className={`icf-workspace-item`}>

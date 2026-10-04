@@ -132,7 +132,7 @@ export default function ApplyViewRoot({ state, close }: {
 						<button
 							className="clickable-icon view-action icf-approve-button"
 							aria-label={t('applyView.acceptChanges')}
-							onClick={handleAccept}
+							onClick={() => void handleAccept()}
 						>
 							{acceptIcon && '✓'}
 							{t('applyView.acceptAll').replace('{{shortcut}}', getShortcutText('accept'))}
@@ -140,7 +140,7 @@ export default function ApplyViewRoot({ state, close }: {
 						<button
 							className="clickable-icon view-action icf-reject-button"
 							aria-label={t('applyView.rejectChanges')}
-							onClick={handleReject}
+							onClick={() => void handleReject()}
 						>
 							{rejectIcon && '✗'}
 							{t('applyView.rejectAll').replace('{{shortcut}}', getShortcutText('reject'))}

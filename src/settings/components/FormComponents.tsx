@@ -332,7 +332,7 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 					<button
 						type="button"
 						className={`icf-api-key-test ${isTestingConnection ? 'testing' : ''} ${testResult ? testResult : ''}`}
-						onClick={handleTest}
+						onClick={() => void handleTest()}
 						disabled={isTestingConnection || !localValue.trim()}
 						title={t("settings.ModelProvider.testConnection.testConnectionTooltip")}
 					>

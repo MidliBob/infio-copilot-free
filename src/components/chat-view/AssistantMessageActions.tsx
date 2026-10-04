@@ -31,7 +31,7 @@ function CopyButton({ message }: { message: ChatAssistantMessage }) {
                 className="icf-chat-message-actions-icon--copied"
               />
             ) : (
-              <CopyIcon onClick={handleCopy} size={12} />
+              <CopyIcon onClick={() => void handleCopy()} size={12} />
             )}
           </button>
         </Tooltip.Trigger>

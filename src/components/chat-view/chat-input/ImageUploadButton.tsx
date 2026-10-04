@@ -23,7 +23,7 @@ export function ImageUploadButton({
       onUpload(imageFiles)
     }
 
-    new ImageSelectorModal(app, onUpload, handleVaultImages).open()
+    new ImageSelectorModal(app, onUpload, (files) => void handleVaultImages(files)).open()
   }
 
   return (

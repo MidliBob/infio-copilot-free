@@ -143,7 +143,7 @@ export async function loadDesktop(base: Plugin) {
 		},
 		async getDbManager() {
 			if (this.dbManager) return this.dbManager
-			if (!this.dbManagerInitPromise) {
+			if (this.dbManagerInitPromise === null) {
 				this.dbManagerInitPromise = (async () => {
 					this.dbManager = await DBManager.create(this.app, this.settings.ragOptions.filesystem, this.manifest?.id ?? 'infio-copilot-free')
 					return this.dbManager
@@ -154,7 +154,7 @@ export async function loadDesktop(base: Plugin) {
 		async getMcpHub() {
 			if (!this.settings.mcpEnabled) return null
 			if (this.mcpHub) return this.mcpHub
-			if (!this.mcpHubInitPromise) {
+			if (this.mcpHubInitPromise === null) {
 				this.mcpHubInitPromise = (async () => {
 					this.mcpHub = new McpHub(this.app, this)
 					await this.mcpHub.onload()
@@ -165,7 +165,7 @@ export async function loadDesktop(base: Plugin) {
 		},
 		async getRAGEngine() {
 			if (this.ragEngine) return this.ragEngine
-			if (!this.ragEngineInitPromise) {
+			if (this.ragEngineInitPromise === null) {
 				this.ragEngineInitPromise = (async () => {
 					const dbManager = await this.getDbManager()
 					this.ragEngine = new RAGEngine(this.app, this.settings, dbManager, this.embeddingManager)
@@ -176,7 +176,7 @@ export async function loadDesktop(base: Plugin) {
 		},
 		async getTransEngine() {
 			if (this.transEngine) return this.transEngine
-			if (!this.transEngineInitPromise) {
+			if (this.transEngineInitPromise === null) {
 				this.transEngineInitPromise = (async () => {
 					const dbManager = await this.getDbManager()
 					this.transEngine = new TransEngine(this.app, this.settings, dbManager, this.embeddingManager)
@@ -188,9 +188,11 @@ export async function loadDesktop(base: Plugin) {
 		async migrateToJsonStorage() {
 			try {
 				const dbManager = await this.getDbManager()
-				await migrateToJsonDatabase(this.app, dbManager, async () => {
-					await this.reloadChatView()
-					logger.debug('Migration to JSON storage completed successfully')
+				await migrateToJsonDatabase(this.app, dbManager, () => {
+					void (async () => {
+						await this.reloadChatView()
+						logger.debug('Migration to JSON storage completed successfully')
+					})()
 				})
 			} catch (error: unknown) {
 				showErrorNotice({

@@ -487,7 +487,7 @@ export class McpHub {
 				// Set up stdio specific error handling
 				transport.onerror = this.makeTransportErrorHandler(name, source)
 
-				transport.onclose = async () => {
+				transport.onclose = () => {
 					const connection = this.findConnection(name)
 					if (connection) {
 						connection.server.status = "disconnected"
@@ -500,7 +500,7 @@ export class McpHub {
 				await transport.start()
 				const stderrStream = transport.stderr
 				if (stderrStream) {
-					stderrStream.on("data", async (data: Buffer) => {
+					stderrStream.on("data", (data: Buffer) => {
 						const output = data.toString()
 						// Check if output contains INFO level log
 						const isInfoLog = /INFO/i.test(output)
@@ -605,7 +605,7 @@ export class McpHub {
 	 * disconnected and records the message in the server error history.
 	 */
 	private makeTransportErrorHandler(name: string, source: "global" | "project"): (error: Error) => void {
-		return async (error) => {
+		return (error) => {
 			logger.error(`Transport error for "${name}":`, error)
 			const connection = this.findConnection(name, source)
 			if (connection) {
@@ -890,13 +890,11 @@ export class McpHub {
 					// awaitWriteFinish: true,
 				})
 
-				watchPathsWatcher.on("change", async (changedPath) => {
-					try {
-						// Pass the source from the config to restartConnection
-						await this.restartConnection(name, source)
-					} catch (error) {
+				watchPathsWatcher.on("change", (changedPath) => {
+					// Pass the source from the config to restartConnection
+					void this.restartConnection(name, source).catch((error: unknown) => {
 						logger.error(`Failed to restart server ${name} after change in ${changedPath}:`, error)
-					}
+					})
 				})
 
 				watchers.push(watchPathsWatcher)
@@ -912,13 +910,11 @@ export class McpHub {
 					// awaitWriteFinish: true, // This helps with atomic writes
 				})
 
-				indexJsWatcher.on("change", async () => {
-					try {
-						// Pass the source from the config to restartConnection
-						await this.restartConnection(name, source)
-					} catch (error) {
+				indexJsWatcher.on("change", () => {
+					// Pass the source from the config to restartConnection
+					void this.restartConnection(name, source).catch((error: unknown) => {
 						logger.error(`Failed to restart server ${name} after change in ${filePath}:`, error)
-					}
+					})
 				})
 
 				watchers.push(indexJsWatcher)
@@ -932,7 +928,7 @@ export class McpHub {
 	}
 
 	private removeAllFileWatchers() {
-		this.fileWatchers.forEach((watchers) => watchers.forEach((watcher) => watcher.close()))
+		this.fileWatchers.forEach((watchers) => watchers.forEach((watcher) => { void watcher.close() }))
 		this.fileWatchers.clear()
 	}
 

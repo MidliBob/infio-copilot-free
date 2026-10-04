@@ -217,7 +217,7 @@ const CustomModeView = () => {
 				<div className="icf-section-header">
 					<h3>{t('prompt.modeName')}</h3>
 					{!isBuiltinMode && !isNewMode && (
-						<button className="icf-section-btn" onClick={deleteMode}>
+						<button className="icf-section-btn" onClick={() => void deleteMode()}>
 							<Trash2 size={16} />
 						</button>
 					)}
@@ -345,7 +345,7 @@ const CustomModeView = () => {
 					placeholder={t('prompt.modeSpecificRulesPlaceholder')}
 				/>
 				<p className="icf-section-footer">
-					{t('prompt.supportReadingConfig')}<a href="#" className="icf-link" onClick={() => openOrCreateMarkdownFile(app, `_infio_prompts/${modeName}/rules.md`, 0)}>_infio_prompts/{modeName}/rules</a> {t('prompt.file')}
+					{t('prompt.supportReadingConfig')}<a href="#" className="icf-link" onClick={() => void openOrCreateMarkdownFile(app, `_infio_prompts/${modeName}/rules.md`, 0)}>_infio_prompts/{modeName}/rules</a> {t('prompt.file')}
 				</p>
 			</div>
 
@@ -364,10 +364,11 @@ const CustomModeView = () => {
 					<>
 						<p className="icf-section-subtitle">
 							{t('prompt.overrideDescription')}
-							<a href="#" className="icf-link" onClick={() => openOrCreateMarkdownFile(app, `_infio_prompts/${modeName}/system_prompt.md`, 0)}>_infio_prompts/{modeName}/system_prompt</a>
+							<a href="#" className="icf-link" onClick={() => void openOrCreateMarkdownFile(app, `_infio_prompts/${modeName}/system_prompt.md`, 0)}>_infio_prompts/{modeName}/system_prompt</a>
 							{t('prompt.overrideWarning')}						<button
 								className="icf-preview-btn"
-								onClick={async () => {
+								onClick={() => {
+									void (async () => {
 									let filesSearchMethod = settings.filesSearchSettings.method
 									if (filesSearchMethod === 'auto' && settings.embeddingModelId && settings.embeddingModelId !== '') {
 										filesSearchMethod = 'semantic'
@@ -393,6 +394,7 @@ const CustomModeView = () => {
 											} satisfies PreviewViewState,
 										})
 									}
+									})()
 								}
 								}
 							>
