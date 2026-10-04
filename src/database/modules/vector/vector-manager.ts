@@ -24,6 +24,7 @@ import { SUPPORT_EMBEDDING_SIMENTION } from '../../../constants';
 import { vectorTables } from '../../schema';
 
 import { VectorRepository } from './vector-repository';
+import { collectStaleIndexedPaths } from './stale-purge';
 import { logger } from '../../../utils/logger'
 import { CircuitBreaker, CircuitOpenError, callWithBreaker } from '../../../utils/circuit-breaker'
 
@@ -275,6 +276,20 @@ export class VectorManager {
 			logger.debug("updateVaultIndex for update files")
 			await this.cleanVectorsForDeletedFiles(embeddingModel)
 			logger.debug("updateVaultIndex cleanVectorsForDeletedFiles")
+			// 1.7.15: drop vectors of files that still exist in the vault but no
+			// longer match the current include/exclude patterns (stale entries
+			// otherwise keep counting in stats and hitting in semantic search).
+			await this.purgeStaleVectors({
+				embeddingModel,
+				scopePaths: null,
+				eligiblePaths: (await this.getFilesToIndex({
+					embeddingModel,
+					excludePatterns: options.excludePatterns,
+					includePatterns: options.includePatterns,
+					reindexAll: true,
+				})).map((file) => file.path),
+			})
+			logger.debug("updateVaultIndex purgeStaleVectors done")
 			filesToIndex = await this.getFilesToIndex({
 				embeddingModel: embeddingModel,
 				excludePatterns: options.excludePatterns,
@@ -602,10 +617,33 @@ export class VectorManager {
 			if (workspaceFilePaths.length > 0) {
 				await this.repository.deleteVectorsForMultipleFiles(workspaceFilePaths, embeddingModel)
 			}
+			// 1.7.15: also drop vectors of workspace files that became ineligible
+			// under the current include/exclude patterns (they are not part of
+			// filesToIndex, so the delete above never touched them).
+			await this.purgeStaleVectors({
+				embeddingModel,
+				scopePaths: this.getWorkspaceScopePaths(workspace),
+				eligiblePaths: workspaceFilePaths,
+			})
+			logger.debug("updateWorkspaceIndex purgeStaleVectors done")
 		} else {
 			logger.debug("updateWorkspaceIndex for update files")
 			await this.cleanVectorsForDeletedFiles(embeddingModel)
 			logger.debug("updateWorkspaceIndex cleanVectorsForDeletedFiles")
+			// 1.7.15: purge stale vectors of workspace files that no longer match
+			// the current include/exclude patterns.
+			await this.purgeStaleVectors({
+				embeddingModel,
+				scopePaths: this.getWorkspaceScopePaths(workspace),
+				eligiblePaths: (await this.getFilesToIndexInWorkspace({
+					embeddingModel,
+					workspace,
+					excludePatterns: options.excludePatterns,
+					includePatterns: options.includePatterns,
+					reindexAll: true,
+				})).map((file) => file.path),
+			})
+			logger.debug("updateWorkspaceIndex purgeStaleVectors done")
 			filesToIndex = await this.getFilesToIndexInWorkspace({
 				embeddingModel: embeddingModel,
 				workspace: workspace,
@@ -1125,6 +1163,36 @@ export class VectorManager {
 		await this.repository.deleteVectorsForSingleFile(file.path, embeddingModel)
 	}
 
+	/**
+	 * 1.7.15: remove stored vectors for files that are no longer eligible for
+	 * indexing under the current include/exclude patterns (and, for a workspace
+	 * index, that lie inside that workspace's scope). Without this purge,
+	 * newly excluded files keep counting in index statistics and keep hitting
+	 * in semantic search until a full clear-and-rebuild is performed.
+	 */
+	private async purgeStaleVectors({
+		embeddingModel,
+		scopePaths,
+		eligiblePaths,
+	}: {
+		embeddingModel: EmbeddingModel
+		/** Null = vault-wide scope; array = only these paths may be purged. */
+		scopePaths: string[] | null
+		/** Paths still eligible for indexing under current include/exclude patterns. */
+		eligiblePaths: string[]
+	}): Promise<number> {
+		const indexedPaths = await this.repository.getAllIndexedFilePaths(embeddingModel)
+		if (indexedPaths.length === 0) {
+			return 0
+		}
+		const stalePaths = collectStaleIndexedPaths(indexedPaths, eligiblePaths, scopePaths)
+		if (stalePaths.length > 0) {
+			logger.debug(`Purging ${String(stalePaths.length)} stale indexed file(s) that no longer match include/exclude patterns:`, stalePaths)
+			await this.repository.deleteVectorsForMultipleFiles(stalePaths, embeddingModel)
+		}
+		return stalePaths.length
+	}
+
 	private async cleanVectorsForDeletedFiles(
 		embeddingModel: EmbeddingModel,
 	) {
@@ -1189,6 +1257,45 @@ export class VectorManager {
 		}
 	}
 
+	/**
+	 * All markdown file paths covered by a workspace (folder entries and tag
+	 * entries), before include/exclude patterns are applied. Extracted in
+	 * 1.7.15 so the stale-vector purge reuses the exact same scope definition
+	 * as the indexing path itself (behavior-preserving refactor).
+	 */
+	private getWorkspaceScopePaths(workspace: Workspace): string[] {
+		const workspaceFiles = new Set<string>()
+
+		if (workspace) {
+			// 处理工作区中的文件夹和标签
+			for (const item of workspace.content) {
+				if (item.type === 'folder') {
+					const folderPath = item.content
+
+					// 获取文件夹下的所有文件
+					const files = this.app.vault.getMarkdownFiles().filter(file =>
+						file.path.startsWith(folderPath === '/' ? '' : folderPath + '/')
+					)
+
+					// 添加所有文件路径
+					files.forEach(file => {
+						workspaceFiles.add(file.path)
+					})
+
+				} else if (item.type === 'tag') {
+					// 获取标签对应的所有文件
+					const tagFiles = getFilesWithTag(item.content, this.app)
+
+					tagFiles.forEach(filePath => {
+						workspaceFiles.add(filePath)
+					})
+				}
+			}
+		}
+
+		return Array.from(workspaceFiles)
+	}
+
 	private async getFilesToIndexInWorkspace({
 		embeddingModel,
 		workspace,
@@ -1203,37 +1310,10 @@ export class VectorManager {
 		reindexAll?: boolean
 	}): Promise<TFile[]> {
 		// 获取工作区中的所有文件
-		const workspaceFiles = new Set<string>()
-
-		if (workspace) {
-			// 处理工作区中的文件夹和标签
-			for (const item of workspace.content) {
-				if (item.type === 'folder') {
-					const folderPath = item.content
-					
-					// 获取文件夹下的所有文件
-					const files = this.app.vault.getMarkdownFiles().filter(file => 
-						file.path.startsWith(folderPath === '/' ? '' : folderPath + '/')
-					)
-					
-					// 添加所有文件路径
-					files.forEach(file => {
-						workspaceFiles.add(file.path)
-					})
-
-				} else if (item.type === 'tag') {
-					// 获取标签对应的所有文件
-					const tagFiles = getFilesWithTag(item.content, this.app)
-					
-					tagFiles.forEach(filePath => {
-						workspaceFiles.add(filePath)
-					})
-				}
-			}
-		}
+		const scopePaths = this.getWorkspaceScopePaths(workspace)
 
 		// 将路径转换为 TFile 对象
-		let filesToIndex = Array.from(workspaceFiles)
+		let filesToIndex = scopePaths
 			.map(path => this.app.vault.getFileByPath(path))
 			.filter((file): file is TFile => file !== null && file instanceof TFile)
 

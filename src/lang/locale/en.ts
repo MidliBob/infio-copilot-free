@@ -631,7 +631,7 @@ export default {
 			initTitle: "Initialize workspace index",
 			updateTitle: "Update workspace index",
 			initMessage: "This will build vector index for all files in the current workspace, which will improve semantic search accuracy.",
-			updateMessage: "This will update the vector index for the current workspace, reprocessing all files to ensure the index is up-to-date.",
+			updateMessage: "This will update the vector index for the current workspace, reprocessing all files to ensure the index is up-to-date. Files that no longer match the include/exclude patterns will be removed from the index.",
 			embeddingModelLabel: "Embedding model:",
 			workspaceLabel: "Workspace:",
 			entireVault: "Entire Vault",

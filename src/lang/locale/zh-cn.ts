@@ -588,7 +588,7 @@ export default {
 			initTitle: "初始化工作区索引",
 			updateTitle: "更新工作区索引",
 			initMessage: "将为当前工作区的所有文件建立向量索引，这将提高语义搜索的准确性。",
-			updateMessage: "将更新当前工作区的向量索引，重新处理所有文件以确保索引最新。",
+			updateMessage: "将更新当前工作区的向量索引，重新处理所有文件以确保索引最新。不再匹配 include/exclude 模板的文件将从索引中删除。",
 			embeddingModelLabel: "嵌入模型:",
 			workspaceLabel: "工作区:",
 			entireVault: "整个 Vault",
