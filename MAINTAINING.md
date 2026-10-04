@@ -119,13 +119,15 @@ Planned. Requirements and steps:
   *new* violation fails CI. Since 1.7.9 the toolchain is **ESLint 9 (flat
   config `eslint.config.mjs`) + typescript-eslint 8** (`strictTypeChecked` +
   `projectService`; the old eslintrc, the "unsupported TypeScript" banner and
-  the dead css-modules/neverthrow plugin deps are gone). Five debt rules are
+  the dead css-modules/neverthrow plugin deps are gone). Four debt rules are
   switched off in the config but force-tracked by the ratchet:
   `no-unsafe-assignment/member-access/call` (frozen since 1.5.5) and
-  `no-misused-promises`, `no-unnecessary-condition` (frozen in 1.7.9).
-  `no-floating-promises` graduated in 1.7.10: its last four findings were
-  fixed and the rule is enabled in the config — the intended lifecycle for
-  every tracked rule. Two v8 rules (`no-useless-default-assignment`,
+  `no-unnecessary-condition` (frozen in 1.7.9).
+  `no-floating-promises` graduated in 1.7.10 and `no-misused-promises` in
+  1.7.12 (all 65 findings fixed: void-wrapped JSX handlers, sync callbacks
+  with an inner void-IIFE/`.catch`, explicit null checks instead of Promise
+  truthiness tests); both rules are enabled in the config — the intended
+  lifecycle for every tracked rule. Two v8 rules (`no-useless-default-assignment`,
   `no-unnecessary-boolean-literal-compare`) are disabled until a
   `strictNullChecks` migration: without it they emit only per-file
   "rule requires strictNullChecks" meta-errors (frozen as debt in 1.7.9 by
@@ -258,11 +260,10 @@ ones that cannot be fixed by construction are recorded here:
   (CORS) blocks; `requestUrl` bypasses CORS and cannot detect them.
 
 Deliberately deferred to planned releases (the burn-down register; all
-counts are the frozen 1.7.11 baseline, 2583 total): `no-unnecessary-condition`
-(1370 — the largest single pool, mostly defensive checks that the strict
+counts are the frozen 1.7.12 baseline, 2514 total): `no-unnecessary-condition`
+(1366 — the largest single pool, mostly defensive checks that the strict
 types already guarantee), `restrict-template-expressions` (296),
-`no-confusing-void-expression` (130), `no-unnecessary-type-conversion` (95),
-`no-misused-promises` void-wrapping of async JSX handlers (65), the
+`no-confusing-void-expression` (130), `no-unnecessary-type-conversion` (95), the
 `no-unsafe-*`/`any` debt (232 across member-access/assignment/call/argument/
 return, phase 2 pass 3, module by module), `no-base-to-string` (27),
 `no-unused-vars` (57) and the small-rule tail. Disabled until a
@@ -275,9 +276,11 @@ enabled in 1.7.10) — and the first three rules graduated by pure fix in
 1.7.11: `prefer-reduce-type-parameter`, `no-unused-expressions`,
 `only-throw-error` (already active through `strictTypeChecked`, their zeroed
 counters are simply gone from the baseline; the ratchet rejects any
-reappearance). Remaining phase-3 lint work: keep graduating rules as their
-counters reach zero (next candidates: `no-misused-promises` 65 — the async
-JSX-handler void-wrapping pool; then the big pools), and evaluate
+reappearance), and `no-misused-promises` — all 65 async-handler findings
+fixed and the rule enabled in the config (1.7.12). Remaining phase-3 lint
+work: keep graduating rules as their counters reach zero (next candidates:
+the big pools — `no-unnecessary-condition` 1366, largely devalued by a
+`strictNullChecks` migration, and `restrict-template-expressions` 296), and evaluate
 `eslint-plugin-obsidianmd` (the catalog review set) as a separate tracked
 increment.
 

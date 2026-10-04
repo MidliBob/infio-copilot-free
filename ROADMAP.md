@@ -414,6 +414,24 @@ en/ru/zh-cn синхронны (~652 ключа).
 > `throw parsingResult.error` в checkForErrors → защитный
 > `throw new Error`). Baseline **2587 → 2583**; следующие кандидаты —
 > `no-misused-promises` (65) и крупные пулы.
+>
+> **Обновление (1.7.12):** `no-misused-promises` (65) выгорел до нуля и
+> **включён** (приходит из `strictTypeChecked`, из force-списка трещотки
+> исключён — осталось 4 отслеживаемых правила). Паттерны фиксов:
+> void-обёртки именованных async-обработчиков в JSX
+> (`onClick={() => void handler()}` — большинство сайтов); многостатейные
+> inline-обработчики → sync-колбэк с внутренним void-IIFE (ChatView
+> onSelect/onDelete/onUpdateTitle истории, CustomModeView preview,
+> WorkspaceView delete, embed-worker message listener, колбэк
+> migrateToJsonDatabase); `async` без оставшихся `await` → просто снят
+> (McpHub onclose/stderr/transport-error); chokidar-хендлеры →
+> `void …restartConnection().catch(…)`; truthiness-тесты Promise/nullable
+> в условиях → явные `=== null` / `!== null` (init-promises в
+> main.desktop, yacy/searxng в SettingTab — последние попутно убрали 4
+> находки `no-unnecessary-condition`: 1370 → 1366). Baseline
+> **2583 → 2514** (хирургически: per-file замеры всех 27 затронутых
+> файлов совпали с baseline минус misused-promises счёт-в-счёт, ни одной
+> новой находки других правил).
 
 1. **Декларативный Settings API (`getSettingDefinitions`)** — в работе,
    **wave 1 ✅ 1.7.6**. Реальность API: это полный декларативный рендерер
@@ -458,9 +476,13 @@ en/ru/zh-cn синхронны (~652 ключа).
    1370, no-useless-default-assignment 392, boolean-literal-compare 367,
    restrict-template-expressions 296, no-confusing-void-expression 130,
    no-misused-promises 65, no-floating-promises 4, …; реестр выгорания —
-   MAINTAINING.md). Осталось: включение правил в `eslint.config.mjs` по
-   мере обнуления счётчиков + `eslint-plugin-obsidianmd` (ревью-набор
-   каталога) отдельным инкрементом со своей заморозкой.
+   MAINTAINING.md). Выпуск правил по обнулению счётчиков идёт:
+   `no-floating-promises` (1.7.10), три мелких правила (1.7.11),
+   `no-misused-promises` 65 → 0 (1.7.12). Осталось: крупные пулы
+   (`no-unnecessary-condition` 1366 — во многом обесценится миграцией
+   `strictNullChecks`, `restrict-template-expressions` 296) +
+   `eslint-plugin-obsidianmd` (ревью-набор каталога) отдельным
+   инкрементом со своей заморозкой.
 5. Доступность: клавиатура, фокус, aria, контраст.
 
 ---
