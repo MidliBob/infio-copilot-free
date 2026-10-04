@@ -806,6 +806,12 @@
 		"src/database/modules/insight/insight-repository.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 17
 		},
+		"src/database/modules/vector/stale-purge.test.ts": {
+			"@typescript-eslint/no-unnecessary-condition": 1
+		},
+		"src/database/modules/vector/stale-purge.ts": {
+			"@typescript-eslint/no-unnecessary-condition": 1
+		},
 		"src/database/modules/vector/vector-manager.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-base-to-string": 2,
