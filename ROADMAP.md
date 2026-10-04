@@ -432,6 +432,25 @@ en/ru/zh-cn синхронны (~652 ключа).
 > **2583 → 2514** (хирургически: per-file замеры всех 27 затронутых
 > файлов совпали с baseline минус misused-promises счёт-в-счёт, ни одной
 > новой находки других правил).
+>
+> **Обновление (1.7.13):** `restrict-template-expressions` (296) — самый
+> механический из крупных пулов — выгорел до нуля: все интерполяции
+> не-строковых значений обёрнуты в `String(...)` (254 number — счётчики,
+> индексы, HTTP-статусы, арифметика; 28 any — `error`/`error.message` в
+> catch-путях, `config.command`, поля метаданных; 10 boolean — debug-логи;
+> 3 string|number — ключи автокомплита; 1 «Mode» — мёртвый файл
+> custom-system-prompt.ts с битым дублирующим импортом). Интерполяция
+> шаблона и `String()` — один и тот же ToString, поведение сохранено
+> 1-в-1; три шаблона целиком из одного выражения (`${top}` в LexicalMenu,
+> `${error}` в McpHub, `${key}` в auto-complete) заменены на `String(x)`,
+> чтобы не плодить находки `no-unnecessary-template-expression`. Правило
+> активно в конфиге с 1.7.9 (strictTypeChecked) — снято с baseline.
+> Замер: targeted-трещотка (child-режим, forced-набор) по всем 65 файлам —
+> счёт-в-счёт минус 296, ноль новых находок любого правила; SettingTab
+> впервые прогнан child-режимом целиком (heap 6 ГБ) — вскрылась
+> переоценка 1.7.12: `no-unnecessary-condition` там реально 4, а не 6
+> (две находки убрали ещё `!== null`-правки 1.7.12, но forced-набор файла
+> тогда не запускался) — коррекция −2. Baseline **2514 → 2216**.
 
 1. **Декларативный Settings API (`getSettingDefinitions`)** — в работе,
    **wave 1 ✅ 1.7.6**. Реальность API: это полный декларативный рендерер
@@ -478,11 +497,12 @@ en/ru/zh-cn синхронны (~652 ключа).
    no-misused-promises 65, no-floating-promises 4, …; реестр выгорания —
    MAINTAINING.md). Выпуск правил по обнулению счётчиков идёт:
    `no-floating-promises` (1.7.10), три мелких правила (1.7.11),
-   `no-misused-promises` 65 → 0 (1.7.12). Осталось: крупные пулы
-   (`no-unnecessary-condition` 1366 — во многом обесценится миграцией
-   `strictNullChecks`, `restrict-template-expressions` 296) +
-   `eslint-plugin-obsidianmd` (ревью-набор каталога) отдельным
-   инкрементом со своей заморозкой.
+   `no-misused-promises` 65 → 0 (1.7.12),
+   `restrict-template-expressions` 296 → 0 (1.7.13). Осталось: крупные
+   пулы (`no-unnecessary-condition` 1364 — во многом обесценится
+   миграцией `strictNullChecks`; `no-confusing-void-expression` 130,
+   `no-unnecessary-type-conversion` 95) + `eslint-plugin-obsidianmd`
+   (ревью-набор каталога) отдельным инкрементом со своей заморозкой.
 5. Доступность: клавиатура, фокус, aria, контраст.
 
 ---
