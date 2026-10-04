@@ -12,6 +12,7 @@ import { createRoot } from "react-dom/client";
 import { DEFAULT_SEARXNG_BASE_URL, DEFAULT_YACY_BASE_URL } from '../constants';
 import { t } from '../lang/helpers';
 import { InfioSettings } from '../types/settings';
+import { cleanPattern } from '../utils/glob-patterns';
 import { findFilesMatchingPatterns } from '../utils/glob-utils';
 import { buildSettingDefinitions, parseSettingsCandidate, readSettingPath, writeSettingPath } from './declarative';
 
@@ -447,7 +448,7 @@ export class InfioSettingTab extends PluginSettingTab {
 					.onChange(async (value) => {
 						const patterns = value
 							.split('\n')
-							.map((p) => p.trim())
+							.map((p) => cleanPattern(p))
 							.filter((p) => p.length > 0)
 						await this.plugin.setSettings({
 							...this.plugin.settings,
@@ -483,7 +484,7 @@ export class InfioSettingTab extends PluginSettingTab {
 					.onChange(async (value) => {
 						const patterns = value
 							.split('\n')
-							.map((p) => p.trim())
+							.map((p) => cleanPattern(p))
 							.filter((p) => p.length > 0)
 						await this.plugin.setSettings({
 							...this.plugin.settings,
@@ -778,7 +779,7 @@ class ExcludedFilesModal extends Modal {
 		const { contentEl } = this
 		contentEl.empty()
 
-		this.titleEl.setText(`Excluded Files (${String(this.files.length)})`)
+		this.titleEl.setText(`${t('settings.RAG.excludedFilesTitle')} (${String(this.files.length)})`)
 
 		if (this.files.length === 0) {
 			contentEl.createEl('p', { text: t('settings.RAG.noExcludedFiles') })
@@ -811,7 +812,7 @@ class IncludedFilesModal extends Modal {
 		const { contentEl } = this
 		contentEl.empty()
 
-		this.titleEl.setText(`Included Files (${String(this.files.length)})`)
+		this.titleEl.setText(`${t('settings.RAG.includedFilesTitle')} (${String(this.files.length)})`)
 
 		if (this.patterns.length === 0) {
 			contentEl.createEl('p', {

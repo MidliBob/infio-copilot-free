@@ -1,5 +1,4 @@
 import { backOff } from 'exponential-backoff';
-import { minimatch } from 'minimatch';
 import { App, Notice, TFile } from 'obsidian';
 import pLimit from 'p-limit';
 import removeMarkdown from 'remove-markdown';
@@ -15,6 +14,7 @@ import {
 import { resolveEmbeddingDimension } from '../../../core/rag/embedding-dimension';
 import { InsertVector, SelectVector } from '../../../database/schema';
 import { EmbeddingModel } from '../../../types/embedding';
+import { compilePatterns, matchesAny } from '../../../utils/glob-patterns';
 import { getFilesWithTag } from '../../../utils/glob-utils';
 import { openSettingsModalWithError } from '../../../utils/open-settings-modal';
 import { RecursiveCharacterTextSplitter } from '../../../utils/text-splitter';
@@ -1153,13 +1153,15 @@ export class VectorManager {
 		let filesToIndex = this.app.vault.getMarkdownFiles()
 		logger.debug("get all vault files: ", filesToIndex.length)
 
+		const excludeCompiled = compilePatterns(excludePatterns)
 		filesToIndex = filesToIndex.filter((file) => {
-			return !excludePatterns.some((pattern) => minimatch(file.path, pattern))
+			return !matchesAny(excludeCompiled, file.path)
 		})
 
 		if (includePatterns.length > 0) {
+			const includeCompiled = compilePatterns(includePatterns)
 			filesToIndex = filesToIndex.filter((file) => {
-				return includePatterns.some((pattern) => minimatch(file.path, pattern))
+				return matchesAny(includeCompiled, file.path)
 			})
 		}
 
@@ -1238,13 +1240,15 @@ export class VectorManager {
 		logger.debug("get workspace files: ", filesToIndex.length)
 
 		// 应用排除和包含模式
+		const excludeCompiled = compilePatterns(excludePatterns)
 		filesToIndex = filesToIndex.filter((file) => {
-			return !excludePatterns.some((pattern) => minimatch(file.path, pattern))
+			return !matchesAny(excludeCompiled, file.path)
 		})
 
 		if (includePatterns.length > 0) {
+			const includeCompiled = compilePatterns(includePatterns)
 			filesToIndex = filesToIndex.filter((file) => {
-				return includePatterns.some((pattern) => minimatch(file.path, pattern))
+				return matchesAny(includeCompiled, file.path)
 			})
 		}
 

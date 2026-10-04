@@ -1,10 +1,10 @@
-import { minimatch } from 'minimatch'
 import { App, TFile, TFolder, Vault } from 'obsidian'
 
 import { RAGEngine } from '../core/rag/rag-engine'
 import { TRANSFORMATIONS, TransEngine } from '../core/transformations/trans-engine'
 import { Workspace } from '../database/json/workspace/types'
 
+import { compilePatterns, matchesAny } from './glob-patterns'
 import { addLineNumbers } from './prompt-generator'
 import { logger } from './logger'
 
@@ -13,9 +13,8 @@ export const findFilesMatchingPatterns = async (
 	vault: Vault,
 ) => {
 	const files = vault.getMarkdownFiles()
-	return files.filter((file) => {
-		return patterns.some((pattern) => minimatch(file.path, pattern))
-	})
+	const compiled = compilePatterns(patterns)
+	return files.filter((file) => matchesAny(compiled, file.path))
 }
 
 /**
