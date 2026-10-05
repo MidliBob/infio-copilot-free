@@ -260,10 +260,9 @@ ones that cannot be fixed by construction are recorded here:
   (CORS) blocks; `requestUrl` bypasses CORS and cannot detect them.
 
 Deliberately deferred to planned releases (the burn-down register; all
-counts are the frozen 1.7.13 baseline, 2216 total): `no-unnecessary-condition`
-(1364 — the largest single pool, mostly defensive checks that the strict
-types already guarantee), `no-confusing-void-expression` (130),
-`no-unnecessary-type-conversion` (95), the
+counts are the frozen 1.7.16 baseline, 1995 total): `no-unnecessary-condition`
+(1368 — the largest single pool, mostly defensive checks that the strict
+types already guarantee), the
 `no-unsafe-*`/`any` debt (232 across member-access/assignment/call/argument/
 return, phase 2 pass 3, module by module), `no-base-to-string` (27),
 `no-unused-vars` (57) and the small-rule tail. Disabled until a
@@ -277,14 +276,16 @@ enabled in 1.7.10) — and the first three rules graduated by pure fix in
 `only-throw-error` (already active through `strictTypeChecked`, their zeroed
 counters are simply gone from the baseline; the ratchet rejects any
 reappearance), `no-misused-promises` — all 65 async-handler findings
-fixed and the rule enabled in the config (1.7.12), and
+fixed and the rule enabled in the config (1.7.12),
 `restrict-template-expressions` — all 296 interpolation findings burned
-with `String()` wraps (1.7.13; already active through `strictTypeChecked`
-since 1.7.9, its counters are gone from the baseline). Remaining phase-3
+with `String()` wraps (1.7.13), and `no-confusing-void-expression` +
+`no-unnecessary-type-conversion` — the 130 shorthand-arrow and 95
+redundant-conversion findings burned in one pass (1.7.16); the last three
+were already active through `strictTypeChecked` since 1.7.9, their counters
+are gone from the baseline. Remaining phase-3
 lint work: keep graduating rules as their counters reach zero (next
-candidates: `no-confusing-void-expression` 130 and
-`no-unnecessary-type-conversion` 95, then the `strictNullChecks` decision
-for the 1364-finding `no-unnecessary-condition` pool), and evaluate
+candidate: the `strictNullChecks` decision
+for the 1368-finding `no-unnecessary-condition` pool), and evaluate
 `eslint-plugin-obsidianmd` (the catalog review set) as a separate tracked
 increment.
 
