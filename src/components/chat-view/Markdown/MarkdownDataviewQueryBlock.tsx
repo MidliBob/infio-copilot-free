@@ -32,13 +32,13 @@ export default function MarkdownDataviewQueryBlock({
 	return (
 		<div 
 			className={`icf-chat-code-block has-filename`}
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => setIsHovered(false)}
+			onMouseEnter={() => { setIsHovered(true); }}
+			onMouseLeave={() => { setIsHovered(false); }}
 		>
 			<div className={'icf-chat-code-block-header'}>
 				<div 
 					className={'icf-chat-code-block-header-filename'}
-					onClick={() => setIsOpen(!isOpen)}
+					onClick={() => { setIsOpen(!isOpen); }}
 					style={{ cursor: isHovered ? 'pointer' : 'default' }}
 				>
 					{isHovered ? (

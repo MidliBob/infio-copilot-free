@@ -206,7 +206,7 @@ const CustomModeView = () => {
 				<button
 					key={"add_new_mode"}
 					className={`icf-mode-btn ${selectedMode === "add_new_mode" ? 'active' : ''}`}
-					onClick={() => setSelectedMode("add_new_mode")}
+					onClick={() => { setSelectedMode("add_new_mode"); }}
 				>
 					<Plus size={18} />
 				</button>
@@ -292,7 +292,7 @@ const CustomModeView = () => {
 								type="checkbox"
 								disabled={isBuiltinMode}
 								checked={selectedTools.includes('read')}
-								onChange={() => handleToolChange('read')}
+								onChange={() => { handleToolChange('read'); }}
 							/>
 							{t('prompt.readFiles')}
 						</label>
@@ -303,7 +303,7 @@ const CustomModeView = () => {
 								type="checkbox"
 								disabled={isBuiltinMode}
 								checked={selectedTools.includes('edit')}
-								onChange={() => handleToolChange('edit')}
+								onChange={() => { handleToolChange('edit'); }}
 							/>
 							{t('prompt.editFiles')}
 						</label>
@@ -314,7 +314,7 @@ const CustomModeView = () => {
 								type="checkbox"
 								disabled={isBuiltinMode}
 								checked={selectedTools.includes('research')}
-								onChange={() => handleToolChange('research')}
+								onChange={() => { handleToolChange('research'); }}
 							/>
 							{t('prompt.webSearch')}
 						</label>
@@ -353,7 +353,7 @@ const CustomModeView = () => {
 			<div className="icf-custom-modes-section">
 				<div
 					className="icf-section-header icf-section-header-collapsible"
-					onClick={() => setIsAdvancedCollapsed(!isAdvancedCollapsed)}
+					onClick={() => { setIsAdvancedCollapsed(!isAdvancedCollapsed); }}
 				>
 					<div className="icf-section-header-title-container">
 						{isAdvancedCollapsed ? <ChevronRight size={16} /> : <ChevronDown size={16} />}

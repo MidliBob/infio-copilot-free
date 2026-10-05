@@ -51,7 +51,7 @@ export default function MarkdownToolResult({
 					</div>
 					<button
 						className="clickable-icon icf-chat-list-dropdown"
-						onClick={() => setIsOpen(!isOpen)}
+						onClick={() => { setIsOpen(!isOpen); }}
 					>
 						{isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
 					</button>

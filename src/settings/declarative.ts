@@ -316,12 +316,12 @@ export function buildSettingDefinitions(
 ): SettingDefinitionItem[] {
 	return [
 		aboutDefinition(host),
-		legacyPage('settings.Models.title', (h, el) => h.renderModelsSection(el), host),
+		legacyPage('settings.Models.title', (h, el) => { h.renderModelsSection(el); }, host),
 		modelParametersPage(),
-		legacyPage('settings.FilesSearch.title', (h, el) => h.renderFilesSearchSection(el, true), host),
+		legacyPage('settings.FilesSearch.title', (h, el) => { h.renderFilesSearchSection(el, true); }, host),
 		chatBehaviorGroup(),
-		legacyPage('settings.WebSearch.title', (h, el) => h.renderDeepResearchSection(el, true), host),
-		legacyPage('settings.RAG.title', (h, el) => h.renderRAGSection(el, true), host),
-		legacyPage('settings.AutoComplete.title', (h, el) => h.renderAutoCompleteSection(el, true), host),
+		legacyPage('settings.WebSearch.title', (h, el) => { h.renderDeepResearchSection(el, true); }, host),
+		legacyPage('settings.RAG.title', (h, el) => { h.renderRAGSection(el, true); }, host),
+		legacyPage('settings.AutoComplete.title', (h, el) => { h.renderAutoCompleteSection(el, true); }, host),
 	]
 }

@@ -44,7 +44,7 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({
           type="text"
           placeholder="Search images in vault..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => { setSearchTerm(e.target.value); }}
           className="icf-image-search"
         />
         <label className="icf-upload-button">
@@ -105,7 +105,7 @@ export class ImageSelectorModal extends Modal {
 
     root.render(
       <ImageSelector
-        onClose={() => this.close()}
+        onClose={() => { this.close(); }}
         onSelectImages={this.onSelectImages}
         onSelectVaultImages={this.onSelectVaultImages}
         app={this.app}

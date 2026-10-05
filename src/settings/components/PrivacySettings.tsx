@@ -39,11 +39,11 @@ export default function PrivacySettings({ settings, updateSettings, errors }: Pr
                     rows={10}
                     placeholder={t("settings.AutoComplete.privacy.ignoredFilesPlaceholder")}
                     value={settings.ignoredFilePatterns}
-                    onChange={(e) =>
+                    onChange={(e) => {
                         updateSettings({
                             ignoredFilePatterns: e.target.value
                         })
-                    }
+                    }}
                 />
             </SettingsItem>
             <SettingsItem
@@ -62,11 +62,11 @@ export default function PrivacySettings({ settings, updateSettings, errors }: Pr
                     rows={10}
                     placeholder={t("settings.AutoComplete.privacy.ignoredTagsPlaceholder")}
                     value={settings.ignoredTags}
-                    onChange={(e) =>
+                    onChange={(e) => {
                         updateSettings({
                             ignoredTags: e.target.value
                         })
-                    }
+                    }}
                 />
             </SettingsItem>
         </>

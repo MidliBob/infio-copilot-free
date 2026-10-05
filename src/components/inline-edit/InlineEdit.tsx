@@ -56,7 +56,7 @@ const InputArea: React.FC<InputAreaProps> = ({ value, onChange, handleSubmit, ha
 				className="icf-ai-block-content"
 				placeholder={t('inlineEdit.placeholder')}
 				value={value}
-				onChange={(e) => onChange(e.target.value)}
+				onChange={(e) => { onChange(e.target.value); }}
 				onKeyDown={handleKeyDown}
 			/>
 		</div>
@@ -98,7 +98,7 @@ const ControlArea: React.FC<ControlAreaProps> = ({
 			<select
 				className="icf-ai-block-model-select"
 				value={selectedModel}
-				onChange={(e) => onModelChange(e.target.value)}
+				onChange={(e) => { onModelChange(e.target.value); }}
 				disabled={isSubmitting}
 			>
 				{providerModels.map((modelId) => (

@@ -45,7 +45,7 @@ function CommandMenuItem({
 			key={option.key}
 			tabIndex={-1}
 			className={clsx('item', isSelected && 'selected')}
-			ref={(el) => option.setRefElement(el)}
+			ref={(el) => { option.setRefElement(el); }}
 			role="option"
 			aria-selected={isSelected}
 			id={`typeahead-item-${String(index)}`}

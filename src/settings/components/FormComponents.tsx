@@ -22,7 +22,7 @@ export const DropdownComponent: React.FC<DropdownComponentProps> = ({
 		{description && <div className="icf-llm-setting-item-description">{description}</div>}
 		<select
 			value={value}
-			onChange={(e) => onChange(e.target.value)}
+			onChange={(e) => { onChange(e.target.value); }}
 			className="icf-llm-setting-item-control, icf-llm-setting-model-id"
 		>
 			{options.map((option) => (
@@ -116,7 +116,7 @@ export const ToggleComponent: React.FC<ToggleComponentProps> = ({
 				<input
 					type="checkbox"
 					checked={value}
-					onChange={(e) => onChange(e.target.checked)}
+					onChange={(e) => { onChange(e.target.checked); }}
 					disabled={disabled}
 				/>
 				<span className="slider"></span>
@@ -621,7 +621,7 @@ export const CustomUrlComponent: React.FC<CustomUrlComponentProps> = ({
 					<input
 						type="checkbox"
 						checked={useCustomUrl}
-						onChange={(e) => onToggleCustomUrl(e.target.checked)}
+						onChange={(e) => { onToggleCustomUrl(e.target.checked); }}
 					/>
 					<span className="slider"></span>
 				</label>

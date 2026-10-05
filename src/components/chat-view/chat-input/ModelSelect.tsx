@@ -431,7 +431,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 													setIsOpen(false)
 												}}
 												className={`icf-llm-setting-combobox-option ${index === selectedIndex ? 'is-selected' : ''}`}
-												onMouseEnter={() => setSelectedIndex(index)}
+												onMouseEnter={() => { setSelectedIndex(index); }}
 												asChild
 											>
 												<li
@@ -733,7 +733,7 @@ export function ModelSelect({ modelType = 'chat' }: ModelSelectProps) {
 													</div>
 													<div
 														className="icf-model-item-star"
-														onClick={(e) => toggleCollected(option.id, e)}
+														onClick={(e) => { toggleCollected(option.id, e); }}
 														title={option.isCollected ? "star" : "unstar"}
 													>
 														{option.isCollected ?

@@ -48,7 +48,7 @@ export class ApplyView extends View {
 		if (!this.root || !this.state) return
 		this.root.render(
 			<AppProvider app={this.app}>
-				<ApplyViewRoot state={this.state} close={() => this.leaf.detach()} />
+				<ApplyViewRoot state={this.state} close={() => { this.leaf.detach(); }} />
 			</AppProvider>,
 		)
 	}

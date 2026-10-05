@@ -19,7 +19,7 @@ export default function BasicAutoCompleteSettings({ settings, updateSettings }: 
                     t("settings.AutoComplete.enableDescription")
                 }
                 enabled={settings.autocompleteEnabled}
-                setEnabled={(value) => updateSettings({ autocompleteEnabled: value })}
+                setEnabled={(value) => { updateSettings({ autocompleteEnabled: value }); }}
             />
             <CheckBoxSettingItem
                 name={t("settings.AutoComplete.cacheCompletions")}
@@ -27,7 +27,7 @@ export default function BasicAutoCompleteSettings({ settings, updateSettings }: 
                     t("settings.AutoComplete.cacheCompletionsDescription")
                 }
                 enabled={settings.cacheSuggestions}
-                setEnabled={(value) => updateSettings({ cacheSuggestions: value })}
+                setEnabled={(value) => { updateSettings({ cacheSuggestions: value }); }}
             />
             <CheckBoxSettingItem
                 name={t("settings.AutoComplete.debugMode")}
@@ -35,7 +35,7 @@ export default function BasicAutoCompleteSettings({ settings, updateSettings }: 
                     t("settings.AutoComplete.debugModeDescription")
                 }
                 enabled={settings.debugMode}
-                setEnabled={(value) => updateSettings({ debugMode: value })}
+                setEnabled={(value) => { updateSettings({ debugMode: value }); }}
             />
         </>
     );

@@ -458,8 +458,8 @@ export class VectorRepository {
 
 		const row = result.rows[0]
 		return {
-			totalFiles: Number(row?.total_files || 0),
-			totalChunks: Number(row?.total_chunks || 0)
+			totalFiles: row?.total_files || 0,
+			totalChunks: row?.total_chunks || 0
 		}
 	}
 
@@ -486,8 +486,8 @@ export class VectorRepository {
 
 		const row = result.rows[0]
 		return {
-			totalFiles: Number(row?.total_files || 0),
-			totalChunks: Number(row?.total_chunks || 0)
+			totalFiles: row?.total_files || 0,
+			totalChunks: row?.total_chunks || 0
 		}
 	}
 }

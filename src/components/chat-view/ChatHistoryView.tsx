@@ -53,7 +53,7 @@ const ChatHistoryView = ({
 	const titleInputRefs = useRef<Map<string, HTMLInputElement>>(new Map())
 
 	const handleCleanup = async () => {
-		const confirmed = await showConfirm(app, { message: String(t('chat.history.cleanupConfirm')), danger: true })
+		const confirmed = await showConfirm(app, { message: t('chat.history.cleanupConfirm'), danger: true })
 		if (!confirmed) {
 			return
 		}
@@ -61,12 +61,12 @@ const ChatHistoryView = ({
 		try {
 			const count = await cleanupOutdatedChats()
 			if (count > 0) {
-				new Notice(String(t('chat.history.cleanupSuccess', { count })))
+				new Notice(t('chat.history.cleanupSuccess', { count }))
 			} else {
-				new Notice(String(t('chat.history.cleanupNone')))
+				new Notice(t('chat.history.cleanupNone'))
 			}
 		} catch (error) {
-			new Notice(String(t('chat.history.cleanupFailed')))
+			new Notice(t('chat.history.cleanupFailed'))
 			logger.error('Failed to cleanup outdated chats', error)
 		}
 	}
@@ -141,7 +141,7 @@ const ChatHistoryView = ({
 			await deleteConversation(id)
 			onDelete?.(id)
 		} catch (error) {
-			new Notice(String(t('chat.errors.failedToDeleteConversation')))
+			new Notice(t('chat.errors.failedToDeleteConversation'))
 			logger.error('Failed to delete conversation', error)
 		}
 	}
@@ -149,12 +149,12 @@ const ChatHistoryView = ({
 	// batch delete selected conversations
 	const handleBatchDelete = async () => {
 		if (selectedConversations.size === 0) {
-			new Notice(String(t('chat.history.selectFirst')))
+			new Notice(t('chat.history.selectFirst'))
 			return
 		}
 
 		// show confirmation
-		const confirmed = await showConfirm(app, { message: String(t('chat.history.batchDeleteConfirm', { count: selectedConversations.size })), danger: true })
+		const confirmed = await showConfirm(app, { message: t('chat.history.batchDeleteConfirm', { count: selectedConversations.size }), danger: true })
 		if (!confirmed) {
 			return
 		}
@@ -176,10 +176,10 @@ const ChatHistoryView = ({
 
 		// show results
 		if (deletedIds.length > 0) {
-			new Notice(String(t('chat.history.batchDeleteSuccess', { count: deletedIds.length })))
+			new Notice(t('chat.history.batchDeleteSuccess', { count: deletedIds.length }))
 		}
 		if (errors.length > 0) {
-			new Notice(String(t('chat.history.batchDeleteFailed', { count: errors.length })))
+			new Notice(t('chat.history.batchDeleteFailed', { count: errors.length }))
 		}
 
 		// clear selections
@@ -195,7 +195,7 @@ const ChatHistoryView = ({
 	const handleSaveEdit = async (id: string) => {
 		const titleInput = titleInputRefs.current.get(id)
 		if (!titleInput || !titleInput.value.trim()) {
-			new Notice(String(t('chat.errors.titleRequired')))
+			new Notice(t('chat.errors.titleRequired'))
 			return
 		}
 		
@@ -204,7 +204,7 @@ const ChatHistoryView = ({
 			onUpdateTitle?.(id, titleInput.value.trim())
 			setEditingConversationId(null)
 		} catch (error) {
-			new Notice(String(t('chat.errors.failedToUpdateTitle')))
+			new Notice(t('chat.errors.failedToUpdateTitle'))
 			logger.error('Failed to update conversation title', error)
 		}
 	}
@@ -228,7 +228,7 @@ const ChatHistoryView = ({
 		if (date >= today) {
 			return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 		} else if (date >= yesterday) {
-			return String(t('chat.history.yesterday'))
+			return t('chat.history.yesterday')
 		} else {
 			return date.toLocaleDateString()
 		}
@@ -245,7 +245,7 @@ const ChatHistoryView = ({
 					<button
 						onClick={() => void handleCleanup()}
 						className="icf-chat-history-cleanup-btn"
-						title={String(t('chat.history.cleanupTitle'))}
+						title={t('chat.history.cleanupTitle')}
 					>
 						<Sparkles size={16} />
 						{t('chat.history.cleanup')}
@@ -253,7 +253,7 @@ const ChatHistoryView = ({
 					<button
 						onClick={toggleSelectionMode}
 						className={`icf-chat-history-selection-btn ${selectionMode ? 'active' : ''}`}
-						title={selectionMode ? String(t('chat.history.exitSelection')) : String(t('chat.history.enterSelection'))}
+						title={selectionMode ? t('chat.history.exitSelection') : t('chat.history.enterSelection')}
 					>
 						<CopyPlus size={16} />
 						{selectionMode ? t('chat.history.cancel') : t('chat.history.multiSelect')}
@@ -264,8 +264,8 @@ const ChatHistoryView = ({
 			{/* description */}
 			<div className="icf-chat-history-tip">
 				{selectionMode 
-					? String(t('chat.history.selectionMode', { count: selectedConversations.size }))
-					: String(t('chat.history.description'))
+					? t('chat.history.selectionMode', { count: selectedConversations.size })
+					: t('chat.history.description')
 				}
 			</div>
 
@@ -308,7 +308,7 @@ const ChatHistoryView = ({
 				<Search size={18} className="icf-chat-history-search-icon" />
 				<input
 					type="text"
-					placeholder={String(t('chat.history.searchPlaceholder'))}
+					placeholder={t('chat.history.searchPlaceholder')}
 					value={searchTerm}
 					onChange={handleSearch}
 					className="icf-chat-history-search-input"
@@ -320,7 +320,7 @@ const ChatHistoryView = ({
 				<button
 					onClick={toggleWorkspaceFilter}
 					className={`icf-chat-history-workspace-filter-btn ${filterByWorkspace ? 'active' : ''}`}
-					title={filterByWorkspace ? String(t('chat.history.showAllChats')) : String(t('chat.history.showWorkspaceChats'))}
+					title={filterByWorkspace ? t('chat.history.showAllChats') : t('chat.history.showWorkspaceChats')}
 				>
 					<Globe size={14} />
 					{t('chat.history.currentWorkspace')}
@@ -332,7 +332,7 @@ const ChatHistoryView = ({
 				{filteredConversations.length === 0 ? (
 					<div className="icf-chat-history-empty">
 						<MessageSquare size={48} className="icf-chat-history-empty-icon" />
-						<p>{searchTerm ? String(t('chat.history.noMatchingChats')) : String(t('chat.history.noChats'))}</p>
+						<p>{searchTerm ? t('chat.history.noMatchingChats') : t('chat.history.noChats')}</p>
 					</div>
 				) : (
 					filteredConversations.map(conversation => (
@@ -364,13 +364,13 @@ const ChatHistoryView = ({
 											onClick={() => void handleSaveEdit(conversation.id)}
 											className="icf-chat-history-save-btn"
 										>
-											<span>{String(t('chat.history.save'))}</span>
+											<span>{t('chat.history.save')}</span>
 										</button>
 										<button
-											onClick={() => setEditingConversationId(null)}
+											onClick={() => { setEditingConversationId(null); }}
 											className="icf-chat-history-cancel-btn"
 										>
-											<span>{String(t('chat.history.cancel'))}</span>
+											<span>{t('chat.history.cancel')}</span>
 										</button>
 									</div>
 								</div>
@@ -378,7 +378,7 @@ const ChatHistoryView = ({
 								// view mode
 								<div 
 									className="icf-chat-history-view-mode"
-									onClick={() => handleSelectConversation(conversation.id)}
+									onClick={() => { handleSelectConversation(conversation.id); }}
 								>
 									{selectionMode && (
 										<div className="icf-chat-history-checkbox">
@@ -409,7 +409,7 @@ const ChatHistoryView = ({
 													handleEditConversation(conversation)
 												}}
 												className="icf-chat-history-btn"
-												title={String(t('chat.history.editTitle'))}
+												title={t('chat.history.editTitle')}
 											>
 												<Pencil size={16} />
 											</button>
@@ -419,7 +419,7 @@ const ChatHistoryView = ({
 													void handleDeleteConversation(conversation.id)
 												}}
 												className="icf-chat-history-btn icf-chat-history-delete-btn"
-												title={String(t('chat.history.deleteConversation'))}
+												title={t('chat.history.deleteConversation')}
 											>
 												<Trash2 size={16} />
 											</button>

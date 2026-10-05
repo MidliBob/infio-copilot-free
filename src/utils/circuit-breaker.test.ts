@@ -30,7 +30,7 @@ describe('CircuitBreaker', () => {
 		breaker.recordFailure(sdkNetworkError())
 		breaker.recordFailure(sdkNetworkError())
 		expect(breaker.isOpen()).toBe(false)
-		expect(() => breaker.check()).not.toThrow()
+		expect(() => { breaker.check(); }).not.toThrow()
 	})
 
 	it('trips after the configured number of consecutive network failures', () => {
@@ -40,7 +40,7 @@ describe('CircuitBreaker', () => {
 		expect(breaker.isOpen()).toBe(false)
 		breaker.recordFailure(sdkNetworkError())
 		expect(breaker.isOpen()).toBe(true)
-		expect(() => breaker.check()).toThrow(CircuitOpenError)
+		expect(() => { breaker.check(); }).toThrow(CircuitOpenError)
 	})
 
 	it('carries the last actionable message and the failure count when open', () => {
@@ -76,7 +76,7 @@ describe('CircuitBreaker', () => {
 			breaker.recordFailure(appError())
 		}
 		expect(breaker.isOpen()).toBe(false)
-		expect(() => breaker.check()).not.toThrow()
+		expect(() => { breaker.check(); }).not.toThrow()
 	})
 
 	it('goes half-open after the cooldown: probe passes, failure re-trips, success closes', () => {
@@ -85,26 +85,26 @@ describe('CircuitBreaker', () => {
 
 		breaker.recordFailure(sdkNetworkError())
 		expect(breaker.isOpen()).toBe(true)
-		expect(() => breaker.check()).toThrow(CircuitOpenError)
+		expect(() => { breaker.check(); }).toThrow(CircuitOpenError)
 
 		// cooldown not elapsed yet
 		clock.advance(29_999)
-		expect(() => breaker.check()).toThrow(CircuitOpenError)
+		expect(() => { breaker.check(); }).toThrow(CircuitOpenError)
 
 		// half-open: the probe is let through
 		clock.advance(1)
-		expect(() => breaker.check()).not.toThrow()
+		expect(() => { breaker.check(); }).not.toThrow()
 
 		// probe failed -> re-tripped with a fresh cooldown
 		breaker.recordFailure(sdkNetworkError())
 		expect(breaker.isOpen()).toBe(true)
-		expect(() => breaker.check()).toThrow(CircuitOpenError)
+		expect(() => { breaker.check(); }).toThrow(CircuitOpenError)
 
 		// after the next cooldown a successful probe closes the breaker
 		clock.advance(30_000)
 		breaker.recordSuccess()
 		expect(breaker.isOpen()).toBe(false)
-		expect(() => breaker.check()).not.toThrow()
+		expect(() => { breaker.check(); }).not.toThrow()
 	})
 })
 

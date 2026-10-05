@@ -19,9 +19,9 @@ export default function PostprocessingSettings({ settings, updateSettings }: Pro
                     t("settings.AutoComplete.postprocessing.removeMathBlockIndicatorsDescription")
                 }
                 enabled={settings.removeDuplicateMathBlockIndicator}
-                setEnabled={(value) =>
+                setEnabled={(value) => {
                     updateSettings({ removeDuplicateMathBlockIndicator: value })
-                }
+                }}
             />
             <CheckBoxSettingItem
                 name={t("settings.AutoComplete.postprocessing.removeCodeBlockIndicators")}
@@ -29,9 +29,9 @@ export default function PostprocessingSettings({ settings, updateSettings }: Pro
                     t("settings.AutoComplete.postprocessing.removeCodeBlockIndicatorsDescription")
                 }
                 enabled={settings.removeDuplicateCodeBlockIndicator}
-                setEnabled={(value) =>
+                setEnabled={(value) => {
                     updateSettings({ removeDuplicateCodeBlockIndicator: value })
-                }
+                }}
             />
         </>
     );

@@ -218,7 +218,7 @@ export function findEqualPaths(obj1: any, obj2: any, basePath = ''): string[] {
 
 	// If both are arrays, iterate using each index
 	if (isArray(obj1) && isArray(obj2)) {
-		each(obj1, (value, index) => iterateKeys(value, `[${String(index)}]`));
+		each(obj1, (value, index) => { iterateKeys(value, `[${String(index)}]`); });
 	} else {
 		// Iterate over keys of the first object
 		each(obj1, iterateKeys);

@@ -36,13 +36,13 @@ class ConfirmModal extends Modal {
 
 		const buttons = new Setting(contentEl)
 		buttons.addButton((button) => {
-			button.setButtonText(this.options.cancelText ?? String(t('modals.cancel')))
+			button.setButtonText(this.options.cancelText ?? t('modals.cancel'))
 			button.onClick(() => {
 				this.close()
 			})
 		})
 		buttons.addButton((button) => {
-			button.setButtonText(this.options.confirmText ?? String(t('modals.confirm')))
+			button.setButtonText(this.options.confirmText ?? t('modals.confirm'))
 			if (this.options.danger) {
 				button.setWarning()
 			}
@@ -94,7 +94,7 @@ class MessageModal extends Modal {
 
 		const buttons = new Setting(contentEl)
 		buttons.addButton((button) => {
-			button.setButtonText(this.options.okText ?? String(t('modals.ok')))
+			button.setButtonText(this.options.okText ?? t('modals.ok'))
 			button.setCta()
 			button.onClick(() => {
 				this.close()

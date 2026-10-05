@@ -25,9 +25,9 @@ export default function PreprocessingSettings({ settings, updateSettings, errors
                     t("settings.AutoComplete.preprocessing.excludeDataviewDescription")
                 }
                 enabled={settings.dontIncludeDataviews}
-                setEnabled={(value) =>
+                setEnabled={(value) => {
                     updateSettings({ dontIncludeDataviews: value })
-                }
+                }}
             />
             <SliderSettingsItem
                 name={t("settings.AutoComplete.preprocessing.maxPrefixLength")}
@@ -36,9 +36,9 @@ export default function PreprocessingSettings({ settings, updateSettings, errors
                 }
                 value={settings.maxPrefixCharLimit}
                 errorMessage={errors.get("maxPrefixCharLimit")}
-                setValue={(value: number) =>
+                setValue={(value: number) => {
                     updateSettings({ maxPrefixCharLimit: value })
-                }
+                }}
                 min={MIN_MAX_CHAR_LIMIT}
                 max={MAX_MAX_CHAR_LIMIT}
                 step={100}
@@ -51,9 +51,9 @@ export default function PreprocessingSettings({ settings, updateSettings, errors
                 }
                 value={settings.maxSuffixCharLimit}
                 errorMessage={errors.get("maxSuffixCharLimit")}
-                setValue={(value: number) =>
+                setValue={(value: number) => {
                     updateSettings({ maxSuffixCharLimit: value })
-                }
+                }}
                 min={MIN_MAX_CHAR_LIMIT}
                 max={MAX_MAX_CHAR_LIMIT}
                 step={100}

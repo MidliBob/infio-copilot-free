@@ -54,7 +54,7 @@ export class PreviewView extends View {
 			<AppProvider app={this.app}>
 				<PreviewViewRoot 
 					state={this.state} 
-					close={() => this.leaf.detach()} 
+					close={() => { this.leaf.detach(); }} 
 				/>
 			</AppProvider>,
 		)

@@ -222,7 +222,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 		}
 
 		scrollContainer.addEventListener('scroll', handleScroll)
-		return () => scrollContainer.removeEventListener('scroll', handleScroll)
+		return () => { scrollContainer.removeEventListener('scroll', handleScroll); }
 	}, [chatMessages])
 
 
@@ -253,7 +253,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 			abortActiveStreams()
 			const conversation = await getChatMessagesById(conversationId)
 			if (!conversation) {
-				throw new Error(String(t('chat.errors.conversationNotFound')))
+				throw new Error(t('chat.errors.conversationNotFound'))
 			}
 			setCurrentConversationId(conversationId)
 			setChatMessages(conversation)
@@ -264,8 +264,8 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 				type: 'idle',
 			})
 		} catch (error) {
-			new Notice(String(t('chat.errors.failedToLoadConversation')))
-			logger.error(String(t('chat.errors.failedToLoadConversation')), error)
+			new Notice(t('chat.errors.failedToLoadConversation'))
+			logger.error(t('chat.errors.failedToLoadConversation'), error)
 		}
 	}
 
@@ -631,7 +631,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					// 获取当前工作区
 					let currentWorkspace: Workspace | null = null
 					if (settings.workspace && settings.workspace !== 'vault') {
-						currentWorkspace = await workspaceManager.findByName(String(settings.workspace))
+						currentWorkspace = await workspaceManager.findByName(settings.workspace)
 					}
 
 					const files = await listFilesAndFolders(
@@ -716,7 +716,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					// 获取当前工作区
 					let currentWorkspace: Workspace | null = null
 					if (settings.workspace && settings.workspace !== 'vault') {
-						currentWorkspace = await workspaceManager.findByName(String(settings.workspace))
+						currentWorkspace = await workspaceManager.findByName(settings.workspace)
 					}
 
 					const snippets = await semanticSearchFiles(
@@ -969,8 +969,8 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						.map((operation) => operation.path ?? '')
 					if (deletions.length > 0) {
 						const confirmed = await showConfirm(app, {
-							title: String(t('fileOps.header', { count: toolArgs.operations.length })),
-							message: String(t('fileOps.deleteConfirm', { count: deletions.length, paths: deletions.join('\n') })),
+							title: t('fileOps.header', { count: toolArgs.operations.length }),
+							message: t('fileOps.deleteConfirm', { count: deletions.length, paths: deletions.join('\n') }),
 							danger: true,
 						})
 						if (!confirmed) {
@@ -1160,8 +1160,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 	}, [app.workspace, handleActiveLeafChange])
 
 	useImperativeHandle(ref, () => ({
-		openNewChat: (selectedBlock?: MentionableBlockData) =>
-			handleNewChat(selectedBlock),
+		openNewChat: (selectedBlock?: MentionableBlockData) => { handleNewChat(selectedBlock); },
 		addSelectionToChat: (selectedBlock: MentionableBlockData) => {
 			const mentionable: Omit<MentionableBlock, 'id'> = {
 				type: 'block',
@@ -1335,7 +1334,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 							// If the chat is empty, show a message to start a new chat
 							chatMessages.length === 0 && (
 								<div className="icf-chat-empty-state">
-									<HelloInfo onNavigate={(tab) => setTab(tab)} />
+									<HelloInfo onNavigate={(tab) => { setTab(tab); }} />
 								</div>
 							)
 						}
@@ -1357,7 +1356,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 											</button>
 											<PromptInputWithActions
 												key={"input-" + message.id}
-												ref={(ref) => registerChatUserInputRef(message.id, ref)}
+												ref={(ref) => { registerChatUserInputRef(message.id, ref); }}
 												initialSerializedEditorState={message.content}
 												onSubmit={(content, useVaultSearch) => {
 													if (editorStateToPlainText(content).trim() === '') return
@@ -1435,7 +1434,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 										reasoningContent={message.reasoningContent} />
 									<ReactMarkdownItem
 										key={"content-" + message.id}
-										handleApply={(toolArgs) => handleApply(message.id, toolArgs)}
+										handleApply={(toolArgs) => { handleApply(message.id, toolArgs); }}
 										applyStatus={message.applyStatus}
 									>
 										{message.content}
@@ -1453,7 +1452,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					</div>
 					<PromptInputWithActions
 						key={inputMessage.id}
-						ref={(ref) => registerChatUserInputRef(inputMessage.id, ref)}
+						ref={(ref) => { registerChatUserInputRef(inputMessage.id, ref); }}
 						initialSerializedEditorState={inputMessage.content}
 						onSubmit={(content, useVaultSearch) => {
 							if (editorStateToPlainText(content).trim() === '') return

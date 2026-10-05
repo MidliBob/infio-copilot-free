@@ -38,7 +38,7 @@ export default function MarkdownEditFileBlock({
 		try {
 			await navigator.clipboard.writeText(String(children))
 			setCopied(true)
-			window.setTimeout(() => setCopied(false), 2000)
+			window.setTimeout(() => { setCopied(false); }, 2000)
 		} catch (err) {
 			logger.error('Failed to copy text: ', err)
 		}

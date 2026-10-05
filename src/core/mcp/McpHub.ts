@@ -207,14 +207,14 @@ export class McpHub {
 				const errorMessages = result.error.errors
 					.map((err) => `${err.path.join(".")}: ${err.message}`)
 					.join("\n")
-				new Notice(String(t("common:errors.invalid_mcp_settings_validation")) + ": " + errorMessages)
+				new Notice(t("common:errors.invalid_mcp_settings_validation") + ": " + errorMessages)
 				return
 			}
 
 			await this.updateServerConnections(result.data.mcpServers || {})
 		} catch (error) {
 			if (error instanceof SyntaxError) {
-				new Notice(String(t("common:errors.invalid_mcp_settings_format")))
+				new Notice(t("common:errors.invalid_mcp_settings_format"))
 			} else {
 				this.showErrorMessage(`Failed to process MCP settings change`, error)
 			}
@@ -396,7 +396,7 @@ export class McpHub {
 					.map((err) => `${err.path.join(".")}: ${err.message}`)
 					.join("\n");
 				logger.error(`Invalid MCP settings format:`, errorMessages);
-				new Notice(String(t("common:errors.invalid_mcp_settings_validation")) + ": " + errorMessages);
+				new Notice(t("common:errors.invalid_mcp_settings_validation") + ": " + errorMessages);
 				// Still try to connect with the raw config for global, but show warnings
 				try {
 					// Safely handle the unvalidated config: per-server validation
@@ -411,7 +411,7 @@ export class McpHub {
 			if (error instanceof SyntaxError) {
 				const errorMessage = t("common:errors.invalid_mcp_settings_syntax");
 				logger.error(errorMessage, error);
-				new Notice(String(errorMessage));
+				new Notice(errorMessage);
 			} else {
 				this.showErrorMessage(`Failed to initialize MCP servers`, error);
 			}
@@ -928,7 +928,7 @@ export class McpHub {
 	}
 
 	private removeAllFileWatchers() {
-		this.fileWatchers.forEach((watchers) => watchers.forEach((watcher) => { void watcher.close() }))
+		this.fileWatchers.forEach((watchers) => { watchers.forEach((watcher) => { void watcher.close() }); })
 		this.fileWatchers.clear()
 	}
 
@@ -1405,7 +1405,7 @@ export class McpHub {
 		}
 		this.connections = []
 
-		this.eventRefs.forEach((ref) => this.app.vault.offref(ref))
+		this.eventRefs.forEach((ref) => { this.app.vault.offref(ref); })
 		this.eventRefs = []
 	}
 

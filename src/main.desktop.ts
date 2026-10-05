@@ -101,7 +101,7 @@ export async function loadDesktop(base: Plugin) {
 			await this.saveData(newSettings)
 			this.ragEngine?.setSettings(newSettings)
 			this.transEngine?.setSettings(newSettings)
-			this.settingsListeners.forEach((listener) => listener(newSettings))
+			this.settingsListeners.forEach((listener) => { listener(newSettings); })
 		},
 		addSettingsListener(listener) {
 			this.settingsListeners.push(listener)

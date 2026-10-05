@@ -258,7 +258,7 @@ const PromptInputWithActions = forwardRef<ChatUserInputRef, ChatUserInputProps>(
 							<MentionableBadge
 								key={getMentionableKey(serializeMentionable(m))}
 								mentionable={m}
-								onDelete={() => handleMentionableDelete(m)}
+								onDelete={() => { handleMentionableDelete(m); }}
 								onClick={() => {
 									const mentionableKey = getMentionableKey(
 										serializeMentionable(m),
@@ -305,7 +305,7 @@ const PromptInputWithActions = forwardRef<ChatUserInputRef, ChatUserInputProps>(
 					editorRef={editorRef}
 					contentEditableRef={contentEditableRef}
 					onChange={onChange}
-					onEnter={() => handleSubmit({ useVaultSearch: false })}
+					onEnter={() => { handleSubmit({ useVaultSearch: false }); }}
 					onFocus={onFocus}
 					onMentionNodeMutation={handleMentionNodeMutation}
 					onCreateImageMentionables={handleCreateImageMentionables}
@@ -330,7 +330,7 @@ const PromptInputWithActions = forwardRef<ChatUserInputRef, ChatUserInputProps>(
 					</div>
 					<div className="icf-chat-user-input-controls__buttons">
 						<ImageUploadButton onUpload={(images) => void handleUploadImages(images)} />
-						<SubmitButton onClick={() => handleSubmit()} />
+						<SubmitButton onClick={() => { handleSubmit(); }} />
 					</div>
 				</div>
 			</div>

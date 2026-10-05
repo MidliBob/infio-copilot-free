@@ -23,7 +23,7 @@ export class MobileSettingTab extends PluginSettingTab {
 		// Mobile support lands with the phase-1 release; until then the
 		// manifest declares isDesktopOnly and this tab is not reachable.
 		const descEl = containerEl.createDiv()
-		descEl.appendText(String(t('settings.Mobile.comingSoon')))
+		descEl.appendText(t('settings.Mobile.comingSoon'))
 	}
 }
 

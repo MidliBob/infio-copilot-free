@@ -129,7 +129,7 @@ const SearchInputWithActions = forwardRef<SearchInputRef, SearchInputProps>(
 					editorRef={editorRef}
 					contentEditableRef={contentEditableRef}
 					onChange={handleChange}
-					onEnter={() => handleSubmit()}
+					onEnter={() => { handleSubmit(); }}
 					autoFocus={autoFocus}
 					plugins={{
 						onEnter: {
@@ -155,7 +155,7 @@ const SearchInputWithActions = forwardRef<SearchInputRef, SearchInputProps>(
 
 					</div>
 					<div className="icf-chat-user-input-controls__buttons">
-						<SearchButton onClick={() => handleSubmit()} />
+						<SearchButton onClick={() => { handleSubmit(); }} />
 					</div>
 				</div>
 				<style>

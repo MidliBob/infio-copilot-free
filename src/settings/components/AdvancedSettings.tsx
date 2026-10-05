@@ -27,11 +27,11 @@ export default function AdvancedSettings({ settings, updateSettings, errors }: P
                 placeholder={t("settings.AutoComplete.advanced.regexPlaceholder")}
                 value={settings.chainOfThoughRemovalRegex}
                 errorMessage={errors.get("chainOfThoughRemovalRegex")}
-                setValue={(value: string) =>
+                setValue={(value: string) => {
                     updateSettings({
                         chainOfThoughRemovalRegex: value,
                     })
-                }
+                }}
             />
 
             <SettingsItem
@@ -47,11 +47,11 @@ export default function AdvancedSettings({ settings, updateSettings, errors }: P
                     rows={10}
                     placeholder={t("settings.AutoComplete.advanced.systemMessagePlaceholder")}
                     value={settings.systemMessage}
-                    onChange={(e) =>
+                    onChange={(e) => {
                         updateSettings({
                             systemMessage: e.target.value,
                         })
-                    }
+                    }}
                 />
             </SettingsItem>
 
@@ -68,11 +68,11 @@ export default function AdvancedSettings({ settings, updateSettings, errors }: P
                     rows={3}
                     placeholder="{{prefix}}<mask/>{{suffix}}"
                     value={settings.userMessageTemplate}
-                    onChange={(e) =>
+                    onChange={(e) => {
                         updateSettings({
                             userMessageTemplate: e.target.value,
                         })
-                    }
+                    }}
                 />
             </SettingsItem>
 
@@ -82,9 +82,9 @@ export default function AdvancedSettings({ settings, updateSettings, errors }: P
                 description={
                     t("settings.AutoComplete.advanced.fewShotExamplesDescription")
                 }
-                setFewShotExamples={(value) =>
+                setFewShotExamples={(value) => {
                     updateSettings({ fewShotExamples: value })
-                }
+                }}
                 errorMessages={errors}
             />
         </>

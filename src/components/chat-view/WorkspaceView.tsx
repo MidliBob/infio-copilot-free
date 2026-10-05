@@ -88,7 +88,7 @@ const WorkspaceView = () => {
 			setWorkspaces(workspaceList)
 		} catch (error) {
 			logger.error('Failed to refresh the workspace list:', error)
-			new Notice(String(t('workspace.notices.refreshFailed')))
+			new Notice(t('workspace.notices.refreshFailed'))
 		} finally {
 			setIsLoading(false)
 		}
@@ -97,7 +97,7 @@ const WorkspaceView = () => {
 	// 切换到指定工作区
 	const switchToWorkspace = async (workspace: WorkspaceInfo) => {
 		if (workspace.isCurrent) {
-			new Notice(String(t('workspace.notices.alreadyInWorkspace')))
+			new Notice(t('workspace.notices.alreadyInWorkspace'))
 			return
 		}
 
@@ -112,7 +112,7 @@ const WorkspaceView = () => {
 			await refreshWorkspaces()
 		} catch (error) {
 			logger.error('Failed to switch workspace:', error)
-			new Notice(String(t('workspace.notices.switchFailed')))
+			new Notice(t('workspace.notices.switchFailed'))
 		}
 	}
 
@@ -121,26 +121,26 @@ const WorkspaceView = () => {
 		if (!workspaceManager) return
 
 		if (workspace.isCurrent) {
-			new Notice(String(t('workspace.notices.cannotDeleteCurrent')))
+			new Notice(t('workspace.notices.cannotDeleteCurrent'))
 			return
 		}
 
 		if (workspace.name === 'vault') {
-			new Notice(String(t('workspace.notices.cannotDeleteDefault')))
+			new Notice(t('workspace.notices.cannotDeleteDefault'))
 			return
 		}
 
 		try {
 			const success = await workspaceManager.deleteWorkspace(workspace.id)
 			if (success) {
-				new Notice(String(t('workspace.notices.deleted', { name: workspace.name })))
+				new Notice(t('workspace.notices.deleted', { name: workspace.name }))
 				await refreshWorkspaces()
 			} else {
-				new Notice(String(t('workspace.notices.deleteFailed')))
+				new Notice(t('workspace.notices.deleteFailed'))
 			}
 		} catch (error) {
 			logger.error('Failed to delete workspace:', error)
-			new Notice(String(t('workspace.notices.deleteFailed')))
+			new Notice(t('workspace.notices.deleteFailed'))
 		}
 	}
 
@@ -160,14 +160,14 @@ const WorkspaceView = () => {
 
 		try {
 			const newWorkspace = await workspaceManager.createWorkspace({
-				name: workspaceData.name || String(t('workspace.newWorkspace')),
+				name: workspaceData.name || t('workspace.newWorkspace'),
 				content: workspaceData.content || [],
 				metadata: {
-					description: workspaceData.metadata?.description || String(t('workspace.newWorkspace'))
+					description: workspaceData.metadata?.description || t('workspace.newWorkspace')
 				}
 			})
 
-			new Notice(String(t('workspace.notices.created', { name: newWorkspace.name })))
+			new Notice(t('workspace.notices.created', { name: newWorkspace.name }))
 			await refreshWorkspaces()
 			closeCreateModal()
 		} catch (error) {
@@ -194,7 +194,7 @@ const WorkspaceView = () => {
 
 		try {
 			await workspaceManager.updateWorkspace(editingWorkspace.id, updates)
-			new Notice(String(t('workspace.notices.updated', { name: updates.name || editingWorkspace.name })))
+			new Notice(t('workspace.notices.updated', { name: updates.name || editingWorkspace.name }))
 			await refreshWorkspaces()
 		} catch (error) {
 			logger.error('Failed to update workspace:', error)
@@ -204,16 +204,16 @@ const WorkspaceView = () => {
 
 	// 格式化工作区内容
 	const formatWorkspaceContent = (content: WorkspaceContent[]): string => {
-		if (content.length === 0) return String(t('workspace.empty'))
+		if (content.length === 0) return t('workspace.empty')
 		
 		const folders = content.filter(c => c.type === 'folder').length
 		const tags = content.filter(c => c.type === 'tag').length
 		
 		const parts = []
-		if (folders > 0) parts.push(`${String(folders)} ${String(t('workspace.folders'))}`)
-		if (tags > 0) parts.push(`${String(tags)} ${String(t('workspace.tags'))}`)
+		if (folders > 0) parts.push(`${String(folders)} ${t('workspace.folders')}`)
+		if (tags > 0) parts.push(`${String(tags)} ${t('workspace.tags')}`)
 		
-		return parts.join(', ') || String(t('workspace.noContent'))
+		return parts.join(', ') || t('workspace.noContent')
 	}
 
 	// 展开状态管理
@@ -340,7 +340,7 @@ const WorkspaceView = () => {
 									<div className="icf-workspace-view-item-name">
 										{workspace.name}
 										{workspace.isCurrent && (
-											<span className="icf-workspace-view-current-badge">{String(t('workspace.current'))}</span>
+											<span className="icf-workspace-view-current-badge">{t('workspace.current')}</span>
 										)}
 									</div>
 									<div className="icf-workspace-view-item-actions">
@@ -355,9 +355,9 @@ const WorkspaceView = () => {
 										)}
 										{workspace.name !== 'vault' && (
 											<button
-												onClick={() => openEditModal(workspace)}
+												onClick={() => { openEditModal(workspace); }}
 												className="icf-workspace-view-action-btn"
-												title={String(t('workspace.editTooltip'))}
+												title={t('workspace.editTooltip')}
 											>
 												<Pencil size={16} />
 											</button>
@@ -367,7 +367,7 @@ const WorkspaceView = () => {
 												onClick={() => {
 													void (async () => {
 													const confirmed = await showConfirm(app, {
-														message: String(t('workspace.deleteConfirm', { name: workspace.name })),
+														message: t('workspace.deleteConfirm', { name: workspace.name }),
 														danger: true,
 													})
 													if (confirmed) {
@@ -376,7 +376,7 @@ const WorkspaceView = () => {
 												})()
 												}}
 												className="icf-workspace-view-action-btn danger"
-												title={String(t('workspace.deleteTooltip'))}
+												title={t('workspace.deleteTooltip')}
 											>
 												<Trash2 size={16} />
 											</button>
@@ -387,7 +387,7 @@ const WorkspaceView = () => {
 									{/* 工作区内容 */}
 									<div 
 										className="icf-workspace-view-item-path clickable"
-										onClick={() => toggleWorkspaceExpanded(workspace.id)}
+										onClick={() => { toggleWorkspaceExpanded(workspace.id); }}
 									>
 										<div className="icf-workspace-view-item-path-info">
 											<FolderOpen size={12} />
@@ -430,11 +430,11 @@ const WorkspaceView = () => {
 									{/* 对话历史 */}
 									<div 
 										className="icf-workspace-view-chat-info clickable"
-										onClick={() => toggleChatExpanded(workspace.id)}
+										onClick={() => { toggleChatExpanded(workspace.id); }}
 									>
 										<div className="icf-workspace-view-chat-info-content">
 											<MessageSquare size={12} />
-											<span>{workspace.chatHistory.length} {String(t('workspace.conversations'))}</span>
+											<span>{workspace.chatHistory.length} {t('workspace.conversations')}</span>
 										</div>
 										{workspace.chatHistory.length > 0 && (
 											<div className="icf-workspace-view-expand-icon">
@@ -464,8 +464,8 @@ const WorkspaceView = () => {
 									)}
 									
 									<div className="icf-workspace-view-item-meta">
-										{String(t('workspace.created'))}: {new Date(workspace.createdAt).toLocaleDateString('zh-CN')} | 
-										{String(t('workspace.updated'))}: {formatLastOpened(workspace.updatedAt)}
+										{t('workspace.created')}: {new Date(workspace.createdAt).toLocaleDateString('zh-CN')} | 
+										{t('workspace.updated')}: {formatLastOpened(workspace.updatedAt)}
 									</div>
 								</div>
 							</div>

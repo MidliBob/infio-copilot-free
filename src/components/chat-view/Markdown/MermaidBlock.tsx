@@ -276,7 +276,7 @@ function MermaidBlock({ code }: MermaidBlockProps) {
 				<ErrorContainer>
 					<ErrorHeader 
 						$isExpanded={isErrorExpanded}
-						onClick={() => setIsErrorExpanded(!isErrorExpanded)}>
+						onClick={() => { setIsErrorExpanded(!isErrorExpanded); }}>
 						<ErrorHeaderContent>
 							<WarningIcon className="codicon codicon-warning" />
 							<ErrorTitle>{t("common:mermaid.render_error")}</ErrorTitle>

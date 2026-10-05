@@ -53,7 +53,7 @@ export default function ApplyViewRoot({ state, close }: {
 		}, '')
 		const file = app.vault.getFileByPath(state.file)
 		if (!file) {
-			throw new Error(String(t('applyView.fileNotFound')))
+			throw new Error(t('applyView.fileNotFound'))
 		}
 		await app.vault.modify(file, newContent)
 		if (state.onClose) {
@@ -111,7 +111,7 @@ export default function ApplyViewRoot({ state, close }: {
 
 	// Add event listeners on mount and remove on unmount
 	useEffect(() => {
-		const handler = (e: KeyboardEvent) => handleKeyDown(e);
+		const handler = (e: KeyboardEvent) => { handleKeyDown(e); };
 		window.addEventListener('keydown', handler, true);
 		return () => {
 			window.removeEventListener('keydown', handler, true);
@@ -177,21 +177,21 @@ export default function ApplyViewRoot({ state, close }: {
 											<div className="icf-diff-content-wrapper">
 												<ContentEditable
 													html={editedContents[index]}
-													onChange={(evt) => handleContentChange(index, evt)}
+													onChange={(evt) => { handleContentChange(index, evt); }}
 													className="icf-editable-content"
 												/>
 												{(part.added || part.removed) && status === 'active' && (
 													<div className="icf-diff-line-actions">
 														<button
 															aria-label={t('applyView.acceptLine')}
-															onClick={() => acceptDiffLine(index)}
+															onClick={() => { acceptDiffLine(index); }}
 															className="icf-accept"
 														>
 															{acceptIcon && '✓'}
 														</button>
 														<button
 															aria-label={t('applyView.excludeLine')}
-															onClick={() => excludeDiffLine(index)}
+															onClick={() => { excludeDiffLine(index); }}
 															className="icf-exclude"
 														>
 															{excludeIcon && '✗'}

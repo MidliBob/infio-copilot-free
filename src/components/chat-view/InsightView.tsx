@@ -72,7 +72,7 @@ const InsightView = () => {
 			// 获取当前工作区
 			let currentWorkspace: Workspace | null = null
 			if (settings.workspace && settings.workspace !== 'vault') {
-				currentWorkspace = await workspaceManager.findByName(String(settings.workspace))
+				currentWorkspace = await workspaceManager.findByName(settings.workspace)
 			}
 
 			// 设置范围信息
@@ -191,7 +191,7 @@ const InsightView = () => {
 			// 获取当前工作区
 			let currentWorkspace: Workspace | null = null
 			if (settings.workspace && settings.workspace !== 'vault') {
-				currentWorkspace = await workspaceManager.findByName(String(settings.workspace))
+				currentWorkspace = await workspaceManager.findByName(settings.workspace)
 			}
 
 			if (!currentWorkspace) {
@@ -251,7 +251,7 @@ const InsightView = () => {
 
 			} else {
 				logger.error(t('insights.error.initializationFailed'), result.error)
-				throw new Error(String(result.error || t('insights.error.initializationFailed')))
+				throw new Error((result.error || t('insights.error.initializationFailed')))
 			}
 
 		} catch (error: unknown) {
@@ -283,7 +283,7 @@ const InsightView = () => {
 			// 获取当前工作区
 			let currentWorkspace: Workspace | null = null
 			if (settings.workspace && settings.workspace !== 'vault') {
-				currentWorkspace = await workspaceManager.findByName(String(settings.workspace))
+				currentWorkspace = await workspaceManager.findByName(settings.workspace)
 			}
 
 			const transEngine = await getTransEngine()
@@ -678,7 +678,7 @@ const InsightView = () => {
 						</div>
 						<button
 							className="obsidian-insight-success-close"
-							onClick={() => setInitSuccess({ show: false })}
+							onClick={() => { setInitSuccess({ show: false }); }}
 						>
 							×
 						</button>
@@ -778,7 +778,7 @@ const InsightView = () => {
 								{/* 文件头部 */}
 								<div
 									className="obsidian-file-header"
-									onClick={() => toggleFileExpansion(fileGroup.path)}
+									onClick={() => { toggleFileExpansion(fileGroup.path); }}
 								>
 									<div className="obsidian-file-header-content">
 										<div className="obsidian-file-header-top">
@@ -818,7 +818,7 @@ const InsightView = () => {
 											<div
 												key={insight.id}
 												className="obsidian-result-item"
-												onClick={() => handleInsightClick(insight)}
+												onClick={() => { handleInsightClick(insight); }}
 											>
 												<div className="obsidian-result-header">
 													<div className="obsidian-result-header-left">

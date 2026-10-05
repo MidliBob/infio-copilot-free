@@ -231,8 +231,8 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 
 	const searchableItems = useMemo(() => {
 		return combinedModelIds.map((id): SearchableItem => ({
-			id: String(id),
-			html: String(id),
+			id: id,
+			html: id,
 		}))
 	}, [combinedModelIds])
 
@@ -315,7 +315,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 					<select
 						className="dropdown icf-llm-setting-provider-select"
 						value={modelProvider}
-						onChange={(e) => handleProviderChange(e.target.value)}
+						onChange={(e) => { handleProviderChange(e.target.value); }}
 					>
 						{providers.map((providerOption) => (
 							<option
@@ -373,7 +373,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 										input?.focus();
 									}, 0);
 								}}
-								onCloseAutoFocus={(e) => e.preventDefault()}
+								onCloseAutoFocus={(e) => { e.preventDefault(); }}
 							>
 							<div 
 								ref={listRef}
@@ -442,7 +442,7 @@ export const ComboBoxComponent: React.FC<ComboBoxComponentProps> = ({
 											<div
 												key={option.id}
 												ref={(el) => (itemRefs.current[index] = el)}
-												onMouseEnter={() => setSelectedIndex(index)}
+												onMouseEnter={() => { setSelectedIndex(index); }}
 												onMouseDown={(e) => {
 													// 防止事件冒泡
 													e.preventDefault();

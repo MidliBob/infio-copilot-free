@@ -34,7 +34,7 @@ export default function DangerZoneSettings({ settings, updateSettings, onReset }
                     t("settings.AutoComplete.dangerZone.advancedModeDescription")
                 }
                 enabled={settings.advancedMode}
-                setEnabled={(value) => updateSettings({ advancedMode: value })}
+                setEnabled={(value) => { updateSettings({ advancedMode: value }); }}
             />
         </>
     );

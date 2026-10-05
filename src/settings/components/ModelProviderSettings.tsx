@@ -76,17 +76,17 @@ const OllamaConnectionTest: React.FC<OllamaConnectionTestProps> = ({ baseUrl }) 
 	if (result) {
 		switch (result.status) {
 			case 'ok':
-				message = String(t('settings.ModelProvider.testConnection.ollamaOk', { versionInfo }));
+				message = t('settings.ModelProvider.testConnection.ollamaOk', { versionInfo });
 				break;
 			case 'empty-url':
-				message = String(t('settings.ModelProvider.testConnection.ollamaEmptyUrl'));
+				message = t('settings.ModelProvider.testConnection.ollamaEmptyUrl');
 				break;
 			case 'origins-blocked':
-				message = String(t('settings.ModelProvider.testConnection.ollamaOriginsBlocked', { versionInfo }));
+				message = t('settings.ModelProvider.testConnection.ollamaOriginsBlocked', { versionInfo });
 				break;
 			default:
 				message =
-					String(t('settings.ModelProvider.testConnection.ollamaUnreachable', { url: baseUrl })) +
+					t('settings.ModelProvider.testConnection.ollamaUnreachable', { url: baseUrl }) +
 					(result.detail ? ` (${result.detail})` : '');
 				break;
 		}
@@ -198,7 +198,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 
 		if (settedProviders.length === 0) {
 			// 提示用户未设置任何key
-			void showMessage(plugin.app, { message: String(t("settings.ModelProvider.noApiKeySet")) });
+			void showMessage(plugin.app, { message: t("settings.ModelProvider.noApiKeySet") });
 			return;
 		}
 
@@ -346,7 +346,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 
 			// 设置超时选项
 			const abortController = new AbortController();
-			const timeoutId = window.setTimeout(() => abortController.abort(), 10000); // 10秒超时
+			const timeoutId = window.setTimeout(() => { abortController.abort(); }, 10000); // 10秒超时
 
 			try {
 				// 发起API调用测试
@@ -509,7 +509,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 	// 生成包含链接的API Key描述
 	const generateApiKeyDescription = (provider: ApiProvider): React.ReactNode => {
 		const apiUrl = getProviderApiUrl(provider);
-		const baseDescription = String(t("settings.ApiProvider.enterApiKeyDescription"));
+		const baseDescription = t("settings.ApiProvider.enterApiKeyDescription");
 
 		if (!apiUrl) {
 			// 如果没有URL，直接移除占位符
@@ -565,7 +565,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 								placeholder={t("settings.ApiProvider.enterApiKey")}
 								description={generateApiKeyDescription(provider)}
 								value={providerSetting.apiKey || ''}
-								onChange={(value) => updateProviderApiKey(provider, value)}
+								onChange={(value) => { updateProviderApiKey(provider, value); }}
 								onTest={() => testApiConnection(provider)}
 							/>
 						)}
@@ -575,8 +575,8 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 							placeholder={t("settings.ApiProvider.enterCustomUrl")}
 							useCustomUrl={providerSetting.useCustomUrl || false}
 							baseUrl={providerSetting.baseUrl || ''}
-							onToggleCustomUrl={(value) => updateProviderUseCustomUrl(provider, value)}
-							onChangeBaseUrl={(value) => updateProviderBaseUrl(provider, value)}
+							onToggleCustomUrl={(value) => { updateProviderUseCustomUrl(provider, value); }}
+							onChangeBaseUrl={(value) => { updateProviderBaseUrl(provider, value); }}
 						/>
 
 						{provider === ApiProvider.Ollama && (
@@ -600,7 +600,7 @@ const CustomProviderSettings: React.FC<CustomProviderSettingsProps> = ({ plugin,
 						<button
 							key={provider}
 							className={`provider-tab ${activeTab === provider ? 'active' : ''}`}
-							onClick={() => setActiveTab(provider)}
+							onClick={() => { setActiveTab(provider); }}
 						>
 							{provider}
 						</button>

@@ -68,7 +68,7 @@ const McpHubView = () => {
 	const handleDelete = async (serverName: string) => {
 		const hub = await getMcpHub();
 		if (hub) {
-			if (await showConfirm(app, { message: String(t('mcpHub.deleteConfirm', { name: serverName })), danger: true })) {
+			if (await showConfirm(app, { message: t('mcpHub.deleteConfirm', { name: serverName }), danger: true })) {
 				await hub.deleteServer(serverName, "global")
 				const updatedServers = hub.getAllServers()
 				setMcpServers(updatedServers)
@@ -272,14 +272,14 @@ const McpHubView = () => {
 								<input
 									type="text"
 									value={newServerName}
-									onChange={(e) => setNewServerName(e.target.value)}
+									onChange={(e) => { setNewServerName(e.target.value); }}
 									placeholder={t('mcpHub.serverNamePlaceholder')}
 									className="icf-mcp-create-input"
 								/>
 								<div className="icf-mcp-create-label">{t('mcpHub.config')}</div>
 								<textarea
 									value={newServerConfig}
-									onChange={(e) => setNewServerConfig(e.target.value)}
+									onChange={(e) => { setNewServerConfig(e.target.value); }}
 									placeholder={t('mcpHub.configPlaceholder')}
 									className="icf-mcp-create-textarea"
 									rows={4}
@@ -312,13 +312,13 @@ const McpHubView = () => {
 							}
 							
 							const serverKey = `${server.name}-${server.source || 'global'}`;
-							const isExpanded = !!expandedServers[serverKey];
+							const isExpanded = expandedServers[serverKey];
 							const currentDetailTab = activeServerDetailTab[serverKey] || 'tools';
 
 							return (
 								<div key={serverKey} className={`icf-mcp-hub-item ${server.disabled ? 'disabled' : ''}`}>
 									<div className={`icf-mcp-hub-item-header ${server.disabled ? 'disabled' : ''}`}>
-										<div className="icf-mcp-hub-item-info" onClick={() => toggleServerExpansion(serverKey)}>
+										<div className="icf-mcp-hub-item-info" onClick={() => { toggleServerExpansion(serverKey); }}>
 											<div className="icf-mcp-hub-expander">
 												{isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
 											</div>
@@ -326,7 +326,7 @@ const McpHubView = () => {
 											<h3 className="icf-mcp-hub-name">{server.name ? server.name.replace('icf-builtin-server', 'builtin') : 'Unknown Server'}</h3>
 										</div>
 
-										<div className="icf-mcp-hub-actions" onClick={(e) => e.stopPropagation()}>
+										<div className="icf-mcp-hub-actions" onClick={(e) => { e.stopPropagation(); }}>
 											<button
 												className={`icf-section-btn ${server.disabled ? 'disabled' : 'enabled'}`}
 												onClick={() => void handleToggle(server.name, server.disabled)}

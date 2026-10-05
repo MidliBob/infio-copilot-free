@@ -145,7 +145,7 @@ const SearchView = () => {
 			// 获取当前工作区
 			let currentWorkspace: Workspace | null = null
 			if (settings.workspace && settings.workspace !== 'vault') {
-				currentWorkspace = await workspaceManager.findByName(String(settings.workspace))
+				currentWorkspace = await workspaceManager.findByName(settings.workspace)
 			}
 
 			// 设置搜索范围信息（用于调试）
@@ -242,7 +242,7 @@ const SearchView = () => {
 			const timer = window.setTimeout(() => {
 				void handleSearch(searchEditorState)
 			}, 100)
-			return () => window.clearTimeout(timer)
+			return () => { window.clearTimeout(timer); }
 		}
 	}, [searchMode, handleSearch]) // 监听搜索模式变化
 
@@ -254,7 +254,7 @@ const SearchView = () => {
 			// 获取当前工作区
 			let currentWorkspace: Workspace | null = null
 			if (settings.workspace && settings.workspace !== 'vault') {
-				currentWorkspace = await workspaceManager.findByName(String(settings.workspace))
+				currentWorkspace = await workspaceManager.findByName(settings.workspace)
 			}
 
 			const ragEngine = await getRAGEngine()
@@ -288,7 +288,7 @@ const SearchView = () => {
 			// 获取当前工作区
 			let currentWorkspace: Workspace | null = null
 			if (settings.workspace && settings.workspace !== 'vault') {
-				currentWorkspace = await workspaceManager.findByName(String(settings.workspace))
+				currentWorkspace = await workspaceManager.findByName(settings.workspace)
 			}
 
 			if (!currentWorkspace) {
@@ -352,7 +352,7 @@ const SearchView = () => {
 			// 获取当前工作区
 			let currentWorkspace: Workspace | null = null
 			if (settings.workspace && settings.workspace !== 'vault') {
-				currentWorkspace = await workspaceManager.findByName(String(settings.workspace))
+				currentWorkspace = await workspaceManager.findByName(settings.workspace)
 			}
 
 			const ragEngine = await getRAGEngine()
@@ -731,7 +731,7 @@ const SearchView = () => {
 							</div>
 							<button
 								className="obsidian-rag-success-close"
-								onClick={() => setRAGInitSuccess({ show: false })}
+								onClick={() => { setRAGInitSuccess({ show: false }); }}
 							>
 								×
 							</button>
@@ -875,7 +875,7 @@ const SearchView = () => {
 									{/* 文件头部 */}
 									<div
 										className="obsidian-file-header"
-										onClick={() => toggleFileExpansion(fileGroup.path)}
+										onClick={() => { toggleFileExpansion(fileGroup.path); }}
 									>
 										<div className="obsidian-file-header-content">
 											<div className="obsidian-file-header-top">
@@ -901,7 +901,7 @@ const SearchView = () => {
 												<div
 													key={result.id}
 													className="obsidian-result-item"
-													onClick={() => handleResultClick(result)}
+													onClick={() => { handleResultClick(result); }}
 												>
 													<div className="obsidian-result-header">
 														<span className="obsidian-result-index">{blockIndex + 1}</span>
@@ -932,7 +932,7 @@ const SearchView = () => {
 									{/* 文件头部 */}
 									<div
 										className="obsidian-file-header"
-										onClick={() => toggleFileExpansion(fileGroup.path)}
+										onClick={() => { toggleFileExpansion(fileGroup.path); }}
 									>
 										<div className="obsidian-file-header-content">
 											<div className="obsidian-file-header-top">
@@ -990,7 +990,7 @@ const SearchView = () => {
 									{/* 文件头部 */}
 									<div
 										className="obsidian-file-header"
-										onClick={() => toggleFileExpansion(fileGroup.path)}
+										onClick={() => { toggleFileExpansion(fileGroup.path); }}
 									>
 										<div className="obsidian-file-header-content">
 											<div className="obsidian-file-header-top">
@@ -1039,7 +1039,7 @@ const SearchView = () => {
 												<div
 													key={`block-${String(result.id)}`}
 													className="obsidian-result-item obsidian-result-block"
-													onClick={() => handleResultClick(result)}
+													onClick={() => { handleResultClick(result); }}
 												>
 													<div className="obsidian-result-header">
 														<span className="obsidian-result-index">{blockIndex + 1}</span>

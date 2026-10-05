@@ -48,7 +48,7 @@ class ErrorBoundary extends Component<Props, State> {
 							</details>
 						)}
 						<button
-							onClick={() => this.setState({ hasError: false, error: undefined })}
+							onClick={() => { this.setState({ hasError: false, error: undefined }); }}
 							className="icf-retry-button"
 						>
 							重试

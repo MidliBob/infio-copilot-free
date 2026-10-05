@@ -16,9 +16,9 @@ export default class InfioPlugin extends Plugin {
 
 	onunload() {
 		if (Platform.isMobile) {
-			void import('./main.mobile').then((m) => m.unloadMobile?.(this)).catch(() => {})
+			void import('./main.mobile').then((m) => { m.unloadMobile?.(this); }).catch(() => {})
 		} else {
-			void import('./main.desktop').then((m) => m.unloadDesktop?.(this)).catch(() => {})
+			void import('./main.desktop').then((m) => { m.unloadDesktop?.(this); }).catch(() => {})
 		}
 	}
 }

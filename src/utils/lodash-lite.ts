@@ -80,7 +80,7 @@ type Iteratee<T> = { bivariantHack(value: T, key: string | number): void }['biva
 
 export function each<T>(collection: T[] | Record<string, T>, iteratee: Iteratee<T>): void {
 	if (Array.isArray(collection)) {
-		collection.forEach((value, index) => iteratee(value, index))
+		collection.forEach((value, index) => { iteratee(value, index); })
 		return
 	}
 	for (const [key, value] of Object.entries(collection)) {

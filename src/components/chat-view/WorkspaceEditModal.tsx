@@ -26,7 +26,7 @@ const WorkspaceEditModal = ({
   const getDefaultWorkspaceName = (): string => {
     const now = new Date()
     const date = `${String(now.getFullYear())}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`
-    return String(t('workspace.editModal.defaultName', { date }))
+    return t('workspace.editModal.defaultName', { date })
   }
   
   const [name, setName] = useState(workspace?.name || getDefaultWorkspaceName())
@@ -238,7 +238,7 @@ const WorkspaceEditModal = ({
     }
 
     document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    return () => { document.removeEventListener('mousedown', handleClickOutside); }
   }, [])
 
   // 删除内容项
@@ -249,7 +249,7 @@ const WorkspaceEditModal = ({
   // 保存更改
   const handleSave = async () => {
     if (!name.trim()) {
-      void showMessage(app, { message: String(t('workspace.editModal.nameRequired')) })
+      void showMessage(app, { message: t('workspace.editModal.nameRequired') })
       return
     }
 
@@ -262,7 +262,7 @@ const WorkspaceEditModal = ({
       onClose()
     } catch (error) {
       logger.error('Failed to save workspace:', error)
-      void showMessage(app, { message: String(t('workspace.editModal.saveFailed')) })
+      void showMessage(app, { message: t('workspace.editModal.saveFailed') })
     } finally {
       setIsLoading(false)
     }
@@ -293,7 +293,7 @@ const WorkspaceEditModal = ({
             <input
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => { setName(e.target.value); }}
               className="workspace-edit-input"
               placeholder={workspace ? t('workspace.editModal.namePlaceholder') : t('workspace.editModal.newNamePlaceholder')}
               disabled={isLoading}
@@ -323,7 +323,7 @@ const WorkspaceEditModal = ({
                   </div>
                   <button
                     className="workspace-content-item-remove"
-                    onClick={() => removeContentItem(index)}
+                    onClick={() => { removeContentItem(index); }}
                     disabled={isLoading}
                   >
                     <Trash2 size={14} />
@@ -347,7 +347,7 @@ const WorkspaceEditModal = ({
                     ref={inputRef}
                     type="text"
                     value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    onChange={(e) => { setInputValue(e.target.value); }}
                     onKeyDown={handleKeyDown}
                     onFocus={() => {
                       if (filteredSuggestions.length > 0) {
@@ -375,8 +375,8 @@ const WorkspaceEditModal = ({
                         className={`workspace-suggestion-item ${
                           index === selectedSuggestionIndex ? 'selected' : ''
                         }`}
-                        onClick={() => handleSuggestionSelect(suggestion)}
-                        onMouseEnter={() => setSelectedSuggestionIndex(index)}
+                        onClick={() => { handleSuggestionSelect(suggestion); }}
+                        onMouseEnter={() => { setSelectedSuggestionIndex(index); }}
                       >
                         <div className="workspace-suggestion-content">
                           {suggestion.type === 'folder' ? (

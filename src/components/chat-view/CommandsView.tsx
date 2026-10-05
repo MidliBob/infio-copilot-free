@@ -108,11 +108,11 @@ const CommandsView = (
 		const serializedEditorState = editorRef.current.toJSON()
 		const nodes = serializedEditorState.editorState.root.children
 		if (nodes.length === 0) {
-			new Notice(String(t('command.errorContentRequired')))
+			new Notice(t('command.errorContentRequired'))
 			return
 		}
 		if (newCommandName.trim().length === 0) {
-			new Notice(String(t('command.errorNameRequired')))
+			new Notice(t('command.errorNameRequired'))
 			return
 		}
 		
@@ -141,13 +141,13 @@ const CommandsView = (
 		const nameInput = nameInputRefs.current.get(id)
 		const currContentEditorRef = contentEditorRefs.current.get(id)
 		if (!currContentEditorRef) {
-			new Notice(String(t('command.errorContentRequired')))
+			new Notice(t('command.errorContentRequired'))
 			return
 		}
 		const serializedEditorState = currContentEditorRef.toJSON()
 		const nodes = serializedEditorState.editorState.root.children
 		if (nodes.length === 0) {
-			new Notice(String(t('command.errorContentRequired')))
+			new Notice(t('command.errorContentRequired'))
 			return
 		}
 		await updateCommand(
@@ -196,7 +196,7 @@ const CommandsView = (
 					<input
 						type="text"
 						value={newCommandName}
-						onChange={(e) => setNewCommandName(e.target.value)}
+						onChange={(e) => { setNewCommandName(e.target.value); }}
 						className="icf-commands-input"
 					/>
 					<div className="icf-commands-label">{t('command.content')}</div>
@@ -272,7 +272,7 @@ const CommandsView = (
 									<div className="icf-commands-content">{command.contentText}</div>
 									<div className="icf-commands-actions">
 										<button
-											onClick={() => handleEditCommand(command)}
+											onClick={() => { handleEditCommand(command); }}
 											className="icf-commands-btn"
 										>
 											<Pencil size={16} />

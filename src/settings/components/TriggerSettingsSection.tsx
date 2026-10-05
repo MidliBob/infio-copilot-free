@@ -26,7 +26,7 @@ export default function TriggerSettingsSection({ settings, updateSettings, error
                 }
                 value={settings.delay}
                 errorMessage={errors.get("delay")}
-                setValue={(value: number) => updateSettings({ delay: value })}
+                setValue={(value: number) => { updateSettings({ delay: value }); }}
                 min={MIN_DELAY}
                 max={MAX_DELAY}
                 step={100}
@@ -38,7 +38,7 @@ export default function TriggerSettingsSection({ settings, updateSettings, error
                     t("settings.AutoComplete.trigger.wordsDescription")
                 }
                 triggers={settings.triggers}
-                setValues={(triggers) => updateSettings({ triggers })}
+                setValues={(triggers) => { updateSettings({ triggers }); }}
                 errorMessage={errors.get("triggerWords")}
                 errorMessages={errors}
             />

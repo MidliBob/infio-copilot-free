@@ -32,14 +32,14 @@ export default function ModelParametersSettings({ settings, updateSettings, erro
                 }
                 value={settings.modelOptions.temperature}
                 errorMessage={errors.get("modelOptions.temperature")}
-                setValue={(value: number) =>
+                setValue={(value: number) => {
                     updateSettings({
                         modelOptions: {
                             ...settings.modelOptions,
                             temperature: value,
                         },
                     })
-                }
+                }}
                 min={MIN_TEMPERATURE}
                 max={MAX_TEMPERATURE}
                 step={0.05}
@@ -51,14 +51,14 @@ export default function ModelParametersSettings({ settings, updateSettings, erro
                 }
                 value={settings.modelOptions.top_p}
                 errorMessage={errors.get("modelOptions.top_p")}
-                setValue={(value: number) =>
+                setValue={(value: number) => {
                     updateSettings({
                         modelOptions: {
                             ...settings.modelOptions,
                             top_p: value,
                         },
                     })
-                }
+                }}
                 min={MIN_TOP_P}
                 max={MAX_TOP_P}
                 step={0.05}
@@ -72,14 +72,14 @@ export default function ModelParametersSettings({ settings, updateSettings, erro
                         }
                         value={settings.modelOptions.frequency_penalty}
                         errorMessage={errors.get("modelOptions.frequency_penalty")}
-                        setValue={(value: number) =>
+                        setValue={(value: number) => {
                             updateSettings({
                                 modelOptions: {
                                     ...settings.modelOptions,
                                     frequency_penalty: value,
                                 },
                             })
-                        }
+                        }}
                         min={MIN_FREQUENCY_PENALTY}
                         max={MAX_FREQUENCY_PENALTY}
                         step={0.05}
@@ -91,14 +91,14 @@ export default function ModelParametersSettings({ settings, updateSettings, erro
                         }
                         value={settings.modelOptions.presence_penalty}
                         errorMessage={errors.get("modelOptions.presence_penalty")}
-                        setValue={(value: number) =>
+                        setValue={(value: number) => {
                             updateSettings({
                                 modelOptions: {
                                     ...settings.modelOptions,
                                     presence_penalty: value,
                                 },
                             })
-                        }
+                        }}
                         min={MIN_PRESENCE_PENALTY}
                         max={MAX_PRESENCE_PENALTY}
                         step={0.05}
@@ -110,14 +110,14 @@ export default function ModelParametersSettings({ settings, updateSettings, erro
                         }
                         value={settings.modelOptions.max_tokens}
                         errorMessage={errors.get("modelOptions.max_tokens")}
-                        setValue={(value: number) =>
+                        setValue={(value: number) => {
                             updateSettings({
                                 modelOptions: {
                                     ...settings.modelOptions,
                                     max_tokens: value,
                                 },
                             })
-                        }
+                        }}
                         min={MIN_MAX_TOKENS}
                         max={MAX_MAX_TOKENS}
                         step={10}

@@ -49,10 +49,10 @@ export default function SliderSettingsItem(props: IProps): React.JSX.Element {
 				max={props.max}
 				step={props.step}
 				value={props.value}
-				onMouseEnter={() => setIsFocused(true)}
-				onMouseLeave={() => setIsFocused(false)}
-				onFocus={() => setIsFocused(true)}
-				onBlur={() => setIsFocused(false)}
+				onMouseEnter={() => { setIsFocused(true); }}
+				onMouseLeave={() => { setIsFocused(false); }}
+				onFocus={() => { setIsFocused(true); }}
+				onBlur={() => { setIsFocused(false); }}
 			/>
 
 			{isFocused && sliderRef.current !== null && (

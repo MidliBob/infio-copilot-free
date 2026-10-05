@@ -13,19 +13,19 @@ const HelloInfo: React.FC<HelloInfoProps> = ({ onNavigate }) => {
 			label: t('chat.navigation.history'),
 			description: t('chat.navigation.historyDesc'),
 			icon: <History size={20} />,
-			action: () => onNavigate('history'),
+			action: () => { onNavigate('history'); },
 		},
 		{
 			label: t('chat.navigation.search'),
 			description: t('chat.navigation.searchDesc'),
 			icon: <Search size={20} />,
-			action: () => onNavigate('search'),
+			action: () => { onNavigate('search'); },
 		},
 		{
 			label: t('chat.navigation.insights'),
 			description: t('chat.navigation.insightsDesc'),
 			icon: <Lightbulb size={20} />,
-			action: () => onNavigate('insights'),
+			action: () => { onNavigate('insights'); },
 		},
 		// {
 		// 	label: t('chat.navigation.commands'),
