@@ -2,7 +2,6 @@
 	"$comment": "Frozen ESLint error debt per file/rule. Regenerate ONLY with: node scripts/lint-ratchet.mjs --update. See scripts/lint-ratchet.mjs header and MAINTAINING.md.",
 	"files": {
 		"src/ApplyView.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 6
 		},
 		"src/BaseFileView.tsx": {
@@ -15,28 +14,21 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/PreviewView.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 10
 		},
 		"src/components/apply-view/ApplyViewRoot.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 4,
-			"@typescript-eslint/no-unnecessary-condition": 11,
-			"@typescript-eslint/no-unnecessary-type-conversion": 1
+			"@typescript-eslint/no-unnecessary-condition": 11
 		},
 		"src/components/chat-view/AssistantMessageActions.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 8
 		},
 		"src/components/chat-view/ChatHistoryView.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 2,
-			"@typescript-eslint/no-unnecessary-condition": 7,
-			"@typescript-eslint/no-unnecessary-type-conversion": 26
+			"@typescript-eslint/no-unnecessary-condition": 7
 		},
 		"src/components/chat-view/ChatView.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 3,
-			"@typescript-eslint/no-confusing-void-expression": 6,
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-unnecessary-condition": 40,
-			"@typescript-eslint/no-unnecessary-type-conversion": 7,
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-enum-assignment": 1,
 			"@typescript-eslint/no-unsafe-member-access": 1,
@@ -44,13 +36,10 @@
 			"sort-imports": 1
 		},
 		"src/components/chat-view/CommandsView.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 2,
-			"@typescript-eslint/no-unnecessary-condition": 6,
-			"@typescript-eslint/no-unnecessary-type-conversion": 4
+			"@typescript-eslint/no-unnecessary-condition": 6
 		},
 		"src/components/chat-view/CustomModeView.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-confusing-void-expression": 5,
 			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/components/chat-view/FileReadResults.tsx": {
@@ -58,13 +47,10 @@
 			"no-inline-styles/no-inline-styles": 2
 		},
 		"src/components/chat-view/HelloInfo.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/InsightView.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 18,
-			"@typescript-eslint/no-unnecessary-type-conversion": 4,
 			"@typescript-eslint/no-unsafe-call": 1
 		},
 		"src/components/chat-view/LLMResponseInfoPopover.tsx": {
@@ -75,17 +61,14 @@
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownDataviewQueryBlock.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownEditFileBlock.tsx": {
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/no-base-to-string": 3,
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownFetchUrlsContentBlock.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/Markdown/MarkdownListFilesBlock.tsx": {
@@ -98,14 +81,12 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownPlanBlock.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/Markdown/MarkdownReadFileBlock.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownReasoningBlock.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/Markdown/MarkdownReferenceBlock.tsx": {
@@ -129,7 +110,6 @@
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownToolResult.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/components/chat-view/Markdown/MarkdownTransformationToolBlock.tsx": {
@@ -141,7 +121,6 @@
 			"no-inline-styles/no-inline-styles": 1
 		},
 		"src/components/chat-view/Markdown/MermaidBlock.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 8,
 			"@typescript-eslint/use-unknown-in-catch-callback-variable": 1
 		},
@@ -156,9 +135,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/McpHubView.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 4,
 			"@typescript-eslint/no-unnecessary-condition": 25,
-			"@typescript-eslint/no-unnecessary-type-conversion": 2,
 			"@typescript-eslint/no-unsafe-assignment": 2,
 			"@typescript-eslint/no-unsafe-member-access": 2
 		},
@@ -171,10 +148,8 @@
 		},
 		"src/components/chat-view/SearchView.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-confusing-void-expression": 7,
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-unnecessary-condition": 28,
-			"@typescript-eslint/no-unnecessary-type-conversion": 4,
 			"@typescript-eslint/no-unsafe-argument": 1
 		},
 		"src/components/chat-view/SimilaritySearchResults.tsx": {
@@ -191,18 +166,14 @@
 		"src/components/chat-view/WorkspaceEditModal.tsx": {
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-confusing-void-expression": 6,
 			"@typescript-eslint/no-unnecessary-condition": 13,
-			"@typescript-eslint/no-unnecessary-type-conversion": 3,
 			"@typescript-eslint/no-unsafe-call": 1
 		},
 		"src/components/chat-view/WorkspaceSelect.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/components/chat-view/WorkspaceView.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 10,
-			"@typescript-eslint/no-unnecessary-type-conversion": 23,
 			"@typescript-eslint/no-unsafe-assignment": 1,
 			"@typescript-eslint/use-unknown-in-catch-callback-variable": 1
 		},
@@ -221,20 +192,17 @@
 		},
 		"src/components/chat-view/chat-input/ModelSelect.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 3,
-			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-unnecessary-condition": 24,
 			"@typescript-eslint/no-unnecessary-type-assertion": 1,
 			"@typescript-eslint/no-unsafe-enum-assignment": 1
 		},
 		"src/components/chat-view/chat-input/PromptInputWithActions.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 18
 		},
 		"src/components/chat-view/chat-input/SearchButton.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/chat-input/SearchInputWithActions.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-unnecessary-condition": 13,
 			"@typescript-eslint/no-unsafe-member-access": 3,
@@ -248,7 +216,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/chat-input/plugins/command/CommandPlugin.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"no-inline-styles/no-inline-styles": 1
 		},
@@ -274,7 +241,6 @@
 			"@typescript-eslint/no-unsafe-assignment": 1
 		},
 		"src/components/chat-view/chat-input/plugins/mention/MentionPlugin.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
 			"no-inline-styles/no-inline-styles": 1
 		},
@@ -295,7 +261,6 @@
 			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/components/chat-view/chat-input/plugins/typeahead-menu/LexicalTypeaheadMenuPlugin.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 4,
 			"@typescript-eslint/no-unsafe-return": 1,
 			"@typescript-eslint/no-unused-vars": 1
@@ -312,17 +277,14 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/common/ErrorBoundary.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/inline-edit/InlineEdit.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 3,
-			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-unnecessary-condition": 13,
 			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/components/modals/ImageSelectorModal.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"@typescript-eslint/prefer-regexp-exec": 1,
 			"no-inline-styles/no-inline-styles": 1
@@ -337,7 +299,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/contexts/DarkModeContext.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/contexts/DatabaseContext.tsx": {
@@ -541,10 +502,8 @@
 		},
 		"src/core/mcp/McpHub.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
-			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-deprecated": 5,
 			"@typescript-eslint/no-unnecessary-condition": 58,
-			"@typescript-eslint/no-unnecessary-type-conversion": 4,
 			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/core/mcp/McpServerManager.ts": {
@@ -824,8 +783,7 @@
 			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/database/modules/vector/vector-repository.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 22,
-			"@typescript-eslint/no-unnecessary-type-conversion": 4
+			"@typescript-eslint/no-unnecessary-condition": 22
 		},
 		"src/database/schema.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -888,17 +846,14 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/main.desktop.ts": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 37
 		},
 		"src/main.mobile.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unnecessary-type-conversion": 1,
 			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/main.ts": {
-			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/open-settings-modal.ts": {
@@ -955,11 +910,9 @@
 			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/settings/components/AdvancedSettings.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 4,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/BasicAutoCompleteSettings.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/CheckBoxSettingItem.tsx": {
@@ -967,7 +920,6 @@
 			"@typescript-eslint/unbound-method": 1
 		},
 		"src/settings/components/DangerZoneSettings.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/DropDownSettingItem.tsx": {
@@ -978,47 +930,37 @@
 			"no-inline-styles/no-inline-styles": 22
 		},
 		"src/settings/components/FormComponents.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 5,
 			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/settings/components/ModelParametersSettings.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 5,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/ModelProviderSettings.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 5,
-			"@typescript-eslint/no-unnecessary-condition": 20,
-			"@typescript-eslint/no-unnecessary-type-conversion": 6
+			"@typescript-eslint/no-unnecessary-condition": 20
 		},
 		"src/settings/components/PluginInfoSettings.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/settings/components/PostprocessingSettings.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/PreprocessingSettings.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/PrivacySettings.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/ProviderModelsPicker.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-confusing-void-expression": 3,
 			"@typescript-eslint/no-unnecessary-condition": 11,
-			"@typescript-eslint/no-unnecessary-type-conversion": 2,
 			"@typescript-eslint/no-unsafe-enum-assignment": 1
 		},
 		"src/settings/components/SettingsItem.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/SliderSettingsItem.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 4,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/restrict-plus-operands": 1
 		},
@@ -1034,14 +976,12 @@
 			"no-inline-styles/no-inline-styles": 3
 		},
 		"src/settings/components/TriggerSettingsSection.tsx": {
-			"@typescript-eslint/no-confusing-void-expression": 2,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/declarative.test.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 13
 		},
 		"src/settings/declarative.ts": {
-			"@typescript-eslint/no-confusing-void-expression": 5,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/index.ts": {
@@ -1215,7 +1155,6 @@
 		},
 		"src/utils/auto-complete.ts": {
 			"@typescript-eslint/ban-ts-comment": 2,
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-explicit-any": 7,
 			"@typescript-eslint/no-redundant-type-constituents": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
@@ -1228,7 +1167,6 @@
 			"@typescript-eslint/no-unused-vars": 2
 		},
 		"src/utils/circuit-breaker.test.ts": {
-			"@typescript-eslint/no-confusing-void-expression": 8,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/circuit-breaker.ts": {
@@ -1290,7 +1228,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/image.ts": {
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/utils/indentation-provider.ts": {
@@ -1304,7 +1241,6 @@
 		},
 		"src/utils/lodash-lite.ts": {
 			"@typescript-eslint/consistent-type-assertions": 16,
-			"@typescript-eslint/no-confusing-void-expression": 1,
 			"@typescript-eslint/no-dynamic-delete": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"@typescript-eslint/no-unnecessary-type-assertion": 1,
@@ -1331,14 +1267,15 @@
 		},
 		"src/utils/modal-dialogs.ts": {
 			"@typescript-eslint/no-deprecated": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unnecessary-type-conversion": 3
+			"@typescript-eslint/no-unnecessary-condition": 1
+		},
+		"src/utils/modes.test.ts": {
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/modes.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-explicit-any": 2,
-			"@typescript-eslint/no-unnecessary-condition": 20,
-			"@typescript-eslint/no-unnecessary-type-conversion": 1,
+			"@typescript-eslint/no-unnecessary-condition": 19,
 			"@typescript-eslint/no-unsafe-argument": 3,
 			"@typescript-eslint/no-unsafe-assignment": 1,
 			"@typescript-eslint/no-unsafe-return": 1
