@@ -539,6 +539,43 @@ en/ru/zh-cn синхронны (~652 ключа).
 > main.js). Гейты: tsc 0 ошибок, jest 359/28, lint:ratchet и
 > lint:css:ratchet (0 ошибок в 0 файлов) зелёные.
 
+> **Обновление (1.7.18):** `no-unused-vars` выгорел до нуля и выпущен —
+> серия из пяти патчей, 57 находок в 28 файлах, baseline **1994 → 1937**
+> (правило активно из `strictTypeChecked` с 1.7.9 — счётчики исчезли из
+> baseline, трещотка блокирует повторное появление; выпускная запись —
+> в eslint.config.mjs). Состав серии: (1) config — `argsIgnorePattern: '^_'`
+> (единственное осознанное смягчение, −4: конвенция «_» уже де-факто была
+> в коде — _args/_base/_paramStartLine/_paramEndLine; разблокирует
+> арность-заблокированные реализации интерфейсов: метод базового класса,
+> параметр которого используют override'ы подклассов, обязан сохранить
+> арность); (2) 12 неиспользуемых catch-параметров → optional catch
+> binding (поведение 1-в-1); (3) autocomplete-кластер (16) — снятие
+> trailing-параметров у реализаций EventHandler/PreProcessor/PostProcessor
+> (присваиваемость позволяет меньшую арность; вызовы идут через
+> интерфейсные типы, super-вызовов нет) + чистка освободившихся импортов
+> (Context/TFile/InfioSettings/DocumentChanges), '_' -переименования двух
+> арность-заблокированных методов State; (4) prompts/diff/tools (10) —
+> getDiffStrategy лишился всех пяти параметров (тело возвращает константу
+> с тех пор, как легаси-ветки закомментированы; оба call-site в
+> main.desktop.ts схлопнуты, JSDoc исправлен), getToolDescription(args) →
+> () в multi-search-replace (вызов через интерфейс DiffStrategy),
+> getRulesSection/getToolUseGuidelinesSection и description-функции
+> manage-files/search-web ужаты вместе с вызовами в system.ts и
+> tools/index.ts; (5) utils/components (16) — удалены три мёртвые
+> функции: matchSearchFiles/regexSearchFiles (пустые экспортируемые
+> заглушки, ноль вызывающих, апстрим-наследие Roo) и
+> getFileOrFolderContent (63 строки, ноль вызывающих, вместе с её
+> внутренним catch), каскадная чистка импортов (Vault, parsePdfContent),
+> saveImageFromBase64 снял mimeType (тело его не читало), деструктуризации
+> props InlineEdit/PluginInfoSettings и конструктор RenderPlugin почищены
+> (типы props сохранены). Побочный janitorial-улов: ~90 строк мёртвого
+> кода. Методика: правило не type-aware — каждый патч верифицирован
+> контрольным parser-only прогоном (per-file счётчики сходятся с baseline
+> счёт-в-счёт до и после; суммарный дифф серии ровно −57, ноль новых
+> находок любого правила), tsc/jest на каждом шаге. Гейты: tsc 0, jest
+> 359/28, lint:ratchet 1937/368, сборка зелёная (main.js 16 244 012
+> байт, −482 vs 1.7.17).
+
 1. **Декларативный Settings API (`getSettingDefinitions`)** — в работе,
    **wave 1 ✅ 1.7.6**. Реальность API: это полный декларативный рендерер
    вкладки для Obsidian **1.13.0+**, и на 1.13+ он ПОЛНОСТЬЮ заменяет
@@ -588,7 +625,8 @@ en/ru/zh-cn синхронны (~652 ключа).
    `no-misused-promises` 65 → 0 (1.7.12),
    `restrict-template-expressions` 296 → 0 (1.7.13),
    `no-confusing-void-expression` 130 → 0 и
-   `no-unnecessary-type-conversion` 95 → 0 (1.7.16). Осталось: гигантский
+   `no-unnecessary-type-conversion` 95 → 0 (1.7.16),
+   `no-unused-vars` 57 → 0 (1.7.18, серия пяти патчей). Осталось: гигантский
    пул `no-unnecessary-condition` 1367 — во многом обесценится
    миграцией `strictNullChecks`, + `eslint-plugin-obsidianmd`
    (ревью-набор каталога) отдельным инкрементом со своей заморозкой.
