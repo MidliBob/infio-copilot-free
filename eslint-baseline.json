@@ -205,8 +205,7 @@
 		"src/components/chat-view/chat-input/SearchInputWithActions.tsx": {
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-unnecessary-condition": 13,
-			"@typescript-eslint/no-unsafe-member-access": 3,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unsafe-member-access": 3
 		},
 		"src/components/chat-view/chat-input/SearchModeSelect.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 3,
@@ -262,8 +261,7 @@
 		},
 		"src/components/chat-view/chat-input/plugins/typeahead-menu/LexicalTypeaheadMenuPlugin.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 4,
-			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/components/chat-view/chat-input/utils/editor-state-to-plain-text.test.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
@@ -503,8 +501,7 @@
 		"src/core/mcp/McpHub.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
 			"@typescript-eslint/no-deprecated": 5,
-			"@typescript-eslint/no-unnecessary-condition": 58,
-			"@typescript-eslint/no-unused-vars": 2
+			"@typescript-eslint/no-unnecessary-condition": 58
 		},
 		"src/core/mcp/McpServerManager.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
@@ -778,8 +775,7 @@
 			"@typescript-eslint/no-unnecessary-type-assertion": 1,
 			"@typescript-eslint/no-unsafe-argument": 1,
 			"@typescript-eslint/no-unsafe-assignment": 8,
-			"@typescript-eslint/no-unsafe-member-access": 26,
-			"@typescript-eslint/no-unused-vars": 2
+			"@typescript-eslint/no-unsafe-member-access": 26
 		},
 		"src/database/modules/vector/vector-repository.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 22
@@ -888,7 +884,7 @@
 		"src/render-plugin/render-surgestion-plugin.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 2
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/render-plugin/states.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
@@ -928,8 +924,7 @@
 			"no-inline-styles/no-inline-styles": 22
 		},
 		"src/settings/components/FormComponents.tsx": {
-			"@typescript-eslint/no-unnecessary-condition": 5,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-condition": 5
 		},
 		"src/settings/components/ModelParametersSettings.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1122,8 +1117,7 @@
 			"@typescript-eslint/consistent-type-assertions": 3,
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unsafe-member-access": 2
 		},
 		"src/types/settings.test.ts": {
 			"@typescript-eslint/no-base-to-string": 1,
@@ -1161,8 +1155,7 @@
 			"@typescript-eslint/no-unsafe-assignment": 2,
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-member-access": 1,
-			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/no-unused-vars": 2
+			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/utils/circuit-breaker.test.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1

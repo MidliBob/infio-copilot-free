@@ -46,7 +46,7 @@ const isEditorStateEmpty = (editorState: SerializedEditorState): boolean => {
 		})
 		
 		return !hasContent
-	} catch (error) {
+	} catch {
 		return true
 	}
 }

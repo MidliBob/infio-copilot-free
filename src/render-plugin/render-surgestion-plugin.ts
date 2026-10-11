@@ -66,7 +66,7 @@ function inlineSuggestionDecoration(
     });
 
     return Decoration.set([decoration.range(post)]);
-  } catch (e) {
+  } catch {
     return Decoration.none;
   }
 

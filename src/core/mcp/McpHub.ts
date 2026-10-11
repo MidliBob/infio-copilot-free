@@ -753,7 +753,7 @@ export class McpHub {
 			}
 			const response = await connection.client.request({ method: "resources/list" }, ListResourcesResultSchema)
 			return response?.resources || []
-		} catch (error) {
+		} catch {
 			// logger.error(`Failed to fetch resources for ${serverName}:`, error)
 			return []
 		}
@@ -773,7 +773,7 @@ export class McpHub {
 				ListResourceTemplatesResultSchema,
 			)
 			return response?.resourceTemplates || []
-		} catch (error) {
+		} catch {
 			// logger.error(`Failed to fetch resource templates for ${serverName}:`, error)
 			return []
 		}

@@ -356,7 +356,7 @@ export class VectorManager {
 					})).filter(chunk => chunk.pageContent.length > 0)
 					const filteredDocuments = this.mergeSmallChunks(cleanedChunks, minChunkSize)
 					totalChunks += filteredDocuments.length
-				} catch (error) {
+				} catch {
 					// 统计阶段跳过错误文件
 				}
 			}
@@ -711,7 +711,7 @@ export class VectorManager {
 					})).filter(chunk => chunk.pageContent.length > 0)
 					const filteredDocuments = this.mergeSmallChunks(cleanedChunks, minChunkSize)
 					totalChunks += filteredDocuments.length
-				} catch (error) {
+				} catch {
 					// 统计阶段跳过错误文件
 				}
 			}

@@ -284,7 +284,7 @@ export const ApiKeyComponent: React.FC<ApiKeyComponentProps> = ({
 		try {
 			await onTest();
 			setTestResult('success');
-		} catch (error) {
+		} catch {
 			setTestResult('error');
 		} finally {
 			setIsTestingConnection(false);

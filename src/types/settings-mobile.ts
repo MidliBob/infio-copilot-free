@@ -103,7 +103,7 @@ export function isRegexValid(value: string): boolean {
 		const regex = new RegExp(value);
 		regex.test("");
 		return true;
-	} catch (e) {
+	} catch {
 		return false;
 	}
 }

@@ -171,7 +171,7 @@ export function isRegexValid(value: string): boolean {
 		const regex = new RegExp(value);
 		regex.test("");
 		return true;
-	} catch (e) {
+	} catch {
 		return false;
 	}
 }
@@ -180,7 +180,7 @@ export function isValidIgnorePattern(value: string): boolean {
 	try {
 		mm.isMatch("", value);
 		return true;
-	} catch (e) {
+	} catch {
 		return false;
 	}
 }
