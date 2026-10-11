@@ -46,7 +46,7 @@ export class MultiSearchReplaceDiffStrategy implements DiffStrategy {
 		this.bufferLines = bufferLines ?? BUFFER_LINES
 	}
 
-	getToolDescription(args: { cwd: string; toolOptions?: { [key: string]: string } }): string {
+	getToolDescription(): string {
 		return `## apply_diff
 Description: Request to replace existing content in Markdown documents using a search and replace block.
 This tool allows for precise modifications to Markdown files by specifying exactly what content to search for and what to replace it with.

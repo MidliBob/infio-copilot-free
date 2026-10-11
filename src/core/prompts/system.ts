@@ -109,7 +109,7 @@ ${getToolDescriptionsForMode(
 			experiments,
 		)}
 
-${getToolUseGuidelinesSection(mode)}
+${getToolUseGuidelinesSection()}
 
 ${mcpServersSection}
 
@@ -126,9 +126,6 @@ ${getRulesSection(
 			mode,
 			cwd,
 			filesSearchMethod,
-			supportsComputerUse,
-			diffStrategy,
-			experiments,
 		)}
 
 ${getObjectiveSection(mode)}

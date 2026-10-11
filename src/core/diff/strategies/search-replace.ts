@@ -270,7 +270,7 @@ Your search/replace content here
 		})
 
 		// Apply the replacement while preserving exact indentation
-		const indentedReplaceLines = replaceLines.map((line, i) => {
+		const indentedReplaceLines = replaceLines.map((line) => {
 			// Get the matched line's exact indentation
 			const matchedIndent = originalIndents[0] || ""
 

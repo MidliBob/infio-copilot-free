@@ -1,5 +1,3 @@
-import { DiffStrategy } from "../../diff/DiffStrategy"
-
 function getEditingInstructions(mode: string): string {
 	if (mode !== 'write') {
 		return ""
@@ -102,9 +100,6 @@ export function getRulesSection(
 	mode: string,
 	cwd: string,
 	searchTool: string,
-	supportsComputerUse: boolean,
-	diffStrategy?: DiffStrategy,
-	experiments?: Record<string, boolean>,
 ): string {
 	if (mode === 'research') {
 		return getDeepResearchRulesSection();

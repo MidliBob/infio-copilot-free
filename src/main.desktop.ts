@@ -243,24 +243,12 @@ export async function loadDesktop(base: Plugin) {
 		plugin.app
 	);
 
-	plugin.diffStrategy = getDiffStrategy(
-		plugin.settings.chatModelId || "",
-		plugin.app,
-		plugin.settings.fuzzyMatchThreshold,
-		plugin.settings.experimentalDiffStrategy,
-		plugin.settings.multiSearchReplaceDiffStrategy,
-	)
+	plugin.diffStrategy = getDiffStrategy()
 
 	plugin.addSettingsListener((newSettings) => {
 		plugin.inlineEdit = new InlineEdit(plugin, newSettings);
 		eventListener.handleSettingChanged(newSettings)
-		plugin.diffStrategy = getDiffStrategy(
-			plugin.settings.chatModelId || "",
-			plugin.app,
-			plugin.settings.fuzzyMatchThreshold,
-			plugin.settings.experimentalDiffStrategy,
-			plugin.settings.multiSearchReplaceDiffStrategy,
-		)
+		plugin.diffStrategy = getDiffStrategy()
 		if (plugin.settings.mcpEnabled && !plugin.mcpHub) {
 			void plugin.getMcpHub()
 		} else if (!plugin.settings.mcpEnabled && plugin.mcpHub) {

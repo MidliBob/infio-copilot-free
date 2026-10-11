@@ -1,6 +1,4 @@
-import { ToolArgs } from "./types"
-
-export function getSearchWebDescription(args: ToolArgs): string {
+export function getSearchWebDescription(): string {
 	return `## search_web
 Description:
 This tool allows you to search the web using internet search engines like Google to find relevant information on current events, facts, data, and other online content.

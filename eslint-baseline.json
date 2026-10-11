@@ -394,16 +394,14 @@
 			"@typescript-eslint/no-unsafe-member-access": 2
 		},
 		"src/core/diff/DiffStrategy.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 2
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/diff/insert-groups.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"prefer-const": 1
 		},
 		"src/core/diff/strategies/multi-search-replace.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-condition": 8
 		},
 		"src/core/diff/strategies/new-unified/edit-strategies.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
@@ -424,7 +422,6 @@
 		},
 		"src/core/diff/strategies/search-replace.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 7,
-			"@typescript-eslint/no-unused-vars": 1,
 			"@typescript-eslint/prefer-regexp-exec": 4
 		},
 		"src/core/diff/strategies/unified.ts": {
@@ -545,12 +542,10 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/sections/rules.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 3
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/sections/tool-use-guidelines.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/sections/tool-use.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -588,8 +583,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/manage-files.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/read-file.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -601,8 +595,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/search-web.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/switch-mode.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1

@@ -38,10 +38,10 @@ const toolDescriptionMap: Record<string, (args: ToolArgs) => string | undefined>
 	use_mcp_tool: (args) => getUseMcpToolDescription(args),
 	access_mcp_resource: (args) => getAccessMcpResourceDescription(args),
 	search_and_replace: (args) => getSearchAndReplaceDescription(args),
-	manage_files: (args) => getManageFilesDescription(args),
+	manage_files: () => getManageFilesDescription(),
 	apply_diff: (args) =>
 		args.diffStrategy ? args.diffStrategy.getToolDescription({ cwd: args.cwd, toolOptions: args.toolOptions }) : "",
-	search_web: (args): string | undefined => getSearchWebDescription(args),
+	search_web: (): string | undefined => getSearchWebDescription(),
 	fetch_urls_content: (args): string | undefined => getFetchUrlsContentDescription(args),
 }
 

@@ -20,6 +20,6 @@ It is crucial to proceed step-by-step, waiting for the user's message after each
 By waiting for and carefully considering the user's response after each tool use, you can react accordingly and make informed decisions about how to proceed with the task. This iterative process helps ensure the overall success and accuracy of your work.`
 }
 
-export function getToolUseGuidelinesSection(mode?: string): string {
+export function getToolUseGuidelinesSection(): string {
 	return getDefaultToolUseGuidelines();
 }
