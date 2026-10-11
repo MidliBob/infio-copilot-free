@@ -412,7 +412,7 @@
 		},
 		"src/core/diff/strategies/multi-search-replace.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 8,
-			"@typescript-eslint/no-unused-vars": 3
+			"@typescript-eslint/no-unused-vars": 1
 		},
 		"src/core/diff/strategies/new-unified/edit-strategies.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
@@ -585,8 +585,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/fetch-url-content.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/prompts/tools/index.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 6,
@@ -850,8 +849,7 @@
 		},
 		"src/main.mobile.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/main.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 3

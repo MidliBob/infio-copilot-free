@@ -87,6 +87,20 @@ export default tseslint.config(
 			'@typescript-eslint/no-unnecessary-type-assertion': 'error',
 			'@typescript-eslint/prefer-regexp-exec': 'error',
 
+			// no-unused-vars with the '_' convention for parameters that
+			// CANNOT be removed: a base-class method whose parameter is used
+			// by subclass overrides must keep its arity (State.handleDocumentChange /
+			// State.handlePredictCommand — idle/predicting/queued/suggesting use the
+			// parameters; dropping them from the base breaks assignability, and an
+			// abstract-member restructure would add seven empty stub methods to five
+			// classes). argsIgnorePattern is typescript-eslint's documented
+			// recommendation for this, and the codebase already used the convention
+			// de-facto (_args, _base, _paramStartLine, _paramEndLine — exactly the
+			// 4 findings this deliberate relaxation retires; baseline shrunk in the
+			// same commit). All other rule options stay at their defaults; removal
+			// remains the preferred fix everywhere else.
+			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+
 			// frozen debt: force-tracked by scripts/lint-ratchet.mjs against
 			// eslint-baseline.json - enable here only at zero counters
 			'@typescript-eslint/no-unsafe-assignment': 'off',
