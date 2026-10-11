@@ -123,7 +123,6 @@ const ControlArea: React.FC<ControlAreaProps> = ({
 };
 
 export const InlineEdit: React.FC<InlineEditProps> = ({
-	source,
 	secStartLine,
 	secEndLine,
 	plugin,

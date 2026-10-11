@@ -1,4 +1,4 @@
-import { App, TAbstractFile, TFile, TFolder, Vault, getLanguage, htmlToMarkdown, normalizePath, requestUrl } from 'obsidian'
+import { App, TAbstractFile, TFile, TFolder, getLanguage, htmlToMarkdown, normalizePath, requestUrl } from 'obsidian'
 
 import { editorStateToPlainText } from '../components/chat-view/chat-input/utils/editor-state-to-plain-text'
 import { QueryProgressState } from '../components/chat-view/QueryProgress'
@@ -23,10 +23,7 @@ import {
 import { InfioSettings } from '../types/settings'
 import { CustomModePrompts, Mode, ModeConfig, getFullModeDetails } from "../utils/modes"
 
-import {
-	parsePdfContent,
-	readTFileContent
-} from './obsidian'
+import { readTFileContent } from './obsidian'
 import { tokenCount } from './token'
 import { isYoutubeUrl } from './video-detector'
 import { YoutubeTranscript } from './youtube-transcript'
@@ -67,70 +64,6 @@ async function getFolderTreeContent(path: TFolder): Promise<string> {
 			}
 		})
 		return folderContent
-	} catch (error) {
-		throw new Error(`Failed to access path "${path.path}": ${String(error.message)}`)
-	}
-}
-
-async function getFileOrFolderContent(
-	path: TAbstractFile,
-	vault: Vault,
-	app?: App
-): Promise<string> {
-	try {
-		if (path instanceof TFile) {
-			if (path.extension === 'pdf') {
-				// Handle PDF files without line numbers
-				if (app) {
-					return await parsePdfContent(path, app)
-				}
-				return "(PDF file, app context required for processing)"
-			}
-			if (path.extension != 'md') {
-				return "(Binary file, unable to display content)"
-			}
-			return addLineNumbers(await readTFileContent(path, vault))
-		} else if (path instanceof TFolder) {
-			const entries = path.children
-			let folderContent = ""
-			const fileContentPromises: Promise<string | undefined>[] = []
-			entries.forEach((entry, index) => {
-				const isLast = index === entries.length - 1
-				const linePrefix = isLast ? "└── " : "├── "
-				if (entry instanceof TFile) {
-					folderContent += `${linePrefix}${entry.name}\n`
-					fileContentPromises.push(
-						(async () => {
-							try {
-								if (entry.extension === 'pdf') {
-									// Handle PDF files in folders
-									if (app) {
-										const content = await parsePdfContent(entry, app)
-										return `<file_content path="${entry.path}">\n${content}\n</file_content>`
-									}
-									return `<file_content path="${entry.path}">\n(PDF file, app context required for processing)\n</file_content>`
-								}
-								if (entry.extension != 'md') {
-									return undefined
-								}
-								const content = addLineNumbers(await readTFileContent(entry, vault))
-								return `<file_content path="${entry.path}">\n${content}\n</file_content>`
-							} catch (error) {
-								return undefined
-							}
-						})(),
-					)
-				} else if (entry instanceof TFolder) {
-					folderContent += `${linePrefix}${entry.name}/\n`
-				} else {
-					folderContent += `${linePrefix}${entry.name}\n`
-				}
-			})
-			const fileContents = (await Promise.all(fileContentPromises)).filter((content) => content)
-			return `${folderContent}\n${fileContents.join("\n\n")}`.trim()
-		} else {
-			return `(Failed to read contents of ${path.path})`
-		}
 	} catch (error) {
 		throw new Error(`Failed to access path "${path.path}": ${String(error.message)}`)
 	}
@@ -1216,7 +1149,7 @@ ${transcript.map((t) => `${String(t.offset)}: ${t.text}`).join('\n')}`,
 		for (const item of content) {
 			if (item.type === 'image' && item.data && item.filename) {
 				try {
-					const imagePath = await this.saveImageFromBase64(item.data, item.filename, item.mimeType)
+					const imagePath = await this.saveImageFromBase64(item.data, item.filename)
 					savedImagePaths.push(imagePath)
 				} catch (error) {
 					logger.error('Failed to save image:', error)
@@ -1292,7 +1225,7 @@ ${transcript.map((t) => `${String(t.offset)}: ${t.text}`).join('\n')}`,
 	/**
 	 * 将base64图片数据保存为文件到Obsidian资源目录
 	 */
-	private async saveImageFromBase64(base64Data: string, filename: string, mimeType?: string): Promise<string> {
+	private async saveImageFromBase64(base64Data: string, filename: string): Promise<string> {
 		// 获取默认资源目录
 		// @ts-ignore
 		const staticResourceDir = this.app.vault.getConfig("attachmentFolderPath")

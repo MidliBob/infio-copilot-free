@@ -223,14 +223,6 @@ const listFolderContentsFirstLevel = async (folder: TFolder, prefix: string): Pr
 	return result
 }
 
-export const matchSearchFiles = async (vault: Vault, path: string, query: string, file_pattern: string) => {
-
-}
-
-export const regexSearchFiles = async (vault: Vault, path: string, regex: string, file_pattern: string) => {
-
-}
-
 /**
  * 语义搜索文件（同时查询原始笔记和抽象洞察）
  */
@@ -321,7 +313,7 @@ export const semanticSearchFiles = async (
 					
 					resultSections.push(`\n### ${typeName}`)
 					
-					insights.forEach((insight, index) => {
+					insights.forEach((insight) => {
 						const similarity = (insight.similarity * 100).toFixed(1)
 						resultSections.push(
 							`<insight_block source="${String(insight.source_path)}" type="${insightType}" similarity="${similarity}%">\n${String(insight.insight)}\n</insight_block>`

@@ -127,6 +127,13 @@ export default tseslint.config(
 			// wraps of non-string interpolations; whole-expression `${x}`
 			// templates became String(x)) - it was already active through
 			// strictTypeChecked since 1.7.9, its baseline counters are gone
+			// no-unused-vars burned to zero in 1.7.18 (57 findings in 28
+			// files: optional catch bindings, dropped interface-impl
+			// parameters and their freed imports, dead exports/functions
+			// removed, '_' renames for the arity-blocked base-class
+			// methods); its baseline counters are gone and the ratchet
+			// rejects any reappearance. The argsIgnorePattern
+			// convention above stays for future interface impls.
 		},
 	},
 )

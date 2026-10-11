@@ -20,7 +20,7 @@ const RenderSuggestionPlugin = () =>
         decorations: DecorationSet;
         suggestion: Suggestion;
 
-        constructor(view: EditorView) {
+        constructor() {
           this.decorations = Decoration.none;
           this.suggestion = {
             value: "",

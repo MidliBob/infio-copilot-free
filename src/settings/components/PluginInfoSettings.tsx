@@ -15,9 +15,7 @@ type PluginInfoSettingsProps = {
 export default function PluginInfoSettings({
 	pluginVersion,
 	author,
-	authorUrl,
-	plugin,
-	settings
+	authorUrl
 }: PluginInfoSettingsProps) {
 	const isPro = false; // this is must be false
 	// Convert SVG string to data URL for proper display

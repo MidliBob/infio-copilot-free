@@ -279,8 +279,7 @@
 		},
 		"src/components/inline-edit/InlineEdit.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 3,
-			"@typescript-eslint/no-unnecessary-condition": 13,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-condition": 13
 		},
 		"src/components/modals/ImageSelectorModal.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 3,
@@ -869,8 +868,7 @@
 		},
 		"src/render-plugin/render-surgestion-plugin.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/render-plugin/states.ts": {
 			"@typescript-eslint/ban-ts-comment": 1,
@@ -919,8 +917,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 20
 		},
 		"src/settings/components/PluginInfoSettings.tsx": {
-			"@typescript-eslint/no-unnecessary-condition": 3,
-			"@typescript-eslint/no-unused-vars": 2
+			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/settings/components/PostprocessingSettings.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1198,8 +1195,7 @@
 			"@typescript-eslint/no-unnecessary-template-expression": 1,
 			"@typescript-eslint/no-unsafe-argument": 2,
 			"@typescript-eslint/no-unsafe-enum-assignment": 1,
-			"@typescript-eslint/no-unsafe-member-access": 6,
-			"@typescript-eslint/no-unused-vars": 9
+			"@typescript-eslint/no-unsafe-member-access": 6
 		},
 		"src/utils/icon.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
@@ -1303,8 +1299,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 35,
 			"@typescript-eslint/no-unsafe-assignment": 5,
 			"@typescript-eslint/no-unsafe-call": 3,
-			"@typescript-eslint/no-unsafe-member-access": 8,
-			"@typescript-eslint/no-unused-vars": 3
+			"@typescript-eslint/no-unsafe-member-access": 8
 		},
 		"src/utils/provider-schemas.test.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
