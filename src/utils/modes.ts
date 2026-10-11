@@ -169,17 +169,6 @@ export function getAllModes(customModes?: ModeConfig[]): ModeConfig[] {
 	return allModes
 }
 
-// Check if a mode is custom or an override
-export function isCustomMode(slug: string, customModes?: ModeConfig[]): boolean {
-	// `customModes` is optional, so it can be undefined at runtime even though
-	// strictNullChecks: off erases that from the type. The previous
-	// `!!customModes?.some(...)` coerced undefined to false; dropping the `!!`
-	// outright would return undefined and break the declared boolean contract,
-	// while keeping it is flagged by no-unnecessary-type-conversion. The
-	// Array.isArray probe preserves the exact runtime semantics lint-clean.
-	return Array.isArray(customModes) ? customModes.some((mode) => mode.slug === slug) : false
-}
-
 // Custom error class for file restrictions
 export class FileRestrictionError extends Error {
 	constructor(mode: string, pattern: string, description: string | undefined, filePath: string) {

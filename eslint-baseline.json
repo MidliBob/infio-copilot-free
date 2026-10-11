@@ -1269,9 +1269,6 @@
 			"@typescript-eslint/no-deprecated": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
-		"src/utils/modes.test.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1
-		},
 		"src/utils/modes.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
 			"@typescript-eslint/no-explicit-any": 2,
