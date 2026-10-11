@@ -156,7 +156,12 @@ Planned. Requirements and steps:
   and is not affected. `declaration-no-important` reached **zero** in 1.7.5
   (burn-down history: ROADMAP.md, phase 3): the only `!important` left in
   `styles.css` are the documented exceptions below — do not disable the
-  rule, keep the gate; new flags are allowed only via this registry.
+  rule, keep the gate; new flags are allowed only via this registry. The
+  baseline itself reached **zero** in 1.7.17 — the last two
+  `no-duplicate-selectors` findings (the duplicate `.icf-popover ul` and
+  `.icf-popover li:hover` rules) were merged with byte-identical computed
+  values, so the ratchet now guards a stylesheet with no frozen debt at
+  all.
 - stylelint exceptions with written justification (scoped
   `stylelint-disable` comments inside `styles.css`; policy: a new exception
   is allowed only as a scoped disable + an entry in this list, everything
@@ -260,8 +265,8 @@ ones that cannot be fixed by construction are recorded here:
   (CORS) blocks; `requestUrl` bypasses CORS and cannot detect them.
 
 Deliberately deferred to planned releases (the burn-down register; all
-counts are the frozen 1.7.16 baseline, 1995 total): `no-unnecessary-condition`
-(1368 — the largest single pool, mostly defensive checks that the strict
+counts are the frozen 1.7.17 baseline, 1994 total): `no-unnecessary-condition`
+(1367 — the largest single pool, mostly defensive checks that the strict
 types already guarantee), the
 `no-unsafe-*`/`any` debt (232 across member-access/assignment/call/argument/
 return, phase 2 pass 3, module by module), `no-base-to-string` (27),
@@ -285,7 +290,7 @@ were already active through `strictTypeChecked` since 1.7.9, their counters
 are gone from the baseline. Remaining phase-3
 lint work: keep graduating rules as their counters reach zero (next
 candidate: the `strictNullChecks` decision
-for the 1368-finding `no-unnecessary-condition` pool), and evaluate
+for the 1367-finding `no-unnecessary-condition` pool), and evaluate
 `eslint-plugin-obsidianmd` (the catalog review set) as a separate tracked
 increment.
 
