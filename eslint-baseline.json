@@ -342,38 +342,32 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/post-processors/remove-overlap.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/post-processors/remove-whitespace.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/pre-processors/data-view-remover.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-unnecessary-template-expression": 1,
-			"@typescript-eslint/no-unused-vars": 1
+			"@typescript-eslint/no-unnecessary-template-expression": 1
 		},
 		"src/core/autocomplete/pre-processors/length-limiter.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 3
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/disabled-file-specific-state.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 2
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/disabled-invalid-settings-state.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/disabled-manual-state.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 2
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/idle-state.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/init-state.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 3
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/predicting-state.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 2
@@ -382,8 +376,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/state.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unused-vars": 4
+			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/states/suggesting-state.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1

@@ -1,7 +1,3 @@
-import { TFile } from "obsidian";
-
-import { InfioSettings } from "../../../types/settings";
-
 import State from "./state";
 
 class DisabledManualState extends State {
@@ -9,13 +5,13 @@ class DisabledManualState extends State {
     return "Disabled";
   }
 
-  handleSettingChanged(settings: InfioSettings): void {
+  handleSettingChanged(): void {
     if (this.context.settings.autocompleteEnabled) {
       this.context.transitionToIdleState();
     }
   }
 
-  handleFileChange(file: TFile): void { }
+  handleFileChange(): void { }
 }
 
 export default DisabledManualState;

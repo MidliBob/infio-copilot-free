@@ -1,7 +1,3 @@
-import { TFile } from "obsidian";
-
-import { InfioSettings } from "../../../types/settings";
-
 import State from "./state";
 
 
@@ -10,7 +6,7 @@ class DisabledFileSpecificState extends State {
     return "Disabled for this file";
   }
 
-  handleSettingChanged(settings: InfioSettings) {
+  handleSettingChanged() {
     if (!this.context.settings.autocompleteEnabled) {
       this.context.transitionToDisabledManualState();
     }
@@ -19,7 +15,7 @@ class DisabledFileSpecificState extends State {
     }
   }
 
-  handleFileChange(file: TFile): void {
+  handleFileChange(): void {
     if (this.context.isCurrentFilePathIgnored() || this.context.currentFileContainsIgnoredTag()) {
       return;
     }

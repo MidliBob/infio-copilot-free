@@ -1,4 +1,3 @@
-import Context from "../context-detection";
 import { PreProcessor, PrefixAndSuffix } from "../types";
 import { generateRandomString } from "../utils";
 
@@ -6,7 +5,7 @@ const DATA_VIEW_REGEX = /```dataview(js){0,1}(.|\n)*?```/gm;
 const UNIQUE_CURSOR = `${generateRandomString(16)}`;
 
 class DataViewRemover implements PreProcessor {
-  process(prefix: string, suffix: string, context: Context): PrefixAndSuffix {
+  process(prefix: string, suffix: string): PrefixAndSuffix {
     let text = prefix + UNIQUE_CURSOR + suffix;
     text = text.replace(DATA_VIEW_REGEX, "");
     const [prefixNew, suffixNew] = text.split(UNIQUE_CURSOR);

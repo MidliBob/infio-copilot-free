@@ -1,4 +1,3 @@
-import Context from "../context-detection";
 import { PostProcessor } from "../types";
 
 
@@ -6,8 +5,7 @@ class RemoveOverlap implements PostProcessor {
   process(
     prefix: string,
     suffix: string,
-    completion: string,
-    context: Context
+    completion: string
   ): string {
     completion = removeWordOverlapPrefix(prefix, completion);
     completion = removeWordOverlapSuffix(completion, suffix);

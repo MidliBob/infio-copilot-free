@@ -1,4 +1,3 @@
-import Context from "../context-detection";
 import { PreProcessor, PrefixAndSuffix } from "../types";
 
 class LengthLimiter implements PreProcessor {
@@ -10,13 +9,13 @@ class LengthLimiter implements PreProcessor {
     this.maxSuffixChars = maxSuffixChars;
   }
 
-  process(prefix: string, suffix: string, context: Context): PrefixAndSuffix {
+  process(prefix: string, suffix: string): PrefixAndSuffix {
     prefix = prefix.slice(-this.maxPrefixChars);
     suffix = suffix.slice(0, this.maxSuffixChars);
     return { prefix, suffix };
   }
 
-  removesCursor(prefix: string, suffix: string): boolean {
+  removesCursor(): boolean {
     return false;
   }
 }

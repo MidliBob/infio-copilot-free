@@ -1,4 +1,4 @@
-import { Notice, TFile } from "obsidian";
+import { Notice } from "obsidian";
 
 import EventListener from "../../../event-listener";
 import { DocumentChanges } from "../../../render-plugin/document-changes-listener";
@@ -30,8 +30,12 @@ abstract class State implements EventHandler {
     }
   }
 
+  // '_' parameter: the subclass overrides (idle/predicting/queued/
+  // suggesting) use documentChanges; dropping it from the base method would
+  // break their assignability (see the no-unused-vars convention in
+  // eslint.config.mjs).
   async handleDocumentChange(
-    documentChanges: DocumentChanges
+    _documentChanges: DocumentChanges
   ): Promise<void> {
   }
 
@@ -47,7 +51,9 @@ abstract class State implements EventHandler {
     return false;
   }
 
-  handlePredictCommand(prefix: string, suffix: string): void {
+  // '_' parameters: IdleState.handlePredictCommand uses prefix/suffix
+  // (same arity constraint as above).
+  handlePredictCommand(_prefix: string, _suffix: string): void {
   }
 
   handleAcceptCommand(): void {
@@ -55,7 +61,7 @@ abstract class State implements EventHandler {
 
   abstract getStatusBarText(): string;
 
-  handleFileChange(file: TFile): void {
+  handleFileChange(): void {
     if (this.context.isCurrentFilePathIgnored() || this.context.currentFileContainsIgnoredTag()) {
       this.context.transitionToDisabledFileSpecificState();
     } else if (this.context.isDisabled()) {

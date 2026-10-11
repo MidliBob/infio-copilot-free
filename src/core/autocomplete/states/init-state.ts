@@ -1,14 +1,9 @@
-import { TFile } from "obsidian";
-
-import { DocumentChanges } from "../../../render-plugin/document-changes-listener";
-import { InfioSettings } from "../../../types/settings";
-
 import { EventHandler } from "./types";
 
 class InitState implements EventHandler {
-  async handleDocumentChange(documentChanges: DocumentChanges): Promise<void> { }
+  async handleDocumentChange(): Promise<void> { }
 
-  handleSettingChanged(settings: InfioSettings): void { }
+  handleSettingChanged(): void { }
 
   handleAcceptKeyPressed(): boolean {
     return false;
@@ -30,7 +25,7 @@ class InitState implements EventHandler {
     return "Initializing...";
   }
 
-  handleFileChange(file: TFile): void {
+  handleFileChange(): void {
 
   }
 }
