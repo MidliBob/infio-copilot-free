@@ -25,6 +25,7 @@ import { z } from "zod"; // Keep zod
 import { JSON_VIEW_TYPE } from '../../constants';
 import { t } from "../../lang/helpers";
 import { injectEnv } from "../../utils/config";
+import { extractErrorMessage } from "../../utils/network-errors";
 import { ROOT_DIR } from '../prompts/constants';
 
 import {
@@ -184,7 +185,7 @@ export class McpHub {
 	 */
 	private showErrorMessage(message: string, error: unknown): void {
 		logger.error(`${message}:`, error)
-		new Notice(`${message}: ${error instanceof Error ? error.message : String(error)}`);
+		new Notice(`${message}: ${extractErrorMessage(error)}`);
 	}
 
 	public setupWorkspaceWatcher(): void {

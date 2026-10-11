@@ -5,6 +5,7 @@ import { ManageFilesToolArgs } from '../types/apply'
 
 import { logger } from './logger'
 import { GroupEntry, ModeConfig, isToolAllowedForMode } from './modes'
+import { extractErrorMessage as errorMessage } from './network-errors'
 
 /**
  * Result of the runtime mode check that guards the manage_files Apply button.
@@ -228,10 +229,6 @@ export type ManageFilesRunResult = {
 
 /** One operation's outcome: the line shown to the user and fed back to the model. */
 type OperationOutcome = { ok: boolean; line: string }
-
-function errorMessage(error: unknown): string {
-	return error instanceof Error ? error.message : String(error)
-}
 
 /**
  * Required fields per action. An entry that validated as a known action but

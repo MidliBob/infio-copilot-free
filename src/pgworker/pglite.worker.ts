@@ -3,6 +3,7 @@ import { PGlite } from '@electric-sql/pglite'
 import { PGliteWorkerOptions, worker } from '@electric-sql/pglite/worker'
 
 import { migrations } from '../database/sql'
+import { extractErrorMessage } from '../utils/network-errors'
 
 export { }
 
@@ -51,7 +52,7 @@ async function fetchAssetsFromCdn(): Promise<PgliteAssets> {
 		'Failed to obtain PGlite assets. Either place postgres.wasm, postgres.data and ' +
 			'vector.tar.gz (from @electric-sql/pglite@0.2.14 dist) into the plugin folder, ' +
 			'or check your network connection. Last error: ' +
-			(lastError instanceof Error ? lastError.message : String(lastError)),
+			extractErrorMessage(lastError),
 	)
 }
 

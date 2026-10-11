@@ -1,6 +1,7 @@
 import { DEFAULT_MODELS } from '../constants'
 import { DEFAULT_SETTINGS } from '../settings/versions/v1/v1'
 import { logger } from '../utils/logger'
+import { extractErrorMessage } from '../utils/network-errors'
 
 import { parseInfioSettings } from './settings'
 
@@ -646,7 +647,7 @@ describe('Serper/Jina removal migration (0.6 -> 0.9)', () => {
 		})
 
 		expect(loggerMock.error).toHaveBeenCalledTimes(1)
-		expect(String(loggerMock.error.mock.calls[0][0])).toContain(
+		expect(extractErrorMessage(loggerMock.error.mock.calls[0][0])).toContain(
 			'using default settings instead',
 		)
 		expect(result.version).toBe(1.0)

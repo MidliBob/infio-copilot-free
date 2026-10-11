@@ -1,6 +1,6 @@
 import { requestUrl } from 'obsidian'
 
-import { extractNetworkErrorStatus, isNetworkFailureMessage } from './network-errors'
+import { extractErrorMessage, extractNetworkErrorStatus, isNetworkFailureMessage } from './network-errors'
 import { type OllamaTagModel, parseOllamaTags } from './provider-schemas'
 
 async function fetchOllamaTags(ollamaUrl: string): Promise<OllamaTagModel[]> {
@@ -113,7 +113,7 @@ const ORIGINS_HINT =
  */
 export function describeOllamaNetworkError(error: unknown, rawBaseUrl: string): string | null {
 	const baseUrl = normalizeOllamaBaseUrl(rawBaseUrl)
-	const message = error instanceof Error ? error.message : String(error ?? '')
+	const message = extractErrorMessage(error)
 	const status = extractNetworkErrorStatus(error)
 
 	// Browsers mask CORS-blocked responses (Ollama's 403 without

@@ -134,9 +134,9 @@ describe('extractErrorMessage', () => {
 		expect(extractErrorMessage({ message: 'from object' })).toBe('from object')
 	})
 
-	it('falls back to String() for primitives and message-less objects', () => {
+	it('falls back to JSON for message-less objects and String() for primitives', () => {
 		expect(extractErrorMessage(42)).toBe('42')
-		expect(extractErrorMessage({ code: 7 })).toBe('[object Object]')
+		expect(extractErrorMessage({ code: 7 })).toBe('{"code":7}')
 	})
 
 	it('returns an empty string for null and undefined', () => {

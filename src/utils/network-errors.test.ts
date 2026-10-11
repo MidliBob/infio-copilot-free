@@ -111,7 +111,14 @@ describe('extractErrorMessage', () => {
 
 	it('reads a string message off message-shaped objects', () => {
 		expect(extractErrorMessage({ message: 'shaped' })).toBe('shaped')
-		expect(extractErrorMessage({ message: 42 })).toBe('[object Object]')
+		expect(extractErrorMessage({ message: 42 })).toBe('{"message":42}')
+	})
+
+	it('serializes message-less objects as JSON, circular ones via the prototype tag', () => {
+		expect(extractErrorMessage({ code: 7 })).toBe('{"code":7}')
+		const circular: Record<string, unknown> = {}
+		circular.self = circular
+		expect(extractErrorMessage(circular)).toBe('[object Object]')
 	})
 
 	it('falls back to String() and empty string', () => {

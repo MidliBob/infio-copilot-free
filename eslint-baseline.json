@@ -488,7 +488,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/core/mcp/McpHub.ts": {
-			"@typescript-eslint/no-base-to-string": 1,
 			"@typescript-eslint/no-deprecated": 5,
 			"@typescript-eslint/no-unnecessary-condition": 58
 		},
@@ -754,7 +753,6 @@
 		},
 		"src/database/modules/vector/vector-manager.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-base-to-string": 2,
 			"@typescript-eslint/no-explicit-any": 3,
 			"@typescript-eslint/no-unnecessary-condition": 16,
 			"@typescript-eslint/no-unnecessary-type-assertion": 1,
@@ -847,7 +845,6 @@
 			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/pgworker/pglite.worker.ts": {
-			"@typescript-eslint/no-base-to-string": 1,
 			"@typescript-eslint/no-redundant-type-constituents": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unsafe-argument": 1,
@@ -1103,7 +1100,6 @@
 			"@typescript-eslint/no-unsafe-member-access": 2
 		},
 		"src/types/settings.test.ts": {
-			"@typescript-eslint/no-base-to-string": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/types/settings.ts": {
@@ -1163,7 +1159,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/dataview.ts": {
-			"@typescript-eslint/no-base-to-string": 5,
 			"@typescript-eslint/no-unnecessary-condition": 3
 		},
 		"src/utils/error-notice.test.ts": {
@@ -1226,7 +1221,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 6
 		},
 		"src/utils/manage-files.ts": {
-			"@typescript-eslint/no-base-to-string": 1,
 			"@typescript-eslint/no-unnecessary-condition": 5
 		},
 		"src/utils/md5.test.ts": {
@@ -1254,7 +1248,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/network-errors.ts": {
-			"@typescript-eslint/no-base-to-string": 3,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/obsidian.test.ts": {
@@ -1274,7 +1267,6 @@
 			"@typescript-eslint/no-unsafe-assignment": 1
 		},
 		"src/utils/ollama.ts": {
-			"@typescript-eslint/no-base-to-string": 1,
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"@typescript-eslint/no-unsafe-assignment": 1
 		},
@@ -1337,7 +1329,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 4
 		},
 		"src/utils/web-search.test.ts": {
-			"@typescript-eslint/no-base-to-string": 2,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/web-search.ts": {

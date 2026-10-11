@@ -16,6 +16,7 @@ import { InsertVector, SelectVector } from '../../../database/schema';
 import { EmbeddingModel } from '../../../types/embedding';
 import { compilePatterns, matchesAny } from '../../../utils/glob-patterns';
 import { getFilesWithTag } from '../../../utils/glob-utils';
+import { extractErrorMessage } from '../../../utils/network-errors';
 import { openSettingsModalWithError } from '../../../utils/open-settings-modal';
 import { RecursiveCharacterTextSplitter } from '../../../utils/text-splitter';
 import { DBManager } from '../../database-manager';
@@ -537,7 +538,7 @@ export class VectorManager {
 						for (const result of settled) {
 							if (result.status === 'rejected') {
 								const reason: unknown = result.reason
-								throw reason instanceof Error ? reason : new Error(String(reason))
+								throw reason instanceof Error ? reason : new Error(extractErrorMessage(reason))
 							}
 						}
 
@@ -897,7 +898,7 @@ export class VectorManager {
 						for (const result of settled) {
 							if (result.status === 'rejected') {
 								const reason: unknown = result.reason
-								throw reason instanceof Error ? reason : new Error(String(reason))
+								throw reason instanceof Error ? reason : new Error(extractErrorMessage(reason))
 							}
 						}
 

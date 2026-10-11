@@ -1,6 +1,7 @@
 import { t } from '../lang/helpers'
 import { App } from "obsidian";
 import { logger } from './logger'
+import { extractErrorMessage } from './network-errors'
 
 /**
  * Minimal local typing for the Dataview plugin API (runtime soft dependency).
@@ -127,12 +128,12 @@ export class DataviewManager {
 				if (result.successful) {
 					return {
 						success: true,
-						data: String(value || '')
+						data: extractErrorMessage(value || '')
 					};
 				} else {
 					return {
 						success: false,
-						error: String(failure || t('chat.dataview.queryFailedShort'))
+						error: extractErrorMessage(failure || t('chat.dataview.queryFailedShort'))
 					};
 				}
 			}
@@ -169,12 +170,12 @@ export class DataviewManager {
 			if (result.successful) {
 				return {
 					success: true,
-					data: result.value === undefined ? '' : String(result.value)
+					data: extractErrorMessage(result.value)
 				};
 			} else {
 				return {
 					success: false,
-					error: String(result.error || t('chat.dataview.jsQueryFailedShort'))
+					error: extractErrorMessage(result.error || t('chat.dataview.jsQueryFailedShort'))
 				};
 			}
 		} catch (error) {
@@ -209,7 +210,7 @@ export class DataviewManager {
 		}
 
 		// 其他类型，转换为字符串
-		return String(result);
+		return extractErrorMessage(result);
 	}
 }
 

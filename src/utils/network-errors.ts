@@ -63,7 +63,7 @@ export function describeEndpointNetworkError(
 	if (status !== undefined) {
 		return null
 	}
-	const message = error instanceof Error ? error.message : String(error ?? '')
+	const message = extractErrorMessage(error)
 	if (!isNetworkFailureMessage(message)) {
 		return null
 	}
@@ -78,14 +78,16 @@ export function isNetworkFailure(error: unknown): boolean {
 	if (extractNetworkErrorStatus(error) !== undefined) {
 		return false
 	}
-	const message = error instanceof Error ? error.message : String(error ?? '')
+	const message = extractErrorMessage(error)
 	return isNetworkFailureMessage(message)
 }
 
 /**
  * Best-effort human-readable message from a caught value:
- * Error.message, plain strings, `{ message }`-shaped objects, String()
- * for primitives, empty string for null/undefined.
+ * Error.message, plain strings, `{ message }`-shaped objects, JSON for
+ * other objects (circular ones keep the '[object Object]' tag String()
+ * used to produce), String()/toString() for the remaining primitives,
+ * empty string for null/undefined.
  */
 export function extractErrorMessage(error: unknown): string {
 	if (error instanceof Error) {
@@ -103,5 +105,24 @@ export function extractErrorMessage(error: unknown): string {
 	if (error === undefined || error === null) {
 		return ''
 	}
-	return String(error)
+	if (typeof error === 'object') {
+		// A plain object without a usable `message`: JSON keeps the real
+		// content visible instead of the useless '[object Object]';
+		// circular structures keep the tag String() used to produce.
+		try {
+			return JSON.stringify(error)
+		} catch {
+			return '[object Object]'
+		}
+	}
+	if (typeof error === 'number' || typeof error === 'boolean' || typeof error === 'bigint') {
+		return String(error)
+	}
+	if (typeof error === 'symbol' || typeof error === 'function') {
+		// Own toString: identical to what String(value) produced.
+		return error.toString()
+	}
+	// Nothing stringifiable is left (exotic unknowns); the old String()
+	// gave '[object Object]' here.
+	return '[object Object]'
 }

@@ -2,6 +2,7 @@ import type { RequestUrlParam, RequestUrlResponse } from 'obsidian'
 import { requestUrl } from 'obsidian'
 
 import { logger } from './logger'
+import { extractErrorMessage } from './network-errors'
 import type { WebSearchEmbedder } from './web-search'
 import {
 	fetchUrlsContent,
@@ -22,7 +23,7 @@ const loggerMock = jest.mocked(logger)
 
 /** Message (first argument) of every recorded logger.error call. */
 function errorMessages(): string[] {
-	return loggerMock.error.mock.calls.map((call) => String(call[0]))
+	return loggerMock.error.mock.calls.map((call) => extractErrorMessage(call[0]))
 }
 
 /** requestUrl also accepts a bare string; our code always passes the object form. */
@@ -264,7 +265,7 @@ describe('webSearch', () => {
 		expect(out).not.toContain('https://empty.example')
 		expect(out).not.toContain('https://boom.example')
 		expect(errorMessages()).toEqual([])
-		expect(loggerMock.warn.mock.calls.map((call) => String(call[0])))
+		expect(loggerMock.warn.mock.calls.map((call) => extractErrorMessage(call[0])))
 			.toEqual(['web search: could not embed result https://boom.example'])
 	})
 
