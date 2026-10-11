@@ -65,7 +65,6 @@
 		},
 		"src/components/chat-view/Markdown/MarkdownEditFileBlock.tsx": {
 			"@typescript-eslint/ban-ts-comment": 1,
-			"@typescript-eslint/no-base-to-string": 3,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/MarkdownFetchUrlsContentBlock.tsx": {
@@ -125,13 +124,18 @@
 			"@typescript-eslint/use-unknown-in-catch-callback-variable": 1
 		},
 		"src/components/chat-view/Markdown/RawMarkdownBlock.tsx": {
-			"@typescript-eslint/no-base-to-string": 2,
 			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/components/chat-view/Markdown/SyntaxHighlighterWrapper.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/Markdown/UseMcpToolBlock.tsx": {
+			"@typescript-eslint/no-unnecessary-condition": 1
+		},
+		"src/components/chat-view/Markdown/children-to-string.test.ts": {
+			"@typescript-eslint/no-unnecessary-condition": 1
+		},
+		"src/components/chat-view/Markdown/children-to-string.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/components/chat-view/McpHubView.tsx": {
@@ -808,7 +812,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/lang/helpers.ts": {
-			"@typescript-eslint/no-base-to-string": 1,
 			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/lang/locale-completeness.test.ts": {
@@ -1014,7 +1017,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v0/v0.ts": {
-			"@typescript-eslint/no-base-to-string": 2,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/few-shot-examples/block-qoute-example.ts": {
@@ -1060,7 +1062,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/versions/v1/v1.ts": {
-			"@typescript-eslint/no-base-to-string": 2,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/status-bar.ts": {

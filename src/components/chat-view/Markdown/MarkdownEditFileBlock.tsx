@@ -5,6 +5,7 @@ import { useDarkModeContext } from "../../../contexts/DarkModeContext"
 import { t } from '../../../lang/helpers'
 import { ApplyStatus, ToolArgs } from "../../../types/apply"
 
+import { childrenToString } from "./children-to-string"
 import { MemoizedSyntaxHighlighterWrapper } from "./SyntaxHighlighterWrapper"
 import { logger } from '../../../utils/logger'
 
@@ -36,7 +37,7 @@ export default function MarkdownEditFileBlock({
 
 	const handleCopy = async () => {
 		try {
-			await navigator.clipboard.writeText(String(children))
+			await navigator.clipboard.writeText(childrenToString(children))
 			setCopied(true)
 			window.setTimeout(() => { setCopied(false); }, 2000)
 		} catch (err) {
@@ -53,7 +54,7 @@ export default function MarkdownEditFileBlock({
 			// @ts-ignore
 			type: mode,
 			filepath: path,
-			content: String(children),
+			content: childrenToString(children),
 			startLine,
 			endLine
 		})
@@ -116,7 +117,7 @@ export default function MarkdownEditFileBlock({
 					hasFilename={!!path}
 					wrapLines={wrapLines}
 				>
-					{String(children)}
+					{childrenToString(children)}
 				</MemoizedSyntaxHighlighterWrapper>
 			</div>
 		</div>

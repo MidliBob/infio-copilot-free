@@ -180,7 +180,11 @@ ANSWER: here, you write the text that should be at the location of <mask/>
 		math_block_inline,
 		math_block_multi_line,
 		header_example_relu,
-	].sort((a, b) => a.toString().localeCompare(b.toString())),
+		// Upstream sorted this list by a.toString().localeCompare(b.toString());
+		// every example stringifies to '[object Object]', the comparator always
+		// returned 0 and Array#sort is stable - the sort was a proven no-op,
+		// removed by the no-base-to-string burn (1.7.19). Order is unchanged.
+	],
 	userMessageTemplate: "{{prefix}}<mask/>{{suffix}}",
 	chainOfThoughRemovalRegex: `(.|\\n)*ANSWER:`,
 	// Preprocessing settings

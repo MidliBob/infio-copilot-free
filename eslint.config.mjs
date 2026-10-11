@@ -134,6 +134,14 @@ export default tseslint.config(
 			// methods); its baseline counters are gone and the ratchet
 			// rejects any reappearance. The argsIgnorePattern
 			// convention above stays for future interface impls.
+			// no-base-to-string burned to zero in 1.7.19 (27 findings in
+			// 14 files): unknown-stringification unified through
+			// extractErrorMessage, t() interpolation got a local
+			// stringifyParam, the provably no-op fewShotExamples sorts
+			// were removed (every element stringified to '[object
+			// Object]' - comparator always 0, stable sort), and Markdown
+			// children go through the new childrenToString helper; the
+			// counters are gone and the ratchet rejects any reappearance.
 		},
 	},
 )

@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import { useDarkModeContext } from '../../../contexts/DarkModeContext'
 
 import { MemoizedMermaidBlock } from './MermaidBlock'
+import { childrenToString } from './children-to-string'
 import { MemoizedSyntaxHighlighterWrapper } from './SyntaxHighlighterWrapper'
 
 interface RawMarkdownBlockProps {
@@ -32,7 +33,7 @@ export default function RawMarkdownBlock({
 					
 					// Mermaid 图表渲染
 					if (!isInline && language === 'mermaid') {
-						const codeText = String(children || "")
+						const codeText = childrenToString(children)
 						return (
 							<MemoizedMermaidBlock
 								code={codeText}
@@ -49,7 +50,7 @@ export default function RawMarkdownBlock({
 								hasFilename={false}
 								wrapLines={true}
 							>
-								{String(children).replace(/\n$/, '')}
+								{childrenToString(children).replace(/\n$/, '')}
 							</MemoizedSyntaxHighlighterWrapper>
 						)
 					}

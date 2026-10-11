@@ -24,6 +24,37 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null;
 }
 
+// `t()` param values are `unknown`; a bare String(value) renders plain
+// objects as '[object Object]' (no-base-to-string). Same cascade as
+// extractErrorMessage: strings pass through, arrays keep the old String()
+// join, objects become JSON (circular ones keep the old tag, null keeps
+// 'null'), primitives are 1:1 with String().
+function stringifyParam(value: unknown): string {
+	if (value === undefined) {
+		return 'undefined';
+	}
+	if (typeof value === 'string') {
+		return value;
+	}
+	if (Array.isArray(value)) {
+		return String(value);
+	}
+	if (typeof value === 'object') {
+		try {
+			return JSON.stringify(value);
+		} catch {
+			return '[object Object]';
+		}
+	}
+	if (typeof value === 'symbol' || typeof value === 'function') {
+		return value.toString();
+	}
+	if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') {
+		return String(value);
+	}
+	return '[object Object]';
+}
+
 export function t(str: string, params?: Record<string, unknown>): string {
 	// Resolve the current UI language at call time
 	const currentLocale = moment.locale();
@@ -40,7 +71,7 @@ export function t(str: string, params?: Record<string, unknown>): string {
 	// Handle parameter interpolation
 	if (params && typeof result === 'string') {
 		return result.replace(/\{([^}]+)\}/g, (match: string, key: string) => {
-			return params[key] !== undefined ? String(params[key]) : match;
+			return params[key] !== undefined ? stringifyParam(params[key]) : match;
 		});
 	}
 
