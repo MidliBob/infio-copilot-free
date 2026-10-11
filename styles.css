@@ -451,7 +451,7 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
 }
 
 .icf-popover ul {
-  padding: 0;
+  padding: var(--size-4-1) 0;
   list-style: none;
   margin: 0;
   max-height: 200px;
@@ -460,10 +460,6 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
 
 .icf-popover ul::-webkit-scrollbar {
   display: none;
-}
-
-.icf-popover ul {
-  padding: var(--size-4-1) 0;
 }
 
 .icf-popover ul li {
@@ -509,6 +505,7 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
 
 .icf-popover li:hover {
   background-color: var(--background-modifier-hover);
+  cursor: pointer;
 }
 
 .icf-popover-item-icon {
@@ -525,10 +522,6 @@ button:not(.clickable-icon).icf-chat-list-dropdown {
   min-width: fit-content;
 }
 
-.icf-popover li:hover {
-  background-color: var(--background-modifier-hover);
-  cursor: pointer;
-}
 /* ===========================================
    代码块样式 - 统一管理所有代码块相关样式
    =========================================== */
