@@ -576,6 +576,42 @@ en/ru/zh-cn синхронны (~652 ключа).
 > 359/28, lint:ratchet 1937/368, сборка зелёная (main.js 16 244 012
 > байт, −482 vs 1.7.17).
 
+> **Обновление (1.7.19):** `no-base-to-string` выгорел до нуля и выпущен —
+> серия из трёх патчей, 27 находок в 14 файлах, baseline **1937 → 1909**
+> (370 файлов: +2 meta-записи на новый модуль и тест). Правило активно из
+> `strictTypeChecked` с 1.7.9 — счётчики исчезли из baseline, трещотка
+> блокирует повторное появление; выпускная запись в eslint.config.mjs.
+> (1) Стрингификация unknown-значений унифицирована через штатный
+> `extractErrorMessage` (network-errors.ts): его fallback исправлен
+> каскадом typeof-ветвей — объекты дают JSON-содержимое вместо
+> бесполезного '[object Object]' (циклические — старый тег 1-в-1),
+> примитивы 1-в-1; хелпер внедрён в ollama, McpHub (Notice),
+> vector-manager (rejection-reasons), pglite.worker (worker-safe:
+> network-errors.ts без импортов), dataview ×5, manage-files (локальный
+> дубль удалён) и тесты ×3. (2) Интерполяция t() получила stringifyParam
+> (тот же каскад; массивы сохраняют String()-join); `.sort()` у
+> fewShotExamples в v0/v1 удалён как доказанный no-op (toString()
+> объектов = '[object Object]' → компаратор всегда 0 → стабильный sort
+> порядок не менял); Markdown-блоки получили `childrenToString`
+> (ReactNode → текст: массивы БЕЗ запятых String(), нетекстовые узлы →
+> '' вместо 'true'/'null'/'[object Object]') — новый модуль + 4 теста,
+> jest 360 → 364. (3) Коррекция baseline −3 (прецедент 1.7.13):
+> удалённая в 1.7.18 мёртвая getFileOrFolderContent унесла 2
+> no-unnecessary-condition и 1 no-unsafe-member-access, не вычтенные
+> тогда — type-aware child-прогоны трещотки с heap-лимитом 880 МБ
+> освоены только в этой серии; замер песочницы совпал с локальным
+> прогоном maintainer'а счёт-в-счёт (расхождение сред исключено).
+> Итоги реестра: пул no-unnecessary-condition нетто не изменился —
+> 1367 (−2 коррекция, +2 meta новых файлов); агрегат no-unsafe-*
+> 232 → 231 (member-access 121 → 120 той же коррекцией). Методика
+> серии: каждый патч верифицирован type-aware child-прогоном по
+> изменённым файлам + импортёрам (прочие счётчики байт-в-байт, ноль
+> дрейфа; первая редакция fallback'а хелпера была поймана этим же
+> прогоном на новом no-unsafe-return и переписана). Гейты: tsc 0, jest
+> 364/29, lint:ratchet 1909/370 без improved-строк, сборка зелёная
+> (main.js 16 242 984 байта, −1 028 vs 1.7.18 — no-op sort'ы, дубль
+> errorMessage, ternary; минус новые хелперы).
+
 1. **Декларативный Settings API (`getSettingDefinitions`)** — в работе,
    **wave 1 ✅ 1.7.6**. Реальность API: это полный декларативный рендерер
    вкладки для Obsidian **1.13.0+**, и на 1.13+ он ПОЛНОСТЬЮ заменяет
@@ -626,7 +662,9 @@ en/ru/zh-cn синхронны (~652 ключа).
    `restrict-template-expressions` 296 → 0 (1.7.13),
    `no-confusing-void-expression` 130 → 0 и
    `no-unnecessary-type-conversion` 95 → 0 (1.7.16),
-   `no-unused-vars` 57 → 0 (1.7.18, серия пяти патчей). Осталось: гигантский
+   `no-unused-vars` 57 → 0 (1.7.18, серия пяти патчей),
+   `no-base-to-string` 27 → 0 (1.7.19, серия трёх патчей + коррекция −3).
+   Осталось: гигантский
    пул `no-unnecessary-condition` 1367 — во многом обесценится
    миграцией `strictNullChecks`, + `eslint-plugin-obsidianmd`
    (ревью-набор каталога) отдельным инкрементом со своей заморозкой.

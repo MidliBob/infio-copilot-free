@@ -265,11 +265,11 @@ ones that cannot be fixed by construction are recorded here:
   (CORS) blocks; `requestUrl` bypasses CORS and cannot detect them.
 
 Deliberately deferred to planned releases (the burn-down register; all
-counts are the frozen 1.7.18 baseline, 1937 total): `no-unnecessary-condition`
+counts are the frozen 1.7.19 baseline, 1909 total): `no-unnecessary-condition`
 (1367 — the largest single pool, mostly defensive checks that the strict
 types already guarantee), the
-`no-unsafe-*`/`any` debt (232 across member-access/assignment/call/argument/
-return, phase 2 pass 3, module by module), `no-base-to-string` (27)
+`no-unsafe-*`/`any` debt (231 across member-access/assignment/call/argument/
+return, phase 2 pass 3, module by module)
 and the small-rule tail. Disabled until a
 `strictNullChecks` migration (not debt — they cannot function without it):
 `no-useless-default-assignment`, `no-unnecessary-boolean-literal-compare`.
@@ -293,10 +293,18 @@ interface-impl parameters with their freed imports, three dead functions
 deleted, trailing-parameter trims with call-site updates; the single
 deliberate relaxation — `argsIgnorePattern: '^_'` for arity-blocked
 base-class methods — is documented in eslint.config.mjs; active through
-`strictTypeChecked` since 1.7.9, counters gone from the baseline).
+`strictTypeChecked` since 1.7.9, counters gone from the baseline), and
+`no-base-to-string` — all 27 findings burned in the 1.7.19 three-patch
+series (unknown-stringification unified through `extractErrorMessage`
+with a JSON fallback for plain objects, `t()` interpolation via a local
+`stringifyParam`, the provably no-op `fewShotExamples` sorts removed,
+Markdown children through the new `childrenToString` helper), plus a
+−3 measurement correction for counts the 1.7.18 dead-function removal
+had silently retired; active through `strictTypeChecked` since 1.7.9,
+counters gone from the baseline.
 Remaining phase-3
 lint work: keep graduating rules as their counters reach zero (next
-candidates: `no-base-to-string` 27 and the `strictNullChecks` decision
+candidate: the `strictNullChecks` decision
 for the 1367-finding `no-unnecessary-condition` pool), and evaluate
 `eslint-plugin-obsidianmd` (the catalog review set) as a separate tracked
 increment.
