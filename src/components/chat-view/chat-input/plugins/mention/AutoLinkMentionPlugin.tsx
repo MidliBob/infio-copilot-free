@@ -127,7 +127,7 @@ function $handlePaste(event: PasteCommandType) {
 		return false
 	}
 
-	const nodes = []
+	const nodes: TextNode[] = []
 	const addedMentionables: Mentionable[] = []
 	let lastIndex = 0
 
