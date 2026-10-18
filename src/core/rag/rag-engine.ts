@@ -72,11 +72,28 @@ export class RAGEngine {
 		}
 	}
 
-	async initializeDimension(): Promise<void> {
-		if (this.embeddingModel.dimension === 0 &&
+	/**
+	 * Takes the model as a parameter: every caller already guards
+	 * `this.embeddingModel`, so passing the narrowed value keeps this method
+	 * strictNullChecks-clean without a redundant (lint-frozen) null guard.
+	 */
+	private async initializeDimension(embeddingModel: EmbeddingModel): Promise<void> {
+		if (embeddingModel.dimension === 0 &&
 			(this.settings.embeddingModelProvider === ApiProvider.Ollama || this.settings.embeddingModelProvider === ApiProvider.OpenAICompatible)) {
-			await resolveEmbeddingDimension(this.embeddingModel)
+			await resolveEmbeddingDimension(embeddingModel)
 		}
+	}
+
+	/**
+	 * Narrowing accessor: vectorManager is only null after cleanup(), so every
+	 * public entry point funnels through one throw site instead of repeating
+	 * the guard in nine methods.
+	 */
+	private requireVectorManager(): VectorManager {
+		if (!this.vectorManager) {
+			throw new Error('Vector manager is not available')
+		}
+		return this.vectorManager
 	}
 
 	async updateVaultIndex(
@@ -86,9 +103,9 @@ export class RAGEngine {
 		if (!this.embeddingModel) {
 			throw new Error('Embedding model is not set')
 		}
-		await this.initializeDimension()
+		await this.initializeDimension(this.embeddingModel)
 
-		await this.vectorManager.updateVaultIndex(
+		await this.requireVectorManager().updateVaultIndex(
 			this.embeddingModel,
 			{
 				chunkSize: this.settings.ragOptions.chunkSize,
@@ -115,9 +132,9 @@ export class RAGEngine {
 		if (!this.embeddingModel) {
 			throw new Error('Embedding model is not set')
 		}
-		await this.initializeDimension()
+		await this.initializeDimension(this.embeddingModel)
 
-		await this.vectorManager.updateWorkspaceIndex(
+		await this.requireVectorManager().updateWorkspaceIndex(
 			this.embeddingModel,
 			workspace,
 			{
@@ -142,9 +159,9 @@ export class RAGEngine {
 			throw new Error('Embedding model is not set')
 		}
 
-		await this.initializeDimension()
+		await this.initializeDimension(this.embeddingModel)
 
-		await this.vectorManager.UpdateFileVectorIndex(
+		await this.requireVectorManager().UpdateFileVectorIndex(
 			this.embeddingModel,
 			this.settings.ragOptions.chunkSize,
 			this.settings.ragOptions.batchSize,
@@ -157,9 +174,9 @@ export class RAGEngine {
 			throw new Error('Embedding model is not set')
 		}
 
-		await this.initializeDimension()
+		await this.initializeDimension(this.embeddingModel)
 
-		await this.vectorManager.DeleteFileVectorIndex(
+		await this.requireVectorManager().DeleteFileVectorIndex(
 			this.embeddingModel,
 			file,
 		)
@@ -187,7 +204,7 @@ export class RAGEngine {
 			throw new Error('Embedding model is not set')
 		}
 
-		await this.initializeDimension()
+		await this.initializeDimension(this.embeddingModel)
 
 		// if (!this.initialized) {
 		// 	logger.debug("need to updateVaultIndex")
@@ -197,7 +214,7 @@ export class RAGEngine {
 		onQueryProgressChange?.({
 			type: 'querying',
 		})
-		const queryResult = await this.vectorManager.performSimilaritySearch(
+		const queryResult = await this.requireVectorManager().performSimilaritySearch(
 			queryEmbedding,
 			this.embeddingModel,
 			{
@@ -237,7 +254,7 @@ export class RAGEngine {
 			throw new Error('Embedding model is not set')
 		}
 
-		await this.initializeDimension()
+		await this.initializeDimension(this.embeddingModel)
 
 		onQueryProgressChange?.({
 			type: 'querying',
@@ -401,13 +418,13 @@ export class RAGEngine {
 			throw new Error('Embedding model is not set')
 		}
 
-		await this.initializeDimension()
+		await this.initializeDimension(this.embeddingModel)
 
 		onQueryProgressChange?.({
 			type: 'querying',
 		})
 
-		const queryResult = await this.vectorManager.performFulltextSearch(
+		const queryResult = await this.requireVectorManager().performFulltextSearch(
 			query,
 			this.embeddingModel,
 			{
@@ -442,8 +459,8 @@ export class RAGEngine {
 		if (!this.embeddingModel) {
 			throw new Error('Embedding model is not set')
 		}
-		await this.initializeDimension()
-		return await this.vectorManager.getWorkspaceStatistics(this.embeddingModel, workspace)
+		await this.initializeDimension(this.embeddingModel)
+		return await this.requireVectorManager().getWorkspaceStatistics(this.embeddingModel, workspace)
 	}
 
 	async getVaultStatistics(): Promise<{
@@ -453,15 +470,15 @@ export class RAGEngine {
 		if (!this.embeddingModel) {
 			throw new Error('Embedding model is not set')
 		}
-		await this.initializeDimension()
-		return await this.vectorManager.getVaultStatistics(this.embeddingModel)
+		await this.initializeDimension(this.embeddingModel)
+		return await this.requireVectorManager().getVaultStatistics(this.embeddingModel)
 	}
 
 	async clearWorkspaceIndex(workspace?: Workspace): Promise<void> {
 		if (!this.embeddingModel) {
 			throw new Error('Embedding model is not set')
 		}
-		await this.initializeDimension()
+		await this.initializeDimension(this.embeddingModel)
 
 		if (workspace) {
 			// 获取工作区中的所有文件路径
@@ -487,11 +504,11 @@ export class RAGEngine {
 			// 删除工作区相关的向量
 			if (files.length > 0) {
 				// 通过 VectorManager 的私有 repository 访问
-				await this.vectorManager['repository'].deleteVectorsForMultipleFiles(files, this.embeddingModel)
+				await this.requireVectorManager()['repository'].deleteVectorsForMultipleFiles(files, this.embeddingModel)
 			}
 		} else {
 			// 清除所有向量
-			await this.vectorManager['repository'].clearAllVectors(this.embeddingModel)
+			await this.requireVectorManager()['repository'].clearAllVectors(this.embeddingModel)
 		}
 	}
 }

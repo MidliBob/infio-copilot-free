@@ -650,7 +650,7 @@
 			"@typescript-eslint/no-unsafe-member-access": 20
 		},
 		"src/core/rag/rag-engine.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 26
+			"@typescript-eslint/no-unnecessary-condition": 27
 		},
 		"src/core/transformations/trans-engine.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 59
