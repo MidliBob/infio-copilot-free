@@ -82,7 +82,7 @@ function ReactMarkdown({
 						key={"search-and-replace-" + index}
 						applyStatus={applyStatus}
 						onApply={onApply}
-						path={block.path}
+						path={block.path || ''}
 						content={block.content}
 						operations={block.operations.map(op => ({
 							search: op.search,
@@ -101,8 +101,8 @@ function ReactMarkdown({
 						applyStatus={applyStatus}
 						mode={block.type}
 						onApply={onApply}
-						path={block.path}
-						diff={block.diff}
+						path={block.path || ''}
+						diff={block.diff || ''}
 						finish={block.finish}
 					/>
 				) : block.type === 'read_file' ? (
@@ -110,7 +110,7 @@ function ReactMarkdown({
 						key={"read-file-" + index}
 						applyStatus={applyStatus}
 						onApply={onApply}
-						path={block.path}
+						path={block.path || ''}
 						finish={block.finish}
 					/>
 				) : block.type === 'list_files' ? (
@@ -119,7 +119,7 @@ function ReactMarkdown({
 						applyStatus={applyStatus}
 						onApply={onApply}
 						path={block.path}
-						recursive={block.recursive}
+						recursive={block.recursive || false}
 						finish={block.finish}
 					/>
 				) : block.type === 'match_search_files' ? (
@@ -127,8 +127,8 @@ function ReactMarkdown({
 						key={"match-search-files-" + index}
 						applyStatus={applyStatus}
 						onApply={onApply}
-						path={block.path}
-						query={block.query}
+						path={block.path || ''}
+						query={block.query || ''}
 						finish={block.finish}
 					/>
 				) : block.type === 'regex_search_files' ? (
@@ -136,8 +136,8 @@ function ReactMarkdown({
 						key={"regex-search-files-" + index}
 						applyStatus={applyStatus}
 						onApply={onApply}
-						path={block.path}
-						regex={block.regex}
+						path={block.path || ''}
+						regex={block.regex || ''}
 						finish={block.finish}
 					/>
 				) : block.type === 'semantic_search_files' ? (
@@ -145,15 +145,15 @@ function ReactMarkdown({
 						key={"semantic-search-files-" + index}
 						applyStatus={applyStatus}
 						onApply={onApply}
-						path={block.path}
-						query={block.query}
+						path={block.path || ''}
+						query={block.query || ''}
 						finish={block.finish}
 					/>
 				) : block.type === 'attempt_completion' ? (
 					<MarkdownWithIcons
 						key={"attempt-completion-" + index}
 						className="icf-markdown icf-attempt-completion"
-						markdownContent={block.result}
+						markdownContent={block.result || ''}
 						finish={block.finish}
 						iconName="attempt_completion"
 						iconSize={14}
@@ -163,7 +163,7 @@ function ReactMarkdown({
 					<MarkdownWithIcons
 						key={"ask-followup-question-" + index}
 						className="icf-markdown icf-followup-question"
-						markdownContent={block.question}
+						markdownContent={block.question || ''}
 						finish={block.finish}
 						iconName="ask_followup_question"
 						iconSize={14}
