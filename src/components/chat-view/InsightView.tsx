@@ -90,10 +90,12 @@ const InsightView = () => {
 			// 构建工作区范围集合（包含文件、文件夹、工作区路径）
 			let workspacePaths: Set<string> | null = null
 			if (currentWorkspace) {
-				workspacePaths = new Set<string>()
+				// 用 const 捕获集合：回调闭包中 let 的收窄会退回 Set<string> | null
+				const scopePaths = new Set<string>()
+				workspacePaths = scopePaths
 
 				// 添加工作区路径
-				workspacePaths.add(`workspace:${currentWorkspace.name}`)
+				scopePaths.add(`workspace:${currentWorkspace.name}`)
 
 				// 处理工作区中的文件夹和标签
 				for (const item of currentWorkspace.content) {
@@ -101,7 +103,7 @@ const InsightView = () => {
 						const folderPath = item.content
 
 						// 添加文件夹路径本身
-						workspacePaths.add(folderPath)
+						scopePaths.add(folderPath)
 
 						// 获取文件夹下的所有文件
 						const files = app.vault.getMarkdownFiles().filter(file =>
@@ -110,7 +112,7 @@ const InsightView = () => {
 
 						// 添加所有文件路径
 						files.forEach(file => {
-							workspacePaths.add(file.path)
+							scopePaths.add(file.path)
 
 							// 添加中间文件夹路径
 							const dirPath = file.path.substring(0, file.path.lastIndexOf('/'))
@@ -120,7 +122,7 @@ const InsightView = () => {
 
 								for (let i = 0; i < pathParts.length; i++) {
 									currentPath += (currentPath ? '/' : '') + pathParts[i]
-									workspacePaths.add(currentPath)
+									scopePaths.add(currentPath)
 								}
 							}
 						})
@@ -130,7 +132,7 @@ const InsightView = () => {
 						const tagFiles = getFilesWithTag(item.content, app)
 
 						tagFiles.forEach(filePath => {
-							workspacePaths.add(filePath)
+							scopePaths.add(filePath)
 
 							// 添加文件所在的文件夹路径
 							const dirPath = filePath.substring(0, filePath.lastIndexOf('/'))
@@ -140,7 +142,7 @@ const InsightView = () => {
 
 								for (let i = 0; i < pathParts.length; i++) {
 									currentPath += (currentPath ? '/' : '') + pathParts[i]
-									workspacePaths.add(currentPath)
+									scopePaths.add(currentPath)
 								}
 							}
 						})
