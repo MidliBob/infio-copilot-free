@@ -80,11 +80,11 @@ export class PromptGenerator {
 	private getRagEngine: () => Promise<RAGEngine>
 	private app: App
 	private settings: InfioSettings
-	private diffStrategy: DiffStrategy
+	private diffStrategy: DiffStrategy | undefined
 	private systemPrompt: SystemPrompt
-	private customModePrompts: CustomModePrompts | null = null
-	private customModeList: ModeConfig[] | null = null
-	private getMcpHub: () => Promise<McpHub> | null = null
+	private customModePrompts: CustomModePrompts | undefined = undefined
+	private customModeList: ModeConfig[] | undefined = undefined
+	private getMcpHub: (() => Promise<McpHub>) | undefined = undefined
 	private convertDataManager: ConvertDataManager
 	private workspaceManager: WorkspaceManager
 	private static readonly EMPTY_ASSISTANT_MESSAGE: RequestMessage = {
@@ -106,9 +106,9 @@ export class PromptGenerator {
 		this.settings = settings
 		this.diffStrategy = diffStrategy
 		this.systemPrompt = new SystemPrompt(this.app)
-		this.customModePrompts = customModePrompts ?? null
-		this.customModeList = customModeList ?? null
-		this.getMcpHub = getMcpHub ?? null
+		this.customModePrompts = customModePrompts
+		this.customModeList = customModeList
+		this.getMcpHub = getMcpHub
 		this.convertDataManager = new ConvertDataManager(app)
 		this.workspaceManager = new WorkspaceManager(app)
 	}
@@ -419,7 +419,9 @@ export class PromptGenerator {
 		}
 
 		const query = editorStateToPlainText(message.content)
-		let similaritySearchResults = undefined
+		let similaritySearchResults: (Omit<SelectVector, 'embedding'> & {
+			similarity: number
+		})[] | undefined = undefined
 
 		useVaultSearch =
 			// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- falsy fallback is intended here
@@ -614,8 +616,10 @@ export class PromptGenerator {
 		const currentFile = message.mentionables
 			.filter((m): m is MentionableFile => m.type === 'current-file')
 			.first()
+		let currentFilePath: string | undefined = undefined
 		let currentFileContent: string | undefined = undefined
 		if (currentFile && currentFile.file != null) {
+			currentFilePath = currentFile.file.path
 			// 初始化当前文件读取进度（如果之前没有其他文件或文件夹需要读取）
 			if (files.length === 0 && folders.length === 0) {
 				onQueryProgressChange?.({
@@ -652,7 +656,7 @@ export class PromptGenerator {
 				shouldIncludeCurrentFile = true
 			} else {
 				// For continuing chats, check if current file content already exists in history
-				const currentFilePromptTag = `<current_tab_note path="${currentFile.file.path}">`
+				const currentFilePromptTag = `<current_tab_note path="${currentFilePath}">`
 				const hasCurrentFileInHistory = messages?.some((msg) => {
 					if (msg.role === 'user' && msg.promptContent) {
 						if (typeof msg.promptContent === 'string') {
@@ -676,13 +680,16 @@ export class PromptGenerator {
 		}
 
 		const currentFileContentPrompt = shouldIncludeCurrentFile
-			? `<current_tab_note path="${currentFile.file.path}">\n${currentFileContent}\n</current_tab_note>`
+			? `<current_tab_note path="${currentFilePath}">\n${currentFileContent}\n</current_tab_note>`
 			: undefined
 
 		// Count file and folder tokens
 		let accTokenCount = 0
 		let isOverThreshold = false
-		for (const content of [fileContentsPrompts, folderContentsPrompts].filter(Boolean)) {
+		for (const content of [fileContentsPrompts, folderContentsPrompts]) {
+			if (!content) {
+				continue
+			}
 			const count = await tokenCount(content)
 			accTokenCount += count
 			if (accTokenCount > this.settings.ragOptions.thresholdTokens) {
@@ -729,10 +736,10 @@ export class PromptGenerator {
 					content,
 					startLine: metadata.startLine,
 				})
-				return `<file_block_content location="${String(path)}#L${String(metadata.startLine)}-${String(metadata.endLine)}">\n${contentWithLineNumbers}\n</file_block_content>`
+				return `<file_block_content location="${path}#L${String(metadata.startLine)}-${String(metadata.endLine)}">\n${contentWithLineNumbers}\n</file_block_content>`
 			}).join('\n')
 			similaritySearchContents = snippets.length > 0
-				? `<similarity_search_results>\n${String(snippets)}\n</similarity_search_results>`
+				? `<similarity_search_results>\n${snippets}\n</similarity_search_results>`
 				: '<similarity_search_results>\n(No relevant results found)\n</similarity_search_results>'
 		} else {
 			similaritySearchContents = undefined
