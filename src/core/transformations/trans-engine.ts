@@ -640,15 +640,15 @@ export class TransEngine {
 
 					// 获取文件夹内容
 					const folderContentResult = await this.processFolderContent(filePath);
-					if (!folderContentResult.success) {
-						return {
-							success: false,
-							error: folderContentResult.error,
-							empty: folderContentResult.empty
-						};
+					if (folderContentResult.success) {
+						content = folderContentResult.content;
+						break;
 					}
-					content = folderContentResult.content;
-					break;
+					return {
+						success: false,
+						error: folderContentResult.error,
+						empty: folderContentResult.empty
+					};
 				}
 
 				default:
@@ -753,12 +753,10 @@ export class TransEngine {
 	/**
 	 * 获取文件夹内容
 	 */
-	private async processFolderContent(folderPath: string): Promise<{
-		success: boolean;
-		content?: string;
-		error?: string;
-		empty?: boolean;
-	}> {
+	private async processFolderContent(folderPath: string): Promise<
+		| { success: true; content: string; error?: undefined; empty?: undefined }
+		| { success: false; error: string; empty?: boolean; content?: undefined }
+	> {
 		try {
 			const folder = this.app.vault.getAbstractFileByPath(normalizePath(folderPath));
 			if (!folder || !(folder instanceof TFolder)) {
@@ -853,6 +851,22 @@ export class TransEngine {
 				error: t('insights.error.folderReadFailed', { error: error instanceof Error ? error.message : String(error) })
 			};
 		}
+	}
+
+	/**
+	 * 尝试获取最近保存的层级摘要洞察ID
+	 * （insightManager 或 embeddingModel 未初始化时返回 undefined）
+	 */
+	private async findLatestSummaryInsightId(sourcePath: string, sourceMtime: number): Promise<number | undefined> {
+		if (!this.insightManager || !this.embeddingModel) {
+			return undefined;
+		}
+		const recentInsights = await this.insightManager.getInsightsBySourcePath(sourcePath, this.embeddingModel);
+		const latestInsight = recentInsights.find(insight =>
+			insight.insight_type === TransformationType.HIERARCHICAL_SUMMARY.toString() &&
+			insight.source_mtime === sourceMtime
+		);
+		return latestInsight?.id;
 	}
 
 	/**
@@ -1820,15 +1834,7 @@ export class TransEngine {
 				});
 
 				// 尝试获取洞察ID
-				let insightId: number | undefined;
-				if (this.insightManager) {
-					const recentInsights = await this.insightManager.getInsightsBySourcePath(sourcePath, this.embeddingModel);
-					const latestInsight = recentInsights.find(insight =>
-						insight.insight_type === TransformationType.HIERARCHICAL_SUMMARY.toString() &&
-						insight.source_mtime === sourceMtime
-					);
-					insightId = latestInsight?.id;
-				}
+				const insightId = await this.findLatestSummaryInsightId(sourcePath, sourceMtime);
 
 				return {
 					success: true,
@@ -1900,14 +1906,7 @@ export class TransEngine {
 				);
 
 				// 尝试获取刚保存的洞察ID（可选）
-				if (this.insightManager) {
-					const recentInsights = await this.insightManager.getInsightsBySourcePath(sourcePath, this.embeddingModel);
-					const latestInsight = recentInsights.find(insight =>
-						insight.insight_type === TransformationType.HIERARCHICAL_SUMMARY.toString() &&
-						insight.source_mtime === sourceMtime
-					);
-					insightId = latestInsight?.id;
-				}
+				insightId = await this.findLatestSummaryInsightId(sourcePath, sourceMtime);
 			} catch (error) {
 				logger.warn('Failed to save insight to the database:', error);
 				// 不影响主流程，仅记录警告

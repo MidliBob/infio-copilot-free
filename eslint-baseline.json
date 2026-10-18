@@ -653,7 +653,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 27
 		},
 		"src/core/transformations/trans-engine.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 59
+			"@typescript-eslint/no-unnecessary-condition": 58
 		},
 		"src/database/database-manager.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 2,
