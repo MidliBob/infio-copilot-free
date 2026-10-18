@@ -38,6 +38,12 @@ type P5ChildNode = DefaultTreeAdapterMap['childNode']
 type P5Element = DefaultTreeAdapterMap['element']
 type P5TextNode = DefaultTreeAdapterMap['textNode']
 
+// Tool-block fields are `string | undefined` wherever the parser can
+// legitimately emit an incomplete block (streaming input, missing or empty
+// sub-tags): the runtime shape always allowed undefined, and consumers gate
+// on `finish` and/or field presence. The declared types were widened for
+// strictNullChecks honesty (1.7.20 migration) - zero runtime change under
+// the current strictNullChecks: off build.
 export type ParsedMsgBlock =
 	| {
 		type: 'string'
@@ -53,25 +59,25 @@ export type ParsedMsgBlock =
 		content: string
 	} | {
 		type: 'write_to_file'
-		path: string
+		path: string | undefined
 		content: string
 		lineCount?: number
 	} | {
 		type: 'insert_content'
-		path: string
+		path: string | undefined
 		startLine: number
 		content: string
 	} | {
 		type: 'read_file'
-		path: string
+		path: string | undefined
 		finish: boolean
 	} | {
 		type: 'attempt_completion'
-		result: string
+		result: string | undefined
 		finish: boolean
 	} | {
 		type: 'search_and_replace'
-		path: string
+		path: string | undefined
 		content: string
 		operations: {
 			search: string
@@ -85,12 +91,12 @@ export type ParsedMsgBlock =
 		finish: boolean
 	} | {
 		type: 'apply_diff'
-		path: string
-		diff: string
+		path: string | undefined
+		diff: string | undefined
 		finish: boolean
 	} | {
 		type: 'ask_followup_question'
-		question: string,
+		question: string | undefined,
 		finish: boolean
 	} | {
 		type: 'list_files'
@@ -99,18 +105,18 @@ export type ParsedMsgBlock =
 		finish: boolean
 	} | {
 		type: 'match_search_files'
-		path: string
-		query: string
+		path: string | undefined
+		query: string | undefined
 		finish: boolean
 	} | {
 		type: 'regex_search_files'
-		path: string
-		regex: string
+		path: string | undefined
+		regex: string | undefined
 		finish: boolean
 	} | {
 		type: 'semantic_search_files'
-		path: string
-		query: string
+		path: string | undefined
+		query: string | undefined
 		finish: boolean
 	} | {
 		type: 'search_web'
@@ -185,6 +191,18 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 function firstChildText(element: P5Element): string | undefined {
 	const first: P5ChildNode | undefined = element.childNodes[0]
 	return first !== undefined && isTextNode(first) ? first.value : undefined
+}
+
+/**
+ * True when parse5 recorded a closing-tag location for the element, i.e.
+ * the tag arrived complete. The parser runs with `sourceCodeLocationInfo:
+ * true`, so the location is always present at runtime; the optional chain
+ * keeps the strictNullChecks build honest (under strictNullChecks: off it
+ * is one frozen no-unnecessary-condition entry - the same class as the
+ * `?.` chains in innerSourceSlice and the emitPrecedingText guard).
+ */
+function hasEndTag(node: { sourceCodeLocation?: { endTag?: unknown } | null }): boolean {
+	return node.sourceCodeLocation?.endTag !== undefined
 }
 
 /**
@@ -589,7 +607,7 @@ export function parseMsgBlocks(
 					type: 'list_files',
 					path: path || '/',
 					recursive,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'read_file') {
@@ -606,7 +624,7 @@ export function parseMsgBlocks(
 					// Check if the tag is completely parsed with proper closing tag:
 					// with sourceCodeLocationInfo, a properly closed tag exposes an
 					// endTag location span.
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'match_search_files') {
@@ -626,7 +644,7 @@ export function parseMsgBlocks(
 					type: 'match_search_files',
 					path: path,
 					query: query,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'regex_search_files') {
@@ -646,7 +664,7 @@ export function parseMsgBlocks(
 					type: 'regex_search_files',
 					path: path,
 					regex: regex,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'semantic_search_files') {
@@ -666,7 +684,7 @@ export function parseMsgBlocks(
 					type: 'semantic_search_files',
 					path: path,
 					query: query,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'write_to_file') {
@@ -700,7 +718,7 @@ export function parseMsgBlocks(
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'insert_content') {
 				const endOffset = emitPrecedingText(parsedResult, input, lastEndOffset, node)
-				const finished = node.sourceCodeLocation.endTag !== undefined
+				const finished = hasEndTag(node)
 				let path: string | undefined
 				let content = ''
 				let startLine = 0
@@ -734,7 +752,7 @@ export function parseMsgBlocks(
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'search_and_replace') {
 				const endOffset = emitPrecedingText(parsedResult, input, lastEndOffset, node)
-				const finished = node.sourceCodeLocation.endTag !== undefined
+				const finished = hasEndTag(node)
 				let path: string | undefined
 				let operations: SearchReplaceOperation[] = []
 				let content = ''
@@ -777,7 +795,7 @@ export function parseMsgBlocks(
 					type: 'apply_diff',
 					path,
 					diff,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'attempt_completion') {
@@ -791,7 +809,7 @@ export function parseMsgBlocks(
 				parsedResult.push({
 					type: 'attempt_completion',
 					result,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'ask_followup_question') {
@@ -805,7 +823,7 @@ export function parseMsgBlocks(
 				parsedResult.push({
 					type: 'ask_followup_question',
 					question,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'switch_mode') {
@@ -825,7 +843,7 @@ export function parseMsgBlocks(
 					type: 'switch_mode',
 					mode,
 					reason,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'search_web') {
@@ -839,7 +857,7 @@ export function parseMsgBlocks(
 				parsedResult.push({
 					type: 'search_web',
 					query: query || '',
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'fetch_urls_content') {
@@ -867,7 +885,7 @@ export function parseMsgBlocks(
 				parsedResult.push({
 					type: 'fetch_urls_content',
 					urls,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'use_mcp_tool') {
@@ -906,7 +924,7 @@ export function parseMsgBlocks(
 					server_name,
 					tool_name,
 					parameters,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'dataview_query') {
@@ -927,7 +945,7 @@ export function parseMsgBlocks(
 					type: 'dataview_query',
 					query,
 					outputFormat,
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'insights') {
@@ -947,7 +965,7 @@ export function parseMsgBlocks(
 					type: 'call_transformations',
 					path: path || '',
 					transformation: transformation || '',
-					finish: node.sourceCodeLocation.endTag !== undefined,
+					finish: hasEndTag(node),
 				})
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'tool_result') {
@@ -959,7 +977,7 @@ export function parseMsgBlocks(
 				lastEndOffset = endOffset
 			} else if (node.nodeName === 'manage_files') {
 				const endOffset = emitPrecedingText(parsedResult, input, lastEndOffset, node)
-				const finished = node.sourceCodeLocation.endTag !== undefined
+				const finished = hasEndTag(node)
 				let operations: ManageFilesOperation[] = []
 				let droppedOperations = 0
 				let sawPayload = false

@@ -1279,7 +1279,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/utils/parse-icf-block.ts": {
-			"@typescript-eslint/no-unnecessary-condition": 10
+			"@typescript-eslint/no-unnecessary-condition": 11
 		},
 		"src/utils/path.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
