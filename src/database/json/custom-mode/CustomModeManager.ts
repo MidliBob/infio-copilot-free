@@ -72,7 +72,11 @@ export class CustomModeManager extends AbstractJsonRepository<
 
 	public async ListCustomModes(): Promise<CustomMode[]> {
 		const allMetadata = await this.listMetadata()
-		const allCustomModes = await Promise.all(allMetadata.map(async (meta) => this.read(meta.fileName)))
+		const allCustomModes = (
+			await Promise.all(
+				allMetadata.map(async (meta) => this.read(meta.fileName)),
+			)
+		).filter((customMode): customMode is CustomMode => customMode !== null)
 		return allCustomModes.sort((a, b) => b.updatedAt - a.updatedAt)
 	}
 

@@ -67,7 +67,11 @@ export class CommandManager extends AbstractJsonRepository<
 
 	public async ListCommands(): Promise<Command[]> {
 		const allMetadata = await this.listMetadata()
-		const allCommands = await Promise.all(allMetadata.map(async (meta) => this.read(meta.fileName)))
+		const allCommands = (
+			await Promise.all(
+				allMetadata.map(async (meta) => this.read(meta.fileName)),
+			)
+		).filter((command): command is Command => command !== null)
 		return allCommands.sort((a, b) => b.updatedAt - a.updatedAt)
 	}
 
