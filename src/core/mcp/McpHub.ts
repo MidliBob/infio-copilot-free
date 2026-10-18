@@ -309,7 +309,19 @@ export class McpHub {
 	}
 
 	async getMcpSettingsFilePath(): Promise<string> {
-		return this.mcpSettingsFilePath
+		return this.requireMcpSettingsFilePath()
+	}
+
+	/**
+	 * Returns the MCP settings file path, which is initialized by ensureMcpFileExists().
+	 * Throws if called before initialization.
+	 */
+	private requireMcpSettingsFilePath(): string {
+		const filePath = this.mcpSettingsFilePath
+		if (!filePath) {
+			throw new Error("MCP settings file path is not initialized")
+		}
+		return filePath
 	}
 
 	private async watchMcpSettingsFile(): Promise<void> {
@@ -321,26 +333,38 @@ export class McpHub {
 	}
 
 	/**
+	 * Finds an already-open JSON view leaf displaying the given file path.
+	 * Extracted into a method because a `let` variable assigned inside the
+	 * iterateAllLeaves callback is not tracked by control-flow analysis:
+	 * under strictNullChecks the variable stays narrowed to `null` and the
+	 * subsequent truthy check would type it as `never`.
+	 */
+	private findOpenJsonViewLeaf(filePath: string): WorkspaceLeaf | null {
+		let found: WorkspaceLeaf | null = null;
+		this.app.workspace.iterateAllLeaves((leaf) => {
+			if (leaf.view.getViewType() === JSON_VIEW_TYPE) {
+				// Match on the file path stored in the view state
+				const viewState: unknown = leaf.view.getState();
+				if (isRecord(viewState) && viewState["filePath"] === filePath) {
+					found = leaf;
+				}
+			}
+		});
+		return found;
+	}
+
+	/**
 	* Opens the MCP settings file in Obsidian
 	*/
 	async openMcpSettingsFile(): Promise<void> {
 		try {
 			await this.ensureMcpFileExists();
-			const filePath = this.mcpSettingsFilePath;
+			const filePath = this.requireMcpSettingsFilePath();
 
 			logger.debug('Attempting to open MCP settings file:', filePath);
 
 			// Check whether the settings file is already open in a JSON view
-			let existingLeaf: WorkspaceLeaf | null = null;
-			this.app.workspace.iterateAllLeaves((leaf) => {
-				if (leaf.view.getViewType() === JSON_VIEW_TYPE) {
-					// Match on the file path stored in the view state
-					const viewState: unknown = leaf.view.getState();
-					if (isRecord(viewState) && viewState["filePath"] === filePath) {
-						existingLeaf = leaf;
-					}
-				}
-			});
+			const existingLeaf = this.findOpenJsonViewLeaf(filePath);
 
 			if (existingLeaf) {
 				// 如果文件已经打开，重新加载最新内容并激活 leaf
@@ -377,7 +401,7 @@ export class McpHub {
 	// Combined and simplified initializeMcpServers, only for global scope
 	private async initializeGlobalMcpServers(): Promise<void> {
 		try {
-			if (!await this.app.vault.adapter.exists(this.mcpSettingsFilePath)) {
+			if (!await this.app.vault.adapter.exists(this.requireMcpSettingsFilePath())) {
 				// If config file doesn't exist after trying to create it in getMcpSettingsFilePath,
 				// which should create it, then something is wrong.
 				// However, getMcpSettingsFilePath should handle creation.
@@ -386,7 +410,7 @@ export class McpHub {
 				return;
 			}
 
-			const content = await this.app.vault.adapter.read(this.mcpSettingsFilePath);
+			const content = await this.app.vault.adapter.read(this.requireMcpSettingsFilePath());
 			const config: unknown = JSON.parse(content);
 			const result = McpSettingsSchema.safeParse(config);
 
@@ -724,7 +748,7 @@ export class McpHub {
 					}
 				} else {
 					// Get global MCP settings path
-					configPath = this.mcpSettingsFilePath
+					configPath = this.requireMcpSettingsFilePath()
 					const content = await this.app.vault.adapter.read(configPath)
 					alwaysAllowConfig = readAlwaysAllowList(JSON.parse(content), serverName)
 				}
