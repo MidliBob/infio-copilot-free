@@ -1121,8 +1121,13 @@ export const GetEmbeddingModelInfo = (provider: ApiProvider, modelId: string): E
 	return models[modelId]
 }
 
-// Get default model id for a provider
-export const GetDefaultModelId = (provider: ApiProvider): { chat: string, insight: string, autoComplete: string, embedding: string } => {
+// Get default model id for a provider. Fields are `null` when the provider
+// has no built-in default for that slot - user-configured (Ollama, the
+// OpenAI-compatible endpoint, LocalProvider chat/insight/autoComplete) or
+// unsupported (e.g. DeepSeek/Moonshot embeddings). The runtime always
+// returned nulls there; the return type says so honestly now (1.7.20
+// strictNullChecks migration - invisible while strictNullChecks is off).
+export const GetDefaultModelId = (provider: ApiProvider): { chat: string | null, insight: string | null, autoComplete: string | null, embedding: string | null } => {
 	switch (provider) {
 		case ApiProvider.Deepseek:
 			return {
