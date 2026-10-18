@@ -247,6 +247,41 @@ official migration guide (Path B):
   box, drive the ratchet's child mode (`--files-from`/`--emit-json`) over
   consecutive ~30-file slices of the sorted `src/` list and merge the JSONs —
   that is how the 1.7.9 baseline (3350/364) was produced.
+- `strictNullChecks` migration probe (1.7.20 spike): `scripts/snc-probe.mjs`
+  measures the migration cost without changing any committed config. The tsc
+  side runs `tsc --noEmit --skipLibCheck --strictNullChecks` and reports
+  total/per-code/per-file counts (the code fixes the flag flip requires);
+  the ESLint side temporarily flips `"strictNullChecks": false` in
+  `tsconfig.json` (single-occurrence assert; restored in a `finally` — the
+  script never calls `process.exit` inside the try, and if the probe is
+  killed anyway, `git checkout tsconfig.json` restores it), then drives the
+  ratchet engine (repo flat config + the four force-tracked rules + the two
+  rules parked in 1.7.10, which emit real findings only under SNC) in child
+  batches and reports: how much of the frozen `no-unnecessary-condition`
+  pool evaporates, what the parked rules would freeze as real debt, every
+  other per-file/per-rule drift, and the exact re-freeze preview
+  (`--report-json` for machine-readable output; `--files-from` without
+  `--emit-json` probes a subset with an honestly scoped report).
+  Low-memory recipe: `NODE_OPTIONS=--max-old-space-size=950` for the tsc
+  side, `--batch=4` under `--max-old-space-size=800` for the ESLint side
+  (both verified on a 1 GB sandbox). Sandbox spike numbers (tree of 1.7.19):
+  tsc = **156 errors in 38 files** (TS2322 52, TS2345 47, TS18049/18047/
+  18048 39, TS2531/2532 12, TS2578 2 — two `@ts-expect-error` directives
+  become unnecessary, TS2769 2, misc 2; top files: parse-icf-block 31,
+  ChatView 17, api.ts 17, rag-engine 12, prompt-generator 10); ESLint
+  sample (McpHub, prompt-generator, vector-manager, ChatView, helpers —
+  149 findings of the 1367 pool): `no-unnecessary-condition` loses ~74%
+  in the sample (58→27, 33→2, 16→5, 40→5, 2→0), the two parked rules
+  produce ~0 real findings (1 in the sample), and SNC re-exposes a small
+  honest drift for the re-freeze (`restrict-template-expressions` +10
+  across two files — graduated pre-SNC in 1.7.13, `no-unsafe-call` +1,
+  bonuses −2). Run the FULL probe on the maintainer machine before
+  deciding (ground truth for the re-freeze, the 1.7.9 method). Migration
+  order once decided: fix the 156 tsc errors module by module (they are
+  the real gate) → flip `strictNullChecks` → re-measure with the probe →
+  honest re-freeze of `eslint-baseline.json` → re-enable the two parked
+  rules in `eslint.config.mjs` → burn the shrunken
+  `no-unnecessary-condition` pool.
 
 ## Validator warnings with written justification
 
