@@ -430,37 +430,44 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					opFile = app.vault.getFileByPath(toolArgs.filepath)
 				}
 				if (toolArgs.type === 'write_to_file') {
+					// const captures: the mutable opFile/toolArgs narrowings do not
+					// survive into the Promise/onClose closures (strictNullChecks).
+					const filepath = toolArgs.filepath
+					if (!filepath) {
+						throw new Error('write_to_file: filepath is required')
+					}
 					let newFile = false
 					if (!opFile) {
 						// 确保目录结构存在
-						const dir = path.dirname(toolArgs.filepath)
+						const dir = path.dirname(filepath)
 						if (dir && dir !== '.' && dir !== '/') {
 							const dirExists = await app.vault.adapter.exists(dir)
 							if (!dirExists) {
 								await app.vault.adapter.mkdir(dir)
 							}
 						}
-						opFile = await app.vault.create(toolArgs.filepath, '')
+						opFile = await app.vault.create(filepath, '')
 						newFile = true
 					}
+					const targetFile = opFile
 					// return a Promise, which will be resolved after user makes a choice
 					return new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
 						void app.workspace.getLeaf(true).setViewState({
 							type: APPLY_VIEW_TYPE,
 							active: true,
 							state: {
-								file: opFile.path,
+								file: targetFile.path,
 								oldContent: '',
-								newContent: toolArgs.content,
+								newContent: toolArgs.content || '',
 								onClose: (applied: boolean) => {
 									const applyStatus = applied ? ApplyStatus.Applied : ApplyStatus.Rejected
 									const applyEditContent = applied ? 'Changes successfully applied'
 										: 'User rejected changes'
 									if (newFile) {
 										if (!applied) {
-											void app.fileManager.trashFile(opFile) // delete the new file if user rejected changes
+											void app.fileManager.trashFile(targetFile) // delete the new file if user rejected changes
 										} else {
-											void app.workspace.openLinkText(toolArgs.filepath, 'split', true)
+											void app.workspace.openLinkText(filepath, 'split', true)
 										}
 									}
 									resolve({
@@ -471,7 +478,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 											role: 'user',
 											applyStatus: ApplyStatus.Idle,
 											content: null,
-											promptContent: `[${toolArgs.type} for '${toolArgs.filepath}'] Result:\n${applyEditContent}\n`,
+											promptContent: `[${toolArgs.type} for '${filepath}'] Result:\n${applyEditContent}\n`,
 											id: uuidv4(),
 											mentionables: [],
 										}
@@ -484,10 +491,11 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					if (!opFile) {
 						throw new Error(`File not found: ${toolArgs.filepath}`)
 					}
-					const fileContent = await readTFileContent(opFile, app.vault)
+					const targetFile = opFile
+					const fileContent = await readTFileContent(targetFile, app.vault)
 					const appliedFileContent = await ApplyEditToFile(
 						fileContent,
-						toolArgs.content,
+						toolArgs.content || '',
 						toolArgs.startLine,
 						toolArgs.endLine
 					)
@@ -500,7 +508,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 							type: APPLY_VIEW_TYPE,
 							active: true,
 							state: {
-								file: opFile.path,
+								file: targetFile.path,
 								oldContent: fileContent,
 								newContent: appliedFileContent,
 								onClose: (applied: boolean) => {
@@ -528,7 +536,8 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					if (!opFile) {
 						throw new Error(`File not found: ${toolArgs.filepath}`)
 					}
-					const fileContent = await readTFileContent(opFile, app.vault)
+					const targetFile = opFile
+					const fileContent = await readTFileContent(targetFile, app.vault)
 					const appliedFileContent = await SearchAndReplace(
 						fileContent,
 						toolArgs.operations
@@ -542,7 +551,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 							type: APPLY_VIEW_TYPE,
 							active: true,
 							state: {
-								file: opFile.path,
+								file: targetFile.path,
 								oldContent: fileContent,
 								newContent: appliedFileContent,
 								onClose: (applied: boolean) => {
@@ -570,7 +579,8 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					if (!opFile) {
 						throw new Error(`File not found: ${toolArgs.filepath}`)
 					}
-					const fileContent = await readTFileContent(opFile, app.vault)
+					const targetFile = opFile
+					const fileContent = await readTFileContent(targetFile, app.vault)
 					const appliedResult = await diffStrategy.applyDiff(
 						fileContent,
 						toolArgs.diff
@@ -584,7 +594,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 							type: APPLY_VIEW_TYPE,
 							active: true,
 							state: {
-								file: opFile.path,
+								file: targetFile.path,
 								oldContent: fileContent,
 								newContent: appliedResult.content,
 								onClose: (applied: boolean) => {
@@ -660,12 +670,16 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						}
 					}
 				} else if (toolArgs.type === 'match_search_files') {
+					const query = toolArgs.query
+					if (!query) {
+						throw new Error('match_search_files: query is required')
+					}
 					const searchBackend = settings.filesSearchSettings.matchBackend
 					let results: string;
 					if (searchBackend === 'omnisearch') {
-						results = await matchSearchUsingOmnisearch(toolArgs.query, app)
+						results = await matchSearchUsingOmnisearch(query, app)
 					} else {
-						results = await matchSearchUsingCorePlugin(toolArgs.query, app)
+						results = await matchSearchUsingCorePlugin(query, app)
 					}
 					const formattedContent = `[match_search_files for '${toolArgs.filepath}'] Result:\n${results}\n`;
 					return {
@@ -682,18 +696,26 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						}
 					}
 				} else if (toolArgs.type === 'regex_search_files') {
+					const regex = toolArgs.regex
+					if (!regex) {
+						throw new Error('regex_search_files: regex is required')
+					}
 					const searchBackend = settings.filesSearchSettings.regexBackend
 					let results: string;
 					if (searchBackend === 'coreplugin') {
-						results = await regexSearchUsingCorePlugin(toolArgs.regex, app)
+						results = await regexSearchUsingCorePlugin(regex, app)
 					} else {
+						const filepath = toolArgs.filepath
+						if (!filepath) {
+							throw new Error('regex_search_files: filepath is required for the ripgrep backend')
+						}
 						// @ts-expect-error Obsidian API type mismatch
 						const baseVaultPath = String(app.vault.adapter.getBasePath())
-						const absolutePath = path.join(baseVaultPath, toolArgs.filepath)
+						const absolutePath = path.join(baseVaultPath, filepath)
 						const ripgrepPath = settings.filesSearchSettings.ripgrepPath
 						results = await regexSearchUsingRipgrep(
 							absolutePath,
-							toolArgs.regex,
+							regex,
 							ripgrepPath,
 							app.vault.configDir,
 						)
@@ -719,9 +741,13 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						currentWorkspace = await workspaceManager.findByName(settings.workspace)
 					}
 
+					const query = toolArgs.query
+					if (!query) {
+						throw new Error('semantic_search_files: query is required')
+					}
 					const snippets = await semanticSearchFiles(
 						await getRAGEngine(),
-						toolArgs.query,
+						query,
 						toolArgs.filepath,
 						currentWorkspace || undefined,
 						app,
