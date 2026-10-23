@@ -174,7 +174,7 @@ export class VectorManager {
 
 	async getWorkspaceStatistics(
 		embeddingModel: EmbeddingModel,
-		workspace?: Workspace
+		workspace?: Workspace | null
 	): Promise<{
 		totalFiles: number
 		totalChunks: number

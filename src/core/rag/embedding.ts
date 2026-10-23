@@ -27,7 +27,7 @@ type EmbeddingManager = {
 
 export const getEmbeddingModel = (
 	settings: InfioSettings,
-	embeddingManager?: EmbeddingManager,
+	embeddingManager?: EmbeddingManager | null,
 ): EmbeddingModel => {
 	switch (settings.embeddingModelProvider) {
 		case ApiProvider.LocalProvider: {

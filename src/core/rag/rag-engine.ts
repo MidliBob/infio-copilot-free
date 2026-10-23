@@ -26,7 +26,7 @@ type EmbeddingManager = {
 export class RAGEngine {
 	private app: App
 	private settings: InfioSettings
-	private embeddingManager?: EmbeddingManager
+	private embeddingManager?: EmbeddingManager | null
 	private vectorManager: VectorManager | null = null
 	private embeddingModel: EmbeddingModel | null = null
 	private initialized = false
@@ -35,7 +35,7 @@ export class RAGEngine {
 		app: App,
 		settings: InfioSettings,
 		dbManager: DBManager,
-		embeddingManager?: EmbeddingManager,
+		embeddingManager?: EmbeddingManager | null,
 	) {
 		this.app = app
 		this.settings = settings
@@ -452,7 +452,7 @@ export class RAGEngine {
 		return this.embeddingModel.getEmbedding(query)
 	}
 
-	async getWorkspaceStatistics(workspace?: Workspace): Promise<{
+	async getWorkspaceStatistics(workspace?: Workspace | null): Promise<{
 		totalFiles: number
 		totalChunks: number
 	}> {
@@ -474,7 +474,7 @@ export class RAGEngine {
 		return await this.requireVectorManager().getVaultStatistics(this.embeddingModel)
 	}
 
-	async clearWorkspaceIndex(workspace?: Workspace): Promise<void> {
+	async clearWorkspaceIndex(workspace?: Workspace | null): Promise<void> {
 		if (!this.embeddingModel) {
 			throw new Error('Embedding model is not set')
 		}

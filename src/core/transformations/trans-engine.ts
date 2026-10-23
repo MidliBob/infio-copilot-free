@@ -329,13 +329,13 @@ export class TransEngine {
 	private llmManager: LLMManager;
 	private insightManager: InsightManager | null = null;
 	private embeddingModel: EmbeddingModel | null = null;
-	private embeddingManager?: EmbeddingManager;
+	private embeddingManager?: EmbeddingManager | null;
 
 	constructor(
 		app: App,
 		settings: InfioSettings,
 		dbManager: DBManager,
-		embeddingManager?: EmbeddingManager,
+		embeddingManager?: EmbeddingManager | null,
 	) {
 		this.app = app;
 		this.settings = settings;
