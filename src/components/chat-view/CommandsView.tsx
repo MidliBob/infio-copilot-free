@@ -105,7 +105,11 @@ const CommandsView = (
 
 	// Create new command
 	const handleAddCommand = async () => {
-		const serializedEditorState = editorRef.current.toJSON()
+		const editor = editorRef.current
+		if (editor === null) {
+			return
+		}
+		const serializedEditorState = editor.toJSON()
 		const nodes = serializedEditorState.editorState.root.children
 		if (nodes.length === 0) {
 			new Notice(t('command.errorContentRequired'))
@@ -119,7 +123,7 @@ const CommandsView = (
 		await createCommand(newCommandName, { nodes })
 
 		// clear editor content
-		editorRef.current.update(() => {
+		editor.update(() => {
 			const root = $getRoot()
 			root.clear()
 		})
@@ -140,8 +144,12 @@ const CommandsView = (
 	const handleSaveEdit = async (id: string) => {
 		const nameInput = nameInputRefs.current.get(id)
 		const currContentEditorRef = contentEditorRefs.current.get(id)
-		if (!currContentEditorRef) {
+		if (currContentEditorRef === undefined) {
 			new Notice(t('command.errorContentRequired'))
+			return
+		}
+		if (nameInput === undefined) {
+			new Notice(t('command.errorNameRequired'))
 			return
 		}
 		const serializedEditorState = currContentEditorRef.toJSON()

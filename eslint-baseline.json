@@ -36,7 +36,7 @@
 			"sort-imports": 1
 		},
 		"src/components/chat-view/CommandsView.tsx": {
-			"@typescript-eslint/no-unnecessary-condition": 6
+			"@typescript-eslint/no-unnecessary-condition": 5
 		},
 		"src/components/chat-view/CustomModeView.tsx": {
 			"@typescript-eslint/consistent-type-assertions": 1,
