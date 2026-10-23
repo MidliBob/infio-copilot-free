@@ -84,7 +84,7 @@ export class PromptGenerator {
 	private systemPrompt: SystemPrompt
 	private customModePrompts: CustomModePrompts | undefined = undefined
 	private customModeList: ModeConfig[] | undefined = undefined
-	private getMcpHub: (() => Promise<McpHub>) | undefined = undefined
+	private getMcpHub: (() => Promise<McpHub | null>) | undefined = undefined
 	private convertDataManager: ConvertDataManager
 	private workspaceManager: WorkspaceManager
 	private static readonly EMPTY_ASSISTANT_MESSAGE: RequestMessage = {
@@ -99,7 +99,7 @@ export class PromptGenerator {
 		diffStrategy?: DiffStrategy,
 		customModePrompts?: CustomModePrompts,
 		customModeList?: ModeConfig[],
-		getMcpHub?: () => Promise<McpHub>,
+		getMcpHub?: () => Promise<McpHub | null>,
 	) {
 		this.getRagEngine = getRagEngine
 		this.app = app
@@ -783,7 +783,8 @@ export class PromptGenerator {
 	}
 
 	public async getSystemMessageNew(mode: Mode, filesSearchMethod: string, preferredLanguage: string): Promise<RequestMessage> {
-		const mcpHub = await this.getMcpHub?.()
+		const mcpHubOrNull = await this.getMcpHub?.()
+		const mcpHub = mcpHubOrNull === null ? undefined : mcpHubOrNull
 		const prompt = await this.systemPrompt.getSystemPrompt(
 			this.app.vault.getRoot().path,
 			false,

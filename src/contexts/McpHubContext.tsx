@@ -9,7 +9,7 @@ import {
 import { McpHub } from '../core/mcp/McpHub'
 
 export type McpHubContextType = {
-	getMcpHub: () => Promise<McpHub>
+	getMcpHub: () => Promise<McpHub | null>
 }
 
 const McpHubContext = createContext<McpHubContextType | null>(null)
@@ -17,7 +17,7 @@ const McpHubContext = createContext<McpHubContextType | null>(null)
 export function McpHubProvider({
 	getMcpHub,
 	children,
-}: PropsWithChildren<{ getMcpHub: () => Promise<McpHub> }>) {
+}: PropsWithChildren<{ getMcpHub: () => Promise<McpHub | null> }>) {
 	useEffect(() => {
 		// start initialization of mcpHub in the background
 		void getMcpHub()

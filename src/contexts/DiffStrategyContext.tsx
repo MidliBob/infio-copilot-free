@@ -8,12 +8,12 @@ import {
 import { DiffStrategy } from '../core/diff/DiffStrategy'
 
 
-const DiffStrategyContext = createContext<DiffStrategy>(null)
+const DiffStrategyContext = createContext<DiffStrategy | undefined>(undefined)
 
 export function DiffStrategyProvider({
 	diffStrategy,
 	children,
-}: PropsWithChildren<{ diffStrategy: DiffStrategy }>) {
+}: PropsWithChildren<{ diffStrategy: DiffStrategy | undefined }>) {
 
 	const value = useMemo(() => {
 		return diffStrategy
