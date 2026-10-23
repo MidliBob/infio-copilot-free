@@ -7,7 +7,7 @@ import { useApp } from '../../contexts/AppContext';
 import { useDiffStrategy } from '../../contexts/DiffStrategyContext';
 import { useRAG } from '../../contexts/RAGContext';
 import { useSettings } from '../../contexts/SettingsContext';
-import { CustomMode, GroupEntry, ToolGroup } from '../../database/json/custom-mode/types';
+import { CUSTOM_MODE_SCHEMA_VERSION, CustomMode, GroupEntry, ToolGroup } from '../../database/json/custom-mode/types';
 import { useCustomModes } from '../../hooks/use-custom-mode';
 import { t } from '../../lang/helpers';
 import { PreviewView, PreviewViewState } from '../../PreviewView';
@@ -52,6 +52,7 @@ const CustomModeView = () => {
 		groups: [],
 		source: 'global',
 		updatedAt: 0,
+		schemaVersion: CUSTOM_MODE_SCHEMA_VERSION,
 	})
 
 	// Custom mode ID
@@ -155,6 +156,7 @@ const CustomModeView = () => {
 			groups: [],
 			source: 'global',
 			updatedAt: 0,
+			schemaVersion: CUSTOM_MODE_SCHEMA_VERSION,
 		})
 		setSelectedMode("add_new_mode")
 	}, [isNewMode, modeName, roleDefinition, customInstructions, selectedTools])
@@ -380,7 +382,9 @@ const CustomModeView = () => {
 										.getLeavesOfType(PREVIEW_VIEW_TYPE)
 										.find(
 											(leaf) =>
-												leaf.view instanceof PreviewView && leaf.view.state.title === `${modeName} system prompt`
+												leaf.view instanceof PreviewView &&
+												leaf.view.state !== null &&
+												leaf.view.state.title === `${modeName} system prompt`
 										)
 									if (existingLeaf) {
 										app.workspace.setActiveLeaf(existingLeaf, { focus: true })
