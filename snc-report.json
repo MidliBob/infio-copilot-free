@@ -1,0 +1,171 @@
+{
+	"generatedAt": "2026-10-18T04:34:14.068Z",
+	"tsc": {
+		"total": 156,
+		"files": 38,
+		"byCode": {
+			"TS2322": 52,
+			"TS2345": 47,
+			"TS18049": 17,
+			"TS18047": 15,
+			"TS2531": 11,
+			"TS18048": 7,
+			"TS2578": 2,
+			"TS2769": 2,
+			"TS2366": 1,
+			"TS2339": 1,
+			"TS2532": 1
+		},
+		"topFiles": {
+			"src/utils/parse-icf-block.ts": 31,
+			"src/components/chat-view/ChatView.tsx": 17,
+			"src/utils/api.ts": 17,
+			"src/core/rag/rag-engine.ts": 12,
+			"src/utils/prompt-generator.ts": 10,
+			"src/core/prompts/sections/custom-instructions.ts": 6,
+			"src/core/mcp/McpHub.ts": 5,
+			"src/components/chat-view/chat-input/plugins/mention/AutoLinkMentionPlugin.tsx": 4,
+			"src/components/chat-view/CustomModeView.tsx": 4,
+			"src/components/chat-view/InsightView.tsx": 4,
+			"src/components/chat-view/CommandsView.tsx": 3,
+			"src/core/transformations/trans-engine.ts": 3,
+			"src/database/json/command/CommandManager.ts": 3,
+			"src/database/json/custom-mode/CustomModeManager.ts": 3,
+			"src/ChatView.tsx": 2
+		}
+	},
+	"eslint": {
+		"unnecessaryCondition": {
+			"baseline": 1367,
+			"underSnc": 226,
+			"vanished": 1141
+		},
+		"parkedRulesUnderSnc": {
+			"@typescript-eslint/no-useless-default-assignment": 0,
+			"@typescript-eslint/no-unnecessary-boolean-literal-compare": 3
+		},
+		"drift": {
+			"increases": [
+				{
+					"file": "src/components/chat-view/ChatView.tsx",
+					"rule": "@typescript-eslint/restrict-template-expressions",
+					"baseline": 0,
+					"now": 8
+				},
+				{
+					"file": "src/components/chat-view/Markdown/MarkdownWithIcon.tsx",
+					"rule": "@typescript-eslint/restrict-template-expressions",
+					"baseline": 0,
+					"now": 2
+				},
+				{
+					"file": "src/core/autocomplete/utils.ts",
+					"rule": "@typescript-eslint/no-unsafe-return",
+					"baseline": 0,
+					"now": 1
+				},
+				{
+					"file": "src/core/file-search/regex/ripgrep-regex.ts",
+					"rule": "@typescript-eslint/no-unnecessary-type-assertion",
+					"baseline": 0,
+					"now": 1
+				},
+				{
+					"file": "src/core/llm/openai-compatible.ts",
+					"rule": "@typescript-eslint/no-unnecessary-type-assertion",
+					"baseline": 0,
+					"now": 2
+				},
+				{
+					"file": "src/core/mcp/McpHub.ts",
+					"rule": "@typescript-eslint/no-unsafe-call",
+					"baseline": 0,
+					"now": 1
+				},
+				{
+					"file": "src/core/prompts/sections/mcp-servers.ts",
+					"rule": "@typescript-eslint/restrict-template-expressions",
+					"baseline": 0,
+					"now": 3
+				},
+				{
+					"file": "src/embedworker/EmbeddingManager.ts",
+					"rule": "@typescript-eslint/restrict-template-expressions",
+					"baseline": 0,
+					"now": 2
+				},
+				{
+					"file": "src/utils/prompt-generator.ts",
+					"rule": "@typescript-eslint/restrict-template-expressions",
+					"baseline": 0,
+					"now": 2
+				}
+			],
+			"increasesTotal": 22,
+			"decreases": [
+				{
+					"file": "src/components/chat-view/Markdown/MarkdownWithIcon.tsx",
+					"rule": "@typescript-eslint/no-unnecessary-template-expression",
+					"baseline": 2,
+					"now": 0
+				},
+				{
+					"file": "src/components/chat-view/chat-input/plugins/mention/AutoLinkMentionPlugin.tsx",
+					"rule": "@typescript-eslint/no-unsafe-argument",
+					"baseline": 1,
+					"now": 0
+				},
+				{
+					"file": "src/components/chat-view/chat-input/plugins/typeahead-menu/LexicalTypeaheadMenuPlugin.tsx",
+					"rule": "@typescript-eslint/no-unsafe-return",
+					"baseline": 1,
+					"now": 0
+				},
+				{
+					"file": "src/core/llm/ollama.ts",
+					"rule": "@typescript-eslint/no-unsafe-assignment",
+					"baseline": 1,
+					"now": 0
+				},
+				{
+					"file": "src/database/modules/insight/insight-manager.ts",
+					"rule": "@typescript-eslint/no-unnecessary-type-assertion",
+					"baseline": 2,
+					"now": 0
+				},
+				{
+					"file": "src/hooks/use-chat-history.ts",
+					"rule": "@typescript-eslint/no-unnecessary-type-assertion",
+					"baseline": 1,
+					"now": 0
+				},
+				{
+					"file": "src/utils/api.ts",
+					"rule": "@typescript-eslint/no-unsafe-assignment",
+					"baseline": 5,
+					"now": 0
+				},
+				{
+					"file": "src/utils/prompt-generator.ts",
+					"rule": "@typescript-eslint/no-unsafe-member-access",
+					"baseline": 7,
+					"now": 6
+				},
+				{
+					"file": "src/utils/prompt-generator.ts",
+					"rule": "@typescript-eslint/no-unsafe-assignment",
+					"baseline": 5,
+					"now": 4
+				}
+			],
+			"decreasesTotal": 15
+		},
+		"refreezePreview": {
+			"scope": "full src (370 files)",
+			"total": 778,
+			"files": 138,
+			"baselineTotal": 1909,
+			"baselineFiles": 370
+		}
+	}
+}
