@@ -484,7 +484,7 @@
 		},
 		"src/core/llm/openai-compatible.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-unnecessary-condition": 3
+			"@typescript-eslint/no-unnecessary-condition": 2
 		},
 		"src/core/llm/openai-message-adapter.ts": {
 			"@typescript-eslint/consistent-type-assertions": 4,

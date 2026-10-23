@@ -56,7 +56,7 @@ export function extractNetworkErrorStatus(error: unknown): number | undefined {
  */
 export function describeEndpointNetworkError(
 	error: unknown,
-	baseUrl: string,
+	baseUrl: string | undefined,
 	serverLabel: string,
 ): string | null {
 	const status = extractNetworkErrorStatus(error)

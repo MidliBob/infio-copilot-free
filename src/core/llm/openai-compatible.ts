@@ -21,9 +21,9 @@ export class OpenAICompatibleProvider implements BaseLLMProvider {
   private adapter: OpenAIMessageAdapter
   private client: OpenAI | NoStainlessOpenAI
   private apiKey: string
-  private baseURL: string
+  private baseURL: string | undefined
 
-  constructor(apiKey: string, baseURL: string) {
+  constructor(apiKey: string, baseURL: string | undefined) {
     this.adapter = new OpenAIMessageAdapter()
     this.apiKey = apiKey
     this.baseURL = baseURL
@@ -49,8 +49,9 @@ export class OpenAICompatibleProvider implements BaseLLMProvider {
 
   // 检查是否为阿里云Qwen API
   private isAlibabaQwen(): boolean {
-    return this.baseURL === ALIBABA_QWEN_BASE_URL || 
-           this.baseURL?.includes('dashscope.aliyuncs.com')
+    return this.baseURL !== undefined &&
+           (this.baseURL === ALIBABA_QWEN_BASE_URL ||
+            this.baseURL.includes('dashscope.aliyuncs.com'))
 	}
 
   // 获取提供商特定的额外参数

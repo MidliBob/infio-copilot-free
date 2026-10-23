@@ -126,6 +126,8 @@ class LLMManager implements LLMManagerInterface {
 				return await this.ollamaProvider.streamResponse(model, request, options)
 			case ApiProvider.OpenAICompatible:
 				return await this.openaiCompatibleProvider.streamResponse(model, request, options)
+			default:
+				throw new Error(`Unsupported model provider: ${model.provider}`)
 		}
 	}
 }
