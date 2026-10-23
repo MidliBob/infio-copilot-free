@@ -22,6 +22,9 @@ export const calculateLLMCost = async ({
 	if (!modelInfo) {
 		return null
 	}
+	if (modelInfo.inputPrice === undefined || modelInfo.outputPrice === undefined) {
+		return null
+	}
 	const cost = modelInfo.inputPrice * usage.prompt_tokens + modelInfo.outputPrice * usage.completion_tokens
 	return cost
 }
