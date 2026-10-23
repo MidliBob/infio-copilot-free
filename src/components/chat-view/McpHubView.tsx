@@ -56,7 +56,7 @@ const McpHubView = () => {
 		}
 	}
 
-	const handleToggle = async (serverName: string, disabled: boolean) => {
+	const handleToggle = async (serverName: string, disabled: boolean | undefined) => {
 		const hub = await getMcpHub();
 		if (hub) {
 			await hub.toggleServerDisabled(serverName, !disabled)
@@ -163,7 +163,7 @@ const McpHubView = () => {
 									([paramName, paramSchemaUntyped]) => {
 										const paramSchema = paramSchemaUntyped && typeof paramSchemaUntyped === 'object' ? paramSchemaUntyped : {};
 										const paramDescription = 'description' in paramSchema && typeof paramSchema.description === 'string' ? paramSchema.description : undefined;
-										const isRequired = required && Array.isArray(required) && required.includes(paramName);
+										const isRequired = Array.isArray(required) && required.includes(paramName);
 										return (
 											<div key={paramName} className="icf-mcp-parameter-item">
 												<code className="icf-mcp-parameter-name">
