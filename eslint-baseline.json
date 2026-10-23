@@ -234,7 +234,6 @@
 		},
 		"src/components/chat-view/chat-input/plugins/mention/AutoLinkMentionPlugin.tsx": {
 			"@typescript-eslint/no-unnecessary-condition": 2,
-			"@typescript-eslint/no-unsafe-argument": 1,
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-member-access": 1
 		},
