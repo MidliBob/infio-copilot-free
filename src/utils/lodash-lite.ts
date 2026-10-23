@@ -32,7 +32,7 @@ export function has(object: unknown, path: string): boolean {
 	return true
 }
 
-export function get<T = unknown>(object: unknown, path: string): T {
+export function get<T = unknown>(object: unknown, path: string): T | undefined {
 	let current: unknown = object
 	for (const key of toPath(path)) {
 		if (current === null || typeof current !== 'object') {

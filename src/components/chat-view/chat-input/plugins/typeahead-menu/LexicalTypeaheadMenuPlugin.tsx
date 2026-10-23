@@ -76,7 +76,7 @@ function tryToPositionRange(
 }
 
 function getQueryTextForSearch(editor: LexicalEditor): string | null {
-  let text = null
+  let text: string | null = null
   editor.getEditorState().read(() => {
     const selection = $getSelection()
     if (!$isRangeSelection(selection)) {

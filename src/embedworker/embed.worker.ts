@@ -205,7 +205,9 @@ async function loadTransformers(): Promise<void> {
 		env.allowRemoteModels = true;
 
 		// 配置 WASM 后端 - 修复线程配置
-		env.backends.onnx.wasm.numThreads = 1; // 在 Worker 中使用单线程，避免竞态条件
+		if (env.backends.onnx.wasm !== undefined) {
+			env.backends.onnx.wasm.numThreads = 1; // 在 Worker 中使用单线程，避免竞态条件
+		}
 
 		env.useBrowserCache = true;
 

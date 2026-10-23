@@ -12,7 +12,7 @@ type Props = {
     errors: Map<string, string>;
 }
 
-export default function AdvancedSettings({ settings, updateSettings, errors }: Props): React.JSX.Element {
+export default function AdvancedSettings({ settings, updateSettings, errors }: Props): React.JSX.Element | null {
     if (!settings.advancedMode) {
         return null;
     }

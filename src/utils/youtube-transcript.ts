@@ -152,13 +152,15 @@ export class YoutubeTranscript {
 			)
 		}
 
-		const transcriptURL: string = (
-			config?.lang
-				? captions.captionTracks.find(
-					(track) => track.languageCode === config?.lang,
-				)
-				: captions.captionTracks[0]
-		).baseUrl
+		const transcriptTrack = config?.lang
+			? captions.captionTracks.find(
+				(track) => track.languageCode === config?.lang,
+			)
+			: captions.captionTracks[0]
+		if (transcriptTrack === undefined) {
+			throw new YoutubeTranscriptNotAvailableError(videoId)
+		}
+		const transcriptURL: string = transcriptTrack.baseUrl
 
 		const transcriptResponse = await requestUrl({
 			url: transcriptURL,

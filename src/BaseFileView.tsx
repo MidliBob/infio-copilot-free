@@ -45,7 +45,7 @@ export default abstract class BaseView extends TextFileView {
 	}
 
 	getState(): { filePath?: string } {
-		return { filePath: this.currentFilePath };
+		return { filePath: this.currentFilePath === null ? undefined : this.currentFilePath };
 	}
 
 	private async loadFileFromPath(filePath: string): Promise<void> {		

@@ -27,7 +27,7 @@ export class CommandManager {
 		return created
 	}
 
-	async updateCommand(id: string, template: UpdateTemplate): Promise<SelectTemplate> {
+	async updateCommand(id: string, template: UpdateTemplate): Promise<SelectTemplate | null> {
 		const updated = await this.repository.update(id, template)
 		return updated
 	}

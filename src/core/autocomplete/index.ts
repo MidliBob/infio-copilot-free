@@ -60,7 +60,10 @@ class LLMClient {
 		// eslint-disable-next-line no-inner-declarations -- helper stays local to its branch
 		async function* streamResponse(): AsyncIterable<string> {
 			for await (const chunk of stream) {
-				yield chunk.choices[0].delta.content;
+				const content = chunk.choices[0].delta.content;
+				if (content !== null) {
+					yield content;
+				}
 			}
 		}
 

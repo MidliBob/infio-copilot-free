@@ -13,7 +13,7 @@ type UseChatHistory = {
 	createOrUpdateConversation: (
 		id: string,
 		messages: ChatMessage[],
-	) => Promise<void>
+	) => Promise<void> | undefined
 	deleteConversation: (id: string) => Promise<void>
 	getChatMessagesById: (id: string) => Promise<ChatMessage[] | null>
 	updateConversationTitle: (id: string, title: string) => Promise<void>

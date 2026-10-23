@@ -1,8 +1,11 @@
 import { SerializedEditorState, SerializedLexicalNode } from 'lexical'
 
 export function editorStateToPlainText(
-  editorState: SerializedEditorState,
+  editorState: SerializedEditorState | null,
 ): string {
+  if (editorState === null) {
+    return ''
+  }
   return lexicalNodeToPlainText(editorState.root)
 }
 
