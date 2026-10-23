@@ -273,7 +273,7 @@ export function findLevenshteinMatch(
 	confidenceThreshold: number = 0.97,
 ): SearchResult {
 	const searchLines = searchStr.split("\n")
-	const candidates = []
+	const candidates: string[] = []
 
 	for (let i = startIndex; i < content.length - searchLines.length + 1; i++) {
 		candidates.push(content.slice(i, i + searchLines.length).join("\n"))
