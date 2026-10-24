@@ -1034,7 +1034,7 @@ export const GetEmbeddingProviders = (): ApiProvider[] => {
 }
 
 // Get all models for a provider
-export const GetProviderModels = async (provider: ApiProvider, settings?: InfioSettings): Promise<Record<string, ModelInfo>> => {
+export const GetProviderModels = async (provider: ApiProvider, settings?: InfioSettings | null): Promise<Record<string, ModelInfo>> => {
 	switch (provider) {
 		case ApiProvider.AlibabaQwen:
 			return qwenModels
@@ -1078,7 +1078,7 @@ export const GetProviderModelsWithSettings = async (provider: ApiProvider, setti
 }
 
 // Get all model ids for a provider
-export const GetProviderModelIds = async (provider: ApiProvider, settings?: InfioSettings): Promise<string[]> => {
+export const GetProviderModelIds = async (provider: ApiProvider, settings?: InfioSettings | null): Promise<string[]> => {
 	const models = await GetProviderModels(provider, settings)
 	return Object.keys(models)
 }
@@ -1108,7 +1108,7 @@ export const GetEmbeddingProviderModelIds = (provider: ApiProvider): string[] =>
 // providers keep their static maps.
 export const GetEmbeddingProviderModelIdsAsync = async (
 	provider: ApiProvider,
-	settings?: InfioSettings
+	settings?: InfioSettings | null
 ): Promise<string[]> => {
 	if (provider === ApiProvider.Ollama) {
 		return await fetchOllamaEmbeddingModelIds(settings?.ollamaProvider.baseUrl)
