@@ -18,7 +18,7 @@ import { compilePatterns, matchesAny } from '../../../utils/glob-patterns';
 import { getFilesWithTag } from '../../../utils/glob-utils';
 import { extractErrorMessage } from '../../../utils/network-errors';
 import { openSettingsModalWithError } from '../../../utils/open-settings-modal';
-import { RecursiveCharacterTextSplitter } from '../../../utils/text-splitter';
+import { RecursiveCharacterTextSplitter, SplitDocument, SplitterMetadata } from '../../../utils/text-splitter';
 import { DBManager } from '../../database-manager';
 import { Workspace } from '../../json/workspace/types';
 import { SUPPORT_EMBEDDING_SIMENTION } from '../../../constants';
@@ -56,18 +56,18 @@ export class VectorManager {
 	constructor(app: App, dbManager: DBManager) {
 		this.app = app
 		this.dbManager = dbManager
-		this.repository = new VectorRepository(app, dbManager.getPgClient() as any)
+		this.repository = new VectorRepository(app, dbManager.getPgClient())
 	}
 
 	// 添加合并小chunks的辅助方法（仅在同一文件内合并）
-	private mergeSmallChunks(chunks: { pageContent: string; metadata: any }[], minChunkSize: number): typeof chunks {
-		if (!chunks || chunks.length === 0) {
+	private mergeSmallChunks(chunks: SplitDocument[], minChunkSize: number): SplitDocument[] {
+		if (chunks.length === 0) {
 			return []
 		}
 
-		const mergedChunks: typeof chunks = []
+		const mergedChunks: SplitDocument[] = []
 		let currentChunkBuffer = ""
-		let currentMetadata: any = null
+		let currentMetadata: SplitterMetadata | null = null
 
 		for (const chunk of chunks) {
 			const content = chunk.pageContent.trim()
@@ -77,13 +77,13 @@ export class VectorManager {
 			const combined = currentChunkBuffer ? `${currentChunkBuffer} ${content}` : content
 			
 			// 更新metadata，记录起始和结束位置
-			const combinedMetadata = currentMetadata ? {
+			const combinedMetadata: SplitterMetadata = currentMetadata ? {
 				...currentMetadata,
-				endLine: chunk.metadata?.loc?.lines?.to || chunk.metadata?.endLine || currentMetadata.endLine
+				endLine: chunk.metadata.loc?.lines?.to || chunk.metadata.endLine || currentMetadata.endLine
 			} : {
 				...chunk.metadata,
-				startLine: chunk.metadata?.loc?.lines?.from || chunk.metadata?.startLine,
-				endLine: chunk.metadata?.loc?.lines?.to || chunk.metadata?.endLine
+				startLine: chunk.metadata.loc?.lines?.from || chunk.metadata.startLine,
+				endLine: chunk.metadata.loc?.lines?.to || chunk.metadata.endLine
 			}
 
 			if (combined.length < minChunkSize) {
@@ -108,7 +108,7 @@ export class VectorManager {
 				const lastChunk = mergedChunks[mergedChunks.length - 1]
 				lastChunk.pageContent += ` ${currentChunkBuffer}`
 				lastChunk.metadata.endLine = currentMetadata?.endLine || lastChunk.metadata.endLine
-			} else {
+			} else if (currentMetadata !== null) {
 				// 策略2：或者如果就没有足够大的块，把它自己作为一个块
 				mergedChunks.push({
 					pageContent: currentChunkBuffer,
@@ -415,7 +415,7 @@ export class VectorManager {
 									})
 									.filter((chunk): chunk is InsertVector => chunk !== null)
 							} catch (error) {
-								logger.warn(`Skipping file ${file.path}:`, error.message)
+								logger.warn(`Skipping file ${file.path}:`, extractErrorMessage(error))
 								skippedFiles.push(file.path)
 								return []
 							}
@@ -770,7 +770,7 @@ export class VectorManager {
 									})
 									.filter((chunk): chunk is InsertVector => chunk !== null)
 							} catch (error) {
-								logger.warn(`Skipping file ${file.path}:`, error.message)
+								logger.warn(`Skipping file ${file.path}:`, extractErrorMessage(error))
 								skippedFiles.push(file.path)
 								return []
 							}
@@ -1151,8 +1151,8 @@ export class VectorManager {
 				this.forceGarbageCollection()
 			}
 		} catch (error) {
-			logger.warn(`Skipping file ${file.path}:`, error.message)
-			new Notice(t('notifications.indexSkippedFile', { name: file.name, error: error.message }))
+			logger.warn(`Skipping file ${file.path}:`, extractErrorMessage(error))
+			new Notice(t('notifications.indexSkippedFile', { name: file.name, error: extractErrorMessage(error) }))
 		}
 	}
 
