@@ -31,7 +31,6 @@ const CustomModeView = () => {
 	const diffStrategy = useDiffStrategy()
 
 	const promptGenerator = useMemo(() => {
-		// @ts-expect-error PromptGenerator constructor parameter types need to be reviewed
 		return new PromptGenerator(getRAGEngine, app, settings, diffStrategy, customModePrompts, customModeList)
 	}, [app, settings, diffStrategy, customModePrompts, customModeList])
 

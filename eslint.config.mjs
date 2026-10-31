@@ -108,12 +108,13 @@ export default tseslint.config(
 			'@typescript-eslint/no-unsafe-call': 'off',
 			'@typescript-eslint/no-unnecessary-condition': 'off',
 
-			// require the strictNullChecks compiler option and only emit
-			// "This rule requires strictNullChecks" meta-errors without it
-			// (tsconfig has strict: false). Disabled until a strict-mode
-			// migration; re-enable together with it (1.7.10).
-			'@typescript-eslint/no-useless-default-assignment': 'off',
-			'@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
+			// re-enabled in 1.7.21 together with the strictNullChecks flip
+			// (parked in 1.7.10: without the flag both emitted only "This rule
+			// requires strictNullChecks" meta-errors on every file). They come
+			// from strictTypeChecked; their real findings are frozen in
+			// eslint-baseline.json by the 1.7.21 re-freeze:
+			// '@typescript-eslint/no-useless-default-assignment',
+			// '@typescript-eslint/no-unnecessary-boolean-literal-compare'.
 
 			// enabled in 1.7.10 after burning the last 4 findings:
 			// '@typescript-eslint/no-floating-promises' now comes from

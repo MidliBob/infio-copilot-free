@@ -2,9 +2,6 @@
 	"$comment": "Frozen TypeScript suppression debt per file. Regenerate ONLY with: node scripts/ts-suppressions.mjs --update. Enforced by src/ts-suppressions.test.ts; policy and cleanup plan: docs/ts-suppressions.md.",
 	"files": {
 		"src/components/chat-view/ChatView.tsx": {
-			"expectError": 2
-		},
-		"src/components/chat-view/CustomModeView.tsx": {
 			"expectError": 1
 		},
 		"src/components/chat-view/InsightView.tsx": {
