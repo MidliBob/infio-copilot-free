@@ -128,10 +128,14 @@ Planned. Requirements and steps:
   with an inner void-IIFE/`.catch`, explicit null checks instead of Promise
   truthiness tests); both rules are enabled in the config — the intended
   lifecycle for every tracked rule. Two v8 rules (`no-useless-default-assignment`,
-  `no-unnecessary-boolean-literal-compare`) are disabled until a
-  `strictNullChecks` migration: without it they emit only per-file
-  "rule requires strictNullChecks" meta-errors (frozen as debt in 1.7.9 by
-  mistake, unfrozen in 1.7.10 — they would have flagged every new file).
+  `no-unnecessary-boolean-literal-compare`) were parked until the
+  `strictNullChecks` migration (without it they emitted only per-file
+  "rule requires strictNullChecks" meta-errors; frozen as debt in 1.7.9 by
+  mistake, unfrozen in 1.7.10); the 1.7.21 flip re-enabled both through
+  `strictTypeChecked` — their real findings (3 and 0) went into the
+  re-frozen baseline. Since the flip the baseline is measured UNDER SNC:
+  **756 findings in 137 files** (the 1.7.21 honest re-freeze,
+  `--update --batch=14`; the pre-flip debt was 1891/370).
   `pnpm run lint` still shows the raw ESLint picture (it is red until the
   debt is burned down — that is expected).
 - Burning down the debt: fix violations in a file/module, then shrink the
@@ -179,6 +183,13 @@ Planned. Requirements and steps:
   `this` in assigned/literal methods degrades to `any`, which the ratchet
   counts as `no-unsafe-*` regressions. The whole project compiles cleanly
   with the flag on (`pnpm type:check`).
+- `tsconfig.json` has **`strictNullChecks: true`** (since the 1.7.21 flip;
+  the 1.7.20 series burned the 156-error tsc debt down first) — do not
+  revert it: `eslint-baseline.json` is frozen UNDER SNC (the 1.7.21
+  re-freeze, 756/137). Flipping back would resurrect ~1150 phantom
+  `no-unnecessary-condition` findings against that baseline (the ratchet
+  would fail on almost every file), and the two re-enabled rules would
+  degrade to per-file "rule requires strictNullChecks" meta-errors again.
 
 ## Declarative settings migration (phase 3, item 1)
 
@@ -246,9 +257,14 @@ official migration guide (Path B):
   still die, drop to `--batch=4..8`. For a one-off full re-measure on a small
   box, drive the ratchet's child mode (`--files-from`/`--emit-json`) over
   consecutive ~30-file slices of the sorted `src/` list and merge the JSONs —
-  that is how the 1.7.9 baseline (3350/364) was produced.
-- `strictNullChecks` migration probe (1.7.20 spike): `scripts/snc-probe.mjs`
-  measures the migration cost without changing any committed config. The tsc
+  that is how the 1.7.9 baseline (3350/364) was produced; the 1.7.21
+  re-freeze (756/137) was a plain `--update --batch=14` on a 1 GB box.
+- `strictNullChecks` migration probe (1.7.20 spike — **historical**: the
+  migration was executed in 1.7.20/1.7.21, and the probe's
+  single-occurrence assert on `"strictNullChecks": false` now fails by
+  design against the flipped tsconfig, protecting it from accidental
+  runs): `scripts/snc-probe.mjs` measured the migration cost without
+  changing any committed config. The tsc
   side runs `tsc --noEmit --skipLibCheck --strictNullChecks` and reports
   total/per-code/per-file counts (the code fixes the flag flip requires);
   the ESLint side temporarily flips `"strictNullChecks": false` in
@@ -277,11 +293,16 @@ official migration guide (Path B):
   across two files — graduated pre-SNC in 1.7.13, `no-unsafe-call` +1,
   bonuses −2). Run the FULL probe on the maintainer machine before
   deciding (ground truth for the re-freeze, the 1.7.9 method). Migration
-  order once decided: fix the 156 tsc errors module by module (they are
-  the real gate) → flip `strictNullChecks` → re-measure with the probe →
-  honest re-freeze of `eslint-baseline.json` → re-enable the two parked
-  rules in `eslint.config.mjs` → burn the shrunken
-  `no-unnecessary-condition` pool.
+  order (EXECUTED): the 1.7.20 series fixed the 156 tsc errors module by
+  module (25 patches → 2, both deferred `TS2578` over the PromptGenerator
+  constructor calls) → the 1.7.21 atomic flip removed the two directives,
+  re-enabled the two parked rules in `eslint.config.mjs` and honestly
+  re-froze `eslint-baseline.json` under SNC (1891/370 → **756/137**:
+  `no-unnecessary-condition` 1363 → 214 — 84% of the pool were SNC
+  phantoms, 233 files fully clean; `restrict-template-expressions`
+  0 → 18 honest drift frozen; `no-unsafe-*` aggregate 245 → 240;
+  boolean-literal-compare exactly the predicted 3,
+  useless-default-assignment 0) → burn the shrunken pools.
 
 ## Validator warnings with written justification
 
@@ -300,14 +321,18 @@ ones that cannot be fixed by construction are recorded here:
   (CORS) blocks; `requestUrl` bypasses CORS and cannot detect them.
 
 Deliberately deferred to planned releases (the burn-down register; all
-counts are the frozen 1.7.19 baseline, 1909 total): `no-unnecessary-condition`
-(1367 — the largest single pool, mostly defensive checks that the strict
-types already guarantee), the
-`no-unsafe-*`/`any` debt (231 across member-access/assignment/call/argument/
-return, phase 2 pass 3, module by module)
-and the small-rule tail. Disabled until a
-`strictNullChecks` migration (not debt — they cannot function without it):
-`no-useless-default-assignment`, `no-unnecessary-boolean-literal-compare`.
+counts are the re-frozen 1.7.21 baseline, measured UNDER
+`strictNullChecks`: 756 total in 137 files): the
+`no-unsafe-*`/`any` debt (240 across member-access 114 / assignment 52 /
+call 39 / argument 27 / return 8 — phase 2 pass 3, module by module),
+`no-unnecessary-condition` (214 — collapsed from 1363 in the 1.7.21
+re-freeze; the rest is genuine dead-condition debt),
+`consistent-type-assertions` (89), `no-explicit-any` (40), inline-styles
+(40), `restrict-plus-operands` (25), `ban-ts-comment` (24),
+`restrict-template-expressions` (18 — the honest SNC drift frozen by the
+re-freeze), `no-unnecessary-boolean-literal-compare` (3, re-enabled in
+1.7.21) and the small-rule tail. `no-useless-default-assignment` is
+active with an empty baseline (any appearance is blocked).
 Done and struck from this register: the declarative Settings API
 (1.7.6–1.7.8), the typescript-eslint v8 / ESLint 9 flat-config migration
 (1.7.9), `no-floating-promises` — the first graduated rule (fixed and
@@ -336,11 +361,16 @@ with a JSON fallback for plain objects, `t()` interpolation via a local
 Markdown children through the new `childrenToString` helper), plus a
 −3 measurement correction for counts the 1.7.18 dead-function removal
 had silently retired; active through `strictTypeChecked` since 1.7.9,
-counters gone from the baseline.
+counters gone from the baseline), and the `strictNullChecks` migration
+itself — the 1.7.20 25-patch series (tsc 156 → 2) plus the 1.7.21 atomic
+flip (both deferred `TS2578` directives removed, the two parked rules
+re-enabled, `ts-suppressions` 32 → 30 markers, `eslint-baseline.json`
+honestly re-frozen under SNC: 1891/370 → 756/137).
 Remaining phase-3
 lint work: keep graduating rules as their counters reach zero (next
-candidate: the `strictNullChecks` decision
-for the 1367-finding `no-unnecessary-condition` pool), and evaluate
+candidates: the shrunken 214-finding `no-unnecessary-condition` pool,
+the 240-finding `no-unsafe-*` aggregate and the 18 honest
+`restrict-template-expressions` drift findings), and evaluate
 `eslint-plugin-obsidianmd` (the catalog review set) as a separate tracked
 increment.
 
