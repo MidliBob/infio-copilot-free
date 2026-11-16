@@ -6,7 +6,7 @@ import { EmbeddingModel } from '../../types/embedding'
 import { ApiProvider } from '../../types/llm/model'
 import { InfioSettings } from '../../types/settings'
 import { GetEmbeddingModelInfo } from '../../utils/api'
-import { describeEndpointNetworkError } from '../../utils/network-errors'
+import { describeEndpointNetworkError, extractErrorMessage, extractNetworkErrorStatus } from '../../utils/network-errors'
 import { describeOllamaNetworkError } from '../../utils/ollama'
 import {
 	LLMAPIKeyNotSetException,
@@ -58,7 +58,7 @@ export const getEmbeddingModel = (
 						return result.vec
 					} catch (error) {
 						logger.error('LocalProvider embedding error:', error)
-						throw new Error(`LocalProvider embedding failed: ${String(error.message)}`)
+						throw new Error(`LocalProvider embedding failed: ${extractErrorMessage(error)}`)
 					}
 				},
 				getBatchEmbeddings: async (texts: string[]) => {
@@ -71,7 +71,7 @@ export const getEmbeddingModel = (
 						return results.map(result => result.vec)
 					} catch (error) {
 						logger.error('LocalProvider batch embedding error:', error)
-						throw new Error(`LocalProvider batch embedding failed: ${String(error.message)}`)
+						throw new Error(`LocalProvider batch embedding failed: ${extractErrorMessage(error)}`)
 					}
 				},
 			}
@@ -105,8 +105,8 @@ export const getEmbeddingModel = (
 						return embedding.data[0].embedding
 					} catch (error) {
 						if (
-							error.status === 429 &&
-							error.message.toLowerCase().includes('rate limit')
+							extractNetworkErrorStatus(error) === 429 &&
+							extractErrorMessage(error).toLowerCase().includes('rate limit')
 						) {
 							throw new LLMRateLimitExceededException(
 								'SiliconFlow API rate limit exceeded. Please try again later.',
@@ -129,8 +129,8 @@ export const getEmbeddingModel = (
 						return embedding.data.map(item => item.embedding)
 					} catch (error) {
 						if (
-							error.status === 429 &&
-							error.message.toLowerCase().includes('rate limit')
+							extractNetworkErrorStatus(error) === 429 &&
+							extractErrorMessage(error).toLowerCase().includes('rate limit')
 						) {
 							throw new LLMRateLimitExceededException(
 								'SiliconFlow API rate limit exceeded. Please try again later.',
@@ -170,8 +170,8 @@ export const getEmbeddingModel = (
 						return embedding.data[0].embedding
 					} catch (error) {
 						if (
-							error.status === 429 &&
-							error.message.toLowerCase().includes('rate limit')
+							extractNetworkErrorStatus(error) === 429 &&
+							extractErrorMessage(error).toLowerCase().includes('rate limit')
 						) {
 							throw new LLMRateLimitExceededException(
 								'Alibaba Qwen API rate limit exceeded. Please try again later.',
@@ -194,8 +194,8 @@ export const getEmbeddingModel = (
 						return embedding.data.map(item => item.embedding)
 					} catch (error) {
 						if (
-							error.status === 429 &&
-							error.message.toLowerCase().includes('rate limit')
+							extractNetworkErrorStatus(error) === 429 &&
+							extractErrorMessage(error).toLowerCase().includes('rate limit')
 						) {
 							throw new LLMRateLimitExceededException(
 								'Alibaba Qwen API rate limit exceeded. Please try again later.',
@@ -277,8 +277,8 @@ export const getEmbeddingModel = (
 						return embedding.data[0].embedding
 					} catch (error) {
 						if (
-							error.status === 429 &&
-							error.message.toLowerCase().includes('rate limit')
+							extractNetworkErrorStatus(error) === 429 &&
+							extractErrorMessage(error).toLowerCase().includes('rate limit')
 						) {
 							throw new LLMRateLimitExceededException(
 								'OpenAI Compatible API rate limit exceeded. Please try again later.',
@@ -310,8 +310,8 @@ export const getEmbeddingModel = (
 						return embedding.data.map(item => item.embedding)
 					} catch (error) {
 						if (
-							error.status === 429 &&
-							error.message.toLowerCase().includes('rate limit')
+							extractNetworkErrorStatus(error) === 429 &&
+							extractErrorMessage(error).toLowerCase().includes('rate limit')
 						) {
 							throw new LLMRateLimitExceededException(
 								'OpenAI Compatible API rate limit exceeded. Please try again later.',
