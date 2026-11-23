@@ -1,12 +1,31 @@
 import { App, TFile, TFolder, Vault } from 'obsidian'
 
 import { RAGEngine } from '../core/rag/rag-engine'
-import { TRANSFORMATIONS, TransEngine } from '../core/transformations/trans-engine'
+import { TRANSFORMATIONS, TransEngine, type TransformationConfig } from '../core/transformations/trans-engine'
 import { Workspace } from '../database/json/workspace/types'
 
 import { compilePatterns, matchesAny } from './glob-patterns'
 import { addLineNumbers } from './prompt-generator'
 import { logger } from './logger'
+
+/** One insight hit, as returned by TransEngine.processQuery. */
+type InsightQueryResult = Awaited<ReturnType<TransEngine['processQuery']>>[number]
+
+/**
+ * Maps a stored `insight_type` to its transformation config. The column is
+ * TEXT, so the value is a plain string rather than the TransformationType
+ * enum: the lookup walks the entries instead of asserting
+ * `insightType as TransformationType`, and an unknown value from an older
+ * build simply keeps its raw name as the section title.
+ */
+export function findTransformationConfig(insightType: string): TransformationConfig | undefined {
+	for (const [type, config] of Object.entries(TRANSFORMATIONS)) {
+		if (type === insightType) {
+			return config
+		}
+	}
+	return undefined
+}
 
 export const findFilesMatchingPatterns = async (
 	patterns: string[],
@@ -109,7 +128,7 @@ export const listFilesAndFolders = async (
 
 					// 使用简单的列表格式显示文件
 					files.forEach((file) => {
-						result.push(`${file}`)
+						result.push(file)
 					})
 
 					// 在标签组之间添加空行
@@ -249,8 +268,8 @@ export const semanticSearchFiles = async (
 		for (const item of workspace.content) {
 			if (item.type === 'folder') {
 				folders.push(item.content)
-			} else if (item.type === 'tag') {
-				// 获取标签对应的所有文件
+			} else {
+				// здесь TS сузил union до 'tag' — второй тип элемента воркспейса
 				const tagFiles = getFilesWithTag(item.content, app)
 				files.push(...tagFiles)
 			}
@@ -273,9 +292,9 @@ export const semanticSearchFiles = async (
 
 		if (ragResults.length > 0) {
 			resultSections.push('## 📝 Original note content')
-			const ragSnippets = ragResults.map(({ path, content, metadata }: any) => {
+			const ragSnippets = ragResults.map(({ path, content, metadata }) => {
 				const contentWithLineNumbers = addLineNumbers(content, metadata.startLine)
-				return `<file_block_content location="${String(path)}#L${String(metadata.startLine)}-${String(metadata.endLine)}">\n${contentWithLineNumbers}\n</file_block_content>`
+				return `<file_block_content location="${path}#L${String(metadata.startLine)}-${String(metadata.endLine)}">\n${contentWithLineNumbers}\n</file_block_content>`
 			}).join('\n\n')
 			resultSections.push(ragSnippets)
 		}
@@ -298,27 +317,29 @@ export const semanticSearchFiles = async (
 				resultSections.push('\n## 🧠 AI abstract insights')
 				
 				// 按转换类型分组
-				const groupedInsights: { [key: string]: any[] } = {}
-				insightResults.forEach(insight => {
-					if (!groupedInsights[insight.insight_type]) {
-						groupedInsights[insight.insight_type] = []
+				const groupedInsights = new Map<string, InsightQueryResult[]>()
+				for (const insight of insightResults) {
+					const bucket = groupedInsights.get(insight.insight_type)
+					if (bucket) {
+						bucket.push(insight)
+					} else {
+						groupedInsights.set(insight.insight_type, [insight])
 					}
-					groupedInsights[insight.insight_type].push(insight)
-				})
+				}
 
 				// 渲染每种类型的洞察
-				for (const [insightType, insights] of Object.entries(groupedInsights)) {
-					const transformationConfig = TRANSFORMATIONS[insightType as keyof typeof TRANSFORMATIONS]
-					const typeName = transformationConfig ? transformationConfig.description : insightType
+				for (const [insightType, insights] of groupedInsights) {
+					const transformation = findTransformationConfig(insightType)
+					const typeName = transformation ? transformation.description : insightType
 					
 					resultSections.push(`\n### ${typeName}`)
 					
-					insights.forEach((insight) => {
+					for (const insight of insights) {
 						const similarity = (insight.similarity * 100).toFixed(1)
 						resultSections.push(
-							`<insight_block source="${String(insight.source_path)}" type="${insightType}" similarity="${similarity}%">\n${String(insight.insight)}\n</insight_block>`
+							`<insight_block source="${insight.source_path}" type="${insightType}" similarity="${similarity}%">\n${insight.insight}\n</insight_block>`
 						)
-					})
+					}
 				}
 			}
 		} catch (error) {
