@@ -659,6 +659,33 @@ en/ru/zh-cn синхронны (~652 ключа).
 > restrict-template-expressions 18) по реестру MAINTAINING +
 > `eslint-plugin-obsidianmd` отдельным инкрементом.
 
+> **Обновление (1.7.22):** выгорание пула `no-unsafe-*` — десять
+> патчей, агрегат 246 → **70**, baseline 756/137 → **528/129**. По файлам:
+> vector-manager (41, типизированный chunk-конвейер), embedding (32,
+> rate-limit и сообщения об ошибках на `extractErrorMessage`), obsidian
+> (24, поверхность PDF.js типизирована runtime-гардом namespace, без
+> `as`), ripgrep-regex (24, Zod-граница `rg --json` + вынесенный
+> `parseRipgrepOutput`), migration (22, типизированный V0→V1-конвейер),
+> auto-complete (30, последний `@ts-nocheck` в utils снят, границы схем на
+> `unknown`, локальные typings micromatch), conversation-manager (12,
+> типизированные читатели JSON-колонок сообщений), coreplugin-match (22,
+> внутренности Obsidian без кастов), glob-utils (16). Правила:
+> member-access 114 → 22, call 39 → 12, assignment 52 → 21,
+> `no-explicit-any` 40 → 18, argument 27 → 7,
+> `consistent-type-assertions` 89 → 82, `ban-ts-comment` 24 → 21.
+> ts-suppressions 30/24 → 27/22. Тесты 364 → 410 (35 suites) — покрытие
+> появилось ровно на границах: разбор `rg --json` (6), миграция настроек
+> (7), читатели JSON-колонок сообщений (16), settings-читатели (8), lookup
+> трансформаций (3), разбор результатов core-поиска (3). По ходу снятия
+> типов найдены и исправлены четыре реальных дефекта: падение
+> `findConversation` на шаблоне `{{prefix}}<mask/>{{suffix}}` и потеря
+> ContentPart-массива при чтении `prompt_content`; несогласованные дефолты
+> v0/v1 (миграция v0→v1 не запускалась на стоковых установках, а
+> восстановление настроек не могло дособрать обязательные поля); чтение
+> служебных ключей панели поиска как файлов; слепая индексация
+> `result.content` в core-поиске. Следующие цели:
+> pgworker/pglite.worker (7+7), mcp-servers (6), modes (5).
+
 1. **Декларативный Settings API (`getSettingDefinitions`)** — в работе,
    **wave 1 ✅ 1.7.6**. Реальность API: это полный декларативный рендерер
    вкладки для Obsidian **1.13.0+**, и на 1.13+ он ПОЛНОСТЬЮ заменяет
