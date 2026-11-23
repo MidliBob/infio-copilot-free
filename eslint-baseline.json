@@ -429,13 +429,6 @@
 		"src/settings/declarative.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
-		"src/settings/versions/migration.ts": {
-			"@typescript-eslint/no-explicit-any": 5,
-			"@typescript-eslint/no-unsafe-argument": 1,
-			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-unsafe-call": 3,
-			"@typescript-eslint/no-unsafe-member-access": 12
-		},
 		"src/types/settings-mobile.ts": {
 			"@typescript-eslint/consistent-type-assertions": 3,
 			"@typescript-eslint/no-explicit-any": 1,
