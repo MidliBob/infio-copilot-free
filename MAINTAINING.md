@@ -45,6 +45,11 @@ pnpm test
 
 Notes:
 
+- Linux installs must export `ONNXRUNTIME_NODE_INSTALL_CUDA=skip` (both
+  workflows do): `onnxruntime-node` 1.21.0 postinstall detects CUDA on
+  linux-x64 and downloads GPU binaries from a release asset that returns
+  404, which fails `pnpm install`. CI has no GPU, so only the CPU execution
+  provider is installed.
 - `tsc` needs a lot of heap on small machines:
   `NODE_OPTIONS=--max-old-space-size=6144 pnpm build`.
 - PGlite assets are NOT bundled into main.js (that would add ~19 MB and blow

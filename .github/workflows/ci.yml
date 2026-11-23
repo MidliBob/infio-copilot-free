@@ -10,6 +10,13 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# onnxruntime-node 1.21.0 postinstall auto-detects CUDA on Linux x64 and tries
+# to fetch the GPU binaries; that tarball 404s upstream, failing the install.
+# CI has no GPU, so only the CPU EP is installed (same env the package docs
+# recommend: ONNXRUNTIME_NODE_INSTALL_CUDA=skip).
+env:
+  ONNXRUNTIME_NODE_INSTALL_CUDA: skip
+
 jobs:
   check:
     runs-on: ubuntu-latest

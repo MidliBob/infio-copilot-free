@@ -12,6 +12,8 @@ on:
 
 env:
   PLUGIN_NAME: obsidian-infio-copilot-free
+  # See ci.yml: onnxruntime-node 1.21.0 auto-fetch of CUDA binaries 404s.
+  ONNXRUNTIME_NODE_INSTALL_CUDA: skip
 
 permissions:
   contents: write
