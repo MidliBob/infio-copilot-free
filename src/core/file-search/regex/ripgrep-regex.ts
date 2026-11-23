@@ -3,11 +3,13 @@ import * as childProcess from "child_process"
 import * as fs from "fs"
 import * as path from "path"
 import * as readline from "readline"
+import { z } from 'zod'
+
 import {
 	MAX_RESULTS,
-	truncateLine,
 	SearchResult,
-	formatResults
+	formatResults,
+	truncateLine
 } from '../search-common'
 import { logger } from '../../../utils/logger'
 
@@ -70,8 +72,15 @@ async function execRipgrep(bin: string, args: string[]): Promise<string> {
 		})
 
 		let errorOutput = ""
-		rgProcess.stderr.on("data", (data) => {
-			errorOutput += data.toString()
+		rgProcess.stderr.on("data", (data: unknown) => {
+			// stderr is a Buffer stream by default; keep the previous utf8 text
+			// accumulation without going through `any` (EventEmitter listeners
+			// are typed loosely by Node, so the parameter is narrowed here).
+			if (typeof data === 'string') {
+				errorOutput += data
+			} else if (Buffer.isBuffer(data)) {
+				errorOutput += data.toString('utf8')
+			}
 		})
 		rl.on("close", () => {
 			if (errorOutput) {
@@ -90,6 +99,93 @@ async function execRipgrep(bin: string, args: string[]): Promise<string> {
 			))
 		})
 	})
+}
+
+/**
+ * ripgrep `--json` writes one record per line. Every record shares the
+ * `{ type, data }` envelope; only `match` (a hit) and `context` (the
+ * `--context 1` neighbours) carry a `lines.text` payload this module uses,
+ * while `begin`/`end`/`summary` are skipped. The two shapes are narrowed by
+ * Zod at the process boundary so `JSON.parse`'s `any` never reaches the
+ * result builder (phase 2, "types at the boundaries").
+ */
+const RipgrepMatchSchema = z.object({
+	type: z.literal('match'),
+	data: z.object({
+		path: z.object({ text: z.string() }),
+		lines: z.object({ text: z.string() }),
+		line_number: z.number(),
+		// ripgrep always reports at least one submatch per match record; an
+		// empty list would have thrown on `submatches[0].start` before, so the
+		// schema treats it as a malformed record instead.
+		submatches: z.array(z.object({ start: z.number() })).min(1),
+	}),
+})
+
+const RipgrepContextSchema = z.object({
+	type: z.literal('context'),
+	data: z.object({
+		lines: z.object({ text: z.string() }),
+		line_number: z.number(),
+	}),
+})
+
+/**
+ * Turns raw `rg --json` output into the result list consumed by
+ * `formatResults`. Context lines are attached to the preceding match: those
+ * below its line number go to `beforeContext`, the rest to `afterContext`.
+ *
+ * Malformed JSON lines are logged and skipped (same fallback as before);
+ * well-formed records of other types are ignored silently.
+ */
+export function parseRipgrepOutput(output: string): SearchResult[] {
+	const results: SearchResult[] = []
+	let currentResult: SearchResult | null = null
+
+	for (const line of output.split('\n')) {
+		if (!line) continue
+
+		let payload: unknown
+		try {
+			payload = JSON.parse(line)
+		} catch (error) {
+			logger.error("Error parsing ripgrep output:", error)
+			continue
+		}
+
+		const match = RipgrepMatchSchema.safeParse(payload)
+		if (match.success) {
+			if (currentResult !== null) {
+				results.push(currentResult)
+			}
+			currentResult = {
+				file: match.data.data.path.text,
+				// Safety check: truncate extremely long lines to prevent excessive output
+				match: truncateLine(match.data.data.lines.text),
+				line: match.data.data.line_number,
+				column: match.data.data.submatches[0].start,
+				beforeContext: [],
+				afterContext: [],
+			}
+			continue
+		}
+
+		const context = RipgrepContextSchema.safeParse(payload)
+		if (!context.success || currentResult === null) continue
+
+		const truncatedContext = truncateLine(context.data.data.lines.text)
+		if (context.data.data.line_number < currentResult.line) {
+			currentResult.beforeContext.push(truncatedContext)
+		} else {
+			currentResult.afterContext.push(truncatedContext)
+		}
+	}
+
+	if (currentResult !== null) {
+		results.push(currentResult)
+	}
+
+	return results
 }
 
 export async function regexSearchUsingRipgrep(
@@ -125,55 +221,6 @@ export async function regexSearchUsingRipgrep(
 		logger.error("Error executing ripgrep:", error)
 		return "No results found."
 	}
-	const results: SearchResult[] = []
-	let currentResult: Partial<SearchResult> | null = null
 
-	output.split("\n").forEach((line) => {
-		if (line) {
-			try {
-				const parsed = JSON.parse(line)
-				if (parsed.type === "match") {
-					if (currentResult) {
-						results.push(currentResult as SearchResult)
-					}
-
-					// Safety check: truncate extremely long lines to prevent excessive output
-					const matchText = parsed.data.lines.text
-					const truncatedMatch = truncateLine(matchText)
-
-					currentResult = {
-						file: parsed.data.path.text,
-						line: parsed.data.line_number,
-						column: parsed.data.submatches[0].start,
-						match: truncatedMatch,
-						beforeContext: [],
-						afterContext: [],
-					}
-				} else if (parsed.type === "context" && currentResult) {
-					// Apply the same truncation logic to context lines
-					const contextText = parsed.data.lines.text
-					const truncatedContext = truncateLine(contextText)
-
-					const currentLine = currentResult.line
-					const beforeContext = currentResult.beforeContext
-					const afterContext = currentResult.afterContext
-					if (beforeContext !== undefined && afterContext !== undefined) {
-						if (currentLine !== undefined && parsed.data.line_number < currentLine) {
-							beforeContext.push(truncatedContext)
-						} else {
-							afterContext.push(truncatedContext)
-						}
-					}
-				}
-			} catch (error) {
-				logger.error("Error parsing ripgrep output:", error)
-			}
-		}
-	})
-
-	if (currentResult) {
-		results.push(currentResult as SearchResult)
-	}
-	
-	return formatResults(results, directoryPath)
+	return formatResults(parseRipgrepOutput(output), directoryPath)
 }

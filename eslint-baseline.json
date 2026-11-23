@@ -209,17 +209,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 3,
 			"sort-imports": 1
 		},
-		"src/core/file-search/regex/ripgrep-regex.ts": {
-			"@typescript-eslint/consistent-type-assertions": 2,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unnecessary-type-assertion": 1,
-			"@typescript-eslint/no-unsafe-argument": 2,
-			"@typescript-eslint/no-unsafe-assignment": 6,
-			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-unsafe-member-access": 9,
-			"@typescript-eslint/restrict-plus-operands": 1,
-			"sort-imports": 1
-		},
 		"src/core/file-search/search-common.ts": {
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
