@@ -9,6 +9,14 @@ import { DBManager } from '../../database-manager'
 import { InsertMessage, SelectConversation, SelectMessage } from '../../schema'
 
 import { ConversationRepository } from './conversation-repository'
+import {
+	parseStoredAssistantMetadata,
+	parseStoredEditorState,
+	parseStoredMentionables,
+	parseStoredPromptContent,
+	parseStoredSimilarityResults,
+	toApplyStatus,
+} from './message-json'
 
 export class ConversationManager {
 	private app: App
@@ -140,35 +148,28 @@ export class ConversationManager {
 
 	// convert SelectMessage to ChatMessage
 	private deserializeMessage(message: SelectMessage): ChatMessage {
+		const applyStatus = toApplyStatus(message.apply_status)
 		if (message.role === 'user') {
 			return {
 				id: message.id,
 				role: 'user',
-				applyStatus: message.apply_status,
-				content: message.content ? JSON.parse(message.content) : null,
-				promptContent: message.prompt_content
-					? message.prompt_content.startsWith('{')
-						? JSON.parse(message.prompt_content)
-						: message.prompt_content
-					: null,
-				mentionables: message.mentionables
-					? JSON.parse(message.mentionables)
-						.map(m => deserializeMentionable(m, this.app))
-						.filter((m: Mentionable | null): m is Mentionable => m !== null)
-					: [],
-				similaritySearchResults: message.similarity_search_results
-					? JSON.parse(message.similarity_search_results)
-					: undefined,
+				applyStatus,
+				content: parseStoredEditorState(message.content),
+				promptContent: parseStoredPromptContent(message.prompt_content),
+				mentionables: parseStoredMentionables(message.mentionables)
+					.map(m => deserializeMentionable(m, this.app))
+					.filter((m): m is Mentionable => m !== null),
+				similaritySearchResults: parseStoredSimilarityResults(message.similarity_search_results),
 			}
-		} else {
-			return {
-				id: message.id,
-				applyStatus: message.apply_status,
-				role: 'assistant',
-				content: message.content || '',
-				reasoningContent: message.reasoning_content || '',
-				metadata: message.metadata ? JSON.parse(message.metadata) : undefined,
-			}
+		}
+
+		return {
+			id: message.id,
+			applyStatus,
+			role: 'assistant',
+			content: message.content || '',
+			reasoningContent: message.reasoning_content || '',
+			metadata: parseStoredAssistantMetadata(message.metadata),
 		}
 	}
 }

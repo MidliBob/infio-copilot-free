@@ -300,13 +300,6 @@
 		"src/database/modules/command/command-repository.ts": {
 			"@typescript-eslint/no-explicit-any": 1
 		},
-		"src/database/modules/conversation/conversation-manager.ts": {
-			"@typescript-eslint/no-unsafe-argument": 1,
-			"@typescript-eslint/no-unsafe-assignment": 5,
-			"@typescript-eslint/no-unsafe-call": 2,
-			"@typescript-eslint/no-unsafe-enum-assignment": 2,
-			"@typescript-eslint/no-unsafe-member-access": 2
-		},
 		"src/database/modules/insight/insight-manager.ts": {
 			"@typescript-eslint/consistent-type-assertions": 2,
 			"@typescript-eslint/no-non-null-assertion": 2
