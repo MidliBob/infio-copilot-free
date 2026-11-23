@@ -97,9 +97,12 @@ export const pluginDataSchema = z.object({
 
 
 export const DEFAULT_SETTINGS = {
-	// version: "1",
-
-	// General settings
+	// Legacy v1 settings must carry these two fields (see settingsSchema above).
+	// The object doubles as the fallback source in types/settings.ts, whose
+	// modern InfioSettingsSchema does not know `enabled`/`version` and strips
+	// them, which is why the legacy-compat `autocompleteEnabled` below stays.
+	version: "1",
+	enabled: true,
 	autocompleteEnabled: true,
 	advancedMode: false,
 	apiProvider: "openai",

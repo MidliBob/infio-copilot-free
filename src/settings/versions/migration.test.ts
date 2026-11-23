@@ -26,6 +26,18 @@ describe('migrateFromV0ToV1', () => {
 		expect(migrated.systemMessage).toBe(DEFAULT_SETTINGS_V1.systemMessage)
 	})
 
+	it('lifts the stock v0 max_tokens default (800) to the v1 default', () => {
+		// v0 shipped 800, below the v1 floor of 4096: the value is recognized
+		// as an untouched default and replaced, so the result still parses.
+		expect(DEFAULT_SETTINGS_V0.modelOptions.max_tokens).toBe(800)
+
+		const migrated = migrateFromV0ToV1(defaultV0Settings())
+
+		expect(migrated.modelOptions.max_tokens).toBe(
+			DEFAULT_SETTINGS_V1.modelOptions.max_tokens,
+		)
+	})
+
 	it('keeps values the user did customize', () => {
 		const settings = defaultV0Settings()
 		settings.delay = 1500

@@ -1,7 +1,7 @@
 
 import { z } from "zod";
 
-import { MAX_DELAY, MAX_MAX_CHAR_LIMIT, MIN_DELAY, MIN_MAX_CHAR_LIMIT, azureOAIApiSettingsSchema, fewShotExampleSchema, modelOptionsSchema, openAIApiSettingsSchema } from "../shared";
+import { MAX_DELAY, MAX_MAX_CHAR_LIMIT, MIN_DELAY, MIN_MAX_CHAR_LIMIT, azureOAIApiSettingsSchema, fewShotExampleSchema, legacyModelOptionsSchema, openAIApiSettingsSchema } from "../shared";
 
 import block_qoute_example from "./few-shot-examples/block-qoute-example";
 import codeblock_function_completion from "./few-shot-examples/codeblock-function-completion";
@@ -31,7 +31,7 @@ export const settingsSchema = z.object({
 	openAIApiSettings: openAIApiSettingsSchema,
 	triggers: z.array(triggerSchema),
 	delay: z.number().int().min(MIN_DELAY, { message: "Delay must be between 0ms and 2000ms" }).max(MAX_DELAY, { message: "Delay must be between 0ms and 2000ms" }),
-	modelOptions: modelOptionsSchema,
+	modelOptions: legacyModelOptionsSchema,
 	systemMessage: z.string().min(3, { message: "System message must be at least 3 characters long" }),
 	fewShotExamples: z.array(fewShotExampleSchema),
 	userMessageTemplate: z.string().min(3, { message: "User message template must be at least 3 characters long" }),

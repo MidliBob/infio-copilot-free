@@ -48,6 +48,20 @@ export const modelOptionsSchema = z.object({
 		.min(MIN_MAX_TOKENS, { message: `max_tokens must be at least than ${String(MIN_MAX_TOKENS)}` }),
 }).strict();
 
+/**
+ * Model options under the historical v0 bounds.
+ *
+ * The v0 release shipped `max_tokens: 800`, while MIN_MAX_TOKENS was raised
+ * to 4096 in v1 - so the shared schema rejects v0's own defaults and
+ * `isSettingsV0()` said "no" for every stock v0 install. The v0 schema
+ * accepts the legacy 800; the v0 -> v1 migration then treats it as an
+ * untouched default (`findEqualPaths` against DEFAULT_SETTINGS_V0) and
+ * replaces it with the v1 default.
+ */
+export const legacyModelOptionsSchema = modelOptionsSchema.extend({
+	max_tokens: z.number().int().min(0),
+});
+
 export const fewShotExampleSchema = z.object({
 	// TODO: figure out how to make this compatible with the context enum and its namespace.
 	context: z.enum(["Text", "Heading", "BlockQuotes", "UnorderedList", "NumberedList", "CodeBlock", "MathBlock", "TaskList"]),

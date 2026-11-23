@@ -46,12 +46,19 @@ describe('deserializeSettings', () => {
 		expect(result._unsafeUnwrap()).toEqual(migratedV1Settings())
 	})
 
-	it('documents the current gap: a payload without settings is not repaired', () => {
-		// DEFAULT_SETTINGS_V1 has no `enabled` and no `version` (it still says
-		// `autocompleteEnabled`, and `version` is commented out), so the repair
-		// pass cannot supply the two required keys and gives up. Fixing that
-		// defaults object is a separate patch; this test pins today's contract.
-		expect(deserializeSettings(undefined).isErr()).toBe(true)
+	it('repairs an empty payload to the v1 defaults', () => {
+		const result = deserializeSettings(undefined)
+
+		expect(result.isOk()).toBe(true)
+		expect(result._unsafeUnwrap().version).toBe('1')
+		expect(result._unsafeUnwrap().enabled).toBe(true)
+	})
+
+	it('migrates stored v0 settings to v1', () => {
+		const result = deserializeSettings({ settings: structuredClone(DEFAULT_SETTINGS_V0) })
+
+		expect(result.isOk()).toBe(true)
+		expect(result._unsafeUnwrap().version).toBe('1')
 	})
 })
 

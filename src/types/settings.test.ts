@@ -3,7 +3,7 @@ import { DEFAULT_SETTINGS } from '../settings/versions/v1/v1'
 import { logger } from '../utils/logger'
 import { extractErrorMessage } from '../utils/network-errors'
 
-import { parseInfioSettings } from './settings'
+import { InfioSettingsSchema, parseInfioSettings } from './settings'
 
 // parseInfioSettings logs the whole ZodError and falls back to the defaults
 // when the stored data is unusable. The mock records that call so the expected
@@ -956,5 +956,17 @@ describe('Cloud provider removal migration (0.8 -> 0.9)', () => {
 		expect(result.chatModelId).toBe('qwen2.5:7b')
 		expect(result.embeddingModelProvider).toBe('LocalProvider')
 		expect(result.embeddingModelId).toBe('TaylorAI/bge-micro-v2')
+	})
+})
+
+describe('DEFAULT_SETTINGS as the parseInfioSettings fallback', () => {
+	// parseInfioSettings falls back to InfioSettingsSchema.parse({...DEFAULT_SETTINGS})
+	// for unusable stored data. DEFAULT_SETTINGS also has to satisfy the legacy
+	// v1 schema (version + enabled), so this guards the shared object's two roles.
+	it('still parses into modern settings', () => {
+		const result = InfioSettingsSchema.parse({ ...DEFAULT_SETTINGS })
+
+		expect(result.version).toBe(1.0)
+		expect(result.autocompleteEnabled).toBe(true)
 	})
 })
