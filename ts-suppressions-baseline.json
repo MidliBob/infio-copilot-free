@@ -13,9 +13,6 @@
 		"src/components/chat-view/WorkspaceEditModal.tsx": {
 			"ignore": 1
 		},
-		"src/core/file-search/match/coreplugin-match.ts": {
-			"ignore": 1
-		},
 		"src/core/llm/ollama.ts": {
 			"nocheck": 1
 		},
