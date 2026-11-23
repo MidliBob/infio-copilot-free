@@ -64,10 +64,6 @@
 		"src/settings/components/ProviderModelsPicker.tsx": {
 			"expectError": 1
 		},
-		"src/utils/auto-complete.ts": {
-			"nocheck": 1,
-			"expectError": 1
-		},
 		"src/utils/extract-text.ts": {
 			"ignore": 1
 		},

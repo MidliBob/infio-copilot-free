@@ -75,13 +75,19 @@ function migrateDefaultSettings(
 }
 
 
-export const isSettingsV0 = (settings: object): boolean => {
+/**
+ * Version probes are type guards on `unknown`: the callers receive settings
+ * straight from disk/JSON, and a successful parse is exactly what proves the
+ * shape. Narrowing here keeps `migrateFromV0ToV1` and
+ * `fixStructureAndValueErrors` free of casts at the call site.
+ */
+export const isSettingsV0 = (settings: unknown): settings is SettingsV0 => {
 	const result = settingsSchemaV0.safeParse(settings);
 	return result.success;
 }
 
 
-export const isSettingsV1 = (settings: object): boolean => {
+export const isSettingsV1 = (settings: unknown): settings is SettingsV1 => {
 	const result = settingsSchemaV1.safeParse(settings);
 	return result.success;
 }

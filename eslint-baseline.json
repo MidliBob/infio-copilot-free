@@ -166,10 +166,7 @@
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/core/autocomplete/utils.ts": {
-			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-unsafe-call": 2,
-			"@typescript-eslint/no-unsafe-member-access": 2,
-			"@typescript-eslint/no-unsafe-return": 1
+			"@typescript-eslint/consistent-type-assertions": 1
 		},
 		"src/core/diff/insert-groups.ts": {
 			"prefer-const": 1
@@ -440,18 +437,6 @@
 			"@typescript-eslint/no-explicit-any": 1,
 			"@typescript-eslint/no-unnecessary-condition": 1,
 			"@typescript-eslint/no-unsafe-member-access": 2
-		},
-		"src/utils/auto-complete.ts": {
-			"@typescript-eslint/ban-ts-comment": 2,
-			"@typescript-eslint/no-explicit-any": 7,
-			"@typescript-eslint/no-redundant-type-constituents": 1,
-			"@typescript-eslint/no-unnecessary-condition": 1,
-			"@typescript-eslint/no-unnecessary-type-parameters": 3,
-			"@typescript-eslint/no-unsafe-argument": 11,
-			"@typescript-eslint/no-unsafe-assignment": 2,
-			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-unsafe-member-access": 1,
-			"@typescript-eslint/no-unsafe-return": 1
 		},
 		"src/utils/config.ts": {
 			"@typescript-eslint/consistent-type-assertions": 1,

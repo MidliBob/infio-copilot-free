@@ -1,16 +1,20 @@
-// @ts-nocheck
 import { cloneDeep, each, get, has, isArray, isEqual, isNumber, isObject, isString, set, unset } from "./lodash-lite";
 import * as mm from "micromatch";
 import { Result, err, ok } from "neverthrow";
-import { ZodError, ZodIssueCode, ZodType, z } from 'zod';
+import { ZodError, ZodIssueCode, ZodType } from 'zod';
 
-import { DEFAULT_SETTINGS, PluginData, Settings } from "../settings/versions";
+import { DEFAULT_SETTINGS, PluginData, Settings, settingsSchema } from "../settings/versions";
 import { isSettingsV0, isSettingsV1, migrateFromV0ToV1 } from "../settings/versions/migration";
 import { InfioSettings, InfioSettingsSchema } from '../types/settings';
 
-type JSONObject = Record<string, any>;
+/**
+ * Raw JSON-ish value: something that came out of `JSON.parse`, storage or a
+ * schema. Values are `unknown` on purpose — every read has to be narrowed by
+ * a schema (parseWithSchema) or a lodash-style guard (isObject & co).
+ */
+type JSONObject = Record<string, unknown>;
 
-export function checkForErrors(settings: InfioSettings) {
+export function checkForErrors(settings: InfioSettings): Map<string, string> {
 	const errors = new Map<string, string>();
 	const parsingResult = parseWithSchema(InfioSettingsSchema, settings);
 
@@ -18,8 +22,11 @@ export function checkForErrors(settings: InfioSettings) {
 		return errors;
 	}
 
-	if (parsingResult.error instanceof ZodError) {
-		for (const issue of parsingResult.error.issues) {
+	// Typed as ZodError, but the unknown hop keeps the defensive branch below
+	// meaningful to the compiler instead of "always true".
+	const error: unknown = parsingResult.error;
+	if (error instanceof ZodError) {
+		for (const issue of error.issues) {
 			errors.set(issue.path.join('.'), issue.message);
 		}
 	} else {
@@ -35,23 +42,24 @@ export function checkForErrors(settings: InfioSettings) {
 
 export function fixStructureAndValueErrors<T extends ZodType>(
 	schema: T,
-	value: any | null | undefined,
-	defaultValue: z.infer<T>,
+	value: unknown,
+	defaultValue: object,
 ): Result<ReturnType<T["parse"]>, Error> {
-	if (value === null || value === undefined) {
-		value = {};
+	let current: unknown = value;
+	if (current === null || current === undefined) {
+		current = {};
 	}
-	let result = parseWithSchema(schema, value);
+	let result = parseWithSchema(schema, current);
 
 	if (result.isErr()) {
-		value = addMissingKeys(value, result.error, defaultValue);
-		value = removeUnrecognizedKeys(value, result.error);
-		result = parseWithSchema(schema, value);
+		current = addMissingKeys(current, result.error, defaultValue);
+		current = removeUnrecognizedKeys(current, result.error);
+		result = parseWithSchema(schema, current);
 	}
 
-	if (result.isErr() && value !== null && value !== undefined) {
-		value = replaceValuesWithErrorsByDefaultValue(value, result.error, defaultValue);
-		result = parseWithSchema(schema, value);
+	if (result.isErr()) {
+		current = replaceValuesWithErrorsByDefaultValue(current, result.error, defaultValue);
+		result = parseWithSchema(schema, current);
 	}
 
 	return result;
@@ -59,13 +67,13 @@ export function fixStructureAndValueErrors<T extends ZodType>(
 
 export function parseWithSchema<T extends ZodType>(
 	schema: T,
-	value: JSONObject | null | undefined
+	value: unknown
 ): Result<ReturnType<T["parse"]>, ZodError> {
 	const parsingResult = schema.safeParse(value);
 	return parsingResult.success ? ok(parsingResult.data) : err(parsingResult.error);
 }
 
-function addMissingKeys<T extends object>(value: JSONObject, error: ZodError, defaultValue: T): JSONObject {
+function addMissingKeys(value: unknown, error: ZodError, defaultValue: object): unknown {
 	const invalidTypeIssues = error.issues.filter(issue => issue.code === ZodIssueCode.invalid_type);
 	const errorPaths = invalidTypeIssues
 		.map(issue => issue.path)
@@ -75,38 +83,40 @@ function addMissingKeys<T extends object>(value: JSONObject, error: ZodError, de
 	return replaceValueWithDefaultValue(value, errorPaths, defaultValue);
 }
 
-function replaceValueWithDefaultValue<V, T>(
-	value: any,
-	paths: string[],
-	defaultValue: T,
-): V {
-	const result = cloneDeep(value);
-	paths.forEach(path => {
+/**
+ * Deep-copies `value` and stamps the current default at every `path`. A
+ * primitive has nothing to stamp (`set` is a no-op on it), so it is returned
+ * as-is, exactly like the previous implementation.
+ */
+function replaceValueWithDefaultValue(value: unknown, paths: string[], defaultValue: object): unknown {
+	const result: unknown = isObject(value) ? cloneDeep(value) : value;
+	for (const path of paths) {
 		const originalValue = has(defaultValue, path) ? get(defaultValue, path) : undefined;
 		set(result, path, originalValue);
-	});
+	}
 
 	return result;
 }
 
 
-function removeUnrecognizedKeys(value: JSONObject | null | undefined, error: ZodError): JSONObject {
-	if (typeof value !== 'object' || value === null || value === undefined) {
+function removeUnrecognizedKeys(value: unknown, error: ZodError): JSONObject {
+	if (!isObject(value)) {
 		return {};
 	}
 	// Zod unrecognized_keys issues consist of two parts:
 	// - path to the nested object where the unrecognized key was found
 	// - the key itself which is unrecognized
-	const unrecognizedPaths = error.issues
-
-		.filter(issue => issue.code === ZodIssueCode.unrecognized_keys)
-		// Array path will be handled separately by the value replacement function
-		.filter(issue => !isAnArrayPath(issue.path))
-		.flatMap(issue => {
-			// @ts-expect-error
-			const keys = issue.keys;
-			return keys.map(key => [...issue.path, key].join('.'));
-		});
+	//
+	// Array paths are handled separately by the value replacement function.
+	const unrecognizedPaths = error.issues.flatMap((issue) => {
+		if (issue.code !== ZodIssueCode.unrecognized_keys) {
+			return [];
+		}
+		if (isAnArrayPath(issue.path)) {
+			return [];
+		}
+		return issue.keys.map(key => [...issue.path, key].join('.'));
+	});
 
 	unrecognizedPaths.forEach(path => {
 		unset(value, path);
@@ -115,11 +125,11 @@ function removeUnrecognizedKeys(value: JSONObject | null | undefined, error: Zod
 }
 
 
-function replaceValuesWithErrorsByDefaultValue<T>(
-	value: JSONObject,
+function replaceValuesWithErrorsByDefaultValue(
+	value: unknown,
 	error: ZodError,
-	defaultValue: T
-): T {
+	defaultValue: object
+): unknown {
 	const errorPaths = error.issues
 		.map(issue => issue.path)
 		.map(path => reduceArrayPathToFirstObjectPath(path))
@@ -149,7 +159,7 @@ export function serializeSettings(settings: Settings): PluginData {
 }
 
 export function deserializeSettings(data: JSONObject | null | undefined): Result<Settings, Error> {
-	let settings: any;
+	let settings: unknown;
 	if (data === null || data === undefined || !Object.prototype.hasOwnProperty.call(data, "settings")) {
 		settings = {};
 	} else {
@@ -185,7 +195,7 @@ export function isValidIgnorePattern(value: string): boolean {
 	}
 }
 
-export function findEqualPaths(obj1: any, obj2: any, basePath = ''): string[] {
+export function findEqualPaths(obj1: unknown, obj2: unknown, basePath = ''): string[] {
 	let paths: string[] = [];
 
 	if (
@@ -205,8 +215,8 @@ export function findEqualPaths(obj1: any, obj2: any, basePath = ''): string[] {
 	}
 
 	// Function to iterate over keys and compare values
-	function iterateKeys(value: any, key: string | number): void {
-		const path = basePath ? `${basePath}.${String(key)}` : String(key);
+	function iterateKeys(value: unknown, key: string): void {
+		const path = basePath ? `${basePath}.${key}` : key;
 		if (isObject(value) && isObject(get(obj2, key))) {
 			// Recursively find paths for nested objects
 			paths = paths.concat(findEqualPaths(value, get(obj2, key), path));
@@ -219,7 +229,7 @@ export function findEqualPaths(obj1: any, obj2: any, basePath = ''): string[] {
 	// If both are arrays, iterate using each index
 	if (isArray(obj1) && isArray(obj2)) {
 		each(obj1, (value, index) => { iterateKeys(value, `[${String(index)}]`); });
-	} else {
+	} else if (isObject(obj1)) {
 		// Iterate over keys of the first object
 		each(obj1, iterateKeys);
 	}
