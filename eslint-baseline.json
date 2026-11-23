@@ -512,14 +512,6 @@
 			"@typescript-eslint/no-unsafe-assignment": 1,
 			"@typescript-eslint/no-unsafe-return": 1
 		},
-		"src/utils/obsidian.ts": {
-			"@typescript-eslint/no-explicit-any": 2,
-			"@typescript-eslint/no-unsafe-assignment": 6,
-			"@typescript-eslint/no-unsafe-call": 5,
-			"@typescript-eslint/no-unsafe-member-access": 9,
-			"@typescript-eslint/no-unsafe-return": 1,
-			"@typescript-eslint/restrict-plus-operands": 1
-		},
 		"src/utils/ollama.test.ts": {
 			"@typescript-eslint/no-unsafe-assignment": 1
 		},

@@ -4,12 +4,73 @@ import type { EditorView } from '@codemirror/view'
 import { App, Editor, MarkdownView, TFile, TFolder, Vault, WorkspaceLeaf, loadPdfJs } from 'obsidian'
 
 import { MentionableBlockData } from '../types/mentionable'
+import { extractErrorMessage } from './network-errors'
 import { logger } from './logger'
+
+/**
+ * Structural shapes of the PDF.js surface this module touches.
+ *
+ * Obsidian declares `loadPdfJs(): Promise<any>` and the published PDF.js
+ * typings are deliberately not a dependency here, so the type aliases below
+ * describe exactly what `parsePdfContent` uses. The single untyped
+ * boundary — the namespace returned by `loadPdfJs()` — is narrowed at
+ * runtime by `isPdfJsNamespace`; everything downstream is then statically
+ * typed and no `any` leaks through the parse pipeline.
+ */
+type PdfTextContent = {
+	items: unknown[]
+}
+
+type PdfPage = {
+	getTextContent(): Promise<PdfTextContent>
+}
+
+type PdfDocument = {
+	readonly numPages: number
+	getPage(pageNumber: number): Promise<PdfPage>
+}
+
+type PdfDocumentLoadingTask = {
+	readonly promise: Promise<PdfDocument>
+}
+
+type PdfJsNamespace = {
+	getDocument(params: { data: ArrayBuffer }): PdfDocumentLoadingTask
+}
+
+function isPdfJsNamespace(value: unknown): value is PdfJsNamespace {
+	if (typeof value !== 'object' || value === null) {
+		return false
+	}
+	if (!('getDocument' in value)) {
+		return false
+	}
+	return typeof value.getDocument === 'function'
+}
+
+/**
+ * PDF.js yields a mixed `items` array: text items carry `str`, marked-content
+ * markers do not. Non-text entries used to surface as `undefined` and were
+ * stringified into empty slots by `join(' ')`; mapping them to `''` keeps
+ * that spacing behaviour while giving the pipeline a `string[]`.
+ */
+function isPdfTextItem(value: unknown): value is { str: string } {
+	return (
+		typeof value === 'object' &&
+		value !== null &&
+		'str' in value &&
+		typeof value.str === 'string'
+	)
+}
 
 export async function parsePdfContent(file: TFile, app: App): Promise<string> {
 	try {
 		// 使用 Obsidian 内置的 PDF.js
-		const pdfjsLib = await loadPdfJs()
+		const pdfjsLib: unknown = await loadPdfJs()
+		if (!isPdfJsNamespace(pdfjsLib)) {
+			logger.error('Error parsing PDF: PDF.js is not available in this Obsidian build')
+			return '(Error reading PDF file: PDF.js is not available)'
+		}
 
 		// Read PDF file as binary buffer
 		const pdfBuffer = await app.vault.readBinary(file)
@@ -23,7 +84,7 @@ export async function parsePdfContent(file: TFile, app: App): Promise<string> {
 			const page = await doc.getPage(pageNum)
 			const textContent = await page.getTextContent()
 			const pageText = textContent.items
-				.map((item: any) => item.str)
+				.map((item) => (isPdfTextItem(item) ? item.str : ''))
 				.join(' ')
 			fullText += pageText + '\n\n'
 		}
@@ -31,9 +92,9 @@ export async function parsePdfContent(file: TFile, app: App): Promise<string> {
 		// 清理null字节，防止PostgreSQL UTF8编码错误
 		const cleanText = (fullText || '(Empty PDF content)').replace(/\0/g, '')
 		return cleanText
-	} catch (error: any) {
+	} catch (error) {
 		logger.error('Error parsing PDF:', error)
-		return `(Error reading PDF file: ${String(error?.message || 'Unknown error')})`
+		return `(Error reading PDF file: ${extractErrorMessage(error) || 'Unknown error'})`
 	}
 }
 
