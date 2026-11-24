@@ -2,7 +2,7 @@ import { App } from "obsidian"
 
 import { addCustomInstructions } from "../core/prompts/sections/custom-instructions"
 
-import { ALWAYS_AVAILABLE_TOOLS, TOOL_GROUPS, ToolGroup } from "./tool-groups"
+import { ALWAYS_AVAILABLE_TOOLS, TOOL_GROUPS, ToolGroup, ToolGroupConfig } from "./tool-groups"
 import { logger } from './logger'
 
 // Mode types
@@ -48,7 +48,19 @@ export function getGroupName(group: GroupEntry): ToolGroup {
 
 // Helper to get group options if they exist
 function getGroupOptions(group: GroupEntry): GroupOptions | undefined {
-	return Array.isArray(group) ? group[1] : undefined
+	return typeof group === "string" ? undefined : group[1]
+}
+
+/**
+ * `TOOL_GROUPS` is typed as a total `Record<string, ToolGroupConfig>`, but the
+ * map really holds a fixed set of keys: a hand-edited custom mode may still name
+ * a group that does not exist, so the lookup keeps that case explicit instead of
+ * dereferencing `undefined.tools`.
+ */
+function findToolGroup(groupName: string): ToolGroupConfig | undefined {
+	return Object.prototype.hasOwnProperty.call(TOOL_GROUPS, groupName)
+		? TOOL_GROUPS[groupName]
+		: undefined
 }
 
 // Helper to check if a file path matches a regex pattern
@@ -69,7 +81,7 @@ export function getToolsForMode(groups: readonly GroupEntry[]): string[] {
 	// Add tools from each group
 	groups.forEach((group) => {
 		const groupName = getGroupName(group)
-		const groupConfig = TOOL_GROUPS[groupName]
+		const groupConfig = findToolGroup(groupName)
 		if (groupConfig) {
 			groupConfig.tools.forEach((tool: string) => tools.add(tool))
 		} else {
@@ -184,11 +196,11 @@ export function isToolAllowedForMode(
 	modeSlug: string,
 	customModes: ModeConfig[],
 	toolRequirements?: Record<string, boolean>,
-	toolParams?: Record<string, any>, // All tool parameters
+	toolParams?: Record<string, unknown>, // All tool parameters
 	experiments?: Record<string, boolean>,
 ): boolean {
 	// Always allow these tools
-	if (ALWAYS_AVAILABLE_TOOLS.includes(tool as any)) {
+	if (ALWAYS_AVAILABLE_TOOLS.some((alwaysAvailable) => alwaysAvailable === tool)) {
 		return true
 	}
 
@@ -215,7 +227,7 @@ export function isToolAllowedForMode(
 		const groupName = getGroupName(group)
 		const options = getGroupOptions(group)
 
-		const groupConfig = TOOL_GROUPS[groupName]
+		const groupConfig = findToolGroup(groupName)
 
 		// If the group config doesn't exist, skip this group
 		if (!groupConfig) {
@@ -235,10 +247,11 @@ export function isToolAllowedForMode(
 
 		// For the edit group, check file regex if specified
 		if (groupName === "edit" && options.fileRegex) {
-			const filePath = toolParams?.path
+			const params = toolParams ?? {}
+			const filePath = params.path
 			if (
-				filePath &&
-				(toolParams.diff || toolParams.content || toolParams.operations) &&
+				typeof filePath === "string" &&
+				(params.diff || params.content || params.operations) &&
 				!doesFileMatchRegex(filePath, options.fileRegex)
 			) {
 				throw new FileRestrictionError(mode.name, options.fileRegex, options.description, filePath)
