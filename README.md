@@ -147,7 +147,7 @@ still fails with a network error, it is almost certainly the origins policy
 
 ## Build from source
 
-Requirements: Node 20, pnpm 12.
+Requirements: Node 22, pnpm 12.
 
 ```bash
 pnpm install
