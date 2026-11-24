@@ -31,10 +31,7 @@
 		"src/event-listener.ts": {
 			"nocheck": 1
 		},
-		"src/pgworker/index.ts": {
-			"nocheck": 1
-		},
-		"src/pgworker/pglite.worker.ts": {
+		"src/pgworker/pglite-subpaths.d.ts": {
 			"expectError": 1
 		},
 		"src/render-plugin/completion-key-watcher.ts": {

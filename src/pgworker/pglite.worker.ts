@@ -1,13 +1,28 @@
 import { PGlite } from '@electric-sql/pglite'
-// @ts-expect-error: types for '@electric-sql/pglite/worker' not resolved under current moduleResolution
 import { PGliteWorkerOptions, worker } from '@electric-sql/pglite/worker'
 
 import { migrations } from '../database/sql'
 import { extractErrorMessage } from '../utils/network-errors'
 
-export { }
+/**
+ * Build-time entry point of this file. `esbuild-plugin-inline-worker`
+ * intercepts any module whose path matches `.worker.(ts|tsx)` and replaces its
+ * contents with
+ *
+ *   export default function Worker() { return inlineWorker(<bundled script>) }
+ *
+ * so the factory below never reaches a bundle. Its only job is to give
+ * TypeScript the `() => Worker` shape the plugin exports (see the call site in
+ * `pgworker/index.ts`), and to fail loudly if this module is ever loaded without
+ * the plugin (jest, plain node).
+ */
+export default function createPgliteWorker(): Worker {
+	throw new Error(
+		'pglite.worker is bundled by esbuild-plugin-inline-worker and cannot be imported directly',
+	)
+}
 
-export interface PgliteAssets {
+export type PgliteAssets = {
 	wasm: ArrayBuffer
 	data: ArrayBuffer
 	vector: ArrayBuffer
@@ -82,10 +97,12 @@ const loadPGliteResources = async (
 	}
 }
 
-worker({
+// The worker() helper installs the message loop; the promise it returns settles
+// per message and is intentionally not awaited at module scope.
+void worker({
 	async init(
 		options: PGliteWorkerOptions & { pgliteAssets?: PgliteAssets },
-		filesystem: string,
+		filesystem?: string,
 	) {
 		let db: PGlite;
 		// `pgliteAssets` is our own transport field (structured-cloned by
