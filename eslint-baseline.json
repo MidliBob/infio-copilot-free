@@ -228,13 +228,6 @@
 			"@typescript-eslint/consistent-type-assertions": 2,
 			"@typescript-eslint/no-unsafe-argument": 1
 		},
-		"src/core/prompts/sections/mcp-servers.ts": {
-			"@typescript-eslint/no-unnecessary-template-expression": 1,
-			"@typescript-eslint/no-unsafe-assignment": 1,
-			"@typescript-eslint/no-unsafe-call": 1,
-			"@typescript-eslint/no-unsafe-member-access": 4,
-			"@typescript-eslint/restrict-template-expressions": 3
-		},
 		"src/core/prompts/system.ts": {
 			"@typescript-eslint/no-unnecessary-template-expression": 1
 		},

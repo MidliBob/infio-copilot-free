@@ -1,5 +1,53 @@
+import type { z } from 'zod'
+
 import { DiffStrategy } from "../../diff/DiffStrategy"
+import { ServerConfigSchema } from "../../mcp/config-schema"
 import { McpHub } from "../../mcp/McpHub"
+
+type McpServerConfig = z.infer<typeof ServerConfigSchema>
+
+/**
+ * `McpServer.config` is the JSON string McpHub stored for the server. Here it is
+ * re-validated with the same schema the hub uses, so this prompt section never
+ * dereferences an unvalidated shape: an unparsable config renders the server
+ * without a transport descriptor instead of throwing mid-prompt.
+ */
+function parseServerConfig(raw: string): McpServerConfig | null {
+	let parsed: unknown
+	try {
+		parsed = JSON.parse(raw)
+	} catch {
+		return null
+	}
+	const result = ServerConfigSchema.safeParse(parsed)
+	return result.success ? result.data : null
+}
+
+/**
+ * One-line transport descriptor for the section heading: the command line for
+ * stdio servers, the endpoint URL for the HTTP transports.
+ */
+function describeTransport(config: McpServerConfig | null): string {
+	if (!config) {
+		return ''
+	}
+	if (config.type === 'stdio') {
+		return config.args && config.args.length > 0
+			? `${config.command} ${config.args.join(' ')}`
+			: config.command
+	}
+	return config.url
+}
+
+/**
+ * Transport descriptor for a stored server config: the command line for stdio
+ * servers, the endpoint URL for the HTTP transports, or an empty string when
+ * the stored config is unparsable. Exported for tests — the section itself
+ * only renders the result.
+ */
+export function describeMcpServerTransport(rawConfig: string): string {
+	return describeTransport(parseServerConfig(rawConfig))
+}
 
 export async function getMcpServersSection(
 	mcpHub?: McpHub,
@@ -10,10 +58,10 @@ export async function getMcpServersSection(
 		return ""
 	}
 
+	const servers = mcpHub.getServers()
 	const connectedServers =
-		mcpHub.getServers().length > 0
-			? `${mcpHub
-				.getServers()
+		servers.length > 0
+			? servers
 				.filter((server) => server.status === "connected")
 				.map((server) => {
 					const tools = server.tools
@@ -23,28 +71,31 @@ export async function getMcpServersSection(
 		${JSON.stringify(tool.inputSchema, null, 2).split("\n").join("\n    ")}`
 								: ""
 
-							return `- ${tool.name}: ${tool.description}\n${schemaStr}`
+							return `- ${tool.name}: ${tool.description ?? ""}\n${schemaStr}`
 						})
 						.join("\n\n")
 
 					const templates = server.resourceTemplates
-						?.map((template) => `- ${template.uriTemplate} (${template.name}): ${template.description}`)
+						?.map((template) => `- ${template.uriTemplate} (${template.name}): ${template.description ?? ""}`)
 						.join("\n")
 
 					const resources = server.resources
-						?.map((resource) => `- ${resource.uri} (${resource.name}): ${resource.description}`)
+						?.map((resource) => `- ${resource.uri} (${resource.name}): ${resource.description ?? ""}`)
 						.join("\n")
 
-					const config = JSON.parse(server.config)
+					const transport = describeMcpServerTransport(server.config)
+					const heading = transport
+						? `## ${server.name} (\`${transport}\`)`
+						: `## ${server.name}`
 
 					return (
-						`## ${server.name} (\`${String(config.command)}${config.args && Array.isArray(config.args) ? ` ${String(config.args.join(" "))}` : ""}\`)` +
+						heading +
 						(tools ? `\n\n### Available Tools\n${tools}` : "") +
 						(templates ? `\n\n### Resource Templates\n${templates}` : "") +
 						(resources ? `\n\n### Direct Resources\n${resources}` : "")
 					)
 				})
-				.join("\n\n")}`
+				.join("\n\n")
 			: "(No MCP servers currently connected)"
 
 	const baseSection = `MCP SERVERS
@@ -52,7 +103,7 @@ export async function getMcpServersSection(
 The Model Context Protocol (MCP) enables communication between the system and MCP servers that provide additional tools and resources to extend your capabilities. MCP servers can be one of two types:
 
 1. Local (Stdio-based) servers: These run locally on the user's machine and communicate via standard input/output
-2. Remote (SSE-based) servers: These run on remote machines and communicate via Server-Sent Events (SSE) over HTTP/HTTPS
+2. Remote (SSE-based) servers: These run on remote machines via Server-Sent Events (SSE) over HTTP/HTTPS
 
 # Connected MCP Servers
 
