@@ -102,37 +102,25 @@ const loadPGliteResources = async (
 void worker({
 	async init(
 		options: PGliteWorkerOptions & { pgliteAssets?: PgliteAssets },
-		filesystem?: string,
 	) {
-		let db: PGlite;
 		// `pgliteAssets` is our own transport field (structured-cloned by
 		// PGliteWorker); strip it before handing options to PGlite.
 		const { pgliteAssets, ...pgOptions } = options
 		const { fsBundle, wasmModule, vectorExtensionBundlePath } =
 			await loadPGliteResources(pgliteAssets)
-		if (filesystem === 'idb') {
-			db = await PGlite.create('idb://infio-db', {
-				relaxedDurability: true,
-				fsBundle: fsBundle,
-				wasmModule: wasmModule,
-				...pgOptions,
-				extensions: {
-					...pgOptions.extensions,
-					vector: vectorExtensionBundlePath,
-				},
-			})
-		} else {
-			db = await PGlite.create('opfs-ahp://infio-db', {
-				relaxedDurability: true,
-				fsBundle: fsBundle,
-				wasmModule: wasmModule,
-				...pgOptions,
-				extensions: {
-					...pgOptions.extensions,
-					vector: vectorExtensionBundlePath,
-				},
-			})
-		}
+		// The storage engine is fixed: PGliteWorker calls init() with the options
+		// only (no filesystem argument), so a "choose idb or opfs" setting could
+		// never reach the worker. OPFS is what the plugin has always opened.
+		const db = await PGlite.create('opfs-ahp://infio-db', {
+			relaxedDurability: true,
+			fsBundle: fsBundle,
+			wasmModule: wasmModule,
+			...pgOptions,
+			extensions: {
+				...pgOptions.extensions,
+				vector: vectorExtensionBundlePath,
+			},
+		})
 
 		// Execute SQL migrations
 		for (const migration of Object.values(migrations)) {

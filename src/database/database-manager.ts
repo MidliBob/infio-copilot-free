@@ -59,12 +59,11 @@ export class DBManager {
 
 	static async create(
 		app: App,
-		filesystem: string,
 		pluginId = 'infio-copilot-free',
 	): Promise<DBManager> {
 		const dbManager = new DBManager(app)
 		const assets = await loadLocalPgliteAssets(app, pluginId)
-		dbManager.db = await createAndInitDb(filesystem, assets)
+		dbManager.db = await createAndInitDb(assets)
 
 		dbManager.vectorManager = new VectorManager(app, dbManager)
 		dbManager.CommandManager = new CommandManager(app, dbManager)

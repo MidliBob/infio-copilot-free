@@ -429,10 +429,6 @@ export default {
 		// RAG 部分
 		RAG: {
 			title: 'RAG(高级)',
-			filesystem: '文件系统',
-			filesystemDescription: '选择存储向量嵌入的文件系统后端。IDB 使用 IndexedDB（更好的兼容性），OPFS 使用 Origin Private File System（更好的性能）。',
-			idb: 'IndexedDB',
-			opfs: 'OPFS',
 			includePatterns: '包含模式',
 			includePatternsDescription: '如果指定了任何模式，则只有匹配至少一个模式的文件才会被包含在索引中。每行一个模式。模式在任意深度匹配：文件夹名（notes）、路径前缀（notes/）或 glob（notes/*, *.md）；忽略首尾引号。留空以包含所有未被排除模式排除的文件。更改后，请使用命令 "重建整个 Vault 索引" 来应用更改。',
 			testPatterns: '测试模式',

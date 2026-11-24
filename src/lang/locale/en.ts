@@ -428,10 +428,6 @@ export default {
 		// RAG Section
 		RAG: {
 			title: 'RAG(advanced)',
-			filesystem: 'Filesystem',
-			filesystemDescription: 'Choose the filesystem backend for storing vector embeddings. IDB uses IndexedDB (better compatibility), OPFS uses Origin Private File System (better performance).',
-			idb: 'IndexedDB',
-			opfs: 'OPFS',
 			includePatterns: 'Include patterns',
 			includePatternsDescription: 'If any patterns are specified, ONLY files matching at least one pattern will be included in indexing. One pattern per line. A pattern matches at any depth: a folder name (notes), a path prefix (notes/), or a glob (notes/*, *.md); surrounding quotes are ignored. Leave empty to include all files not excluded by exclude patterns. After changing this, use the command "Rebuild entire vault index" to apply changes.',
 			testPatterns: 'Test patterns',

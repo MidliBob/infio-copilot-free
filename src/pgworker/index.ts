@@ -21,7 +21,7 @@ export type PgliteAssets = {
  * `PGliteWorkerOptions` would widen `extensions` to the index-signature type
  * and collapse the resulting `live` namespace to `never`.
  */
-export const createAndInitDb = async (filesystem: string, assets?: PgliteAssets) => {
+export const createAndInitDb = async (assets?: PgliteAssets) => {
 	const worker = createPgliteWorker()
 
 	const options = {
@@ -33,11 +33,9 @@ export const createAndInitDb = async (filesystem: string, assets?: PgliteAssets)
 		pgliteAssets: assets,
 	}
 
-	// `PGliteWorker.create` takes exactly `(worker, options)`; the `filesystem`
-	// argument the old code passed as a third parameter was ignored by the SDK
-	// (the database name/engine is chosen inside the worker), so it stays a
-	// label for the debug line only.
+	// `PGliteWorker.create` takes exactly `(worker, options)`; the database
+	// engine is fixed inside the worker (OPFS), so nothing else is passed.
 	const pg = await PGliteWorker.create(worker, options)
-	logger.debug(`PGlite DB created in ${filesystem}://infio-db`)
+	logger.debug('PGlite DB created in opfs-ahp://infio-db')
 	return pg
 }

@@ -406,25 +406,6 @@ export class InfioSettingTab extends PluginSettingTab {
 
 		// 以下是原有的设置内容，移动到内容容器中
 		new Setting(contentContainer)
-			.setName(t('settings.RAG.filesystem'))
-			.setDesc(t('settings.RAG.filesystemDescription'))
-			.addDropdown((dropdown) =>
-				dropdown
-					.addOption('idb', t('settings.RAG.idb'))
-					.addOption('opfs', t('settings.RAG.opfs'))
-					.setValue(this.plugin.settings.ragOptions.filesystem)
-					.onChange(async (value) => {
-						await this.plugin.setSettings({
-							...this.plugin.settings,
-							ragOptions: {
-								...this.plugin.settings.ragOptions,
-								filesystem: value as 'idb' | 'opfs',
-							},
-						});
-					}),
-			);
-
-		new Setting(contentContainer)
 			.setName(t('settings.RAG.includePatterns'))
 			.setDesc(
 				t('settings.RAG.includePatternsDescription'),

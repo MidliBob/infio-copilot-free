@@ -354,7 +354,7 @@
 		},
 		"src/settings/SettingTab.tsx": {
 			"@typescript-eslint/ban-ts-comment": 6,
-			"@typescript-eslint/consistent-type-assertions": 5,
+			"@typescript-eslint/consistent-type-assertions": 4,
 			"@typescript-eslint/no-unnecessary-condition": 1
 		},
 		"src/settings/components/CheckBoxSettingItem.tsx": {

@@ -145,7 +145,7 @@ export async function loadDesktop(base: Plugin) {
 			if (this.dbManager) return this.dbManager
 			if (this.dbManagerInitPromise === null) {
 				this.dbManagerInitPromise = (async () => {
-					this.dbManager = await DBManager.create(this.app, this.settings.ragOptions.filesystem, this.manifest?.id ?? 'infio-copilot-free')
+					this.dbManager = await DBManager.create(this.app, this.manifest?.id ?? 'infio-copilot-free')
 					return this.dbManager
 				})()
 			}
