@@ -139,10 +139,11 @@ Planned. Requirements and steps:
   mistake, unfrozen in 1.7.10); the 1.7.21 flip re-enabled both through
   `strictTypeChecked` — their real findings (3 and 0) went into the
   re-frozen baseline. Since the flip the baseline is measured UNDER SNC:
-  **528 findings in 129 files** (the 1.7.21 honest re-freeze was
-  756/137, the pre-flip debt 1891/370; the ten-patch 1.7.22 burn-down took
-  the `no-unsafe-*` aggregate 246 -> 70 and shrank the baseline to
-  528/129 with a plain `--update --batch=14`).
+  **490 findings in 125 files** (the 1.7.21 honest re-freeze was
+  756/137, the pre-flip debt 1891/370; the 1.7.22 burn-down took the
+  `no-unsafe-*` aggregate 246 -> 70 and landed at 528/129, and the
+  1.7.23 series took it to 44 and the baseline to 490/125 — each shrink a
+  plain `--update --batch=14`).
   `pnpm run lint` still shows the raw ESLint picture (it is red until the
   debt is burned down — that is expected).
 - Burning down the debt: fix violations in a file/module, then shrink the
@@ -193,7 +194,7 @@ Planned. Requirements and steps:
 - `tsconfig.json` has **`strictNullChecks: true`** (since the 1.7.21 flip;
   the 1.7.20 series burned the 156-error tsc debt down first) — do not
   revert it: `eslint-baseline.json` is frozen UNDER SNC (the 1.7.21
-  re-freeze, re-measured at 528/129 by the 1.7.22 burn-down).
+  re-freeze, re-measured at 490/125 by the 1.7.23 register).
   Flipping back would resurrect ~1150 phantom
   `no-unnecessary-condition` findings against that baseline (the ratchet
   would fail on almost every file), and the two re-enabled rules would
@@ -329,15 +330,15 @@ ones that cannot be fixed by construction are recorded here:
   (CORS) blocks; `requestUrl` bypasses CORS and cannot detect them.
 
 Deliberately deferred to planned releases (the burn-down register; all
-counts are the 1.7.22 baseline, measured UNDER `strictNullChecks`:
-528 total in 129 files): the `no-unsafe-*`/`any` debt (70 across
-member-access 22 / assignment 21 / call 12 / argument 7 / return 5 /
+counts are the 1.7.23 baseline, measured UNDER `strictNullChecks`:
+490 total in 125 files): the `no-unsafe-*`/`any` debt (44 across
+member-access 15 / assignment 12 / call 8 / argument 3 / return 3 /
 enum-assignment 3 — phase 2 pass 3, module by module),
-`no-unnecessary-condition` (206 — collapsed from 1363 in the 1.7.21
+`no-unnecessary-condition` (204 — collapsed from 1363 in the 1.7.21
 re-freeze; the rest is genuine dead-condition debt),
-`consistent-type-assertions` (82), `no-explicit-any` (18), inline-styles
-(40), `restrict-plus-operands` (23), `ban-ts-comment` (21),
-`restrict-template-expressions` (18 — the honest SNC drift frozen by the
+`consistent-type-assertions` (80), `no-explicit-any` (16), inline-styles
+(40), `restrict-plus-operands` (23), `ban-ts-comment` (20),
+`restrict-template-expressions` (15 — the honest SNC drift frozen by the
 re-freeze), `no-unnecessary-boolean-literal-compare` (3, re-enabled in
 1.7.21) and the small-rule tail. `no-useless-default-assignment` is
 active with an empty baseline (any appearance is blocked).
@@ -376,8 +377,8 @@ re-enabled, `ts-suppressions` 32 → 30 markers, `eslint-baseline.json`
 honestly re-frozen under SNC: 1891/370 → 756/137).
 Remaining phase-3
 lint work: keep graduating rules as their counters reach zero (next
-candidates: the shrunken 206-finding `no-unnecessary-condition` pool,
-the 70-finding `no-unsafe-*` aggregate and the 18 honest
+candidates: the shrunken 204-finding `no-unnecessary-condition` pool,
+the 44-finding `no-unsafe-*` aggregate and the 15 honest
 `restrict-template-expressions` drift findings), and evaluate
 `eslint-plugin-obsidianmd` (the catalog review set) as a separate tracked
 increment.
