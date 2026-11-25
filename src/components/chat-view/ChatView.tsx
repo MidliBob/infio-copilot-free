@@ -2,7 +2,7 @@ import * as path from 'path'
 
 import { BaseSerializedNode } from '@lexical/clipboard/clipboard'
 import { useMutation } from '@tanstack/react-query'
-import { Box, Lightbulb, CircleStop, History, NotebookPen, Plus, Search, Server, SquareSlash, Undo } from 'lucide-react'
+import { Box, CircleStop, History, Lightbulb, NotebookPen, Plus, Search, Server, SquareSlash, Undo } from 'lucide-react'
 import { App, Notice, TFile, WorkspaceLeaf } from 'obsidian'
 import {
 	forwardRef,
@@ -423,6 +423,9 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 		{ applyMsgId: string, toolArgs: ToolArgs }
 	>({
 		mutationFn: async ({ applyMsgId, toolArgs }) => {
+			// Widened copy for the final union member: comparing the literal type
+			// directly would be an always-true check after the chain above.
+			const toolType: string = toolArgs.type
 			try {
 				let opFile = app.workspace.getActiveFile()
 				if ('filepath' in toolArgs && toolArgs.filepath) {
@@ -450,7 +453,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					}
 					const targetFile = opFile
 					// return a Promise, which will be resolved after user makes a choice
-					return new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
+					return await new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
 						void app.workspace.getLeaf(true).setViewState({
 							type: APPLY_VIEW_TYPE,
 							active: true,
@@ -488,7 +491,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					})
 				} else if (toolArgs.type === 'insert_content') {
 					if (!opFile) {
-						throw new Error(`File not found: ${toolArgs.filepath}`)
+						throw new Error(`File not found: ${toolArgs.filepath ?? ''}`)
 					}
 					const targetFile = opFile
 					const fileContent = await readTFileContent(targetFile, app.vault)
@@ -502,7 +505,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						throw new Error('Failed to apply edit changes')
 					}
 					// return a Promise, which will be resolved after user makes a choice
-					return new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
+					return await new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
 						void app.workspace.getLeaf(true).setViewState({
 							type: APPLY_VIEW_TYPE,
 							active: true,
@@ -522,7 +525,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 											role: 'user',
 											applyStatus: ApplyStatus.Idle,
 											content: null,
-											promptContent: `[${toolArgs.type} for '${toolArgs.filepath}'] Result:\n${applyEditContent}\n`,
+											promptContent: `[${toolArgs.type} for '${toolArgs.filepath ?? ''}'] Result:\n${applyEditContent}\n`,
 											id: uuidv4(),
 											mentionables: [],
 										}
@@ -545,7 +548,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						throw new Error('Failed to search_and_replace')
 					}
 					// return a Promise, which will be resolved after user makes a choice
-					return new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
+					return await new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
 						void app.workspace.getLeaf(true).setViewState({
 							type: APPLY_VIEW_TYPE,
 							active: true,
@@ -584,11 +587,11 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						fileContent,
 						toolArgs.diff
 					)
-					if (!appliedResult || !appliedResult.success) {
+					if (!appliedResult.success) {
 						throw new Error(`Failed to apply_diff`)
 					}
 					// return a Promise, which will be resolved after user makes a choice
-					return new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
+					return await new Promise<{ type: string; applyMsgId: string; applyStatus: ApplyStatus; returnMsg?: ChatUserMessage }>((resolve) => {
 						void app.workspace.getLeaf(true).setViewState({
 							type: APPLY_VIEW_TYPE,
 							active: true,
@@ -619,10 +622,10 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					})
 				} else if (toolArgs.type === 'read_file') {
 					if (!opFile) {
-						throw new Error(`File not found: ${toolArgs.filepath}`)
+						throw new Error(`File not found: ${toolArgs.filepath ?? ''}`)
 					}
 					const fileContent = await readTFileContentPdf(opFile, app.vault, app)
-					const formattedContent = `[read_file for '${toolArgs.filepath}'] Result:\n${addLineNumbers(fileContent)}\n`;
+					const formattedContent = `[read_file for '${toolArgs.filepath ?? ''}'] Result:\n${addLineNumbers(fileContent)}\n`;
 					return {
 						type: 'read_file',
 						applyMsgId,
@@ -680,7 +683,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					} else {
 						results = await matchSearchUsingCorePlugin(query, app)
 					}
-					const formattedContent = `[match_search_files for '${toolArgs.filepath}'] Result:\n${results}\n`;
+					const formattedContent = `[match_search_files for '${toolArgs.filepath ?? ''}'] Result:\n${results}\n`;
 					return {
 						type: 'match_search_files',
 						applyMsgId,
@@ -708,8 +711,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						if (!filepath) {
 							throw new Error('regex_search_files: filepath is required for the ripgrep backend')
 						}
-						// @ts-expect-error Obsidian API type mismatch
-						const baseVaultPath = String(app.vault.adapter.getBasePath())
+						const baseVaultPath = readAdapterBasePath(app.vault.adapter)
 						const absolutePath = path.join(baseVaultPath, filepath)
 						const ripgrepPath = settings.filesSearchSettings.ripgrepPath
 						results = await regexSearchUsingRipgrep(
@@ -719,7 +721,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 							app.vault.configDir,
 						)
 					}
-					const formattedContent = `[regex_search_files for '${toolArgs.filepath}'] Result:\n${results}\n`;
+					const formattedContent = `[regex_search_files for '${toolArgs.filepath ?? ''}'] Result:\n${results}\n`;
 					return {
 						type: 'regex_search_files',
 						applyMsgId,
@@ -836,8 +838,8 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					}
 					const toolResult = await mcpHub.callTool(toolArgs.server_name, toolArgs.tool_name, toolArgs.parameters)
 					const toolResultPretty =
-						(toolResult?.isError ? "Error:\n" : "") +
-						toolResult?.content
+						(toolResult.isError ? "Error:\n" : "") +
+						toolResult.content
 							.map((item) => {
 								if (item.type === "text") {
 									return item.text
@@ -903,8 +905,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					try {
 						logger.debug("call_transformations", toolArgs)
 						// Validate that the transformation type is a valid enum member
-						const validTransformationTypes = Object.values(TransformationType) as string[]
-						if (!validTransformationTypes.includes(toolArgs.transformation)) {
+						if (!isTransformationType(toolArgs.transformation)) {
 							throw new Error(`Unsupported transformation type: ${toolArgs.transformation}`);
 						}
 
@@ -914,7 +915,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						// Execute the transformation using the TransEngine
 						const transformationResult = await transEngine.runTransformation({
 							filePath: toolArgs.path,
-							transformationType: transformationType as TransformationType,
+							transformationType: transformationType,
 							model: {
 								provider: settings.applyModelProvider,
 								modelId: settings.applyModelId,
@@ -927,7 +928,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 						}
 
 						// Build the result message
-						let formattedContent = `[${toolArgs.transformation}] transformation complete:\n\n${transformationResult.result}`;
+						let formattedContent = `[${toolArgs.transformation}] transformation complete:\n\n${transformationResult.result ?? ''}`;
 
 						if (transformationResult.truncated) {
 							formattedContent += `\n\n*Note: The original content was too long (${String(transformationResult.originalTokens)} tokens) and was truncated to ${String(transformationResult.processedTokens)} tokens for processing.*`;
@@ -962,7 +963,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 							}
 						};
 					}
-				} else if (toolArgs.type === 'manage_files') {
+				} else if (toolType === 'manage_files') {
 					// Runtime mode gate: the tool availability used to be enforced
 					// only while the system prompt was assembled, so a block the model
 					// emitted anyway (or one left over from a conversation started in
@@ -971,7 +972,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					// tool_result, so it stops re-emitting the block and can explain
 					// itself to the user.
 					const permission = checkManageFilesPermission(settings.mode, customModeList)
-					if (permission.allowed === false) {
+					if (!permission.allowed) {
 						return {
 							type: 'manage_files',
 							applyMsgId,
@@ -1036,7 +1037,7 @@ const Chat = forwardRef<ChatRef, ChatProps>((props, ref) => {
 					};
 				} else {
 					// 处理未知的工具类型
-					throw new Error(`Unsupported tool type: ${String((toolArgs as any).type || 'unknown')}`);
+					throw new Error(`Unsupported tool type: ${describeUnknownToolType(toolArgs)}`);
 				}
 			} catch (error) {
 				logger.error('Failed to apply changes', error)
@@ -1589,3 +1590,40 @@ function ReactMarkdownItem({
 Chat.displayName = 'Chat'
 
 export default Chat
+
+/**
+ * Runtime guard for the transformation type carried in a tool block: the parsed
+ * value is a plain string, so it is narrowed here instead of asserted with an
+ * enum cast.
+ */
+function isTransformationType(value: string): value is TransformationType {
+	const knownTypes: string[] = Object.values(TransformationType)
+	return knownTypes.includes(value)
+}
+
+/**
+ * Obsidian's public typings describe the vault adapter as `DataAdapter`, which
+ * has no `getBasePath` (the method exists on the desktop `FileSystemAdapter`
+ * only). The value is read through Reflect and type-checked at runtime instead
+ * of an `as FileSystemAdapter` cast; an adapter without the method yields '',
+ * so the ripgrep search runs against the path as given.
+ */
+function readAdapterBasePath(adapter: object): string {
+	const getBasePath: unknown = Reflect.get(adapter, 'getBasePath')
+	if (typeof getBasePath !== 'function') {
+		return ''
+	}
+	const basePath: unknown = Reflect.apply(getBasePath, adapter, [])
+	return typeof basePath === 'string' ? basePath : ''
+}
+
+/**
+ * Best-effort label for a tool block whose `type` is outside the ToolArgs
+ * union: unreachable for validated blocks, kept as a runtime guard.
+ */
+function describeUnknownToolType(value: unknown): string {
+	if (typeof value === 'object' && value !== null && 'type' in value && typeof value.type === 'string') {
+		return value.type
+	}
+	return 'unknown'
+}
