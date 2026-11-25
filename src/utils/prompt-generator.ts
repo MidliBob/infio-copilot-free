@@ -1,4 +1,4 @@
-import { App, TAbstractFile, TFile, TFolder, getLanguage, htmlToMarkdown, normalizePath, requestUrl } from 'obsidian'
+import { App, TAbstractFile, TFile, TFolder, Vault, getLanguage, htmlToMarkdown, normalizePath, requestUrl } from 'obsidian'
 
 import { editorStateToPlainText } from '../components/chat-view/chat-input/utils/editor-state-to-plain-text'
 import { QueryProgressState } from '../components/chat-view/QueryProgress'
@@ -14,6 +14,7 @@ import { ChatMessage, ChatUserMessage } from '../types/chat'
 import { ContentPart, RequestMessage } from '../types/llm/request'
 import {
 	MentionableBlock,
+	MentionableCurrentFile,
 	MentionableFile,
 	MentionableFolder,
 	MentionableImage,
@@ -27,6 +28,7 @@ import { readTFileContent } from './obsidian'
 import { tokenCount } from './token'
 import { isYoutubeUrl } from './video-detector'
 import { YoutubeTranscript } from './youtube-transcript'
+import { extractErrorMessage } from './network-errors'
 import { logger } from './logger'
 
 export function addLineNumbers(content: string, startLine: number = 1): string {
@@ -65,7 +67,7 @@ async function getFolderTreeContent(path: TFolder): Promise<string> {
 		})
 		return folderContent
 	} catch (error) {
-		throw new Error(`Failed to access path "${path.path}": ${String(error.message)}`)
+		throw new Error(`Failed to access path "${path.path}": ${extractErrorMessage(error)}`)
 	}
 }
 
@@ -614,7 +616,7 @@ export class PromptGenerator {
 
 		// current file
 		const currentFile = message.mentionables
-			.filter((m): m is MentionableFile => m.type === 'current-file')
+			.filter((m): m is MentionableCurrentFile => m.type === 'current-file')
 			.first()
 		let currentFilePath: string | undefined = undefined
 		let currentFileContent: string | undefined = undefined
@@ -656,7 +658,7 @@ export class PromptGenerator {
 				shouldIncludeCurrentFile = true
 			} else {
 				// For continuing chats, check if current file content already exists in history
-				const currentFilePromptTag = `<current_tab_note path="${currentFilePath}">`
+				const currentFilePromptTag = `<current_tab_note path="${currentFilePath ?? ''}">`
 				const hasCurrentFileInHistory = messages?.some((msg) => {
 					if (msg.role === 'user' && msg.promptContent) {
 						if (typeof msg.promptContent === 'string') {
@@ -680,7 +682,7 @@ export class PromptGenerator {
 		}
 
 		const currentFileContentPrompt = shouldIncludeCurrentFile
-			? `<current_tab_note path="${currentFilePath}">\n${currentFileContent}\n</current_tab_note>`
+			? `<current_tab_note path="${currentFilePath ?? ''}">\n${currentFileContent ?? ''}\n</current_tab_note>`
 			: undefined
 
 		// Count file and folder tokens
@@ -1114,7 +1116,7 @@ ${transcript.map((t) => `${String(t.offset)}: ${t.text}`).join('\n')}`,
 		}
 
 		const pathParts = normalizedPath.split('.')
-		const extension = pathParts.pop()
+		const extension = pathParts.pop() ?? ''
 		const basePath = pathParts.join('.')
 
 		let counter = 1
@@ -1235,11 +1237,11 @@ ${transcript.map((t) => `${String(t.offset)}: ${t.text}`).join('\n')}`,
 	 */
 	private async saveImageFromBase64(base64Data: string, filename: string): Promise<string> {
 		// 获取默认资源目录
-		// @ts-ignore
-		const staticResourceDir = this.app.vault.getConfig("attachmentFolderPath")
+		// Internal API: read through Reflect below (see readVaultConfig).
+		const staticResourceDir = readVaultConfig(this.app.vault, 'attachmentFolderPath')
 
 		// 构建完整的文件路径
-		const targetPath = staticResourceDir ? normalizePath(`${String(staticResourceDir)}/${filename}`) : filename
+		const targetPath = staticResourceDir ? normalizePath(`${staticResourceDir}/${filename}`) : filename
 
 		// 处理文件名冲突
 		// const uniquePath = await this.getUniqueFilePath(targetPath)
@@ -1262,4 +1264,17 @@ ${transcript.map((t) => `${String(t.offset)}: ${t.text}`).join('\n')}`,
 			throw error
 		}
 	}
+}
+
+/**
+ * `Vault.getConfig` is internal (not part of the public typings), so the value is
+ * read through Reflect and type-checked at runtime instead of a suppression directive.
+ */
+function readVaultConfig(vault: Vault, key: string): string | undefined {
+	const getConfig: unknown = Reflect.get(vault, 'getConfig')
+	if (typeof getConfig !== 'function') {
+		return undefined
+	}
+	const value: unknown = Reflect.apply(getConfig, vault, [key])
+	return typeof value === 'string' ? value : undefined
 }

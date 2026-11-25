@@ -57,9 +57,6 @@
 		},
 		"src/utils/extract-text.ts": {
 			"ignore": 1
-		},
-		"src/utils/prompt-generator.ts": {
-			"ignore": 1
 		}
 	}
 }
