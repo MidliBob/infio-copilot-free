@@ -11,13 +11,19 @@ import { extractErrorMessage } from '../../utils/error-notice'
 import { logger } from '../../utils/logger'
 import { showConfirm } from '../../utils/modal-dialogs'
 
-const McpHubView = () => {
-	const { settings, setSettings } = useSettings()
+/** Tool input schemas are arbitrary JSON: check the shape before reading keys. */
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+const McpHubView = () => {	const { settings, setSettings } = useSettings()
 	const app = useApp()
 	const { getMcpHub } = useMcpHub()
 	const [mcpServers, setMcpServers] = useState<McpServer[]>([])
 	const [expandedServers, setExpandedServers] = useState<Record<string, boolean>>({});
-	const [activeServerDetailTab, setActiveServerDetailTab] = useState<Record<string, 'tools' | 'resources' | 'errors'>>({});
+	// Sparse map: an unknown server has no tab yet, which is exactly what the
+	// fallback logic below tests - Record<string, ...> claimed every key exists.
+	const [activeServerDetailTab, setActiveServerDetailTab] = useState<Partial<Record<string, 'tools' | 'resources' | 'errors'>>>({});
 
 	// 新增状态变量用于创建新服务器
 	const [newServerName, setNewServerName] = useState('')
@@ -152,17 +158,17 @@ const McpHubView = () => {
 				)}
 				{(tool.inputSchema && (() => {
 					const schema = tool.inputSchema;
-					const properties = schema && typeof schema === 'object' && 'properties' in schema ? schema.properties : undefined;
-					const required = schema && typeof schema === 'object' && 'required' in schema ? schema.required : undefined;
+					const properties: unknown = 'properties' in schema ? schema.properties : undefined;
+					const required: unknown = 'required' in schema ? schema.required : undefined;
 
-					if (properties && typeof properties === 'object' && Object.keys(properties).length > 0) {
+					if (isRecord(properties) && Object.keys(properties).length > 0) {
 						return (
 							<div className="icf-mcp-tool-parameters">
 								<h5 className="icf-mcp-parameters-title">{t('mcpHub.parameters')}</h5>
 								{Object.entries(properties).map(
 									([paramName, paramSchemaUntyped]) => {
-										const paramSchema = paramSchemaUntyped && typeof paramSchemaUntyped === 'object' ? paramSchemaUntyped : {};
-										const paramDescription = 'description' in paramSchema && typeof paramSchema.description === 'string' ? paramSchema.description : undefined;
+										const paramSchema: Record<string, unknown> = isRecord(paramSchemaUntyped) ? paramSchemaUntyped : {};
+										const paramDescription = typeof paramSchema.description === 'string' ? paramSchema.description : undefined;
 										const isRequired = Array.isArray(required) && required.includes(paramName);
 										return (
 											<div key={paramName} className="icf-mcp-parameter-item">
@@ -306,12 +312,7 @@ const McpHubView = () => {
 						</div>
 					) : (
 						mcpServers.map(server => {
-							// Add null check for server object
-							if (!server || !server.name) {
-								return null;
-							}
-							
-							const serverKey = `${server.name}-${server.source || 'global'}`;
+							const serverKey = `${server.name}-${server.source}`;
 							const isExpanded = expandedServers[serverKey];
 							const currentDetailTab = activeServerDetailTab[serverKey] || 'tools';
 
@@ -390,7 +391,7 @@ const McpHubView = () => {
 											<div className="icf-mcp-tab-content">
 												{currentDetailTab === 'tools' && (
 													<div className="icf-mcp-tools-list">
-														{(server.tools && server.tools.length > 0) ? server.tools.filter(tool => tool && tool.name).map(tool => <ToolRow key={tool.name} tool={tool} />) : <p className="icf-mcp-empty-message">{t('mcpHub.noTools')}</p>}
+														{(server.tools && server.tools.length > 0) ? server.tools.filter(tool => tool.name).map(tool => <ToolRow key={tool.name} tool={tool} />) : <p className="icf-mcp-empty-message">{t('mcpHub.noTools')}</p>}
 													</div>
 												)}
 												{currentDetailTab === 'resources' && (
