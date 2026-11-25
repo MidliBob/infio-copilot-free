@@ -31,24 +31,61 @@ export type SearchInputProps = {
 	onSearchModeChange?: (mode: 'notes' | 'insights' | 'all') => void
 }
 
+function isRecordWithType(value: unknown): value is { type: string } {
+	return (
+		typeof value === 'object' &&
+		value !== null &&
+		'type' in value &&
+		typeof value.type === 'string'
+	)
+}
+
+/**
+ * `SerializedLexicalNode` does not declare `children`; paragraph-like nodes
+ * carry it, so it is checked at runtime instead of a `child: any` annotation.
+ */
+function hasChildren(node: unknown): node is { children: unknown[] } {
+	return (
+		typeof node === 'object' &&
+		node !== null &&
+		'children' in node &&
+		Array.isArray(node.children)
+	)
+}
+
+/**
+ * Reads `root.children` out of a serialized editor state. The value may come
+ * straight from stored JSON, so the shape is validated here instead of trusting
+ * the declared type.
+ */
+function readRootChildren(editorState: unknown): unknown[] | null {
+	if (typeof editorState !== 'object' || editorState === null || !('root' in editorState)) {
+		return null
+	}
+	const root: unknown = editorState.root
+	if (typeof root !== 'object' || root === null || !('children' in root)) {
+		return null
+	}
+	const children: unknown = root.children
+	return Array.isArray(children) ? children : null
+}
+
 // 检查编辑器状态是否为空
-const isEditorStateEmpty = (editorState: SerializedEditorState): boolean => {
-	try {
-		const root = editorState.root
-		if (!root || !root.children) return true
-		
-		// 检查是否有实际内容
-		const hasContent = root.children.some((child: any) => {
-			if (child.type === 'paragraph') {
-				return child.children && child.children.length > 0
-			}
-			return true
-		})
-		
-		return !hasContent
-	} catch {
+export const isEditorStateEmpty = (editorState: unknown): boolean => {
+	const children = readRootChildren(editorState)
+	if (children === null) {
 		return true
 	}
+
+	// 检查是否有实际内容
+	const hasContent = children.some((child) => {
+		if (!isRecordWithType(child) || child.type !== 'paragraph') {
+			return true
+		}
+		return hasChildren(child) && child.children.length > 0
+	})
+
+	return !hasContent
 }
 
 const SearchInputWithActions = forwardRef<SearchInputRef, SearchInputProps>(
@@ -89,7 +126,7 @@ const SearchInputWithActions = forwardRef<SearchInputRef, SearchInputProps>(
 		}))
 
 		const handleSubmit = (options?: { useVaultSearch?: boolean }) => {
-			const content = editorRef.current?.getEditorState()?.toJSON()
+			const content = editorRef.current?.getEditorState().toJSON()
 			if (content) {
 				onSubmit(content, options?.useVaultSearch)
 			}
