@@ -60,8 +60,20 @@ export const ALWAYS_AVAILABLE_TOOLS = [
 export type ToolName = keyof typeof TOOL_DISPLAY_NAMES
 
 // Tool helper functions
-export function getToolName(toolConfig: string | readonly [ToolName, ...unknown[]]): ToolName {
-	return typeof toolConfig === "string" ? toolConfig as ToolName : toolConfig[0]
+
+/**
+ * `TOOL_DISPLAY_NAMES` is the tool registry, so a string is a tool name only
+ * when it is one of its keys. Checked at runtime instead of asserting
+ * `toolConfig as ToolName` (same helper as utils/tool-groups.ts).
+ */
+export function isToolName(value: string): value is ToolName {
+	// hasOwnProperty.call is typed ny; Boolean() keeps the contract boolean.
+	return Boolean(Object.prototype.hasOwnProperty.call(TOOL_DISPLAY_NAMES, value))
+}
+
+export function getToolName(toolConfig: string | readonly [ToolName, ...unknown[]]): ToolName | undefined {
+	const name = typeof toolConfig === "string" ? toolConfig : toolConfig[0]
+	return isToolName(name) ? name : undefined
 }
 
 export function getToolOptions(toolConfig: string | readonly [ToolName, ...unknown[]]): unknown {

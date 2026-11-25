@@ -213,9 +213,6 @@
 			"@typescript-eslint/no-unnecessary-condition": 2,
 			"@typescript-eslint/no-unsafe-assignment": 1
 		},
-		"src/core/prompts/tools/tool-groups.ts": {
-			"@typescript-eslint/consistent-type-assertions": 1
-		},
 		"src/core/prompts/tools/types.ts": {
 			"@typescript-eslint/no-explicit-any": 1
 		},
@@ -416,10 +413,6 @@
 			"@typescript-eslint/no-unsafe-call": 1,
 			"@typescript-eslint/no-unsafe-member-access": 1,
 			"@typescript-eslint/restrict-template-expressions": 4
-		},
-		"src/utils/tool-groups.ts": {
-			"@typescript-eslint/consistent-type-assertions": 1,
-			"@typescript-eslint/no-explicit-any": 3
 		},
 		"src/utils/useDebounceEffect.ts": {
 			"@typescript-eslint/no-explicit-any": 1,
